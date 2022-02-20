@@ -45,8 +45,8 @@ easyunfold unfold plot
 
 Output:
 
-![Spectral function plot](./unfold.png)
+<img src="unfold.png" alt="Spectral function plot" width="400"/>
 
-Example band plot of the primitive cell:
+Band structure of the primitive cell:
 
-![Primitive cell band structure](./band.png)
+<img src="band.png" alt="Primtive cell band structure" width="400"/>
