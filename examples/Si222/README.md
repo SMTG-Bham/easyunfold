@@ -49,4 +49,4 @@ Output:
 
 Band structure of the primitive cell:
 
-<img src="band.png" alt="Primtive cell band structure" width="400"/>
+<img src="band.png" alt="Primitive cell band structure" width="400"/>
