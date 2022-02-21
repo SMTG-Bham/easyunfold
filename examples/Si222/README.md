@@ -1,4 +1,4 @@
-## Unfolding 2x2x2 Si supercell with displaced atom
+## Unfolding 2x2x2 Si supercell with a displaced atom
 
 First, generate the supercell kpoints:
 
