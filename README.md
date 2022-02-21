@@ -136,6 +136,10 @@ There is a `easyunfold unfold status` command to show the information stored in 
 Once the spectral weights are stored, you can delete the `WAVECAR` file to save space.
 You may want to do the unfold calculation on the remote machine directly, then copy the `easyunfold.json` back to your local machine for plotting and further analysis.
 
+## Example
+
+Si 222 supercell with one displaced atom: [here](https://github.com/SMTG-UCL/easyunfold/blob/master/examples/Si222/README.md).
+
 ## Effect of symmetry breaking and sampling additional kpoints
 
 Test case - Si 2x2x2 cell.

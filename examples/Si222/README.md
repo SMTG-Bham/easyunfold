@@ -36,6 +36,13 @@ cd ../
 easyunfold unfold calculate Si_super_deformed/WAVECAR --vasprun Si_super_deformed/vasprun.xml
 ```
 
+NOTE: If you don't wnat to run the VASP calculation by yourself, the calculated `WAVECAR` and `vasprun.xml` for this example with:
+
+```
+wget -o Si_super_deformed/WAVECAR https://www.dropbox.com/s/3cmn2epw7d290jd/WAVECAR?dl=1
+wget -o Si_super_deformed/vasprun.xml https://www.dropbox.com/s/ota78qqdvxsehmi/vasprun.xml?dl=1
+```
+
 Generate the graph:
 
 ```
