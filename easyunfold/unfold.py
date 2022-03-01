@@ -3,7 +3,7 @@
 """
 The main module for unfolding workflow and algorithm
 """
-# pylint: disable=invalid-name,protected-access
+# pylint: disable=invalid-name,protected-access,too-many-locals
 
 ############################################################
 from pathlib import Path
@@ -251,7 +251,7 @@ class UnfoldKSet(MSONable):
                               npoints=2000,
                               sigma=0.1,
                               gamma=False,
-                              lsorbit=False,
+                              ncl=False,
                               gamma_half='x',
                               also_spectral_function=False,
                               symm_average=True):
@@ -266,7 +266,7 @@ class UnfoldKSet(MSONable):
                 raise RuntimeError(f'Previously calculated spectral weights was {tmp}averaged. Please set symm_avg to be {tmp2}.')
             sws = self.calculated_quantities['spectral_weights']
         else:
-            unfold_obj = Unfold(self.M, wavecar, gamma=gamma, lsorbit=lsorbit, gamma_half=gamma_half)
+            unfold_obj = Unfold(self.M, wavecar, gamma=gamma, lsorbit=ncl, gamma_half=gamma_half)
             sws = []
             if symm_average is True:
                 for kset, weights in zip(self.expansion_results['kpoints'], self.expansion_results['weights']):
@@ -287,23 +287,23 @@ class UnfoldKSet(MSONable):
             return sws, e0, spectral_function
         return sws
 
-    def get_spectral_function(self, wavecar=None, npoints=2000, sigma=0.1, gamma=False, lsorbit=False, gamma_half='x', symm_average=True):
+    def get_spectral_function(self, wavecar=None, npoints=2000, sigma=0.1, gamma=False, ncl=False, gamma_half='x', symm_average=True):
         """Get the spectral function"""
         _, e0, spectral_function = self._get_spectral_weights(wavecar,
                                                               npoints=npoints,
                                                               sigma=sigma,
                                                               gamma=gamma,
-                                                              lsorbit=lsorbit,
+                                                              ncl=ncl,
                                                               gamma_half=gamma_half,
                                                               also_spectral_function=True,
                                                               symm_average=symm_average)
         return e0, spectral_function
 
-    def get_spectral_weights(self, wavecar=None, gamma=False, lsorbit=False, gamma_half='x', symm_average=True):
+    def get_spectral_weights(self, wavecar=None, gamma=False, ncl=False, gamma_half='x', symm_average=True):
         """Get the spectral function"""
         return self._get_spectral_weights(wavecar=wavecar,
                                           gamma=gamma,
-                                          lsorbit=lsorbit,
+                                          ncl=ncl,
                                           gamma_half=gamma_half,
                                           also_spectral_function=False,
                                           symm_average=symm_average)

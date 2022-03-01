@@ -20,22 +20,6 @@ def si222_atoms(si_atoms):
 
 
 @pytest.fixture
-def si_project_dir(datapath, tmp_path):
-    """Create a temporary directory containing the Si unfold project data"""
-    shutil.copytree(datapath('Si-project'), tmp_path / 'Si-project')
-    if not list(tmp_path.glob('Si-project/*/WAVECAR')):
-        # Download the dataset
-        data_depo = [
-            ('https://www.dropbox.com/s/0d6cc8rsee2j7to/WAVCAR?dl=1', 'Si_super_deformed/WAVECAR'),
-            ('https://www.dropbox.com/s/22u33579kf3zq4x/WAVECAR?dl=1', 'Si_super_deformed_spin/WAVECAR'),
-        ]
-        for url, relpath in data_depo:
-            print(f'Downloading {relpath}')
-            urllib.request.urlretrieve(url, tmp_path / 'Si-project' / relpath)
-    return tmp_path / 'Si-project'
-
-
-@pytest.fixture
 def kpath_and_labels():
     path = [[0.0, 0.0, 0.0], [0.5, 0.5, 0.5], [0.5, 0.25, 0.75], [0.5, 0.0, 0.5]]
     labels = ['G', 'L', 'W', 'X']
@@ -129,11 +113,13 @@ def test_serialization(silicon_unfold, tmp_path):
     assert 'kpoints' in new_obj.expansion_results
 
 
-@pytest.mark.parametrize('folder_name,nspin', [('Si_super_deformed', 1), ('Si_super_deformed_spin', 2)])
-def test_unfold(si_project_dir, folder_name, nspin):
+@pytest.mark.parametrize('tag,nspin,ncl', [('', 1, False), ('_spin', 2, False), ('_soc', 1, True)])
+def test_unfold(si_project_dir, tag, nspin, ncl):
     """
     Test unfolding on the real data
     """
+    si_project_dir = si_project_dir(tag)
+    folder_name = f'Si_super_deformed{tag}'
 
     atoms_primitive = read(si_project_dir / 'Si/POSCAR')
     atoms_supercell = read(si_project_dir / f'{folder_name}/POSCAR')
@@ -149,7 +135,7 @@ def test_unfold(si_project_dir, folder_name, nspin):
     np.testing.assert_allclose(kpoints_sc, kpoints_sc_ref)
 
     # Test unfold
-    sws = unfolder.get_spectral_weights(si_project_dir / f'{folder_name}/WAVECAR')
+    sws = unfolder.get_spectral_weights(si_project_dir / f'{folder_name}/WAVECAR', ncl=ncl)
     assert sws.shape[0] == nspin
     assert sws.shape[1] == len(kpoints)
     assert sws.shape[2] == 81
@@ -158,7 +144,7 @@ def test_unfold(si_project_dir, folder_name, nspin):
     assert unfolder.is_calculated
 
     # Spectral weights
-    e0, spectral_function = unfolder.get_spectral_function(npoints=500)
+    e0, spectral_function = unfolder.get_spectral_function(npoints=500, ncl=ncl)
     assert len(e0) == 500
     assert spectral_function.shape == (nspin, 500, len(kpoints))
 

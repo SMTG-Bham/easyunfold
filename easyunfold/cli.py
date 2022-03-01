@@ -119,11 +119,12 @@ def unfold_status(ctx):
 @click.option('--save-as')
 @click.option('--vasprun', help='A vasprun.xml to provide the reference VBM energy.')
 @click.option('--gamma', is_flag=True)
-def unfold_calculate(ctx, wavecar, save_as, gamma, vasprun):
+@click.option('--ncl', is_flag=True)
+def unfold_calculate(ctx, wavecar, save_as, gamma, vasprun, ncl):
     """Perform the unfolding"""
 
     unfoldset: UnfoldKSet = ctx.obj['obj']
-    unfoldset.get_spectral_weights(wavecar, gamma)
+    unfoldset.get_spectral_weights(wavecar, gamma, ncl=ncl)
 
     if vasprun:
         from pymatgen.io.vasp.outputs import Vasprun
@@ -138,6 +139,7 @@ def unfold_calculate(ctx, wavecar, save_as, gamma, vasprun):
 @unfold.command('plot')
 @click.pass_context
 @click.option('--gamma', is_flag=True)
+@click.option('--ncl', is_flag=True)
 @click.option('--npoints', type=int, default=2000)
 @click.option('--sigma', type=float, default=0.1)
 @click.option('--eref', type=float)
@@ -147,7 +149,7 @@ def unfold_calculate(ctx, wavecar, save_as, gamma, vasprun):
 @click.option('--out-file', default='unfold.png')
 @click.option('--cmap', default='PuRd')
 @click.option('--show', is_flag=True, default=False)
-def unfold_plot(ctx, gamma, npoints, sigma, eref, vasprun, out_file, show, emin, emax, cmap):
+def unfold_plot(ctx, gamma, npoints, sigma, eref, vasprun, out_file, show, emin, emax, cmap, ncl):
     """
     Plot the spectral function
 
@@ -158,7 +160,7 @@ def unfold_plot(ctx, gamma, npoints, sigma, eref, vasprun, out_file, show, emin,
         click.echo('Unfolding has not been performed yet, please run `unfold calculate` command.')
         raise click.Abort()
 
-    eng, spectral_function = unfoldset.get_spectral_function(gamma=gamma, npoints=npoints, sigma=sigma)
+    eng, spectral_function = unfoldset.get_spectral_function(gamma=gamma, npoints=npoints, sigma=sigma, ncl=ncl)
 
     if eref is None:
         if vasprun:
