@@ -97,6 +97,8 @@ def expand_K_by_symmetry(kpt, opts_pc, opts_sc, time_reversal=True):
             out_points.append(kpt_)
             out_weights.append(weights[i])
     assert sum(out_weights) == len(pc_distinct)
+    # The first kpoint of the set should always be the original kpoint
+    assert out_points[0] is kpt_orig
     out_weights = np.array(out_weights) / sum(out_weights)
     return out_points, out_weights
 
@@ -166,9 +168,11 @@ class UnfoldKSet(MSONable):
         expended_k = []
         expended_weights = []
         for kpt in self.kpts_pc:
+            # Record the expanded kpoints and corresponding weights
             kset, weights = expand_K_by_symmetry(kpt, self.pc_opts, self.sc_opts, time_reversal=self.time_reversal)
             expended_k.append(kset)
             expended_weights.append(weights)
+        # Save as the attribute
         self.expansion_results = {'kpoints': expended_k, 'weights': expended_weights}
 
     def __repr__(self) -> str:
@@ -206,6 +210,7 @@ class UnfoldKSet(MSONable):
         assert bool(self.expansion_results)
         expended_sc = []
         all_sc = []
+        # Find the SC kpoint for each PC kpoint
         for kset in self.expansion_results['kpoints']:
             this_k = []
             for kpt in kset:
@@ -246,6 +251,28 @@ class UnfoldKSet(MSONable):
         else:
             write_kpoints(self.kpts_pc, file, comment='primitive cell kpoints')
 
+    def _read_weights(self, wavecar, gamma, ncl, gamma_half):
+        """
+        Read the weights from the wavecar for all kpoints
+
+        Returns the averaged weights and the original weights per set of kpoints
+        """
+        weights_per_set = []
+        averaged_weights = []
+        unfold_obj = Unfold(self.M, wavecar, gamma=gamma, lsorbit=ncl, gamma_half=gamma_half)
+        for kset, weights in zip(self.expansion_results['kpoints'], self.expansion_results['weights']):
+            sw = unfold_obj.spectral_weight(kset)
+            weights_per_set.append(sw.copy())
+            for ik, w in enumerate(weights):
+                sw[:, ik, :, :] *= w
+            averaged_weights.append(sw.sum(axis=1))
+
+        # Recreate the full weights array
+        averaged_weights = np.stack(averaged_weights, axis=1)
+        self.calculated_quantities['spectral_weights'] = averaged_weights
+        self.calculated_quantities['spectral_weights_per_set'] = weights_per_set
+        return averaged_weights, weights_per_set
+
     def _get_spectral_weights(self,
                               wavecar,
                               npoints=2000,
@@ -258,27 +285,21 @@ class UnfoldKSet(MSONable):
         """
         Fetch spectral weights from a wavecar and compute spectral function is requested
         """
-        if wavecar is None:
-            # Use existing results
-            if self.calculated_quantities['spectral_weights_is_averaged'] != symm_average:
-                tmp = 'not ' if not symm_average else ''
-                tmp2 = bool(not symm_average)
-                raise RuntimeError(f'Previously calculated spectral weights was {tmp}averaged. Please set symm_avg to be {tmp2}.')
+        # If WAVECAR is given - reload from the data
+        if wavecar:
+            self._read_weights(wavecar, gamma=gamma, ncl=ncl, gamma_half=gamma_half)
+        else:
+            if not self.is_calculated:
+                raise RuntimeWarning('The spectral weights need to be calculated first - please pass the WAVECAR file(s).')
+
+        # Use existing results
+        if symm_average:
             sws = self.calculated_quantities['spectral_weights']
         else:
-            unfold_obj = Unfold(self.M, wavecar, gamma=gamma, lsorbit=ncl, gamma_half=gamma_half)
-            sws = []
-            if symm_average is True:
-                for kset, weights in zip(self.expansion_results['kpoints'], self.expansion_results['weights']):
-                    sw = unfold_obj.spectral_weight(kset)
-                    for ik, w in enumerate(weights):
-                        sw[:, ik, :, :] *= w
-                    sws.append(sw.sum(axis=1))
-                sws = np.stack(sws, axis=1)
-            else:
-                sws = unfold_obj.spectral_weight(self.kpts_pc)
-            self.calculated_quantities['spectral_weights'] = sws
-            self.calculated_quantities['spectral_weights_is_averaged'] = symm_average
+            # No averaging - we just return the first item of each set, which is the weight of the original set
+            sws = [item[:, 0, :, :] for item in self.calculated_quantities['spectral_weights_per_set']]
+            # Recreate the full weights array
+            sws = np.stack(sws, axis=1)
 
         if also_spectral_function:
             e0, spectral_function = spectral_function_from_weights(sws, nedos=npoints, sigma=sigma)
