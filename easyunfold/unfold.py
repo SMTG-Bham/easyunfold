@@ -6,6 +6,7 @@ The main module for unfolding workflow and algorithm
 # pylint: disable=invalid-name,protected-access,too-many-locals
 
 ############################################################
+from typing import Union, List
 from pathlib import Path
 
 import numpy as np
@@ -270,7 +271,7 @@ class UnfoldKSet(MSONable):
         else:
             write_kpoints(self.kpts_pc, file, comment='primitive cell kpoints')
 
-    def _read_weights(self, wavecar, gamma, ncl, gamma_half):
+    def _read_weights(self, wavecar: Union[str, List[str]], gamma: bool, ncl: bool, gamma_half: str):
         """
         Read the weights from the wavecar for all kpoints
 
@@ -278,12 +279,18 @@ class UnfoldKSet(MSONable):
         """
         weights_per_set = []
         averaged_weights = []
-        unfold_obj = Unfold(self.M, wavecar, gamma=gamma, lsorbit=ncl, gamma_half=gamma_half)
+        if not isinstance(wavecar, (list, tuple)):
+            wavecar = [wavecar]
+        # Load the WAVECAR unfold objects
+        unfold_objs = [Unfold(self.M, name, gamma=gamma, lsorbit=ncl, gamma_half=gamma_half) for name in wavecar]
+        # Read the spectral weights for each set of expanded kpoints
         for kset, weights in tqdm(zip(self.expansion_results['kpoints'], self.expansion_results['weights']),
                                   desc='kpt',
                                   total=len(self.expansion_results['kpoints'])):
-            sw = unfold_obj.spectral_weight(kset)
+            # Raw spectral weights
+            sw = spectral_weight_multiple_source(kset, unfold_objs, self.M)
             weights_per_set.append(sw.copy())
+            # Take weighted average
             for ik, w in enumerate(weights):
                 sw[:, ik, :, :] *= w
             averaged_weights.append(sw.sum(axis=1))
@@ -1007,3 +1014,41 @@ class Unfold():
                 SF[ispin, :, ii] = np.sum(LorentzSmearing(e0[:, np.newaxis], E_Km[np.newaxis, :], sigma=sigma) * P_Km[np.newaxis, :],
                                           axis=1)
         return e0, SF
+
+
+def spectral_weight_multiple_source(kpoints, unfold_objs, transform_matrix):
+    """
+    Calculate the spectral weight for a list of kpoints in the primitive BZ
+    from a list of WAVECARs.
+    """
+
+    nk = len(kpoints)
+    ns = unfold_objs[0].wfc._nspin
+    for obj in unfold_objs[1:]:
+        assert ns == obj.wfc._nspin
+
+    # self.SW = np.array([self.spectral_weight_k(kpoints[ik])
+    #                     for ik in range(NKPTS)], dtype=float)
+    spectral_weights = []
+    for ispin in range(ns):
+        sw_this_spin = []
+        for ik in range(nk):
+            this_k = kpoints[ik]
+            this_k_supercell, _ = find_K_from_k(this_k, transform_matrix)
+            # find index of K0
+            ok = False
+            for source in unfold_objs:
+                try:
+                    source.find_K_index(this_k_supercell)
+                except ValueError:
+                    continue
+                sw_this_spin.append(source.spectral_weight_k(this_k, whichspin=ispin + 1))
+                ok = True
+                break
+
+            if not ok:
+                raise ValueError(f'This kpoint {this_k} this not found in the WAVECAR(s) provided')
+
+        spectral_weights.append(sw_this_spin)
+
+    return np.array(spectral_weights)
