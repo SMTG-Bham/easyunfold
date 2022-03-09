@@ -115,6 +115,7 @@ class UnfoldKSet(MSONable):
                  sc_opts,
                  time_reversal=True,
                  expand=True,
+                 metadata=None,
                  expansion_results=None,
                  calculated_quantities=None,
                  kpoint_labels=None):
@@ -137,6 +138,10 @@ class UnfoldKSet(MSONable):
         self.time_reversal = time_reversal
         self.calculated_quantities = {} if not calculated_quantities else calculated_quantities
         self.kpoint_labels = kpoint_labels
+        if metadata is None:
+            metadata = {}
+        self.metadata = metadata
+
         # Transient properties
         self.reduced_sckpts = None
         self.reduced_sckpts_map = None
@@ -154,10 +159,10 @@ class UnfoldKSet(MSONable):
         return self.calculated_quantities.get('spectral_weights_is_averaged', False)
 
     @classmethod
-    def from_atoms(cls, M, kpts_pc, pc, sc, time_reversal=True, expand=True):
+    def from_atoms(cls, M, kpts_pc, pc, sc, time_reversal=True, expand=True, symprec=1e-5):
         """Initialise from primitive cell and supercell atoms"""
-        pc_symm_data = get_symmetry_dataset(pc)
-        sc_symm_data = get_symmetry_dataset(sc)
+        pc_symm_data = get_symmetry_dataset(pc, symprec=symprec)
+        sc_symm_data = get_symmetry_dataset(sc, symprec=symprec)
         return cls(
             M=M,
             kpts_pc=kpts_pc,
@@ -166,6 +171,10 @@ class UnfoldKSet(MSONable):
             sc_opts=sc_symm_data['rotations'],
             time_reversal=time_reversal,
             expand=expand,
+            metadata={
+                'symmetry_dataset_pc': pc_symm_data,
+                'symmetry_dataset_sc': sc_symm_data,
+            },
         )
 
     def expand_pc_kpoints(self):
@@ -270,7 +279,9 @@ class UnfoldKSet(MSONable):
         weights_per_set = []
         averaged_weights = []
         unfold_obj = Unfold(self.M, wavecar, gamma=gamma, lsorbit=ncl, gamma_half=gamma_half)
-        for kset, weights in tqdm(zip(self.expansion_results['kpoints'], self.expansion_results['weights']), desc='kpt'):
+        for kset, weights in tqdm(zip(self.expansion_results['kpoints'], self.expansion_results['weights']),
+                                  desc='kpt',
+                                  total=len(self.expansion_results['kpoints'])):
             sw = unfold_obj.spectral_weight(kset)
             weights_per_set.append(sw.copy())
             for ik, w in enumerate(weights):
@@ -343,16 +354,8 @@ class UnfoldKSet(MSONable):
         """To a dictionary representation"""
         output = {'@module': self.__class__.__module__, '@class': self.__class__.__name__, '@version': __version__}
         for key in [
-                'M',
-                'kpts_pc',
-                'pc_latt',
-                'pc_opts',
-                'sc_opts',
-                'expansion_results',
-                'time_reversal',
-                'calculated_quantities',
-                'kpoint_labels',
-                'expand',
+                'M', 'kpts_pc', 'pc_latt', 'pc_opts', 'sc_opts', 'expansion_results', 'time_reversal', 'calculated_quantities',
+                'kpoint_labels', 'expand', 'metadata'
         ]:
             output[key] = getattr(self, key)
         return output

@@ -6,7 +6,7 @@ from monty.serialization import loadfn
 import numpy as np
 import click
 from ase.io import read
-from easyunfold.unfold import UnfoldKSet, read_kpoints, get_symmetry_dataset, EBS_cmaps
+from easyunfold.unfold import UnfoldKSet, read_kpoints, EBS_cmaps
 
 # pylint:disable=import-outside-toplevel
 
@@ -25,8 +25,10 @@ def easyunfold():
 @click.argument('sc-file')
 @click.argument('kpoints')
 @click.option('--matrix', '-m', help='Transformation matrix')
+@click.option('--symprec', help='Transformation matrix', type=float, default=1e-5)
 @click.option('--out-file', default='easyunfold.json', help='Name of the output file')
-def generate(pc_file, sc_file, matrix, kpoints, time_reversal, out_file):
+@click.option('--no-expand', help='Do not expand the kpoints by symmetry', default=False, is_flag=True)
+def generate(pc_file, sc_file, matrix, kpoints, time_reversal, out_file, no_expand, symprec):
     """
     Generate the kpoints for sampling the supercell
     """
@@ -56,21 +58,15 @@ def generate(pc_file, sc_file, matrix, kpoints, time_reversal, out_file):
     kpoints, _, labels = read_kpoints(kpoints)
     click.echo(f'{len(kpoints)} kpoints specified along the path')
 
-    unfoldset = UnfoldKSet.from_atoms(transform_matrix, kpoints, primitive, supercell, time_reversal=time_reversal)
+    unfoldset = UnfoldKSet.from_atoms(transform_matrix,
+                                      kpoints,
+                                      primitive,
+                                      supercell,
+                                      time_reversal=time_reversal,
+                                      expand=not no_expand,
+                                      symprec=symprec)
     unfoldset.kpoint_labels = labels
-
-    # Print space group information
-    sc_spg = get_symmetry_dataset(primitive)
-    click.echo('Primitive cell information:')
-    click.echo(' ' * 8 + f'Space group number: {sc_spg["number"]}')
-    click.echo(' ' * 8 + f'Internation symbol: {sc_spg["international"]}')
-    click.echo(' ' * 8 + f'Point group: {sc_spg["pointgroup"]}')
-
-    pc_spg = get_symmetry_dataset(supercell)
-    click.echo('\nSupercell cell information:')
-    click.echo(' ' * 8 + f'Space group number: {pc_spg["number"]}')
-    click.echo(' ' * 8 + f'Internation symbol: {pc_spg["international"]}')
-    click.echo(' ' * 8 + f'Point group: {pc_spg["pointgroup"]}')
+    print_symmetry_data(unfoldset)
 
     out_file = Path(out_file)
     unfoldset.write_sc_kpoints('KPOINTS_' + out_file.stem)
@@ -98,6 +94,8 @@ def unfold(ctx, data_file):
 def unfold_status(ctx):
     """Print the status"""
     unfoldset: UnfoldKSet = ctx.obj['obj']
+    print_symmetry_data(unfoldset)
+
     click.echo(f'\nNo. of k points in the primitive cell         : {unfoldset.nkpts_orig}')
     click.echo(f'No. of expanded kpoints to be calculated cell   : {unfoldset.nkpts_expand}')
     click.echo(f'No. of rotations in the primitive cell          : {unfoldset.pc_opts.shape[0]}')
@@ -149,7 +147,8 @@ def unfold_calculate(ctx, wavecar, save_as, gamma, vasprun, ncl):
 @click.option('--out-file', default='unfold.png')
 @click.option('--cmap', default='PuRd')
 @click.option('--show', is_flag=True, default=False)
-def unfold_plot(ctx, gamma, npoints, sigma, eref, vasprun, out_file, show, emin, emax, cmap, ncl):
+@click.option('--no-symm-average', is_flag=True, default=False, help='Do not include symmetry related kpoints for averaging.')
+def unfold_plot(ctx, gamma, npoints, sigma, eref, vasprun, out_file, show, emin, emax, cmap, ncl, no_symm_average):
     """
     Plot the spectral function
 
@@ -160,7 +159,11 @@ def unfold_plot(ctx, gamma, npoints, sigma, eref, vasprun, out_file, show, emin,
         click.echo('Unfolding has not been performed yet, please run `unfold calculate` command.')
         raise click.Abort()
 
-    eng, spectral_function = unfoldset.get_spectral_function(gamma=gamma, npoints=npoints, sigma=sigma, ncl=ncl)
+    eng, spectral_function = unfoldset.get_spectral_function(gamma=gamma,
+                                                             npoints=npoints,
+                                                             sigma=sigma,
+                                                             ncl=ncl,
+                                                             symm_average=not no_symm_average)
 
     if eref is None:
         if vasprun:
@@ -198,3 +201,20 @@ def unfold_plot(ctx, gamma, npoints, sigma, eref, vasprun, out_file, show, emin,
     if show:
         import matplotlib.pyplot as plt
         plt.show()
+
+
+def print_symmetry_data(kset: UnfoldKSet):
+    """Print the symmetry information"""
+
+    # Print space group information
+    sc_spg = kset.metadata['symmetry_sc']
+    click.echo('Primitive cell information:')
+    click.echo(' ' * 8 + f'Space group number: {sc_spg["number"]}')
+    click.echo(' ' * 8 + f'Internation symbol: {sc_spg["international"]}')
+    click.echo(' ' * 8 + f'Point group: {sc_spg["pointgroup"]}')
+
+    pc_spg = kset.metadata['symmetry_pc']
+    click.echo('\nSupercell cell information:')
+    click.echo(' ' * 8 + f'Space group number: {pc_spg["number"]}')
+    click.echo(' ' * 8 + f'Internation symbol: {pc_spg["international"]}')
+    click.echo(' ' * 8 + f'Point group: {pc_spg["pointgroup"]}')
