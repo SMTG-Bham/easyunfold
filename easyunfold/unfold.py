@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 import spglib
 from monty.json import MSONable
+from tqdm import tqdm
 
 from easyunfold import __version__
 from .pyvaspwfc.vaspwfc import vaspwfc
@@ -113,6 +114,7 @@ class UnfoldKSet(MSONable):
                  pc_opts,
                  sc_opts,
                  time_reversal=True,
+                 expand=True,
                  expansion_results=None,
                  calculated_quantities=None,
                  kpoint_labels=None):
@@ -122,12 +124,14 @@ class UnfoldKSet(MSONable):
             pc_lattice: A 3x3 matrix of row lattice vectors of the primitive cell
             pc_opts: Symmetry operations of the primitive cell
             sc_opts: Symmetry operations of the supercell
+            expand: Expand the kpoint to take account of broken symmetry or not
         """
         # Basic properties - needed to recreate the object
         self.kpts_pc = kpts_pc
         self.pc_latt = pc_latt
         self.pc_opts = pc_opts
         self.sc_opts = sc_opts
+        self.expand = expand
         self.M = M
         self.expansion_results = expansion_results
         self.time_reversal = time_reversal
@@ -150,7 +154,7 @@ class UnfoldKSet(MSONable):
         return self.calculated_quantities.get('spectral_weights_is_averaged', False)
 
     @classmethod
-    def from_atoms(cls, M, kpts_pc, pc, sc, time_reversal=True):
+    def from_atoms(cls, M, kpts_pc, pc, sc, time_reversal=True, expand=True):
         """Initialise from primitive cell and supercell atoms"""
         pc_symm_data = get_symmetry_dataset(pc)
         sc_symm_data = get_symmetry_dataset(sc)
@@ -161,6 +165,7 @@ class UnfoldKSet(MSONable):
             pc_opts=pc_symm_data['rotations'],
             sc_opts=sc_symm_data['rotations'],
             time_reversal=time_reversal,
+            expand=expand,
         )
 
     def expand_pc_kpoints(self):
@@ -169,7 +174,12 @@ class UnfoldKSet(MSONable):
         expended_weights = []
         for kpt in self.kpts_pc:
             # Record the expanded kpoints and corresponding weights
-            kset, weights = expand_K_by_symmetry(kpt, self.pc_opts, self.sc_opts, time_reversal=self.time_reversal)
+            if self.expand:
+                kset, weights = expand_K_by_symmetry(kpt, self.pc_opts, self.sc_opts, time_reversal=self.time_reversal)
+            else:
+                # Just take the original point and set the weight to be unity
+                kset = [kpt]
+                weights = np.array([1.0])
             expended_k.append(kset)
             expended_weights.append(weights)
         # Save as the attribute
@@ -260,7 +270,7 @@ class UnfoldKSet(MSONable):
         weights_per_set = []
         averaged_weights = []
         unfold_obj = Unfold(self.M, wavecar, gamma=gamma, lsorbit=ncl, gamma_half=gamma_half)
-        for kset, weights in zip(self.expansion_results['kpoints'], self.expansion_results['weights']):
+        for kset, weights in tqdm(zip(self.expansion_results['kpoints'], self.expansion_results['weights']), desc='kpt'):
             sw = unfold_obj.spectral_weight(kset)
             weights_per_set.append(sw.copy())
             for ik, w in enumerate(weights):
@@ -333,8 +343,16 @@ class UnfoldKSet(MSONable):
         """To a dictionary representation"""
         output = {'@module': self.__class__.__module__, '@class': self.__class__.__name__, '@version': __version__}
         for key in [
-                'M', 'kpts_pc', 'pc_latt', 'pc_opts', 'sc_opts', 'expansion_results', 'time_reversal', 'calculated_quantities',
-                'kpoint_labels'
+                'M',
+                'kpts_pc',
+                'pc_latt',
+                'pc_opts',
+                'sc_opts',
+                'expansion_results',
+                'time_reversal',
+                'calculated_quantities',
+                'kpoint_labels',
+                'expand',
         ]:
             output[key] = getattr(self, key)
         return output

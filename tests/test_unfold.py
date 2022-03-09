@@ -149,3 +149,44 @@ def test_unfold(si_project_dir, tag, nspin, ncl):
     assert spectral_function.shape == (nspin, 500, len(kpoints))
 
     assert unfolder.to_json()
+
+
+@pytest.mark.parametrize('tag,nspin,ncl', [
+    ('', 1, False),
+])
+def test_unfold_no_expand(si_project_dir, tag, nspin, ncl):
+    """
+    Test unfolding on the real data without symmetry expansion in the first place
+    """
+    si_project_dir = si_project_dir(tag)
+    folder_name = f'Si_super_deformed{tag}'
+
+    atoms_primitive = read(si_project_dir / 'Si/POSCAR')
+    atoms_supercell = read(si_project_dir / f'{folder_name}/POSCAR')
+    kpoints, _, labels = unfold.read_kpoints(si_project_dir / 'KPOINTS_band_low')
+
+    unfolder: unfold.UnfoldKSet = unfold.UnfoldKSet.from_atoms(np.diag([2, 2, 2]), kpoints, atoms_primitive, atoms_supercell, expand=False)
+    unfolder.kpoint_labels = labels
+    assert unfolder.nkpts_expand == unfolder.nkpts_orig
+    unfolder.write_sc_kpoints(si_project_dir / 'KPOINTS_sc')
+
+    # Test kpoints generation
+    kpoints_sc, _, _ = unfold.read_kpoints(si_project_dir / 'KPOINTS_sc')
+    kpoints_sc_ref, _, _ = unfold.read_kpoints(si_project_dir / f'{folder_name}/KPOINTS_easyunfold')
+    # The kpoints should be a subset of the SC kpoints
+    for kpt in kpoints_sc:
+        found = False
+        for ref in kpoints_sc_ref:
+            if np.allclose(kpt, ref):
+                found = True
+                break
+        assert found
+
+    # Test unfold
+    sws = unfolder.get_spectral_weights(si_project_dir / f'{folder_name}/WAVECAR', ncl=ncl)
+    assert sws.shape[0] == nspin
+    assert sws.shape[1] == len(kpoints)
+    assert sws.shape[2] == 81
+    assert sws.shape[3] == 2
+
+    assert unfolder.is_calculated
