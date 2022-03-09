@@ -29,10 +29,22 @@ def test_generate(si_project_dir):
         easyunfold, ['generate', 'Si/POSCAR', 'Si_super_deformed/POSCAR', 'KPOINTS_band_low', '--out-file', 'test', '--nk-per-split', '3'])
     assert output.exit_code == 0
 
-    kpts, _, _ = read_kpoints('KPOINTS_test')
+    kpts = read_kpoints('KPOINTS_test')[0]
     assert len(kpts) == 11
-    kpts, _, _ = read_kpoints('KPOINTS_test_002')
+    kpts = read_kpoints('KPOINTS_test_002')[0]
     assert len(kpts) == 3
+
+    # Test with SCF kpoints
+
+    output = runner.invoke(easyunfold, [
+        'generate', 'Si/POSCAR', 'Si_super_deformed/POSCAR', 'KPOINTS_band_low', '--out-file', 'test', '--scf-kpoints',
+        'Si_super_deformed_soc/IBZKPT'
+    ])
+    assert output.exit_code == 0
+    kpts, _, _, weights = read_kpoints('KPOINTS_test')
+    assert weights[0] == 12
+    assert weights[-1] == 0
+    assert len(kpts) == 88 + 11
 
 
 @pytest.mark.parametrize('tag', ['', '_spin', '_soc'])

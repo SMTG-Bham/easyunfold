@@ -255,17 +255,26 @@ class UnfoldKSet(MSONable):
         self.expansion_results['reduced_sckpts_map'] = reduced_sc_map
         # A nested list that stores the indices of the sc kpts in the reduced_sckpts list
 
-    def write_sc_kpoints(self, file, nk_per_split=None):
+    def write_sc_kpoints(self, file, nk_per_split=None, scf_kpoints_and_weights=None):
         """Write the supercell kpoints"""
         if self.expansion_results.get('reduced_sckpts') is None:
             self.generate_sc_kpoints()
         kpoints = np.asarray(self.expansion_results['reduced_sckpts'])
+        weights = None
+        if scf_kpoints_and_weights:
+            # Prepend with SCF kpoints
+            scf_kpts, scf_weights = scf_kpoints_and_weights
+            scf_kpts = np.asarray(scf_kpts)
+            kpoints = np.concatenate([scf_kpts, kpoints], axis=0)
+            weights = np.zeros(kpoints.shape[0])
+            weights[:len(scf_weights)] = scf_weights
+
         if nk_per_split is None:
-            write_kpoints(self.expansion_results['reduced_sckpts'], file, comment='supercell kpoints')
+            write_kpoints(kpoints, file, comment='supercell kpoints', weights=weights)
         else:
             splits = [kpoints[i:i + nk_per_split] for i in range(0, kpoints.shape[0], nk_per_split)]
             for i_spilt, kpt in enumerate(splits):
-                write_kpoints(kpt, f'{file}_{i_spilt + 1:03d}', f'supercell kpoints split {i_spilt}')
+                write_kpoints(kpt, f'{file}_{i_spilt + 1:03d}', f'supercell kpoints split {i_spilt}', weights)
 
     def write_pc_kpoints(self, file, expanded=False):
         """Write the primitive cell kpoints"""
@@ -412,7 +421,7 @@ def removeDuplicateKpoints(kpoints, return_map=False, decimals=6):
     return reducedK
 
 
-def write_kpoints(kpoints: Union[np.ndarray, list], outpath='KPOINTS', comment=''):
+def write_kpoints(kpoints: Union[np.ndarray, list], outpath='KPOINTS', comment='', weights=None):
     """
     save to VASP KPOINTS file
     """
@@ -424,7 +433,10 @@ def write_kpoints(kpoints: Union[np.ndarray, list], outpath='KPOINTS', comment='
         vaspkpt.write('%d\n' % nkpts)
         vaspkpt.write('Rec\n')
         for ik in range(nkpts):
-            line = '  %12.8f %12.8f %12.8f 1.0\n' % (kpoints[ik, 0], kpoints[ik, 1], kpoints[ik, 2])
+            if weights is not None:
+                line = '  %12.8f %12.8f %12.8f %12.8f\n' % (kpoints[ik, 0], kpoints[ik, 1], kpoints[ik, 2], weights[ik])
+            else:
+                line = '  %12.8f %12.8f %12.8f 1.0\n' % (kpoints[ik, 0], kpoints[ik, 1], kpoints[ik, 2])
             vaspkpt.write(line)
 
 
@@ -442,10 +454,12 @@ def read_kpoints(path='KPOINTS'):
     assert content[2].lower().startswith('rec'), 'Only Reciprocal space KPOINT file is supported'
     kpts = []
     labels = []
+    weights = []
     ik = 0
     for line in content[3:]:
         tokens = line.split()
         this_kpt = [float(value) for value in tokens[:3]]
+        weights.append(float(tokens[3]))
 
         if len(tokens) >= 5:
             labels.append([ik, tokens[4]])
@@ -454,7 +468,7 @@ def read_kpoints(path='KPOINTS'):
         ik += 1
         if ik == nkpts:
             break
-    return kpts, comment, labels
+    return kpts, comment, labels, weights
 
 
 def read_kpoints_line(content, density=20):

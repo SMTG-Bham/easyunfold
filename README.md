@@ -82,6 +82,8 @@ The set of kpoints for the supercell band structure can be generated with:
 easyunfold generate primitive/POSCAR supercell/POSCAR primitive/KPOINTS_band --matrix "2 2 2"
 ```
 
+for hybrid functional calculations, it an be useful to split the kpoints into multiple calculations for reduced costs or memory consumptions.
+
 Note that the `--matrix` input is for setting the transformation matrix such that
 
 ```
@@ -117,6 +119,14 @@ easyunfold unfold calculate WAVECAR
 
 This command compute the spectral weight and save them into the  `easyunfold.json` file.
 You can load the `easyunfold.json` file to read the spectral weights manually, or proceed with the command lien interface to generate a plot.
+
+If the kpoints has been split into multiple calculations (for example, for those involving hybrid functional), all of the `WAVECAR` files need to be passed:
+
+```
+easyunfold unfold calculate calc1/WAVECAR calc2/WAVECAR
+```
+
+For large `WAVECAR`, it may take some time to parse and compute the weights.
 
 ### Step 4 - Plot the results
 

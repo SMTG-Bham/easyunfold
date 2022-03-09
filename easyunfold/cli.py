@@ -29,7 +29,10 @@ def easyunfold():
 @click.option('--out-file', default='easyunfold.json', help='Name of the output file')
 @click.option('--no-expand', help='Do not expand the kpoints by symmetry', default=False, is_flag=True)
 @click.option('--nk-per-split', help='Number of kpoints per split.', type=int)
-def generate(pc_file, sc_file, matrix, kpoints, time_reversal, out_file, no_expand, symprec, nk_per_split):
+@click.option('--scf-kpoints',
+              help='File (IBZKPT) to provide SCF kpoints for self-consistent calculations.',
+              type=click.Path(exists=True, dir_okay=False))
+def generate(pc_file, sc_file, matrix, kpoints, time_reversal, out_file, no_expand, symprec, nk_per_split, scf_kpoints):
     """
     Generate the kpoints for sampling the supercell
     """
@@ -56,7 +59,7 @@ def generate(pc_file, sc_file, matrix, kpoints, time_reversal, out_file, no_expa
 
         click.echo(f'(Guessed) Transform matrix:\n{transform_matrix.tolist()}')
 
-    kpoints, _, labels = read_kpoints(kpoints)
+    kpoints, _, labels, _ = read_kpoints(kpoints)
     click.echo(f'{len(kpoints)} kpoints specified along the path')
 
     unfoldset = UnfoldKSet.from_atoms(transform_matrix,
@@ -70,7 +73,11 @@ def generate(pc_file, sc_file, matrix, kpoints, time_reversal, out_file, no_expa
     print_symmetry_data(unfoldset)
 
     out_file = Path(out_file)
-    unfoldset.write_sc_kpoints(f'KPOINTS_{out_file.stem}', nk_per_split=nk_per_split)
+    if scf_kpoints is not None:
+        scf_kpt, _, _, scf_weights = read_kpoints(scf_kpoints)
+        unfoldset.write_sc_kpoints(f'KPOINTS_{out_file.stem}', nk_per_split=nk_per_split, scf_kpoints_and_weights=(scf_kpt, scf_weights))
+    else:
+        unfoldset.write_sc_kpoints(f'KPOINTS_{out_file.stem}', nk_per_split=nk_per_split)
     click.echo('Supercell kpoints written to KPOITNS_' + out_file.stem)
 
     # Serialize the data

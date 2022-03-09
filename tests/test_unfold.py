@@ -123,7 +123,7 @@ def test_unfold(si_project_dir, tag, nspin, ncl):
 
     atoms_primitive = read(si_project_dir / 'Si/POSCAR')
     atoms_supercell = read(si_project_dir / f'{folder_name}/POSCAR')
-    kpoints, _, labels = unfold.read_kpoints(si_project_dir / 'KPOINTS_band_low')
+    kpoints, _, labels, _ = unfold.read_kpoints(si_project_dir / 'KPOINTS_band_low')
 
     unfolder: unfold.UnfoldKSet = unfold.UnfoldKSet.from_atoms(np.diag([2, 2, 2]), kpoints, atoms_primitive, atoms_supercell)
     unfolder.kpoint_labels = labels
@@ -134,8 +134,8 @@ def test_unfold(si_project_dir, tag, nspin, ncl):
     assert (si_project_dir / 'KPOINTS_sc_002').is_file()
 
     # Test kpoints generation
-    kpoints_sc, _, _ = unfold.read_kpoints(si_project_dir / 'KPOINTS_sc')
-    kpoints_sc_ref, _, _ = unfold.read_kpoints(si_project_dir / f'{folder_name}/KPOINTS_easyunfold')
+    kpoints_sc = unfold.read_kpoints(si_project_dir / 'KPOINTS_sc')[0]
+    kpoints_sc_ref = unfold.read_kpoints(si_project_dir / f'{folder_name}/KPOINTS_easyunfold')[0]
     np.testing.assert_allclose(kpoints_sc, kpoints_sc_ref)
 
     # Test unfold
@@ -167,7 +167,7 @@ def test_unfold_no_expand(si_project_dir, tag, nspin, ncl):
 
     atoms_primitive = read(si_project_dir / 'Si/POSCAR')
     atoms_supercell = read(si_project_dir / f'{folder_name}/POSCAR')
-    kpoints, _, labels = unfold.read_kpoints(si_project_dir / 'KPOINTS_band_low')
+    kpoints, _, labels, _ = unfold.read_kpoints(si_project_dir / 'KPOINTS_band_low')
 
     unfolder: unfold.UnfoldKSet = unfold.UnfoldKSet.from_atoms(np.diag([2, 2, 2]), kpoints, atoms_primitive, atoms_supercell, expand=False)
     unfolder.kpoint_labels = labels
@@ -175,8 +175,8 @@ def test_unfold_no_expand(si_project_dir, tag, nspin, ncl):
     unfolder.write_sc_kpoints(si_project_dir / 'KPOINTS_sc')
 
     # Test kpoints generation
-    kpoints_sc, _, _ = unfold.read_kpoints(si_project_dir / 'KPOINTS_sc')
-    kpoints_sc_ref, _, _ = unfold.read_kpoints(si_project_dir / f'{folder_name}/KPOINTS_easyunfold')
+    kpoints_sc = unfold.read_kpoints(si_project_dir / 'KPOINTS_sc')[0]
+    kpoints_sc_ref = unfold.read_kpoints(si_project_dir / f'{folder_name}/KPOINTS_easyunfold')[0]
     # The kpoints should be a subset of the SC kpoints
     for kpt in kpoints_sc:
         found = False
