@@ -255,11 +255,17 @@ class UnfoldKSet(MSONable):
         self.expansion_results['reduced_sckpts_map'] = reduced_sc_map
         # A nested list that stores the indices of the sc kpts in the reduced_sckpts list
 
-    def write_sc_kpoints(self, file):
+    def write_sc_kpoints(self, file, nk_per_split=None):
         """Write the supercell kpoints"""
-        if not self.expansion_results.get('reduced_sckpts'):
+        if self.expansion_results.get('reduced_sckpts') is None:
             self.generate_sc_kpoints()
-        write_kpoints(self.expansion_results['reduced_sckpts'], file, comment='supercell kpoints')
+        kpoints = np.asarray(self.expansion_results['reduced_sckpts'])
+        if nk_per_split is None:
+            write_kpoints(self.expansion_results['reduced_sckpts'], file, comment='supercell kpoints')
+        else:
+            splits = [kpoints[i:i + nk_per_split] for i in range(0, kpoints.shape[0], nk_per_split)]
+            for i_spilt, kpt in enumerate(splits):
+                write_kpoints(kpt, f'{file}_{i_spilt + 1:03d}', f'supercell kpoints split {i_spilt}')
 
     def write_pc_kpoints(self, file, expanded=False):
         """Write the primitive cell kpoints"""
@@ -406,7 +412,7 @@ def removeDuplicateKpoints(kpoints, return_map=False, decimals=6):
     return reducedK
 
 
-def write_kpoints(kpoints: np.ndarray, outpath='KPOINTS', comment=''):
+def write_kpoints(kpoints: Union[np.ndarray, list], outpath='KPOINTS', comment=''):
     """
     save to VASP KPOINTS file
     """

@@ -128,6 +128,10 @@ def test_unfold(si_project_dir, tag, nspin, ncl):
     unfolder: unfold.UnfoldKSet = unfold.UnfoldKSet.from_atoms(np.diag([2, 2, 2]), kpoints, atoms_primitive, atoms_supercell)
     unfolder.kpoint_labels = labels
     unfolder.write_sc_kpoints(si_project_dir / 'KPOINTS_sc')
+    # Test split
+    unfolder.write_sc_kpoints(si_project_dir / 'KPOINTS_sc', nk_per_split=3)
+    assert (si_project_dir / 'KPOINTS_sc_001').is_file()
+    assert (si_project_dir / 'KPOINTS_sc_002').is_file()
 
     # Test kpoints generation
     kpoints_sc, _, _ = unfold.read_kpoints(si_project_dir / 'KPOINTS_sc')

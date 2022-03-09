@@ -25,12 +25,18 @@ def test_generate(si_project_dir):
     output = runner.invoke(easyunfold, ['generate', 'Si/POSCAR', 'Si_super_deformed/POSCAR', 'KPOINTS_band_low', '--out-file', 'test'])
     assert output.exit_code == 0
 
+    output = runner.invoke(
+        easyunfold, ['generate', 'Si/POSCAR', 'Si_super_deformed/POSCAR', 'KPOINTS_band_low', '--out-file', 'test', '--nk-per-split', '3'])
+    assert output.exit_code == 0
+
     kpts, _, _ = read_kpoints('KPOINTS_test')
     assert len(kpts) == 11
+    kpts, _, _ = read_kpoints('KPOINTS_test_002')
+    assert len(kpts) == 3
 
 
 @pytest.mark.parametrize('tag', ['', '_spin', '_soc'])
-def test_generate(si_project_dir, tag):
+def test_unfold(si_project_dir, tag):
     """
     Test the generate function
     """

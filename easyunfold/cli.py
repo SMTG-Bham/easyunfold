@@ -28,7 +28,8 @@ def easyunfold():
 @click.option('--symprec', help='Transformation matrix', type=float, default=1e-5)
 @click.option('--out-file', default='easyunfold.json', help='Name of the output file')
 @click.option('--no-expand', help='Do not expand the kpoints by symmetry', default=False, is_flag=True)
-def generate(pc_file, sc_file, matrix, kpoints, time_reversal, out_file, no_expand, symprec):
+@click.option('--nk-per-split', help='Number of kpoints per split.', type=int)
+def generate(pc_file, sc_file, matrix, kpoints, time_reversal, out_file, no_expand, symprec, nk_per_split):
     """
     Generate the kpoints for sampling the supercell
     """
@@ -69,7 +70,7 @@ def generate(pc_file, sc_file, matrix, kpoints, time_reversal, out_file, no_expa
     print_symmetry_data(unfoldset)
 
     out_file = Path(out_file)
-    unfoldset.write_sc_kpoints('KPOINTS_' + out_file.stem)
+    unfoldset.write_sc_kpoints(f'KPOINTS_{out_file.stem}', nk_per_split=nk_per_split)
     click.echo('Supercell kpoints written to KPOITNS_' + out_file.stem)
 
     # Serialize the data
@@ -113,7 +114,7 @@ def unfold_status(ctx):
 
 @unfold.command('calculate')
 @click.pass_context
-@click.argument('wavecar', type=click.Path(exists=True, dir_okay=False))
+@click.argument('wavecar', type=click.Path(exists=True, dir_okay=False), nargs=-1)
 @click.option('--save-as')
 @click.option('--vasprun', help='A vasprun.xml to provide the reference VBM energy.')
 @click.option('--gamma', is_flag=True)
