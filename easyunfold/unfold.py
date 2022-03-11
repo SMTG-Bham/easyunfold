@@ -6,7 +6,7 @@ The main module for unfolding workflow and algorithm
 # pylint: disable=invalid-name,protected-access,too-many-locals
 
 ############################################################
-from typing import Union, List
+from typing import Union, List, Tuple
 from pathlib import Path
 
 import numpy as np
@@ -298,6 +298,10 @@ class UnfoldKSet(MSONable):
             wavecar = [wavecar]
         # Load the WAVECAR unfold objects
         unfold_objs = [Unfold(self.M, name, gamma=gamma, lsorbit=ncl, gamma_half=gamma_half) for name in wavecar]
+        # Record the VBM and the CBM values
+        varray = np.array([obj.get_vbm_cbm() for obj in unfold_objs])
+        self.calculated_quantities['vbm'] = float(varray[:, 0].max())
+        self.calculated_quantities['cbm'] = float(varray[:, 1].min())
         # Read the spectral weights for each set of expanded kpoints
         for kset, weights in tqdm(zip(self.expansion_results['kpoints'], self.expansion_results['weights']),
                                   desc='kpt',
@@ -314,6 +318,7 @@ class UnfoldKSet(MSONable):
         averaged_weights = np.stack(averaged_weights, axis=1)
         self.calculated_quantities['spectral_weights'] = averaged_weights
         self.calculated_quantities['spectral_weights_per_set'] = weights_per_set
+
         return averaged_weights, weights_per_set
 
     def _get_spectral_weights(self,
@@ -774,7 +779,7 @@ def spectral_function_from_weights(spectral_weights, nedos=4000, sigma=0.02, emi
 
 class Unfold():
     """
-    Unfold the band structure from Supercell calculation into a primitive cell and
+    Low lever interface for performing unfolding related calculations.
     obtain the effective band structure (EBS).
 
     REF:
@@ -825,6 +830,15 @@ class Unfold():
         self.SW = None
 
         self.verbose = verbose
+
+    def get_vbm_cbm(self, thresh=1e-8) -> Tuple[float, float]:
+        """Locate the VBM from the WAVECAR"""
+        occ = self.wfc._occs
+
+        occupied = np.abs(occ) > thresh
+        vbm = float(self.bands[occupied].max())
+        cbm = float(self.bands[~occupied].min())
+        return vbm, cbm
 
     def get_ovlap_G(self, ikpt=1, epsilon=1E-5):
         """
