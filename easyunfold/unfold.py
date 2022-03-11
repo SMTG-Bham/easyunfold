@@ -12,9 +12,9 @@ from pathlib import Path
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
-import spglib
 from monty.json import MSONable
 from tqdm import tqdm
+import spglib
 
 from easyunfold import __version__
 from .pyvaspwfc.vaspwfc import vaspwfc
@@ -680,8 +680,8 @@ def EBS_cmaps(kpts,
 
     # Calculate the min and max values within the field of view, scaled by the factor
     mask = (E0 < ylim[1]) & (E0 > ylim[0])
-    vmax = spectral_function[:, :, mask].max()
-    vmin = spectral_function[:, :, mask].min()
+    vmax = spectral_function[:, mask, :].max()
+    vmin = spectral_function[:, mask, :].min()
     vmax = (vmax - vmin) * vscale + vmin
 
     for ispin in range(nspin):

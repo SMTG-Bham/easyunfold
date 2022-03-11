@@ -6,7 +6,6 @@ from monty.serialization import loadfn
 import numpy as np
 import click
 from ase.io import read
-from easyunfold.unfold import UnfoldKSet, read_kpoints, EBS_cmaps
 
 # pylint:disable=import-outside-toplevel
 
@@ -36,6 +35,7 @@ def generate(pc_file, sc_file, matrix, kpoints, time_reversal, out_file, no_expa
     """
     Generate the kpoints for sampling the supercell
     """
+    from easyunfold.unfold import UnfoldKSet, read_kpoints
 
     primitive = read(pc_file)
     supercell = read(sc_file)
@@ -101,6 +101,7 @@ def unfold(ctx, data_file):
 @click.pass_context
 def unfold_status(ctx):
     """Print the status"""
+    from easyunfold.unfold import UnfoldKSet
     unfoldset: UnfoldKSet = ctx.obj['obj']
     print_symmetry_data(unfoldset)
 
@@ -128,6 +129,7 @@ def unfold_status(ctx):
 @click.option('--ncl', is_flag=True)
 def unfold_calculate(ctx, wavecar, save_as, gamma, vasprun, ncl):
     """Perform the unfolding"""
+    from easyunfold.unfold import UnfoldKSet
 
     unfoldset: UnfoldKSet = ctx.obj['obj']
     unfoldset.get_spectral_weights(wavecar, gamma, ncl=ncl)
@@ -151,18 +153,20 @@ def unfold_calculate(ctx, wavecar, save_as, gamma, vasprun, ncl):
 @click.option('--eref', type=float, help='Reference energy in eV.')
 @click.option('--emin', type=float, help='Minimum energy in eV relative to the reference.')
 @click.option('--emax', type=float, help='Maximum energy in eV relative to the reference.')
-@click.option('--vscale', type=float, help='A scaling factor for the colour mapping.')
+@click.option('--vscale', type=float, help='A scaling factor for the colour mapping.', default=1.0)
 @click.option('--vasprun', help='A vasprun.xml to provide the reference energy base on the VBM.')
 @click.option('--out-file', default='unfold.png', help='Name of the output file.')
 @click.option('--cmap', default='PuRd', help='Name of the colour map to use.')
 @click.option('--show', is_flag=True, default=False, help='Show the plot interactively.')
 @click.option('--no-symm-average', is_flag=True, default=False, help='Do not include symmetry related kpoints for averaging.')
-def unfold_plot(ctx, gamma, npoints, sigma, eref, vasprun, out_file, show, emin, emax, cmap, ncl, no_symm_average):
+def unfold_plot(ctx, gamma, npoints, sigma, eref, vasprun, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale):
     """
     Plot the spectral function
 
     This command uses the stored unfolding data to plot the effective bands structure (EBS).
     """
+    from easyunfold.unfold import UnfoldKSet, EBS_cmaps
+
     unfoldset: UnfoldKSet = ctx.obj['obj']
     if not unfoldset.is_calculated:
         click.echo('Unfolding has not been performed yet, please run `unfold calculate` command.')
@@ -201,6 +205,7 @@ def unfold_plot(ctx, gamma, npoints, sigma, eref, vasprun, out_file, show, emin,
         show=False,
         explicit_labels=unfoldset.kpoint_labels,
         ylim=(emin, emax),
+        vscale=vscale,
         cmap=cmap,
     )
     if out_file:
@@ -211,7 +216,7 @@ def unfold_plot(ctx, gamma, npoints, sigma, eref, vasprun, out_file, show, emin,
         plt.show()
 
 
-def print_symmetry_data(kset: UnfoldKSet):
+def print_symmetry_data(kset):
     """Print the symmetry information"""
 
     # Print space group information
