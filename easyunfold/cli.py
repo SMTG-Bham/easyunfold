@@ -144,17 +144,18 @@ def unfold_calculate(ctx, wavecar, save_as, gamma, vasprun, ncl):
 
 @unfold.command('plot')
 @click.pass_context
-@click.option('--gamma', is_flag=True)
-@click.option('--ncl', is_flag=True)
-@click.option('--npoints', type=int, default=2000)
-@click.option('--sigma', type=float, default=0.1)
-@click.option('--eref', type=float)
-@click.option('--emin', type=float)
-@click.option('--emax', type=float)
+@click.option('--gamma', is_flag=True, help='Is the calculation a gamma only one?')
+@click.option('--ncl', is_flag=True, help='Is the calculation with non-colinear spin?')
+@click.option('--npoints', type=int, default=2000, help='Number of bins for the energy.')
+@click.option('--sigma', type=float, default=0.02, help='Smearing width for the energy in eV.')
+@click.option('--eref', type=float, help='Reference energy in eV.')
+@click.option('--emin', type=float, help='Minimum energy in eV relative to the reference.')
+@click.option('--emax', type=float, help='Maximum energy in eV relative to the reference.')
+@click.option('--vscale', type=float, help='A scaling factor for the colour mapping.')
 @click.option('--vasprun', help='A vasprun.xml to provide the reference energy base on the VBM.')
-@click.option('--out-file', default='unfold.png')
-@click.option('--cmap', default='PuRd')
-@click.option('--show', is_flag=True, default=False)
+@click.option('--out-file', default='unfold.png', help='Name of the output file.')
+@click.option('--cmap', default='PuRd', help='Name of the colour map to use.')
+@click.option('--show', is_flag=True, default=False, help='Show the plot interactively.')
 @click.option('--no-symm-average', is_flag=True, default=False, help='Do not include symmetry related kpoints for averaging.')
 def unfold_plot(ctx, gamma, npoints, sigma, eref, vasprun, out_file, show, emin, emax, cmap, ncl, no_symm_average):
     """
@@ -166,12 +167,6 @@ def unfold_plot(ctx, gamma, npoints, sigma, eref, vasprun, out_file, show, emin,
     if not unfoldset.is_calculated:
         click.echo('Unfolding has not been performed yet, please run `unfold calculate` command.')
         raise click.Abort()
-
-    eng, spectral_function = unfoldset.get_spectral_function(gamma=gamma,
-                                                             npoints=npoints,
-                                                             sigma=sigma,
-                                                             ncl=ncl,
-                                                             symm_average=not no_symm_average)
 
     if eref is None:
         if vasprun:
@@ -186,6 +181,11 @@ def unfold_plot(ctx, gamma, npoints, sigma, eref, vasprun, out_file, show, emin,
             eref = unfoldset.calculated_quantities.get('vbm', 0.0)
     click.echo(f'Using a reference energy of {eref:.3f} eV')
 
+    eng, spectral_function = unfoldset.get_spectral_function(gamma=gamma,
+                                                             npoints=npoints,
+                                                             sigma=sigma,
+                                                             ncl=ncl,
+                                                             symm_average=not no_symm_average)
     if emin is None:
         emin = eng.min() - eref
     if emax is None:

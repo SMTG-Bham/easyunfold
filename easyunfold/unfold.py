@@ -319,7 +319,9 @@ class UnfoldKSet(MSONable):
     def _get_spectral_weights(self,
                               wavecar,
                               npoints=2000,
-                              sigma=0.1,
+                              sigma=0.01,
+                              emin=None,
+                              emax=None,
                               gamma=False,
                               ncl=False,
                               gamma_half='x',
@@ -345,7 +347,7 @@ class UnfoldKSet(MSONable):
             sws = np.stack(sws, axis=1)
 
         if also_spectral_function:
-            e0, spectral_function = spectral_function_from_weights(sws, nedos=npoints, sigma=sigma)
+            e0, spectral_function = spectral_function_from_weights(sws, nedos=npoints, sigma=sigma, emin=emin, emax=emax)
             self.calculated_quantities['e0'] = e0
             self.calculated_quantities['spectral_function'] = spectral_function
             return sws, e0, spectral_function
@@ -534,6 +536,7 @@ def EBS_scatter(kpts,
                 figsize=(3.0, 4.0),
                 ylim=(-3, 3),
                 show=True,
+                ax=None,
                 color='b'):
     """
     plot the effective band structure with scatter, the size of the scatter
@@ -546,7 +549,6 @@ def EBS_scatter(kpts,
         spectral_weight: self-explanatory
     """
 
-    #mpl.rcParams['axes.unicode_minus'] = False
     atomic_colors = [] if atomic_colors is None else atomic_colors
     kpath_label = [] if kpath_label is None else kpath_label
 
@@ -554,7 +556,6 @@ def EBS_scatter(kpts,
     kpt_c = np.dot(kpts, np.linalg.inv(cell).T)
     kdist = np.r_[0, np.cumsum(np.linalg.norm(np.diff(kpt_c, axis=0), axis=1))]
     nb = spectral_weight.shape[2]
-    # x0 = np.outer(np.ones(nb), kdist).T
     x0 = np.tile(kdist, (nb, 1)).T
 
     if atomic_weights is not None:
@@ -564,14 +565,20 @@ def EBS_scatter(kpts,
         if not atomic_colors:
             atomic_colors = mpl.rcParams['axes.prop_cycle'].by_key()['color']
 
-    fig = plt.figure()
-    fig.set_size_inches(figsize)
-    if nspin == 1:
-        axes = [plt.subplot(111)]
-        fig.set_size_inches(figsize)
+    if ax is None:
+        fig = plt.figure()
+        if nspin == 1:
+            axes = [plt.subplot(111)]
+            fig.set_size_inches(figsize)
+        else:
+            axes = [plt.subplot(121), plt.subplot(122)]
+            fig.set_size_inches((figsize[0] * 2, figsize[1]))
     else:
-        axes = [plt.subplot(121), plt.subplot(122)]
-        fig.set_size_inches((figsize[0] * 2, figsize[1]))
+        if not isinstance(ax, list):
+            axes = [ax]
+        else:
+            axes = ax
+        fig = axes[0].figure
 
     for ispin in range(nspin):
         ax = axes[ispin]
@@ -603,10 +610,10 @@ def EBS_scatter(kpts,
                         kname[ii] = r'$\mathrm{\mathsf{%s}}$' % kname[ii]
                 ax.set_xticklabels(kname)
 
-    plt.tight_layout(pad=0.2)
-    plt.savefig(save, dpi=360)
+    fig.tight_layout(pad=0.2)
+    fig.savefig(save, dpi=360)
     if show:
-        plt.show()
+        fig.show()
 
 
 def EBS_cmaps(kpts,
@@ -623,6 +630,7 @@ def EBS_cmaps(kpts,
               show=True,
               contour_plot=False,
               ax=None,
+              vscale=1.0,
               cmap='jet'):
     """
     plot the effective band structure with colormaps.  The plotting function
@@ -644,6 +652,7 @@ def EBS_cmaps(kpts,
         contour_plot: Plot in the contour mode
         ax: Existing axis(axes) to plot onto
         cmap: Colour mapping for the density/contour plot
+        vscale: Scale factor for color coding
     """
 
     kpath_label = [] if not kpath_label else kpath_label
@@ -668,12 +677,19 @@ def EBS_cmaps(kpts,
         fig = axes[0].figure
 
     X, Y = np.meshgrid(kdist, E0 - eref)
+
+    # Calculate the min and max values within the field of view, scaled by the factor
+    mask = (E0 < ylim[1]) & (E0 > ylim[0])
+    vmax = spectral_function[:, :, mask].max()
+    vmin = spectral_function[:, :, mask].min()
+    vmax = (vmax - vmin) * vscale + vmin
+
     for ispin in range(nspin):
         ax = axes[ispin]
         if contour_plot:
-            ax.contourf(X, Y, spectral_function[ispin], cmap=cmap)
+            ax.contourf(X, Y, spectral_function[ispin], cmap=cmap, vmax=vmax, vmin=vmin)
         else:
-            ax.pcolormesh(X, Y, spectral_function[ispin], cmap=cmap, shading='auto')
+            ax.pcolormesh(X, Y, spectral_function[ispin], cmap=cmap, shading='auto', vmax=vmax, vmin=vmin)
 
         ax.set_xlim(xmin, xmax)
         ax.set_ylim(*ylim)
@@ -724,7 +740,7 @@ def clean_latex_string(label):
     return label
 
 
-def spectral_function_from_weights(spectral_weights, nedos=4000, sigma=0.02):
+def spectral_function_from_weights(spectral_weights, nedos=4000, sigma=0.02, emin=None, emax=None):
     r"""
     Generate the spectral function
 
@@ -738,8 +754,8 @@ def spectral_function_from_weights(spectral_weights, nedos=4000, sigma=0.02):
     ns = spectral_weights.shape[0]
     spectral_function = np.zeros((ns, nedos, nk), dtype=float)
 
-    emin = spectral_weights[:, :, :, 0].min()
-    emax = spectral_weights[:, :, :, 0].max()
+    emin = spectral_weights[:, :, :, 0].min() if emin is None else emin
+    emax = spectral_weights[:, :, :, 0].max() if emax is None else emax
     e0 = np.linspace(emin - 5 * sigma, emax + 5 * sigma, nedos)
 
     for ispin in range(ns):
@@ -950,31 +966,6 @@ class Unfold():
 
         return np.array((E_Km, P_Km), dtype=float).T
 
-    # def spectral_weight(self, kpoints, nproc=None):
-    #     """
-    #     Calculate the spectral weight for a list of kpoints in the primitive BZ.
-    #     Here, we use "multiprocessing" package to parallel over the kpoints.
-    #     """
-    #
-    #     NKPTS = len(kpoints)
-    #
-    #     if nproc is None:
-    #         nproc = multiprocessing.cpu_count()
-    #
-    #     pool = multiprocessing.Pool(processes=nproc)
-    #
-    #     results = []
-    #     for ik in range(NKPTS):
-    #         res = pool.apply_async(self.spectral_weight_k, (kpoints[ik],))
-    #         results.append(res)
-    #
-    #     self.SW = np.array([res.get() for res in results], dtype=float)
-    #
-    #     pool.close()
-    #     pool.join()
-    #
-    #     return self.SW
-
     def spectral_weight(self, kpoints):
         """
         Calculate the spectral weight for a list of kpoints in the primitive BZ.
@@ -1014,8 +1005,6 @@ class Unfold():
 
         assert self.SW is not None, 'Spectral weight must be calculated first!'
 
-        # NS = 2 if self._lsoc else self.wfc._nspin
-        # For noncollinear calculation, nspin = 1.
         NS = self.wfc._nspin
         # Number of kpoints
         nk = self.SW.shape[1]

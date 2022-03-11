@@ -372,7 +372,7 @@ known-third-party=enchant
 [DESIGN]
 
 # Maximum number of arguments for function / method
-max-args=15
+max-args=20
 
 # Maximum number of attributes for a class (see R0902).
 max-attributes=15
