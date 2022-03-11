@@ -65,7 +65,10 @@ def generate(pc_file, sc_file, matrix, kpoints, time_reversal, out_file, no_expa
                                       expand=not no_expand,
                                       symprec=symprec)
     unfoldset.kpoint_labels = labels
-    print_symmetry_data(unfoldset)
+    try:
+        print_symmetry_data(unfoldset)
+    except KeyError:
+        pass
 
     out_file = Path(out_file)
     if scf_kpoints is not None:
@@ -99,8 +102,8 @@ def unfold_status(ctx):
     from easyunfold.unfold import UnfoldKSet
     unfoldset: UnfoldKSet = ctx.obj['obj']
     print_symmetry_data(unfoldset)
-
-    click.echo(f'\nNo. of k points in the primitive cell         : {unfoldset.nkpts_orig}')
+    click.echo()
+    click.echo(f'No. of k points in the primitive cell           : {unfoldset.nkpts_orig}')
     click.echo(f'No. of expanded kpoints to be calculated cell   : {unfoldset.nkpts_expand}')
     click.echo(f'No. of rotations in the primitive cell          : {unfoldset.pc_opts.shape[0]}')
     click.echo(f'No. of rotations in the super cell              : {unfoldset.sc_opts.shape[0]}')
