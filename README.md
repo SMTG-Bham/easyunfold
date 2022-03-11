@@ -3,7 +3,7 @@
 This package is intended for obtaining the effective band structure of a supercell for a certain path of the primitive cell.
 It was originally based on [PyVaspwfc](https://github.com/QijingZheng/Vaspeasyunfolding) for reading wavefunction output of VASP, and contains some code of the latter.
 An notable improvement is that breaking symmetry is taken accounted of by sampling additional kpoints and taking average accordingly, which was previously missing.
-Our goal is to make the unfolding process easier to caryy out and less likely to go wrong.
+Our goal is to make the unfolding process easier to carry out and less likely to go wrong.
 
 For the methodology, see: https://link.aps.org/doi/10.1103/PhysRevB.85.085201
 
@@ -102,9 +102,15 @@ A `easyunfold.json` file will be written which contains the information of the u
 The kpoints needed to be calculated for the supercell is written to a file named `KPOINTS_easyunfold`.
 It is possible to change the name `easyunfold` by passing a explicit tag with the command line `--out-file`.
 
-TODO: add function to do one-step generation of zero-weighted `KPOINTS` for hybrid functional. At the moment, you will have to concatenate the `KPOINTS` file and edit the weight manually.
+For hybrid functional calculations, you may want to split the kpoints into multiple calculations:
 
-TODO: add support for split-kpoint calculations.
+```
+easyunfold generate primitive/POSCAR supercell/POSCAR primitive/KPOINTS_band --matrix "2 2 2" --scf-kpoints IBZKPT --nk-per-split 60
+```
+
+This will generate files named as `KPOINTS_easyunfold_001`, `KPOINTS_easyunfold_002`, each containing 60 kpoints.
+If a `IBZKPT` file is the provided, its kpoints will be included with their original weights,  and all of the kpoints included by easyunfold will be zero-weighted.
+This is necessary for hybrid functional calculations where the electronic minimisation must be conducted self-consistently (e.g. `ICHARG<10`).
 
 ### Step 3 - Perform the unfolding
 
@@ -118,7 +124,7 @@ easyunfold unfold calculate WAVECAR
 ```
 
 This command compute the spectral weight and save them into the  `easyunfold.json` file.
-You can load the `easyunfold.json` file to read the spectral weights manually, or proceed with the command lien interface to generate a plot.
+You can load the `easyunfold.json` file to read the spectral weights manually, or proceed with the command line interface to generate a plot.
 
 If the kpoints has been split into multiple calculations (for example, for those involving hybrid functional), all of the `WAVECAR` files need to be passed:
 
@@ -137,7 +143,7 @@ easyunfold unfold plot
 ```
 
 to generate a plot of the spectral function.
-It is possible to further customise the plot though command line arguments.
+It is possible to further customise the plot though command line arguments - see the help with `easyunfold unfold plot --help`.
 
 ### Hints
 
