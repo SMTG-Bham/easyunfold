@@ -40,12 +40,7 @@ def generate(pc_file, sc_file, matrix, kpoints, time_reversal, out_file, no_expa
     primitive = read(pc_file)
     supercell = read(sc_file)
     if matrix:
-        elems = [float(x) for x in matrix.split()]
-        # Try gussing the transform matrix
-        if len(elems) == 3:
-            transform_matrix = np.diag(elems)
-        else:
-            transform_matrix = np.array(elems).reshape((3, 3))
+        transform_matrix = matrix_from_string(matrix)
         if not np.allclose(primitive.cell @ transform_matrix, supercell.cell):
             click.echo('Warning: the super cell and the the primitive cell are not commensure.')
             click.echo('Proceed with the assumed tranform matrix')
@@ -124,21 +119,15 @@ def unfold_status(ctx):
 @click.pass_context
 @click.argument('wavecar', type=click.Path(exists=True, dir_okay=False), nargs=-1)
 @click.option('--save-as')
-@click.option('--vasprun', help='A vasprun.xml to provide the reference VBM energy.')
 @click.option('--gamma', is_flag=True)
 @click.option('--ncl', is_flag=True)
-def unfold_calculate(ctx, wavecar, save_as, gamma, vasprun, ncl):
+def unfold_calculate(ctx, wavecar, save_as, gamma, ncl):
     """Perform the unfolding"""
     from easyunfold.unfold import UnfoldKSet
 
     unfoldset: UnfoldKSet = ctx.obj['obj']
     unfoldset.get_spectral_weights(wavecar, gamma, ncl=ncl)
 
-    if vasprun:
-        from pymatgen.io.vasp.outputs import Vasprun
-        vrun = Vasprun(vasprun)
-        eref = vrun.eigenvalue_band_properties[2]
-        unfoldset.calculated_quantities['vbm'] = eref
     out_path = save_as if save_as else ctx.obj['fname']
     Path(out_path).write_text(unfoldset.to_json())
     click.echo('Unfolding data written to ' + out_path)
@@ -154,12 +143,11 @@ def unfold_calculate(ctx, wavecar, save_as, gamma, vasprun, ncl):
 @click.option('--emin', type=float, help='Minimum energy in eV relative to the reference.')
 @click.option('--emax', type=float, help='Maximum energy in eV relative to the reference.')
 @click.option('--vscale', type=float, help='A scaling factor for the colour mapping.', default=1.0)
-@click.option('--vasprun', help='A vasprun.xml to provide the reference energy base on the VBM.')
 @click.option('--out-file', default='unfold.png', help='Name of the output file.')
 @click.option('--cmap', default='PuRd', help='Name of the colour map to use.')
 @click.option('--show', is_flag=True, default=False, help='Show the plot interactively.')
 @click.option('--no-symm-average', is_flag=True, default=False, help='Do not include symmetry related kpoints for averaging.')
-def unfold_plot(ctx, gamma, npoints, sigma, eref, vasprun, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale):
+def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale):
     """
     Plot the spectral function
 
@@ -173,16 +161,7 @@ def unfold_plot(ctx, gamma, npoints, sigma, eref, vasprun, out_file, show, emin,
         raise click.Abort()
 
     if eref is None:
-        if vasprun:
-            try:
-                from pymatgen.io.vasp.outputs import Vasprun
-            except ImportError:
-                click.echo('Pymatgen is required for reading vasprun.xml')
-                raise click.Abort()
-            vrun = Vasprun(vasprun)
-            eref = vrun.eigenvalue_band_properties[2]
-        else:
-            eref = unfoldset.calculated_quantities.get('vbm', 0.0)
+        eref = unfoldset.calculated_quantities.get('vbm', 0.0)
     click.echo(f'Using a reference energy of {eref:.3f} eV')
 
     eng, spectral_function = unfoldset.get_spectral_function(gamma=gamma,
@@ -231,3 +210,14 @@ def print_symmetry_data(kset):
     click.echo(' ' * 8 + f'Space group number: {pc_spg["number"]}')
     click.echo(' ' * 8 + f'Internation symbol: {pc_spg["international"]}')
     click.echo(' ' * 8 + f'Point group: {pc_spg["pointgroup"]}')
+
+
+def matrix_from_string(string):
+    """Parse transform matrix from a string"""
+    elems = [float(x) for x in string.split()]
+    # Try gussing the transform matrix
+    if len(elems) == 3:
+        transform_matrix = np.diag(elems)
+    else:
+        transform_matrix = np.array(elems).reshape((3, 3))
+    return transform_matrix
