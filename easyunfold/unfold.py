@@ -261,20 +261,18 @@ class UnfoldKSet(MSONable):
             self.generate_sc_kpoints()
         kpoints = np.asarray(self.expansion_results['reduced_sckpts'])
         weights = None
-        if scf_kpoints_and_weights:
-            # Prepend with SCF kpoints
-            scf_kpts, scf_weights = scf_kpoints_and_weights
-            scf_kpts = np.asarray(scf_kpts)
-            kpoints = np.concatenate([scf_kpts, kpoints], axis=0)
-            weights = np.zeros(kpoints.shape[0])
-            weights[:len(scf_weights)] = scf_weights
-
         if nk_per_split is None:
+            if scf_kpoints_and_weights:
+                # Prepend with SCF kpoints
+                kpoints, weights = concatenate_scf_kpoints(scf_kpoints_and_weights[0], scf_kpoints_and_weights[1], kpoints)
+
             write_kpoints(kpoints, file, comment='supercell kpoints', weights=weights)
         else:
             splits = [kpoints[i:i + nk_per_split] for i in range(0, kpoints.shape[0], nk_per_split)]
             for i_spilt, kpt in enumerate(splits):
-                write_kpoints(kpt, f'{file}_{i_spilt + 1:03d}', f'supercell kpoints split {i_spilt}', weights)
+                if scf_kpoints_and_weights:
+                    kpt, weights = concatenate_scf_kpoints(scf_kpoints_and_weights[0], scf_kpoints_and_weights[1], kpt)
+                write_kpoints(kpt, f'{file}_{i_spilt + 1:03d}', f'supercell kpoints split {i_spilt + 1}', weights)
 
     def write_pc_kpoints(self, file, expanded=False):
         """Write the primitive cell kpoints"""
@@ -1075,3 +1073,12 @@ def spectral_weight_multiple_source(kpoints, unfold_objs, transform_matrix):
         spectral_weights.append(sw_this_spin)
 
     return np.array(spectral_weights)
+
+
+def concatenate_scf_kpoints(scf_kpts, scf_weights, kpoints):
+    """Concatenate SCF kpoints (from IBZKPT) with zero-weighted kpoints"""
+    scf_kpts = np.asarray(scf_kpts)
+    kpoints = np.concatenate([scf_kpts, kpoints], axis=0)
+    weights = np.zeros(kpoints.shape[0])
+    weights[:len(scf_weights)] = scf_weights
+    return kpoints, weights
