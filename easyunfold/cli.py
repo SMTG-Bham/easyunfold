@@ -102,9 +102,10 @@ def unfold_status(ctx):
     from easyunfold.unfold import UnfoldKSet
     unfoldset: UnfoldKSet = ctx.obj['obj']
     print_symmetry_data(unfoldset)
+    nkpts_sc = unfoldset.expansion_results['reduced_sckpts']
     click.echo()
     click.echo(f'No. of k points in the primitive cell           : {unfoldset.nkpts_orig}')
-    click.echo(f'No. of expanded kpoints to be calculated cell   : {unfoldset.nkpts_expand}')
+    click.echo(f'No. of expanded kpoints to be calculated cell   : {nkpts_sc}({unfoldset.nkpts_expand})')
     click.echo(f'No. of rotations in the primitive cell          : {unfoldset.pc_opts.shape[0]}')
     click.echo(f'No. of rotations in the super cell              : {unfoldset.sc_opts.shape[0]}')
     click.echo()
