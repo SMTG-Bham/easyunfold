@@ -163,17 +163,20 @@ The first atom is displaced by 0.2 A in the `[111]` direction.
 This reduce the number of symmetry operations from 48 to 6.
 Hence, additional kpoints need to be sampled for the pathway generated assuming a perfect primitive cell with the original symmetry.
 
-Unfolded band structure of the perfect 2x2x2 supercell:
+Band structure of the primitive cell:
 
-![perfect cell](./examples/unfold-symmetry/Si_super_avg_SF_resized.png)
+![perfect cell](./examples/unfold-symmetry/Si_primtive.png)
 
-Comparing unfolds of the deformed 2x2x2 supercell, with and without extra kpoints.
+Unfolding the deformed 2x2x2 supercell gives:
 
-![Deformed with and without additional paths](./examples/unfold-symmetry/Si_super_avg_SF_deformed_compared_resized.png)
+![Deformed with and without additional paths](./examples/unfold-symmetry/Si_super_avg_SF_deformed_resized.png)
 
-Note that an extra branch along `\Gamma` to  `L` emerges, which is absent if no additional kpoint is performed.
-
+Note that the faint additional branches between `Gamma` to  `L`.
 While extra kpoints are needed in the symmetry-broken supercell, the remaining symmetry can be used to reduced the number of actual supercell kpoint needed.
-The figure below is a test without any reduction - there were 403 kpoints sampled, while the one used the in comparison above has 135 kpoints, yet it gives identical outputs.
+
+Without sampling the additional kpoints, the effective band structure may only present an incomplete picture, as shown below:
 
 ![Deformed with sampling all routes](./examples/unfold-symmetry/Si_super_avg_SF_deformed_avg_nosym_resized.png)
+
+
+Note the artificial breakings along the `Gamma` - `L` and `L` - `W` path.
