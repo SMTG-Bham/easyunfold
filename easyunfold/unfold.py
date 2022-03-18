@@ -108,6 +108,8 @@ def expand_K_by_symmetry(kpt, opts_pc, opts_sc, time_reversal=True):
 class UnfoldKSet(MSONable):
     """Stores the information of the kpoints in the primitive cell, and what they unfolds to in the supercell"""
 
+    _VERSION = '0.1.0'
+
     def __init__(self,
                  M,
                  kpts_pc,
@@ -142,6 +144,7 @@ class UnfoldKSet(MSONable):
         if metadata is None:
             metadata = {}
         self.metadata = metadata
+        self.metadata['program_version'] = __version__
 
         # Transient properties
         self.reduced_sckpts = None
@@ -314,8 +317,8 @@ class UnfoldKSet(MSONable):
 
         # Recreate the full weights array
         averaged_weights = np.stack(averaged_weights, axis=1)
-        self.calculated_quantities['spectral_weights'] = averaged_weights
         self.calculated_quantities['spectral_weights_per_set'] = weights_per_set
+        self.calculated_quantities['version'] = self._VERSION
 
         return averaged_weights, weights_per_set
 
@@ -342,15 +345,16 @@ class UnfoldKSet(MSONable):
 
         # Use existing results
         if symm_average:
-            sws = self.calculated_quantities['spectral_weights']
+            sws = self.calculated_quantities['spectral_weights_per_set']
+            kweight_sets = self.expansion_results['weights']
         else:
             # No averaging - we just return the first item of each set, which is the weight of the original set
-            sws = [item[:, 0, :, :] for item in self.calculated_quantities['spectral_weights_per_set']]
+            sws = [item[:, :1, :, :] for item in self.calculated_quantities['spectral_weights_per_set']]
             # Recreate the full weights array
-            sws = np.stack(sws, axis=1)
+            kweight_sets = [[1.0] for i in range(len(sws))]
 
         if also_spectral_function:
-            e0, spectral_function = spectral_function_from_weights(sws, nedos=npoints, sigma=sigma, emin=emin, emax=emax)
+            e0, spectral_function = spectral_function_from_weight_sets(sws, kweight_sets, nedos=npoints, sigma=sigma, emin=emin, emax=emax)
             self.calculated_quantities['e0'] = e0
             self.calculated_quantities['spectral_function'] = spectral_function
             return sws, e0, spectral_function
@@ -743,7 +747,7 @@ def clean_latex_string(label):
     return label
 
 
-def spectral_function_from_weights(spectral_weights, nedos=4000, sigma=0.02, emin=None, emax=None):
+def spectral_function_from_weight_sets(spectral_weight_sets, kweight_sets, nedos=4000, sigma=0.02, emin=None, emax=None):
     r"""
     Generate the spectral function
 
@@ -753,22 +757,24 @@ def spectral_function_from_weights(spectral_weights, nedos=4000, sigma=0.02, emi
     function.
     """
 
-    nk = spectral_weights.shape[1]
-    ns = spectral_weights.shape[0]
+    nk = len(spectral_weight_sets)
+    ns = spectral_weight_sets[0].shape[0]
     spectral_function = np.zeros((ns, nedos, nk), dtype=float)
 
-    emin = spectral_weights[:, :, :, 0].min() if emin is None else emin
-    emax = spectral_weights[:, :, :, 0].max() if emax is None else emax
+    emin = spectral_weight_sets[0][:, :, :, 0].min() if emin is None else emin
+    emax = spectral_weight_sets[0][:, :, :, 0].max() if emax is None else emax
     e0 = np.linspace(emin - 5 * sigma, emax + 5 * sigma, nedos)
 
     for ispin in range(ns):
         for ii in range(nk):
-            E_Km = spectral_weights[ispin, ii, :, 0]
-            P_Km = spectral_weights[ispin, ii, :, 1]
-
-            spectral_function[ispin, :,
-                              ii] = np.sum(LorentzSmearing(e0[:, np.newaxis], E_Km[np.newaxis, :], sigma=sigma) * P_Km[np.newaxis, :],
-                                           axis=1)
+            for jj in range(spectral_weight_sets[ii].shape[1]):
+                kweight = kweight_sets[ii][jj]
+                E_Km = spectral_weight_sets[ii][ispin, jj, :, 0]
+                P_Km = spectral_weight_sets[ii][ispin, jj, :, 1]
+                # Take weighted average spectral functions
+                spectral_function[ispin, :,
+                                  ii] += np.sum(LorentzSmearing(e0[:, np.newaxis], E_Km[np.newaxis, :], sigma=sigma) * P_Km[np.newaxis, :],
+                                                axis=1) * kweight
     return e0, spectral_function
 
 
@@ -817,7 +823,7 @@ class Unfold():
         self.wfc = vaspwfc(wavecar, lsorbit=self._lsoc, lgamma=self._lgam, gamma_half=gamma_half)
         # all the K-point vectors
         self.kvecs = self.wfc._kvecs
-        # all the KS energies
+        # all the KS energies in shape (ns, nk, nb)
         self.bands = self.wfc._bands
 
         # G-vectors within the cutoff sphere, let's just do it once for all.
@@ -1048,8 +1054,13 @@ def spectral_weight_multiple_source(kpoints, unfold_objs, transform_matrix):
     for obj in unfold_objs[1:]:
         assert ns == obj.wfc._nspin
 
-    # self.SW = np.array([self.spectral_weight_k(kpoints[ik])
-    #                     for ik in range(NKPTS)], dtype=float)
+    # When reading from multiple WAVECAR, it is possible that each of them may have differnt number of bands
+    # if so, we take only the first N bands, where N is the minimum values of bands
+    nb = []
+    for source in unfold_objs:
+        nb.append(source.bands.shape[2])
+    nbands = min(nb)
+
     spectral_weights = []
     for ispin in range(ns):
         sw_this_spin = []
@@ -1063,7 +1074,7 @@ def spectral_weight_multiple_source(kpoints, unfold_objs, transform_matrix):
                     source.find_K_index(this_k_supercell)
                 except ValueError:
                     continue
-                sw_this_spin.append(source.spectral_weight_k(this_k, whichspin=ispin + 1))
+                sw_this_spin.append(source.spectral_weight_k(this_k, whichspin=ispin + 1)[:nbands, :])
                 ok = True
                 break
 

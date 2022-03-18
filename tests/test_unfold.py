@@ -150,10 +150,10 @@ def test_unfold(si_project_dir, tag, nspin, ncl):
 
     # Test unfold
     sws = unfolder.get_spectral_weights(si_project_dir / f'{folder_name}/WAVECAR', ncl=ncl)
-    assert sws.shape[0] == nspin
-    assert sws.shape[1] == len(kpoints)
-    assert sws.shape[2] == 81
-    assert sws.shape[3] == 2
+    assert sws[0].shape[0] == nspin
+    assert len(sws) == len(kpoints)
+    assert sws[0].shape[2] == 81
+    assert sws[0].shape[3] == 2
 
     assert unfolder.is_calculated
 
@@ -198,9 +198,10 @@ def test_unfold_no_expand(si_project_dir, tag, nspin, ncl):
 
     # Test unfold
     sws = unfolder.get_spectral_weights(si_project_dir / f'{folder_name}/WAVECAR', ncl=ncl)
-    assert sws.shape[0] == nspin
-    assert sws.shape[1] == len(kpoints)
-    assert sws.shape[2] == 81
-    assert sws.shape[3] == 2
+    assert sws[0].shape[0] == nspin
+    assert all(x.shape[1] == 1 for x in sws)
+    assert len(sws) == len(kpoints)
+    assert sws[0].shape[2] == 81
+    assert sws[0].shape[3] == 2
 
     assert unfolder.is_calculated
