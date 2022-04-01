@@ -150,7 +150,7 @@ class procar(object):
             int(xx) for xx in re.sub('[^0-9]', ' ', inp[1]).split()]
 
         # band projectron on each atoms or s/p/d orbitals
-        self._aproj = np.asarray([line.split()[1:-1] for line in inp
+        self._aproj = np.asarray([re.sub(r'(\d)-', r'\1 -', line).split()[1:-1] for line in inp
                                   if not re.search('[a-zA-Z]', line)],
                                  dtype=float)
         # k-points weights of each k-points

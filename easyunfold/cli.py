@@ -125,12 +125,18 @@ def unfold_status(ctx):
 @click.option('--save-as')
 @click.option('--gamma', is_flag=True)
 @click.option('--ncl', is_flag=True)
-def unfold_calculate(ctx, wavecar, save_as, gamma, ncl):
+@click.option('--natoms', default=None, help='Number of each atomic species in the structure, for atom projections, as a comma-separated no-spaces list.')
+@click.option('--procar_path', default='./PROCAR', help='Path to PROCAR file (with LORBIT >=11) for atomic projections (default: PROCAR)') 
+def unfold_calculate(ctx, wavecar, save_as, gamma, ncl, natoms, procar_path):
     """Perform the unfolding"""
     from easyunfold.unfold import UnfoldKSet
 
     unfoldset: UnfoldKSet = ctx.obj['obj']
     unfoldset.get_spectral_weights(wavecar, gamma, ncl=ncl)
+    if natoms:
+        click.echo('Calculating atomic weights...')
+        natoms = [int(i) for i in natoms.split(",")]
+        unfoldset.get_reduced_atomic_weights(procar_path, natoms, ncl)
 
     out_path = save_as if save_as else ctx.obj['fname']
     Path(out_path).write_text(unfoldset.to_json())
@@ -144,14 +150,18 @@ def unfold_calculate(ctx, wavecar, save_as, gamma, ncl):
 @click.option('--npoints', type=int, default=2000, help='Number of bins for the energy.')
 @click.option('--sigma', type=float, default=0.02, help='Smearing width for the energy in eV.')
 @click.option('--eref', type=float, help='Reference energy in eV.')
-@click.option('--emin', type=float, help='Minimum energy in eV relative to the reference.')
-@click.option('--emax', type=float, help='Maximum energy in eV relative to the reference.')
+@click.option('--emin', type=float, default=-6, help='Minimum energy in eV relative to the reference (default = -6).')
+@click.option('--emax', type=float, default=6, help='Maximum energy in eV relative to the reference (default = 6).')
 @click.option('--vscale', type=float, help='A scaling factor for the colour mapping.', default=1.0)
 @click.option('--out-file', default='unfold.png', help='Name of the output file.')
 @click.option('--cmap', default='PuRd', help='Name of the colour map to use.')
 @click.option('--show', is_flag=True, default=False, help='Show the plot interactively.')
 @click.option('--no-symm-average', is_flag=True, default=False, help='Do not include symmetry related kpoints for averaging.')
-def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale):
+@click.option('--atomic_proj', is_flag=True, default=False, help='Plot with atomic projections (default=False).')
+#TODO: add @click.option('--species', default=None, help='Atomic species for atom projections')
+# as a comma-separated no-spaces list.')
+def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl,
+                no_symm_average, vscale, atomic_proj):
     """
     Plot the spectral function
 
@@ -173,16 +183,25 @@ def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cm
                                                              sigma=sigma,
                                                              ncl=ncl,
                                                              symm_average=not no_symm_average)
-    if emin is None:
-        emin = eng.min() - eref
-    if emax is None:
-        emax = eng.max() - eref
+
+    if atomic_proj: # also input atomic energies and weights
+        averaged_sws = [item[:, :, :, :].mean(axis=1) for
+                        # averaging energies over sets for each kpt & band
+                        item in unfoldset.calculated_quantities['spectral_weights_per_set']]
+        averaged_spectral_weight = np.stack(averaged_sws, axis=1)
+        atomic_energies = averaged_spectral_weight[:, :, :, 0] # nspin, kpts, bands
+        atomic_weights = np.array(unfoldset.calculated_quantities['reduced_atomic_weights'])
+    else:
+        atomic_energies = None
+        atomic_weights = None
 
     _ = EBS_cmaps(
         unfoldset.kpts_pc,
         unfoldset.pc_latt,
         eng,
         spectral_function,
+        atomic_weights=atomic_weights,
+        atomic_energies=atomic_energies,
         eref=eref,
         save=out_file,
         show=False,

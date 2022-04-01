@@ -18,6 +18,7 @@ import spglib
 
 from easyunfold import __version__
 from .pyvaspwfc.vaspwfc import vaspwfc
+from .pyvaspwfc.procar import procar
 
 ############################################################
 
@@ -246,7 +247,7 @@ class UnfoldKSet(MSONable):
         reduced_sckpts, sc_kpts_map = removeDuplicateKpoints(all_sc, return_map=True)
         sc_kpts_map = list(sc_kpts_map)
 
-        # Mapping between the pckpts to the redcued sckpts
+        # Mapping between the pckpts to the reduced_sckpts
         reduced_sc_map = []
         for sc_set in expended_sc:
             map_indx = []
@@ -360,7 +361,8 @@ class UnfoldKSet(MSONable):
             return sws, e0, spectral_function
         return sws
 
-    def get_spectral_function(self, wavecar=None, npoints=2000, sigma=0.1, gamma=False, ncl=False, gamma_half='x', symm_average=True):
+    def get_spectral_function(self, wavecar=None, npoints=2000, sigma=0.02, gamma=False,
+                              ncl=False, gamma_half='x', symm_average=True):
         """Get the spectral function"""
         _, e0, spectral_function = self._get_spectral_weights(wavecar,
                                                               npoints=npoints,
@@ -372,9 +374,12 @@ class UnfoldKSet(MSONable):
                                                               symm_average=symm_average)
         return e0, spectral_function
 
-    def get_spectral_weights(self, wavecar=None, gamma=False, ncl=False, gamma_half='x', symm_average=True):
+    def get_spectral_weights(self, wavecar=None, npoints=2000, sigma=0.02, gamma=False, ncl=False,
+                             gamma_half='x', symm_average=True):
         """Get the spectral function"""
         return self._get_spectral_weights(wavecar=wavecar,
+                                          npoints=npoints,
+					                      sigma=sigma,
                                           gamma=gamma,
                                           ncl=ncl,
                                           gamma_half=gamma_half,
@@ -391,6 +396,33 @@ class UnfoldKSet(MSONable):
             output[key] = getattr(self, key)
         return output
 
+    def get_reduced_atomic_weights(self, procar_path, natoms, ncl=False):
+        p = procar(procar_path, lsoc=ncl) # parse PROCAR with pyvaspwfc
+        kmap = self.expansion_results['reduced_sckpts_map']
+
+        i = 0
+        atomic_weights = []
+        for iatom in tqdm(natoms, desc='Atom', total=len(natoms)):
+            atomic_weights += [p.get_pw(f"{i:.0f}:{i+iatom:.0f}")]
+            i += iatom
+        atomic_weights = np.array(atomic_weights)
+
+        reduced_atomic_weights = []
+        for i in range(atomic_weights.shape[0]):  # per atom
+            atom_awht = []
+            for spin in range(atomic_weights.shape[1]):  # per spin
+                spin_awht = []
+                for pckpt in kmap:  # corresponding SC kpoints per PC kpoint
+                    awhts = [atomic_weights[i, spin, sckpt, :] for sckpt in pckpt]
+                    mean_awhts = np.array([np.mean(weight_tuple) for weight_tuple in zip(*awhts)])
+                    # getting average atomic weights over corresponding SC kpoints for each PC
+                    # kpoint, per band
+                    spin_awht.append(mean_awhts)
+                atom_awht.append(spin_awht)
+            reduced_atomic_weights.append(atom_awht)
+
+        self.calculated_quantities['atomic_weights'] = atomic_weights
+        self.calculated_quantities['reduced_atomic_weights'] = reduced_atomic_weights
 
 def LorentzSmearing(x, x0, sigma=0.02):
     r"""
@@ -534,7 +566,6 @@ def EBS_scatter(kpts,
                 cell,
                 spectral_weight,
                 atomic_weights=None,
-                atomic_colors=None,
                 eref=0.0,
                 nseg=None,
                 save='ebs_s.png',
@@ -627,6 +658,8 @@ def EBS_cmaps(kpts,
               cell,
               E0,
               spectral_function,
+              atomic_weights=None,
+              atomic_energies=None,
               eref=0.0,
               nseg=None,
               kpath_label=None,
@@ -638,7 +671,8 @@ def EBS_cmaps(kpts,
               contour_plot=False,
               ax=None,
               vscale=1.0,
-              cmap='jet'):
+              cmap='jet',): # TODO: add option to set atomic colours (other than rgb) and
+    # interpolate between
     """
     plot the effective band structure with colormaps.  The plotting function
     utilizes Matplotlib package.
@@ -648,18 +682,20 @@ def EBS_cmaps(kpts,
         cell: the primitive cell basis
         e0: The energies corresponds to each element of the spectral function
         spectral_function: The spectral function array in the shape of (nspin, nk, neng)
-        eref: Refernce point for zero energy
+        atomic_weights: The atomic weights in the shape of (n_atoms, nspin, nk, neng)
+        atomic_energies: The energies matching the atomic weights in the shape of (nspin, nk, neng)
+        eref: Reference point for zero energy
         kpath_label: Label of the high symmetry kpoints along the pathway
         nseg: Number of points in each segment of the kpoint pathway
-        explicit_labels: A list of tuplies containing tuples of `(index, label)` to explicitly set kpoint labels.
+        explicit_labels: A list of tuples containing tuples of `(index, label)` to explicitly set kpoint labels.
         save: Name of the file the plot to be saved to.
         figsize: SIze of hte figure
-        ylim: Limit for the y axis. The limit is applied *after* substracting the refence energy.
+        ylim: Limit for the y axis. The limit is applied *after* subtracting the reference energy.
         show: To show the plot interactively or not.
         contour_plot: Plot in the contour mode
         ax: Existing axis(axes) to plot onto
-        cmap: Colour mapping for the density/contour plot
         vscale: Scale factor for color coding
+        cmap: Colour mapping for the density/contour plot
     """
 
     kpath_label = [] if not kpath_label else kpath_label
@@ -686,15 +722,42 @@ def EBS_cmaps(kpts,
     X, Y = np.meshgrid(kdist, E0 - eref)
 
     # Calculate the min and max values within the field of view, scaled by the factor
-    mask = (E0 < ylim[1]) & (E0 > ylim[0])
+    mask = (E0 - eref < ylim[1]) & (E0 - eref > ylim[0])  # non-critical missing "eref" in original
     vmax = spectral_function[:, mask, :].max()
     vmin = spectral_function[:, mask, :].min()
     vmax = (vmax - vmin) * vscale + vmin
+
+    if atomic_weights is not None and atomic_energies is not None: # prepare atomic_weights RGB
+        # array for plotting
+        natoms = atomic_weights.shape[0]
+        if natoms not in [2, 3]: # TODO: Add option to select 3 species to project from a set of
+            # >3 in the structure
+            raise ValueError("Atomic projections only supported for 2 or 3 atoms")
+        weights = np.array([atomic_weights[iatom, :, :, :] for iatom in range(natoms)])  # natom,
+        # nspin, nk, neng
+        if natoms == 2: # just use red and blue
+            weights = np.insert(weights, 1, np.zeros(weights[0].shape), axis=0)
+        reshaped_weights = np.transpose(weights, (1, 2, 3, 0))  # nspin, nk, neng, natom
+
+        rgbs = np.zeros((nspin, len(kdist), len(E0), 4))  # nspin, nk, ne, 4 (for RGBA given by
+        # atomic_weights + spectral density
+        for ispin in range(nspin):
+            for ik, kdistance in enumerate(kdist):
+                for ie, energy in enumerate(E0):
+                    idx = (np.abs(atomic_energies[ispin, ik,
+                                  :] - energy)).argmin()  # get matching band index for energy and k
+                    rgbs[ispin, ik, ie, :] = np.append(reshaped_weights[ispin, ik, idx, :],  # RGB
+                                                       1.5 * ((spectral_function[
+                                                                   ispin, ie, ik] - vmin) / vmax))
+                    # Alpha determined by spectral density
 
     for ispin in range(nspin):
         ax = axes[ispin]
         if contour_plot:
             ax.contourf(X, Y, spectral_function[ispin], cmap=cmap, vmax=vmax, vmin=vmin)
+        elif atomic_weights is not None and atomic_energies is not None:
+            ax.imshow(rgbs[ispin, :, mask, :], aspect='auto', origin='lower',  # nk, neng, 4
+                          extent=[kdist[0], kdist[-1], ylim[0], ylim[-1]])
         else:
             ax.pcolormesh(X, Y, spectral_function[ispin], cmap=cmap, shading='auto', vmax=vmax, vmin=vmin)
 
