@@ -18,7 +18,7 @@ import spglib
 
 from easyunfold import __version__
 from .pyvaspwfc.vaspwfc import vaspwfc
-from .pyvaspwfc.procar import procar
+from .procar import Procar
 
 ############################################################
 
@@ -146,6 +146,7 @@ class UnfoldKSet(MSONable):
             metadata = {}
         self.metadata = metadata
         self.metadata['program_version'] = __version__
+        self.transient_quantities = {}
 
         # Transient properties
         self.reduced_sckpts = None
@@ -247,7 +248,7 @@ class UnfoldKSet(MSONable):
         reduced_sckpts, sc_kpts_map = removeDuplicateKpoints(all_sc, return_map=True)
         sc_kpts_map = list(sc_kpts_map)
 
-        # Mapping between the pckpts to the reduced_sckpts
+        # Mapping between the pckpts to the redcued sckpts
         reduced_sc_map = []
         for sc_set in expended_sc:
             map_indx = []
@@ -323,6 +324,52 @@ class UnfoldKSet(MSONable):
 
         return averaged_weights, weights_per_set
 
+    def load_procar(self, procar: Union[str, List[str]], force=False):
+        """Read in PROCAR for band-based projection"""
+        if self.procars and not force:
+            pass
+
+        if not isinstance(procar, (tuple, list)):
+            procar = [procar]
+
+        # Load the procars
+        self.transient_quantities['procars'] = [Procar(path) for path in procar]
+        # Construct mapping from the primitive cell kpoints to those in the PROCAR
+        self.transient_quantities['procars_kmap'] = self._construct_procar_kmap()
+
+    def _construct_procar_kmap(self):
+        """Construct mapping from the set of kpoints to that in the PROCAR"""
+        ksets = self.expansion_results['kpoints']
+        kidx_procar_sets = []
+        for kset in ksets:
+            kidx_procar_sets.append([])
+            for kpoint in kset:
+                # Find the supercell kpoint
+                K_super, _ = find_K_from_k(kpoint, self.M)
+                # Search for kpoints in the procar
+                found = False
+                for iprocar, procar in enumerate(self.procars):
+                    for ikpt, kprocar in enumerate(procar.kvecs[0]):
+                        if np.allclose(K_super, kprocar):
+                            kidx_procar_sets[-1].append([iprocar, ikpt])
+                            found = True
+                            break
+                    if found:
+                        break
+                if found is False:
+                    raise ValueError(f'Cannot found kpoint {K_super} in PROCAR files')
+        return kidx_procar_sets
+
+    @property
+    def procars(self):
+        """Loaded PROCARS"""
+        return self.transient_quantities.get('procars')
+
+    @property
+    def procar_kmaps(self):
+        """Loaded PROCARS"""
+        return self.transient_quantities.get('procars_kmap')
+
     def _get_spectral_weights(self,
                               wavecar,
                               npoints=2000,
@@ -333,9 +380,15 @@ class UnfoldKSet(MSONable):
                               ncl=False,
                               gamma_half='x',
                               also_spectral_function=False,
+                              atoms_idx=None,
+                              orbitals=None,
                               symm_average=True):
         """
         Fetch spectral weights from a wavecar and compute spectral function is requested
+
+        Args:
+
+            atomic_projects (tuple): A tuple of atoms and orbitals whose projected weights should be used.
         """
         # If WAVECAR is given - reload from the data
         if wavecar:
@@ -355,14 +408,47 @@ class UnfoldKSet(MSONable):
             kweight_sets = [[1.0] for i in range(len(sws))]
 
         if also_spectral_function:
-            e0, spectral_function = spectral_function_from_weight_sets(sws, kweight_sets, nedos=npoints, sigma=sigma, emin=emin, emax=emax)
+            if atoms_idx is not None:
+                # Read in the project weights
+                band_weight_sets = self.get_band_weight_sets(atoms_idx, orbitals)
+            else:
+                band_weight_sets = None
+            e0, spectral_function = spectral_function_from_weight_sets(sws,
+                                                                       kweight_sets,
+                                                                       nedos=npoints,
+                                                                       sigma=sigma,
+                                                                       emin=emin,
+                                                                       emax=emax,
+                                                                       band_weight_sets=band_weight_sets)
             self.calculated_quantities['e0'] = e0
             self.calculated_quantities['spectral_function'] = spectral_function
             return sws, e0, spectral_function
         return sws
 
-    def get_spectral_function(self, wavecar=None, npoints=2000, sigma=0.02, gamma=False,
-                              ncl=False, gamma_half='x', symm_average=True):
+    def get_band_weight_sets(self, atoms_idx, orbitals, procars=None):
+        """
+        Get weights array sets for bands
+        Construct the weights of each band in same format of the kpoint set.
+        Each item is an numpy array of (nspins, nbands), containing the summed weights over
+        the passed atom indices and orbitals.
+        """
+        if procars:
+            self.load_procar(procars)
+        if self.procars is None:
+            raise RuntimeError('PROCAR files needs to be loaded')
+
+        projs = [procar.get_projection(atoms_idx, orbitals) for procar in self.procars]
+        # Construct band weighting, same structure as o
+        band_weight_sets = []
+        for kset in self.transient_quantities['procars_kmap']:
+            band_weight_sets.append([])
+            # Search
+            for iprocar, kidx in kset:
+                band_weight = projs[iprocar][:, kidx]
+                band_weight_sets[-1].append(band_weight)
+        return band_weight_sets
+
+    def get_spectral_function(self, wavecar=None, npoints=2000, sigma=0.1, gamma=False, ncl=False, gamma_half='x', symm_average=True):
         """Get the spectral function"""
         _, e0, spectral_function = self._get_spectral_weights(wavecar,
                                                               npoints=npoints,
@@ -374,12 +460,9 @@ class UnfoldKSet(MSONable):
                                                               symm_average=symm_average)
         return e0, spectral_function
 
-    def get_spectral_weights(self, wavecar=None, npoints=2000, sigma=0.02, gamma=False, ncl=False,
-                             gamma_half='x', symm_average=True):
+    def get_spectral_weights(self, wavecar=None, gamma=False, ncl=False, gamma_half='x', symm_average=True):
         """Get the spectral function"""
         return self._get_spectral_weights(wavecar=wavecar,
-                                          npoints=npoints,
-					                      sigma=sigma,
                                           gamma=gamma,
                                           ncl=ncl,
                                           gamma_half=gamma_half,
@@ -396,33 +479,6 @@ class UnfoldKSet(MSONable):
             output[key] = getattr(self, key)
         return output
 
-    def get_reduced_atomic_weights(self, procar_path, natoms, ncl=False):
-        p = procar(procar_path, lsoc=ncl) # parse PROCAR with pyvaspwfc
-        kmap = self.expansion_results['reduced_sckpts_map']
-
-        i = 0
-        atomic_weights = []
-        for iatom in tqdm(natoms, desc='Atom', total=len(natoms)):
-            atomic_weights += [p.get_pw(f"{i:.0f}:{i+iatom:.0f}")]
-            i += iatom
-        atomic_weights = np.array(atomic_weights)
-
-        reduced_atomic_weights = []
-        for i in range(atomic_weights.shape[0]):  # per atom
-            atom_awht = []
-            for spin in range(atomic_weights.shape[1]):  # per spin
-                spin_awht = []
-                for pckpt in kmap:  # corresponding SC kpoints per PC kpoint
-                    awhts = [atomic_weights[i, spin, sckpt, :] for sckpt in pckpt]
-                    mean_awhts = np.array([np.mean(weight_tuple) for weight_tuple in zip(*awhts)])
-                    # getting average atomic weights over corresponding SC kpoints for each PC
-                    # kpoint, per band
-                    spin_awht.append(mean_awhts)
-                atom_awht.append(spin_awht)
-            reduced_atomic_weights.append(atom_awht)
-
-        self.calculated_quantities['atomic_weights'] = atomic_weights
-        self.calculated_quantities['reduced_atomic_weights'] = reduced_atomic_weights
 
 def LorentzSmearing(x, x0, sigma=0.02):
     r"""
@@ -566,6 +622,7 @@ def EBS_scatter(kpts,
                 cell,
                 spectral_weight,
                 atomic_weights=None,
+                atomic_colors=None,
                 eref=0.0,
                 nseg=None,
                 save='ebs_s.png',
@@ -658,8 +715,6 @@ def EBS_cmaps(kpts,
               cell,
               E0,
               spectral_function,
-              atomic_weights=None,
-              atomic_energies=None,
               eref=0.0,
               nseg=None,
               kpath_label=None,
@@ -671,8 +726,7 @@ def EBS_cmaps(kpts,
               contour_plot=False,
               ax=None,
               vscale=1.0,
-              cmap='jet',): # TODO: add option to set atomic colours (other than rgb) and
-    # interpolate between
+              cmap='jet'):
     """
     plot the effective band structure with colormaps.  The plotting function
     utilizes Matplotlib package.
@@ -682,20 +736,18 @@ def EBS_cmaps(kpts,
         cell: the primitive cell basis
         e0: The energies corresponds to each element of the spectral function
         spectral_function: The spectral function array in the shape of (nspin, nk, neng)
-        atomic_weights: The atomic weights in the shape of (n_atoms, nspin, nk, neng)
-        atomic_energies: The energies matching the atomic weights in the shape of (nspin, nk, neng)
-        eref: Reference point for zero energy
+        eref: Refernce point for zero energy
         kpath_label: Label of the high symmetry kpoints along the pathway
         nseg: Number of points in each segment of the kpoint pathway
-        explicit_labels: A list of tuples containing tuples of `(index, label)` to explicitly set kpoint labels.
+        explicit_labels: A list of tuplies containing tuples of `(index, label)` to explicitly set kpoint labels.
         save: Name of the file the plot to be saved to.
         figsize: SIze of hte figure
-        ylim: Limit for the y axis. The limit is applied *after* subtracting the reference energy.
+        ylim: Limit for the y axis. The limit is applied *after* substracting the refence energy.
         show: To show the plot interactively or not.
         contour_plot: Plot in the contour mode
         ax: Existing axis(axes) to plot onto
-        vscale: Scale factor for color coding
         cmap: Colour mapping for the density/contour plot
+        vscale: Scale factor for color coding
     """
 
     kpath_label = [] if not kpath_label else kpath_label
@@ -722,42 +774,15 @@ def EBS_cmaps(kpts,
     X, Y = np.meshgrid(kdist, E0 - eref)
 
     # Calculate the min and max values within the field of view, scaled by the factor
-    mask = (E0 - eref < ylim[1]) & (E0 - eref > ylim[0])  # non-critical missing "eref" in original
+    mask = (E0 < ylim[1]) & (E0 > ylim[0])
     vmax = spectral_function[:, mask, :].max()
     vmin = spectral_function[:, mask, :].min()
     vmax = (vmax - vmin) * vscale + vmin
-
-    if atomic_weights is not None and atomic_energies is not None: # prepare atomic_weights RGB
-        # array for plotting
-        natoms = atomic_weights.shape[0]
-        if natoms not in [2, 3]: # TODO: Add option to select 3 species to project from a set of
-            # >3 in the structure
-            raise ValueError("Atomic projections only supported for 2 or 3 atoms")
-        weights = np.array([atomic_weights[iatom, :, :, :] for iatom in range(natoms)])  # natom,
-        # nspin, nk, neng
-        if natoms == 2: # just use red and blue
-            weights = np.insert(weights, 1, np.zeros(weights[0].shape), axis=0)
-        reshaped_weights = np.transpose(weights, (1, 2, 3, 0))  # nspin, nk, neng, natom
-
-        rgbs = np.zeros((nspin, len(kdist), len(E0), 4))  # nspin, nk, ne, 4 (for RGBA given by
-        # atomic_weights + spectral density
-        for ispin in range(nspin):
-            for ik, kdistance in enumerate(kdist):
-                for ie, energy in enumerate(E0):
-                    idx = (np.abs(atomic_energies[ispin, ik,
-                                  :] - energy)).argmin()  # get matching band index for energy and k
-                    rgbs[ispin, ik, ie, :] = np.append(reshaped_weights[ispin, ik, idx, :],  # RGB
-                                                       1.5 * ((spectral_function[
-                                                                   ispin, ie, ik] - vmin) / vmax))
-                    # Alpha determined by spectral density
 
     for ispin in range(nspin):
         ax = axes[ispin]
         if contour_plot:
             ax.contourf(X, Y, spectral_function[ispin], cmap=cmap, vmax=vmax, vmin=vmin)
-        elif atomic_weights is not None and atomic_energies is not None:
-            ax.imshow(rgbs[ispin, :, mask, :], aspect='auto', origin='lower',  # nk, neng, 4
-                          extent=[kdist[0], kdist[-1], ylim[0], ylim[-1]])
         else:
             ax.pcolormesh(X, Y, spectral_function[ispin], cmap=cmap, shading='auto', vmax=vmax, vmin=vmin)
 
@@ -810,7 +835,13 @@ def clean_latex_string(label):
     return label
 
 
-def spectral_function_from_weight_sets(spectral_weight_sets, kweight_sets, nedos=4000, sigma=0.02, emin=None, emax=None):
+def spectral_function_from_weight_sets(spectral_weight_sets,
+                                       kweight_sets,
+                                       nedos=4000,
+                                       sigma=0.02,
+                                       emin=None,
+                                       emax=None,
+                                       band_weight_sets=None):
     r"""
     Generate the spectral function
 
@@ -818,6 +849,10 @@ def spectral_function_from_weight_sets(spectral_weight_sets, kweight_sets, nedos
 
     Where the \Delta function can be approximated by Lorentzian or Gaussian
     function.
+
+    Args:
+        band_weight_sets (np.ndarray): Additional weighting for each band, used for generating
+          projection onto atomic orbitals.
     """
 
     nk = len(spectral_weight_sets)
@@ -829,11 +864,13 @@ def spectral_function_from_weight_sets(spectral_weight_sets, kweight_sets, nedos
     e0 = np.linspace(emin - 5 * sigma, emax + 5 * sigma, nedos)
 
     for ispin in range(ns):
-        for ii in range(nk):
+        for ii in range(nk):  # Iterate through kpoint sets (of primitive cell kpoints)
             for jj in range(spectral_weight_sets[ii].shape[1]):
                 kweight = kweight_sets[ii][jj]
                 E_Km = spectral_weight_sets[ii][ispin, jj, :, 0]
                 P_Km = spectral_weight_sets[ii][ispin, jj, :, 1]
+                if band_weight_sets is not None:
+                    P_Km = P_Km * band_weight_sets[ii][jj][ispin, :]
                 # Take weighted average spectral functions
                 spectral_function[ispin, :,
                                   ii] += np.sum(LorentzSmearing(e0[:, np.newaxis], E_Km[np.newaxis, :], sigma=sigma) * P_Km[np.newaxis, :],
