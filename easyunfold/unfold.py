@@ -534,17 +534,18 @@ def EBS_scatter(kpts,
                 cell,
                 spectral_weight,
                 atomic_weights=None,
-                atomic_colors=None,
                 eref=0.0,
                 nseg=None,
                 save='ebs_s.png',
                 kpath_label=None,
-                factor=20,
+                explicit_labels=None,
+                factor=50,
                 figsize=(3.0, 4.0),
                 ylim=(-3, 3),
                 show=True,
                 ax=None,
-                color='b'):
+                color='b',
+                atomic_colours=['r', 'g', 'b']):
     """
     plot the effective band structure with scatter, the size of the scatter
     indicates the spectral weight.
@@ -556,8 +557,8 @@ def EBS_scatter(kpts,
         spectral_weight: self-explanatory
     """
 
-    atomic_colors = [] if atomic_colors is None else atomic_colors
-    kpath_label = [] if kpath_label is None else kpath_label
+    atomic_colours = [] if atomic_colours is None else atomic_colours
+    kpath_label = kpath_label if explicit_labels is None else explicit_labels
 
     nspin = spectral_weight.shape[0]
     kpt_c = np.dot(kpts, np.linalg.inv(cell).T)
@@ -567,10 +568,13 @@ def EBS_scatter(kpts,
 
     if atomic_weights is not None:
         atomic_weights = np.asarray(atomic_weights)
-        assert atomic_weights.shape[1:] == spectral_weight.shape[:-1]
-
-        if not atomic_colors:
-            atomic_colors = mpl.rcParams['axes.prop_cycle'].by_key()['color']
+        atomic_colours = atomic_colours + mpl.rcParams['axes.prop_cycle'].by_key()['color']
+        try:
+            print(atomic_weights.shape)
+            print(spectral_weight.shape)
+            assert atomic_weights.shape[1:] == spectral_weight.shape[:-1]
+        except AssertionError:
+            print("Atomic and spectral weight arrays do not match!")
 
     if ax is None:
         fig = plt.figure()
@@ -589,15 +593,21 @@ def EBS_scatter(kpts,
 
     for ispin in range(nspin):
         ax = axes[ispin]
+        energies = spectral_weight[0, :, :, 0] - eref
         if atomic_weights is not None:
+            atomic_dict = {}
             for iatom in range(atomic_weights.shape[0]):
+                max_weight = np.max(atomic_weights[iatom][ispin, :, :])
                 ax.scatter(x0,
                            spectral_weight[ispin, :, :, 0] - eref,
-                           s=spectral_weight[ispin, :, :, 1] * factor * atomic_weights[iatom][ispin, :, :],
+                           s=spectral_weight[ispin, :, :, 1] * factor,
                            lw=0.0,
-                           color=atomic_colors[iatom])
+                           color=atomic_colours[iatom],
+                           alpha=atomic_weights[iatom][ispin, :, :] % max_weight)
+
         else:
-            ax.scatter(x0, spectral_weight[ispin, :, :, 0] - eref, s=spectral_weight[ispin, :, :, 1] * factor, lw=0.0, color=color)
+            ax.scatter(x0, spectral_weight[ispin, :, :, 0] - eref,
+                       s=spectral_weight[ispin, :, :, 1] * factor, lw=0.0, color=color)
 
         ax.set_xlim(0, kdist.max())
         ax.set_ylim(*ylim)
@@ -616,11 +626,20 @@ def EBS_scatter(kpts,
                     else:
                         kname[ii] = r'$\mathrm{\mathsf{%s}}$' % kname[ii]
                 ax.set_xticklabels(kname)
-
-    fig.tight_layout(pad=0.2)
-    fig.savefig(save, dpi=360)
-    if show:
-        fig.show()
+        elif explicit_labels:
+            tick_locs = []
+            tick_labels = []
+            for index, label in explicit_labels:
+                ax.axvline(x=kdist[index], lw=0.5, color='k', ls=':', alpha=0.8)
+                tick_locs.append(kdist[index])
+                tick_labels.append(label)
+            ticks = []
+            tick_labels = []
+            for index, label in explicit_labels:
+                ticks.append(kdist[index])
+                tick_labels.append(clean_latex_string(label))
+            ax.set_xticks(tick_locs)
+            ax.set_xticklabels(tick_labels)
 
 
 def EBS_cmaps(kpts,

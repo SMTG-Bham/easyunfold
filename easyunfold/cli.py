@@ -199,6 +199,71 @@ def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cm
         plt.show()
 
 
+@unfold.command('scatter') # TODO: deal with symmetry properly (sum over all spectral weight sets)
+@click.pass_context
+@click.option('--gamma', is_flag=True, help='Is the calculation a gamma only one?')
+@click.option('--ncl', is_flag=True, help='Is the calculation with non-colinear spin?')
+@click.option('--npoints', type=int, default=2000, help='Number of bins for the energy.')
+@click.option('--sigma', type=float, default=0.02, help='Smearing width for the energy in eV.')
+@click.option('--eref', type=float, help='Reference energy in eV.')
+@click.option('--emin', type=float, default=-6, help='Minimum energy in eV relative to the reference (default = -6).')
+@click.option('--emax', type=float, default=6, help='Maximum energy in eV relative to the reference (default = 6).')
+@click.option('--out-file', default='scatter_unfold.png', help='Name of the output file.')
+@click.option('--show', is_flag=True, default=False, help='Show the plot interactively.')
+@click.option('--no-symm-average', is_flag=True, default=False, help='Do not include symmetry related kpoints for averaging.')
+@click.option('--colours', default='r,g,b', help='Commma-separated no spaces list of colours to use for the atomic projections (default: r,g,b + colour_cycle)')
+@click.option('--atomic_proj', is_flag=True, default=False, help='Plot with atomic projections (default=False).')
+def unfold_scatter(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, ncl, no_symm_average, atomic_proj, colours):
+    """
+    Plot the spectral function as a scatter plot
+
+    This command uses the stored unfolding data to plot the effective bands structure (EBS).
+    """
+    from easyunfold.unfold import UnfoldKSet, EBS_scatter
+
+    unfoldset: UnfoldKSet = ctx.obj['obj']
+    if not unfoldset.is_calculated:
+        click.echo('Unfolding has not been performed yet, please run `unfold calculate` command.')
+        raise click.Abort()
+
+    if eref is None:
+        eref = unfoldset.calculated_quantities.get('vbm', 0.0)
+    click.echo(f'Using a reference energy of {eref:.3f} eV')
+
+    # TODO: Update this to sum over all spectral weight sets (to properly handle symmetry)
+    sws = [item[:, 0, :, :] for item in unfoldset.calculated_quantities['spectral_weights_per_set']]
+    spectral_weight = np.stack(sws, axis=1)
+
+    if atomic_proj:
+        if not 'reduced_atomic_weights' in unfoldset.calculated_quantities.keys():
+            raise click.ClickException(f"""Atomic projections selected but atomic weights not in {
+            data_file}. Need to parse with --natoms argument!""")
+        else:
+            atomic_weights = unfoldset.calculated_quantities['reduced_atomic_weights']
+    else:
+        atomic_weights = None
+    atomic_colours = [i for i in colours.split(",")]
+
+    _ = EBS_scatter(
+        unfoldset.kpts_pc,
+        unfoldset.pc_latt,
+        spectral_weight,
+        atomic_weights=atomic_weights,
+        eref=eref,
+        save=out_file,
+        show=False,
+        explicit_labels=unfoldset.kpoint_labels,
+        ylim=(emin, emax),
+        atomic_colours=atomic_colours,
+    )
+    if out_file:
+        click.echo(f'Unfolded band structure saved to {out_file}')
+
+    if show:
+        import matplotlib.pyplot as plt
+        plt.show()
+
+
 def print_symmetry_data(kset):
     """Print the symmetry information"""
 
