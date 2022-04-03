@@ -738,6 +738,8 @@ def EBS_cmaps(kpts,
               ax=None,
               vscale=1.0,
               title=None,
+              vmax=None,
+              vmin=None,
               cmap='jet'):
     """
     plot the effective band structure with colormaps.  The plotting function
@@ -788,9 +790,10 @@ def EBS_cmaps(kpts,
 
     # Calculate the min and max values within the field of view, scaled by the factor
     mask = (E0 < ylim[1]) & (E0 > ylim[0])
-    vmax = spectral_function[:, mask, :].max()
-    vmin = spectral_function[:, mask, :].min()
-    vmax = (vmax - vmin) * vscale + vmin
+    vmin = spectral_function[:, mask, :].min() if vmin is None else vmin
+    if vmax is None:
+        vmax = spectral_function[:, mask, :].max()
+        vmax = (vmax - vmin) * vscale + vmin
 
     for ispin in range(nspin):
         ax = axes[ispin]
