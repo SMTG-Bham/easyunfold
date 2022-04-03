@@ -137,26 +137,158 @@ def unfold_calculate(ctx, wavecar, save_as, gamma, ncl):
     click.echo('Unfolding data written to ' + out_path)
 
 
+def add_plot_options(func):
+    """Added common plotting options to a function"""
+    click.option('--gamma', is_flag=True, help='Is the calculation a gamma only one?')(func)
+    click.option('--ncl', is_flag=True, help='Is the calculation with non-colinear spin?')(func)
+    click.option('--npoints', type=int, default=2000, help='Number of bins for the energy.')(func)
+    click.option('--sigma', type=float, default=0.02, help='Smearing width for the energy in eV.')(func)
+    click.option('--eref', type=float, help='Reference energy in eV.')(func)
+    click.option('--emin', type=float, help='Minimum energy in eV relative to the reference.')(func)
+    click.option('--emax', type=float, help='Maximum energy in eV relative to the reference.')(func)
+    click.option('--vscale', type=float, help='A scaling factor for the colour mapping.', default=1.0)(func)
+    click.option('--out-file', default='unfold.png', help='Name of the output file.')(func)
+    click.option('--cmap', default='PuRd', help='Name of the colour map to use.')(func)
+    click.option('--show', is_flag=True, default=False, help='Show the plot interactively.')(func)
+    click.option('--no-symm-average', is_flag=True, default=False, help='Do not include symmetry related kpoints for averaging.')(func)
+    click.option('--procar', multiple=True, help='PROCAR files used for atomic weighting')(func)
+    click.option('--atoms-idx', help='Indices of the atoms to be used for weighting')(func)
+    click.option('--orbitals', help='Orbitals of to be used for weighting.')(func)
+    click.option('--title', help='Title to be used')(func)
+    return func
+
+
 @unfold.command('plot')
 @click.pass_context
-@click.option('--gamma', is_flag=True, help='Is the calculation a gamma only one?')
-@click.option('--ncl', is_flag=True, help='Is the calculation with non-colinear spin?')
-@click.option('--npoints', type=int, default=2000, help='Number of bins for the energy.')
-@click.option('--sigma', type=float, default=0.02, help='Smearing width for the energy in eV.')
-@click.option('--eref', type=float, help='Reference energy in eV.')
-@click.option('--emin', type=float, help='Minimum energy in eV relative to the reference.')
-@click.option('--emax', type=float, help='Maximum energy in eV relative to the reference.')
-@click.option('--vscale', type=float, help='A scaling factor for the colour mapping.', default=1.0)
-@click.option('--out-file', default='unfold.png', help='Name of the output file.')
-@click.option('--cmap', default='PuRd', help='Name of the colour map to use.')
-@click.option('--show', is_flag=True, default=False, help='Show the plot interactively.')
-@click.option('--no-symm-average', is_flag=True, default=False, help='Do not include symmetry related kpoints for averaging.')
-@click.option('--procar', multiple=True, help='PROCAR files used for atomic weighting')
-@click.option('--atoms-idx', help='Indices of the atoms to be used for weighting')
-@click.option('--orbitals', help='Orbitals of to be used for weighting.')
-@click.option('--title', help='Title to be used')
+@add_plot_options
 def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, procar, atoms_idx,
                 orbitals, title):
+    """
+    Plot the spectral function
+
+    This command uses the stored unfolding data to plot the effective bands structure (EBS).
+    """
+    _unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, procar, atoms_idx,
+                 orbitals, title)
+
+
+@unfold.command('plot-projections')
+@click.pass_context
+@add_plot_options
+@click.option('--atoms-idx', help='Indices of the atoms to be used for weighting', required=True)
+@click.option('--procar', multiple=True, help='PROCAR files used for atomic weighting', required=True)
+def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, procar,
+                            atoms_idx, orbitals, title):
+    """
+    Plot with subplots with multiple atomic projections
+    """
+    from easyunfold.unfold import UnfoldKSet, EBS_cmaps
+    import matplotlib.pyplot as plt
+
+    unfoldset: UnfoldKSet = ctx.obj['obj']
+    click.echo(f'Loading projections from: {procar}')
+    unfoldset.load_procar(procar)
+
+    atoms_idx_subplots = atoms_idx.split('|')
+    if orbitals is not None:
+        orbitals_subsplots = atoms_idx.split('|')
+
+        # Special case: if only one set is passed, apply it to all atomic specifications
+        if len(orbitals_subsplots) == 1:
+            orbitals_subsplots = orbitals_subsplots * len(atoms_idx_subplots)
+
+        if len(orbitals_subsplots) != len(atoms_idx_subplots):
+            click.echo('Please pass same number of orbital specifications as the atomic indices')
+            raise click.Abort()
+    # If not set, use all for all subsets
+    else:
+        orbitals_subsplots = ['all'] * len(atoms_idx_subplots)
+
+    # Load the data
+
+    nsub = len(atoms_idx_subplots)
+
+    fig, axs = plt.subplots(1, len(atoms_idx_subplots), sharex=True, sharey=True, squeeze=False, figsize=(3.0 * nsub, 4.0))
+    all_sf = []
+    vmaxs = []
+
+    if eref is None:
+        eref = unfoldset.calculated_quantities.get('vbm', 0.0)
+    click.echo(f'Using a reference energy of {eref:.3f} eV')
+
+    # Collect spectral functions and scale
+    for this_idx, this_orbitals, ax in zip(atoms_idx_subplots, orbitals_subsplots, axs[0]):
+        # Setup the atoms_idx and orbitals
+        this_idx, this_orbitals = process_projection_options(this_idx, this_orbitals)
+        eng, spectral_function = unfoldset.get_spectral_function(gamma=gamma,
+                                                                 npoints=npoints,
+                                                                 sigma=sigma,
+                                                                 ncl=ncl,
+                                                                 atoms_idx=this_idx,
+                                                                 orbitals=this_orbitals,
+                                                                 symm_average=not no_symm_average)
+        all_sf.append(spectral_function)
+
+        if emin is None:
+            emin = eng.min() - eref
+        if emax is None:
+            emax = eng.max() - eref
+
+        # Clip the effective range
+        mask = (eng < emax) & (eng > emin)
+        vmin = spectral_function[:, mask, :].min()
+        vmax = spectral_function[:, mask, :].max()
+        vmax = (vmax - vmin) * vscale + vmin
+        vmaxs.append(vmax)
+
+    # Workout the vmax and vmin
+    vmax = max(vmaxs)
+    vmin = 0.
+    # Plot the spectral function with constant colour scales
+    for spectral_function, ax in zip(all_sf, axs[0]):
+        _ = EBS_cmaps(
+            unfoldset.kpts_pc,
+            unfoldset.pc_latt,
+            eng,
+            spectral_function,
+            eref=eref,
+            save=out_file,
+            show=False,
+            explicit_labels=unfoldset.kpoint_labels,
+            ylim=(emin, emax),
+            vscale=vscale,
+            vmax=vmax,
+            vmin=vmin,
+            cmap=cmap,
+            title=title,
+            ax=ax,
+        )
+
+    if out_file:
+        fig.savefig(out_file, dpi=300)
+
+    if show:
+        plt.show()
+
+
+def _unfold_plot(ctx,
+                 gamma,
+                 npoints,
+                 sigma,
+                 eref,
+                 out_file,
+                 show,
+                 emin,
+                 emax,
+                 cmap,
+                 ncl,
+                 no_symm_average,
+                 vscale,
+                 procar,
+                 atoms_idx,
+                 orbitals,
+                 title,
+                 ax=None):
     """
     Plot the spectral function
 
@@ -177,8 +309,6 @@ def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cm
     if procar:
         click.echo(f'Loading projections from: {procar}')
         unfoldset.load_procar(procar)
-    else:
-        procar = None
 
     # Setup the atoms_idx and orbitals
     if atoms_idx:
@@ -186,12 +316,13 @@ def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cm
         for token in atoms_idx.split(','):
             token = token.strip()
             if '-' in token:
-                token = token.split('-')
-                indices.extend(range(int(token[0], int(token[1]) + 1)))
+                sub_token = token.split('-')
+                # Internal is 0-based indicing but we expect use to pass 1-based indicing
+                indices.extend(range(int(sub_token[0]) - 1, int(sub_token[1])))
             else:
                 indices.append(int(token))
         atoms_idx = indices
-        if orbitals:
+        if orbitals and orbitals != 'all':
             orbitals = [token.strip() for token in orbitals.split(',')]
         else:
             orbitals = 'all'
@@ -224,6 +355,7 @@ def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cm
         vscale=vscale,
         cmap=cmap,
         title=title,
+        ax=ax,
     )
     if out_file:
         click.echo(f'Unfolded band structure saved to {out_file}')
@@ -259,3 +391,21 @@ def matrix_from_string(string):
     else:
         transform_matrix = np.array(elems).reshape((3, 3))
     return transform_matrix
+
+
+def process_projection_options(atoms_idx, orbitals):
+    """Process commandline type specifications"""
+    indices = []
+    for token in atoms_idx.split(','):
+        token = token.strip()
+        if '-' in token:
+            sub_token = token.split('-')
+            # Internal is 0-based indicing but we expect use to pass 1-based indicing
+            indices.extend(range(int(sub_token[0]) - 1, int(sub_token[1])))
+        else:
+            indices.append(int(token))
+    if orbitals and orbitals != 'all':
+        orbitals = [token.strip() for token in orbitals.split(',')]
+    else:
+        orbitals = 'all'
+    return indices, orbitals
