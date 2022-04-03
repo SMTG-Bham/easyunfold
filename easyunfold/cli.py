@@ -7,7 +7,7 @@ import numpy as np
 import click
 from ase.io import read
 
-# pylint:disable=import-outside-toplevel
+# pylint:disable=import-outside-toplevel,too-many-locals
 
 
 @click.group('easyunfold')
@@ -151,7 +151,12 @@ def unfold_calculate(ctx, wavecar, save_as, gamma, ncl):
 @click.option('--cmap', default='PuRd', help='Name of the colour map to use.')
 @click.option('--show', is_flag=True, default=False, help='Show the plot interactively.')
 @click.option('--no-symm-average', is_flag=True, default=False, help='Do not include symmetry related kpoints for averaging.')
-def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale):
+@click.option('--procar', multiple=True, help='PROCAR files used for atomic weighting')
+@click.option('--atoms-idx', help='Indices of the atoms to be used for weighting')
+@click.option('--orbitals', help='Orbitals of to be used for weighting.')
+@click.option('--title', help='Title to be used')
+def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, procar, atoms_idx,
+                orbitals, title):
     """
     Plot the spectral function
 
@@ -168,10 +173,38 @@ def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cm
         eref = unfoldset.calculated_quantities.get('vbm', 0.0)
     click.echo(f'Using a reference energy of {eref:.3f} eV')
 
+    # Process the PROCAR
+    if procar:
+        click.echo(f'Loading projections from: {procar}')
+        unfoldset.load_procar(procar)
+    else:
+        procar = None
+
+    # Setup the atoms_idx and orbitals
+    if atoms_idx:
+        indices = []
+        for token in atoms_idx.split(','):
+            token = token.strip()
+            if '-' in token:
+                token = token.split('-')
+                indices.extend(range(int(token[0], int(token[1]) + 1)))
+            else:
+                indices.append(int(token))
+        atoms_idx = indices
+        if orbitals:
+            orbitals = [token.strip() for token in orbitals.split(',')]
+        else:
+            orbitals = 'all'
+    else:
+        atoms_idx = None
+        orbitals = None
+
     eng, spectral_function = unfoldset.get_spectral_function(gamma=gamma,
                                                              npoints=npoints,
                                                              sigma=sigma,
                                                              ncl=ncl,
+                                                             atoms_idx=atoms_idx,
+                                                             orbitals=orbitals,
                                                              symm_average=not no_symm_average)
     if emin is None:
         emin = eng.min() - eref
@@ -190,6 +223,7 @@ def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cm
         ylim=(emin, emax),
         vscale=vscale,
         cmap=cmap,
+        title=title,
     )
     if out_file:
         click.echo(f'Unfolded band structure saved to {out_file}')
