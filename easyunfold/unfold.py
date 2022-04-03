@@ -448,7 +448,16 @@ class UnfoldKSet(MSONable):
                 band_weight_sets[-1].append(band_weight)
         return band_weight_sets
 
-    def get_spectral_function(self, wavecar=None, npoints=2000, sigma=0.1, gamma=False, ncl=False, gamma_half='x', symm_average=True):
+    def get_spectral_function(self,
+                              wavecar=None,
+                              npoints=2000,
+                              sigma=0.1,
+                              gamma=False,
+                              ncl=False,
+                              gamma_half='x',
+                              symm_average=True,
+                              atoms_idx=None,
+                              orbitals=None):
         """Get the spectral function"""
         _, e0, spectral_function = self._get_spectral_weights(wavecar,
                                                               npoints=npoints,
@@ -457,6 +466,8 @@ class UnfoldKSet(MSONable):
                                                               ncl=ncl,
                                                               gamma_half=gamma_half,
                                                               also_spectral_function=True,
+                                                              atoms_idx=atoms_idx,
+                                                              orbitals=orbitals,
                                                               symm_average=symm_average)
         return e0, spectral_function
 
@@ -726,6 +737,7 @@ def EBS_cmaps(kpts,
               contour_plot=False,
               ax=None,
               vscale=1.0,
+              title=None,
               cmap='jet'):
     """
     plot the effective band structure with colormaps.  The plotting function
@@ -747,6 +759,7 @@ def EBS_cmaps(kpts,
         contour_plot: Plot in the contour mode
         ax: Existing axis(axes) to plot onto
         cmap: Colour mapping for the density/contour plot
+        title: Title to be used
         vscale: Scale factor for color coding
     """
 
@@ -815,6 +828,8 @@ def EBS_cmaps(kpts,
                 tick_labels.append(clean_latex_string(label))
             ax.set_xticks(tick_locs)
             ax.set_xticklabels(tick_labels)
+        if title:
+            ax.set_title(title)
 
     fig.tight_layout(pad=0.2)
     if save:
@@ -870,7 +885,7 @@ def spectral_function_from_weight_sets(spectral_weight_sets,
                 E_Km = spectral_weight_sets[ii][ispin, jj, :, 0]
                 P_Km = spectral_weight_sets[ii][ispin, jj, :, 1]
                 if band_weight_sets is not None:
-                    P_Km = P_Km * band_weight_sets[ii][jj][ispin, :]
+                    P_Km = P_Km * band_weight_sets[ii][jj][ispin, :P_Km.shape[0]]
                 # Take weighted average spectral functions
                 spectral_function[ispin, :,
                                   ii] += np.sum(LorentzSmearing(e0[:, np.newaxis], E_Km[np.newaxis, :], sigma=sigma) * P_Km[np.newaxis, :],
