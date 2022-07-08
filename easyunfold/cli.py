@@ -126,7 +126,11 @@ def unfold_status(ctx):
 @click.option('--gamma', is_flag=True)
 @click.option('--ncl', is_flag=True)
 def unfold_calculate(ctx, wavecar, save_as, gamma, ncl):
-    """Perform the unfolding"""
+    """
+    Perform the unfolding
+
+    Multiple WAVECAR files can be supplied for split-path calculations.
+    """
     from easyunfold.unfold import UnfoldKSet
 
     unfoldset: UnfoldKSet = ctx.obj['obj']
