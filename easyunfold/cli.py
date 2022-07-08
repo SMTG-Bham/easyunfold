@@ -27,9 +27,9 @@ def easyunfold():
 @click.option('--symprec', help='Transformation matrix', type=float, default=1e-5)
 @click.option('--out-file', default='easyunfold.json', help='Name of the output file')
 @click.option('--no-expand', help='Do not expand the kpoints by symmetry', default=False, is_flag=True)
-@click.option('--nk-per-split', help='Number of kpoints per split.', type=int)
+@click.option('--nk-per-split', help='Number of band structure kpoints per split.', type=int)
 @click.option('--scf-kpoints',
-              help='File (IBZKPT) to provide SCF kpoints for self-consistent calculations.',
+              help='File (IBZKPT) to provide SCF kpoints for self-consistent calculations. Needed for hybrid functional calculations.',
               type=click.Path(exists=True, dir_okay=False))
 def generate(pc_file, sc_file, matrix, kpoints, time_reversal, out_file, no_expand, symprec, nk_per_split, scf_kpoints):
     """
