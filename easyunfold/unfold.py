@@ -740,6 +740,7 @@ def EBS_cmaps(kpts,
               title=None,
               vmax=None,
               vmin=None,
+              alpha=1.0,
               cmap='jet'):
     """
     plot the effective band structure with colormaps.  The plotting function
@@ -748,7 +749,7 @@ def EBS_cmaps(kpts,
     Args:
         kpts: the kpoints vectors in fractional coordinates.
         cell: the primitive cell basis
-        e0: The energies corresponds to each element of the spectral function
+        E0: The energies corresponds to each element of the spectral function
         spectral_function: The spectral function array in the shape of (nspin, nk, neng)
         eref: Refernce point for zero energy
         kpath_label: Label of the high symmetry kpoints along the pathway
@@ -789,7 +790,7 @@ def EBS_cmaps(kpts,
     X, Y = np.meshgrid(kdist, E0 - eref)
 
     # Calculate the min and max values within the field of view, scaled by the factor
-    mask = (E0 < ylim[1]) & (E0 > ylim[0])
+    mask = (E0 < (ylim[1] + eref)) & (E0 > (ylim[0] + eref))
     vmin = spectral_function[:, mask, :].min() if vmin is None else vmin
     if vmax is None:
         vmax = spectral_function[:, mask, :].max()
@@ -798,15 +799,16 @@ def EBS_cmaps(kpts,
     for ispin in range(nspin):
         ax = axes[ispin]
         if contour_plot:
-            ax.contourf(X, Y, spectral_function[ispin], cmap=cmap, vmax=vmax, vmin=vmin)
+            ax.contourf(X, Y, spectral_function[ispin], cmap=cmap, vmax=vmax, vmin=vmin, alpha=alpha)
         else:
-            ax.pcolormesh(X, Y, spectral_function[ispin], cmap=cmap, shading='auto', vmax=vmax, vmin=vmin)
+            ax.pcolormesh(X, Y, spectral_function[ispin], cmap=cmap, shading='auto', vmax=vmax, vmin=vmin, alpha=alpha)
 
         ax.set_xlim(xmin, xmax)
         ax.set_ylim(*ylim)
         ax.set_ylabel('Energy (eV)', labelpad=5)
 
         if nseg:
+            # labels given for each segment
             for kb in kdist[::nseg]:
                 ax.axvline(x=kb, lw=0.5, color='k', ls=':', alpha=0.8)
 
@@ -818,6 +820,7 @@ def EBS_cmaps(kpts,
                     kname[ii] = clean_latex_string(kname[ii])
                 ax.set_xticklabels(kname)
         elif explicit_labels:
+            # Explicit label indices
             tick_locs = []
             tick_labels = []
             for index, label in explicit_labels:

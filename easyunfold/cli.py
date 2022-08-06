@@ -9,6 +9,11 @@ from ase.io import read
 
 # pylint:disable=import-outside-toplevel,too-many-locals
 
+DEFAULT_CMAPS = [
+    'Purples', 'Greens', 'Oranges', 'Reds', 'Blue', 'YlOrBr', 'YlOrRd', 'OrRd', 'PuRd', 'RdPu', 'BuPu', 'GnBu', 'PuBu', 'YlGnBu', 'PuBuGn',
+    'BuGn', 'YlGn'
+]
+
 
 @click.group('easyunfold')
 def easyunfold():
@@ -181,8 +186,9 @@ def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cm
 @add_plot_options
 @click.option('--atoms-idx', help='Indices of the atoms to be used for weighting', required=True)
 @click.option('--procar', multiple=True, help='PROCAR files used for atomic weighting', required=True)
+@click.option('--combined/--no-combined', is_flag=True, default=False, help='Plot all projections in a combined graph.')
 def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, procar,
-                            atoms_idx, orbitals, title):
+                            atoms_idx, orbitals, title, combined):
     """
     Plot with subplots with multiple atomic projections
     """
@@ -212,7 +218,6 @@ def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, em
 
     nsub = len(atoms_idx_subplots)
 
-    fig, axs = plt.subplots(1, len(atoms_idx_subplots), sharex=True, sharey=True, squeeze=False, figsize=(3.0 * nsub, 4.0))
     all_sf = []
     vmaxs = []
 
@@ -221,7 +226,7 @@ def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, em
     click.echo(f'Using a reference energy of {eref:.3f} eV')
 
     # Collect spectral functions and scale
-    for this_idx, this_orbitals, ax in zip(atoms_idx_subplots, orbitals_subsplots, axs[0]):
+    for this_idx, this_orbitals in zip(atoms_idx_subplots, orbitals_subsplots):
         # Setup the atoms_idx and orbitals
         this_idx, this_orbitals = process_projection_options(this_idx, this_orbitals)
         eng, spectral_function = unfoldset.get_spectral_function(gamma=gamma,
@@ -239,7 +244,7 @@ def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, em
             emax = eng.max() - eref
 
         # Clip the effective range
-        mask = (eng < emax) & (eng > emin)
+        mask = (eng < (emax + eref)) & (eng > (emin + eref))
         vmin = spectral_function[:, mask, :].min()
         vmax = spectral_function[:, mask, :].max()
         vmax = (vmax - vmin) * vscale + vmin
@@ -248,25 +253,50 @@ def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, em
     # Workout the vmax and vmin
     vmax = max(vmaxs)
     vmin = 0.
-    # Plot the spectral function with constant colour scales
-    for spectral_function, ax in zip(all_sf, axs[0]):
-        _ = EBS_cmaps(
-            unfoldset.kpts_pc,
-            unfoldset.pc_latt,
-            eng,
-            spectral_function,
-            eref=eref,
-            save=out_file,
-            show=False,
-            explicit_labels=unfoldset.kpoint_labels,
-            ylim=(emin, emax),
-            vscale=vscale,
-            vmax=vmax,
-            vmin=vmin,
-            cmap=cmap,
-            title=title,
-            ax=ax,
-        )
+
+    if not combined:
+        fig, axs = plt.subplots(1, len(atoms_idx_subplots), sharex=True, sharey=True, squeeze=False, figsize=(3.0 * nsub, 4.0))
+        # Plot the spectral function with constant colour scales
+        for spectral_function, ax in zip(all_sf, axs[0]):
+            _ = EBS_cmaps(
+                unfoldset.kpts_pc,
+                unfoldset.pc_latt,
+                eng,
+                spectral_function,
+                eref=eref,
+                save=out_file,
+                show=False,
+                explicit_labels=unfoldset.kpoint_labels,
+                ylim=(emin, emax),
+                vscale=vscale,
+                vmax=vmax,
+                vmin=vmin,
+                cmap=cmap,
+                title=title,
+                ax=ax,
+            )
+    else:
+        fig, ax = plt.subplots(1, 1, figsize=(3.0, 4.0))
+        sf_sum = sum(all_sf)
+        for spectral_function, cmap_ in zip(all_sf, DEFAULT_CMAPS):
+            alpha_mask = spectral_function / sf_sum * 1.5
+            alpha_mask = alpha_mask.clip(0, 1.0)
+            _ = EBS_cmaps(unfoldset.kpts_pc,
+                          unfoldset.pc_latt,
+                          eng,
+                          spectral_function,
+                          eref=eref,
+                          save=out_file,
+                          show=False,
+                          explicit_labels=unfoldset.kpoint_labels,
+                          ylim=(emin, emax),
+                          vscale=vscale,
+                          vmax=vmax,
+                          vmin=vmin,
+                          cmap=cmap_,
+                          title=title,
+                          ax=ax,
+                          alpha=alpha_mask)
 
     if out_file:
         fig.savefig(out_file, dpi=300)
