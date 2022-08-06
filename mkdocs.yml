@@ -1,0 +1,40 @@
+site_name: easyunfold Docs
+theme:
+  name: material
+  icon:
+    repo:  fontawesome/brands/github
+  palette:
+    primary: purple
+
+nav:
+  - Home: "index.md"
+  - Installation: "installation.md"
+  - Guide: "guide.md"
+  - Theorey: "theorey.md"
+  - Examples:
+      "Si Supercell": "example_si222.md"
+
+markdown_extensions:
+  - attr_list
+  - footnotes
+  - pymdownx.arithmatex:
+      generic: true
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+          - name: mermaid
+            class: mermaid
+            format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.snippets
+  - md_in_html
+  - def_list
+  - pymdownx.tasklist:
+      custom_checkbox: true
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+repo_url: https://github.com/SMTG-UCL/easyunfold

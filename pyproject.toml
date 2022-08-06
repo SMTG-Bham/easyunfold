@@ -14,3 +14,9 @@ dependencies = ["scipy", "numpy", "matplotlib", "ase", "spglib", "click", "monty
 
 [project.scripts]
 easyunfold = "easyunfold.cli:easyunfold"
+
+[project.optional-dependencies]
+doc = [
+    "mkdocs~=1.2", "mkdocs-material~=8.2.1"
+]
+test = ["pytest"]
