@@ -9,6 +9,7 @@ repos:
     exclude: (easyunfold/pyvaspwfc|example)
   - id: check-yaml
     exclude: (easyunfold/pyvaspwfc|example)
+    args: ['--unsafe']
   - id: check-json
     exclude: (easyunfold/pyvaspwfc|example)
   - id: check-added-large-files
