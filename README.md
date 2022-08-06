@@ -1,8 +1,8 @@
 # easyunfold
 
 
-![build](https://github.com/smtg-ucl/easyunfold/actions/workflows/ci.yml/badge.svg)
-![docs](https://github.com/smtg-ucl/easyunfold/actions/workflows/docs.yml/badge.svg)
+![build](https://github.com/SMTG-UCL/easyunfold/actions/workflows/ci.yaml/badge.svg)
+![docs](https://github.com/SMTG-UCL/easyunfold/actions/workflows/docs.yaml/badge.svg)
 
 This package is intended for obtaining the effective band structure of a supercell for a certain path of the primitive cell.
 It was originally based on [PyVaspwfc](https://github.com/QijingZheng/Vaspeasyunfolding) for reading wavefunction output of VASP, and contains some code of the latter.
