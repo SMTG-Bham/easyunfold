@@ -10,7 +10,7 @@ nav:
   - Home: "index.md"
   - Installation: "installation.md"
   - Guide: "guide.md"
-  - Theorey: "theorey.md"
+  - Theory: "theory.md"
   - Examples:
       "Si Supercell": "example_si222.md"
       "MgO Projection": "example_mgo.md"
