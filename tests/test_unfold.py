@@ -53,7 +53,7 @@ def silicon_unfold(explicit_kpoints_minimal, si_atoms, si222_atoms):
 
 def test_read_kpoints_line(datapath):
 
-    kpoints, comment, labels = unfold.read_kpoints(datapath('KPOINTS_LINE'))
+    kpoints, comment, labels, _ = unfold.read_kpoints(datapath('KPOINTS_LINE'))
     assert len(kpoints) == 91
     assert len(labels) == 4
     assert labels[0][0] == 0
