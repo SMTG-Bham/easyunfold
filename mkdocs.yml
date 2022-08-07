@@ -13,6 +13,7 @@ nav:
   - Theorey: "theorey.md"
   - Examples:
       "Si Supercell": "example_si222.md"
+      "MgO Projection": "example_mgo.md"
 
 markdown_extensions:
   - attr_list
