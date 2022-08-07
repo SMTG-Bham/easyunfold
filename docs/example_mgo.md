@@ -51,7 +51,8 @@ projections into a single plot.
 In some cases, especially if there are many projection to be plotted at the same time, it can be clearer to create separateted plots for each.
 
 ```
-easyunfold unfold plot-projections  --procar MgO_super/PROCAR --atoms-idx="1-4|5-8" --out-file unfold_project_sep.png
+easyunfold unfold plot-projections  --procar MgO_super/PROCAR --atoms-idx="1-4|5-8" \ 
+--out-file unfold_project_sep.png
 ```
 
 <figure markdown>
