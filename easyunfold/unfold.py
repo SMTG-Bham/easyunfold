@@ -6,12 +6,14 @@ The main module for unfolding workflow and algorithm
 # pylint: disable=invalid-name,protected-access,too-many-locals
 
 ############################################################
+import re
 from typing import Union, List, Tuple
 from pathlib import Path
 
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
+from matplotlib.colors import ListedColormap, hex2color
 from monty.json import MSONable
 from tqdm import tqdm
 import spglib
@@ -536,7 +538,7 @@ def write_kpoints(kpoints: Union[np.ndarray, list], outpath='KPOINTS', comment='
     kpoints = np.asarray(kpoints)
     nkpts = kpoints.shape[0]
 
-    with open(outpath, 'w') as vaspkpt:
+    with open(outpath, 'w', encoding='utf-8') as vaspkpt:
         vaspkpt.write(comment + '\n')
         vaspkpt.write('%d\n' % nkpts)
         vaspkpt.write('Rec\n')
@@ -554,7 +556,7 @@ def read_kpoints(path='KPOINTS'):
 
     Returns the kpoints, the comment and the labels at each kpoint
     """
-    content = Path(path).read_text().split('\n')
+    content = Path(path).read_text(encoding='utf-8').split('\n')
     comment = content[0]
     nkpts = int(content[1])
     if content[2].lower().startswith('lin'):
@@ -614,7 +616,7 @@ def read_kpoints_line(content, density=20):
         labels_loc.append((len(kpoints), labels[i]))
         kpoints.extend(this_seg.tolist())
         labels_loc.append((len(kpoints) - 1, labels[i + 1]))
-    return kpoints, comment, labels_loc
+    return kpoints, comment, labels_loc, None
 
 
 def make_kpath(kbound, nseg=40):
@@ -1214,3 +1216,53 @@ def concatenate_scf_kpoints(scf_kpts, scf_weights, kpoints):
     weights = np.zeros(kpoints.shape[0])
     weights[:len(scf_weights)] = scf_weights
     return kpoints, weights
+
+
+def create_white_colormap(color: Union[str, tuple, list]) -> ListedColormap:
+    """
+    Create colormap from white to certain colour.
+
+    Args:
+        color (str, tuple, list): HEX color string or tuple/list of RGB color.
+    """
+    if isinstance(color, str):
+        color = hex2color(color)
+    color = color[:3]  # Ensure RGB
+    N = 256
+    vals = np.ones((N, 4))
+    vals[:, 0] = np.linspace(1, color[0], N)
+    vals[:, 1] = np.linspace(1, color[1], N)
+    vals[:, 2] = np.linspace(1, color[2], N)
+    return ListedColormap(vals)
+
+
+def create_white_colormap_from_existing(name: str) -> ListedColormap:
+    """
+    Create a white-based color map from an existing one.
+    """
+    if name.startswith('#'):
+        # Passed a HEX color, use it as the terminal colour as it is
+        return create_white_colormap(name)
+
+    cmp = plt.get_cmap(name)
+    rgba = cmp(cmp.N)
+    return create_white_colormap(rgba)
+
+
+def parse_atoms_idx(atoms_idx):
+    """
+    Expanding syntex like `1-2` (inclusive)
+
+    For example, `1,2,3,4-6` will be expanded as `1,2,3,4,5,6`.
+    """
+    items = atoms_idx.split(',')
+    out = []
+    for item in items:
+        match = re.match(r'(\d)-(\d)', item)
+        if match:
+            out.extend(range(int(match.group(1)), int(match.group(2)) + 1))
+        else:
+            out.append(int(item))
+    # Expect passing 1-based indexing
+    out = [x - 1 for x in out]
+    return out
