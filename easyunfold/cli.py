@@ -7,6 +7,8 @@ import numpy as np
 import click
 from ase.io import read
 
+from easyunfold.unfold import create_white_colormap_from_existing, parse_atoms_idx
+
 # pylint:disable=import-outside-toplevel,too-many-locals
 
 DEFAULT_CMAPS = [
@@ -84,7 +86,7 @@ def generate(pc_file, sc_file, matrix, kpoints, time_reversal, out_file, no_expa
     click.echo('Supercell kpoints written to KPOITNS_' + out_file.stem)
 
     # Serialize the data
-    Path(out_file).write_text(unfoldset.to_json())
+    Path(out_file).write_text(unfoldset.to_json(), encoding='utf-8')
 
     click.echo('Unfolding settings written to ' + str(out_file))
 
@@ -142,7 +144,7 @@ def unfold_calculate(ctx, wavecar, save_as, gamma, ncl):
     unfoldset.get_spectral_weights(wavecar, gamma, ncl=ncl)
 
     out_path = save_as if save_as else ctx.obj['fname']
-    Path(out_path).write_text(unfoldset.to_json())
+    Path(out_path).write_text(unfoldset.to_json(), encoding='utf-8')
     click.echo('Unfolding data written to ' + out_path)
 
 
@@ -161,7 +163,7 @@ def add_plot_options(func):
     click.option('--show', is_flag=True, default=False, help='Show the plot interactively.')(func)
     click.option('--no-symm-average', is_flag=True, default=False, help='Do not include symmetry related kpoints for averaging.')(func)
     click.option('--procar', multiple=True, help='PROCAR files used for atomic weighting')(func)
-    click.option('--atoms-idx', help='Indices of the atoms to be used for weighting')(func)
+    click.option('--atoms-idx', help='Indices of the atoms to be used for weighting (1-indexed).')(func)
     click.option('--orbitals', help='Orbitals of to be used for weighting.')(func)
     click.option('--title', help='Title to be used')(func)
     return func
@@ -187,6 +189,7 @@ def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cm
 @click.option('--atoms-idx', help='Indices of the atoms to be used for weighting', required=True)
 @click.option('--procar', multiple=True, help='PROCAR files used for atomic weighting', required=True)
 @click.option('--combined/--no-combined', is_flag=True, default=False, help='Plot all projections in a combined graph.')
+@click.option('--cmap', default='PuRd', help='Name of the colour map(s) to use. Passing a list separated by "|" for the combined plot.')
 def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, procar,
                             atoms_idx, orbitals, title, combined):
     """
@@ -278,7 +281,13 @@ def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, em
     else:
         fig, ax = plt.subplots(1, 1, figsize=(3.0, 4.0))
         sf_sum = sum(all_sf)
-        for spectral_function, cmap_ in zip(all_sf, DEFAULT_CMAPS):
+        if '|' in cmap:
+            cmaps = cmap.split('|')
+        else:
+            cmaps = DEFAULT_CMAPS
+
+        for spectral_function, cmap_ in zip(all_sf, cmaps):
+            cmap_ = create_white_colormap_from_existing(cmap_)
             alpha_mask = spectral_function / sf_sum * 1.5
             alpha_mask = alpha_mask.clip(0, 1.0)
             _ = EBS_cmaps(unfoldset.kpts_pc,
@@ -300,6 +309,7 @@ def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, em
 
     if out_file:
         fig.savefig(out_file, dpi=300)
+        click.echo(f'Unfolded band structure saved to {out_file}')
 
     if show:
         plt.show()
@@ -346,20 +356,7 @@ def _unfold_plot(ctx,
 
     # Setup the atoms_idx and orbitals
     if atoms_idx:
-        indices = []
-        for token in atoms_idx.split(','):
-            token = token.strip()
-            if '-' in token:
-                sub_token = token.split('-')
-                # Internal is 0-based indicing but we expect use to pass 1-based indicing
-                indices.extend(range(int(sub_token[0]) - 1, int(sub_token[1])))
-            else:
-                indices.append(int(token))
-        atoms_idx = indices
-        if orbitals and orbitals != 'all':
-            orbitals = [token.strip() for token in orbitals.split(',')]
-        else:
-            orbitals = 'all'
+        atoms_idx, orbitals = process_projection_options(atoms_idx, orbitals)
     else:
         atoms_idx = None
         orbitals = None
@@ -429,15 +426,7 @@ def matrix_from_string(string):
 
 def process_projection_options(atoms_idx, orbitals):
     """Process commandline type specifications"""
-    indices = []
-    for token in atoms_idx.split(','):
-        token = token.strip()
-        if '-' in token:
-            sub_token = token.split('-')
-            # Internal is 0-based indicing but we expect use to pass 1-based indicing
-            indices.extend(range(int(sub_token[0]) - 1, int(sub_token[1])))
-        else:
-            indices.append(int(token))
+    indices = parse_atoms_idx(atoms_idx)
     if orbitals and orbitals != 'all':
         orbitals = [token.strip() for token in orbitals.split(',')]
     else:

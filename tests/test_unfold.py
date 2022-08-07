@@ -1,12 +1,11 @@
 """
 Test unfolding routines
 """
-import shutil
-import urllib.request
 import numpy as np
 from ase.io import read
 import pytest
 import easyunfold.unfold as unfold
+from matplotlib.colors import hex2color
 
 
 @pytest.fixture
@@ -205,3 +204,25 @@ def test_unfold_no_expand(si_project_dir, tag, nspin, ncl):
     assert sws[0].shape[3] == 2
 
     assert unfolder.is_calculated
+
+
+def test_atoms_idx_parsing():
+    """Test parsing atomic indices"""
+
+    assert unfold.parse_atoms_idx('1,2,3,4') == [0, 1, 2, 3]
+    assert unfold.parse_atoms_idx('1-4') == [0, 1, 2, 3]
+    assert unfold.parse_atoms_idx('1') == [0]
+
+
+def test_colourmap():
+    """Test handling colour map creation"""
+    import matplotlib.pyplot as plt
+
+    cmap = unfold.create_white_colormap('#123456')
+    assert cmap(cmap.N) == hex2color('#123456') + (1.0,)
+
+    cmap = unfold.create_white_colormap_from_existing('#123456')
+    assert cmap(cmap.N) == hex2color('#123456') + (1.0,)
+
+    cmap = unfold.create_white_colormap_from_existing('Reds')
+    assert cmap(cmap.N) == plt.get_cmap('Reds')(256)
