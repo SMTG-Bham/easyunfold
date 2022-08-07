@@ -448,7 +448,8 @@ projections into a single plot.</p>
 <figcaption> Unfolded MgO band structure with projections. Green for Mg atoms and red for O atoms. </figcaption>
 </figure>
 <p>In some cases, especially if there are many projection to be plotted at the same time, it can be clearer to create separateted plots for each.</p>
-<div class="highlight"><pre><span></span><code>easyunfold unfold plot-projections  --procar MgO_super/PROCAR --atoms-idx=&quot;1-4|5-8&quot; --out-file unfold_project_sep.png
+<div class="highlight"><pre><span></span><code>easyunfold unfold plot-projections  --procar MgO_super/PROCAR --atoms-idx=&quot;1-4|5-8&quot; \ 
+--out-file unfold_project_sep.png
 </code></pre></div>
 <figure>
 <p><img alt="MgO unfolded band structure" src="../img/MgO_unfold_project_sep.png" width="800" />
