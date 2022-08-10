@@ -1,3 +1,0 @@
-"""
-Subpackage of VaspPyWfc
-"""
