@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
 The main module for unfolding workflow and algorithm
@@ -19,7 +18,7 @@ from tqdm import tqdm
 import spglib
 
 from easyunfold import __version__
-from .pyvaspwfc.vaspwfc import vaspwfc
+from .wavecar import Wavecar
 from .procar import Procar
 
 ############################################################
@@ -943,15 +942,11 @@ class Unfold():
         self.M = np.array(M, dtype=float)
         assert self.M.shape == (3, 3), 'Shape of the tranformation matrix must be (3,3)'
 
-        self.wfc = vaspwfc(wavecar, lsorbit=self._lsoc, lgamma=self._lgam, gamma_half=gamma_half)
+        self.wfc = Wavecar(wavecar, lsorbit=self._lsoc, lgamma=self._lgam, gamma_half=gamma_half)
         # all the K-point vectors
         self.kvecs = self.wfc._kvecs
         # all the KS energies in shape (ns, nk, nb)
         self.bands = self.wfc._bands
-
-        # G-vectors within the cutoff sphere, let's just do it once for all.
-        # self.allGvecs = np.array([self.wfc.gvectors(ikpt=kpt+1)
-        #                           for kpt in range(self.wfc._nkpts)], dtype=int)
 
         # spectral weight for all the kpoints
         self.SW = None
@@ -978,7 +973,6 @@ class Unfold():
 
         # Reciprocal space vectors of the supercell in fractional unit
         Gvecs = self.wfc.gvectors(ikpt=ikpt)
-        # Gvecs = self.allGvecs[ikpt - 1]
 
         if self._lgam:
             nplw = Gvecs.shape[0]
@@ -991,16 +985,13 @@ class Unfold():
             Gvecs = tmp
 
         # Shape of Gvecs: (nplws, 3)
-        # iGvecs = np.arange(Gvecs.shape[0], dtype=int)
 
         # Reciprocal space vectors of the primitive cell
         gvecs = np.dot(Gvecs, np.linalg.inv(self.M).T)
         # Deviation from the perfect sites
         gd = gvecs - np.round(gvecs)
-        # match = np.linalg.norm(gd, axis=1) < epsilon
         match = np.alltrue(np.abs(gd) < epsilon, axis=1)
 
-        # return Gvecs[match], iGvecs[match]
         return Gvecs[match], Gvecs
 
     def find_K_index(self, K0):
@@ -1052,15 +1043,6 @@ class Unfold():
 
         # 3d grid for planewave coefficients
         wfc_k_3D = np.zeros(self.wfc._ngrid, dtype=np.complex128)
-
-        # if self._lsoc:
-        #     # the weights and corresponding energies
-        #     P_Km = np.zeros((2, self.wfc._nbands), dtype=float)
-        #     E_Km = np.zeros((2, self.wfc._nbands), dtype=float)
-        # else:
-        #     # the weights and corresponding energies
-        #     P_Km = np.zeros(self.wfc._nbands, dtype=float)
-        #     E_Km = np.zeros(self.wfc._nbands, dtype=float)
 
         # the weights and corresponding energies
         P_Km = np.zeros(self.wfc._nbands, dtype=float)
@@ -1114,8 +1096,6 @@ class Unfold():
 
         NKPTS = len(kpoints)
 
-        # self.SW = np.array([self.spectral_weight_k(kpoints[ik])
-        #                     for ik in range(NKPTS)], dtype=float)
         sw = []
         for ispin in range(self.wfc._nspin):
             if self.wfc._nspin == 2:
@@ -1126,11 +1106,6 @@ class Unfold():
             sw.append([self.spectral_weight_k(kpoints[ik], whichspin=ispin + 1) for ik in range(NKPTS)])
 
         self.SW = np.array(sw)
-
-        # For noncollinear calculation, nspin = 1.
-        # if self._lsoc:
-        #     # self.SW = np.swapaxes(self.SW, 0, 1)
-        #     self.SW = np.array([self.SW[0,:,:,0,:], self.SW[0,:,:,1,]])
 
         return self.SW
 
