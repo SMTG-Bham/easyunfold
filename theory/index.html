@@ -63,7 +63,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#theory" class="md-skip">
+        <a href="#theory-of-unfolding" class="md-skip">
           Skip to content
         </a>
       
@@ -281,8 +281,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#theory" class="md-nav__link">
-    Theory
+  <a href="#theory-of-unfolding" class="md-nav__link">
+    Theory of unfolding
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#symmetry-considerations" class="md-nav__link">
+    Symmetry considerations
   </a>
   
 </li>
@@ -382,8 +389,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#theory" class="md-nav__link">
-    Theory
+  <a href="#theory-of-unfolding" class="md-nav__link">
+    Theory of unfolding
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#symmetry-considerations" class="md-nav__link">
+    Symmetry considerations
   </a>
   
 </li>
@@ -408,7 +422,38 @@
 
   <h1>Theory</h1>
 
-<h2 id="theory">Theory</h2>
+<h2 id="theory-of-unfolding">Theory of unfolding</h2>
+<p>Notation: <span class="arithmatex">\(\vec{k}\)</span> is the kpoint of the supercell and <span class="arithmatex">\(\vec{k}\)</span> is that of the primitive cell. 
+Reference: <a href="https://link.aps.org/doi/10.1103/PhysRevB.85.085201">https://link.aps.org/doi/10.1103/PhysRevB.85.085201</a>  </p>
+<p>Each <span class="arithmatex">\(k\)</span> in the primitive cell can be mapped to that in the supercell where:</p>
+<div class="arithmatex">\[
+\vec{K} = \vec{k} - \vec{G}_0.
+\]</div>
+<p>with <span class="arithmatex">\(\vec{G}_0\)</span> being an reciprocal lattice vector.
+Naturally, each <span class="arithmatex">\(\vec{K}\)</span> in the supercell can be unfolded into a set of <span class="arithmatex">\(\vec{k}_i\)</span>:</p>
+<div class="arithmatex">\[
+\vec{k_i} = \vec{K} + \vec{G}_i, i=1,...,N_\vec{K}.
+\]</div>
+<p>The key implication is that for a given <span class="arithmatex">\(\vec{k}\)</span>, there is a unique <span class="arithmatex">\(\vec{K}\)</span> that it folds to.</p>
+<p>The goal of the band folding procedure is to obtain the <span class="arithmatex">\(E(\vec{k})\)</span> from the complicated <span class="arithmatex">\(E(\vec{K})\)</span>, where E is the energy of the Kohn-Sham states. 
+This can be achieved by projecting <span class="arithmatex">\(\ket{\vec{K}m}\)</span> on all of the primitive cell Block states <span class="arithmatex">\(\ket{\vec{k}_i}\)</span> of a set of <span class="arithmatex">\(\vec{k_i}\)</span> and compute the spectral weight:</p>
+<div class="arithmatex">\[
+P_{\vec{K}m}(\vec{k}_i) = \sum_n |\braket{\vec{K}m |\vec{k}_i n}|^2.
+\]</div>
+<p>where <span class="arithmatex">\(P\)</span> represents the probability of finding a set of primitive cell stats <span class="arithmatex">\(\ket{\vec{k}_in}\)</span> contributing to the supercell state <span class="arithmatex">\(\ket{\vec{K}m}\)</span>, or the amount of Bloch character <span class="arithmatex">\(\vec{k}_i\)</span> preserved in <span class="arithmatex">\(\ket{\vec{K}m}\)</span> at the same energy. 
+Based on this, one can further dervice the spectral function of <span class="arithmatex">\(E\)</span>:</p>
+<div class="arithmatex">\[
+A(\vec{k}_i, E) = \sum_m P_{\vec{k}m}(\vec{k}_i)\delta(E_m - E).
+\]</div>
+<p>In practice, the <span class="arithmatex">\(\delta\)</span> function is replaced with a Gaussian or Lorentzian function to smear the contribution with discretised <span class="arithmatex">\(E\)</span>. </p>
+<h2 id="symmetry-considerations">Symmetry considerations</h2>
+<p>In practice, the set of primitive cell kpoints <span class="arithmatex">\(\vec{k}_i\)</span> is taken from a given path in the Brouline zone going through multiple high symmetry points. 
+This selection of the path depends on the space group of the primitive cell.
+Only a limited set of paths are needed because of the presence of point group symmetry, as symmetrically equivalent kpoints contains the same eigenstates. </p>
+<p>However, the supercell to be unfolded often contains reduced point group symmetry compared to that of the primitive cell due to imperfections (presence of defects, strain, distorations e.t.c).
+This broken symmetry means that previously equivalent kpoints are no longer equivalent. </p>
+<p>We account of this by including images of the primitive kpoints that are no longer equivalent under the point group of that of the supercell. 
+Weighted contributions of these extra kpoints are added to the spectral function. </p>
 
               
             </article>
