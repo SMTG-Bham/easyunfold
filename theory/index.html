@@ -443,9 +443,15 @@ P_{\vec{K}m}(\vec{k}_i) = \sum_n |\braket{\vec{K}m |\vec{k}_i n}|^2.
 <p>where <span class="arithmatex">\(P\)</span> represents the probability of finding a set of primitive cell stats <span class="arithmatex">\(\ket{\vec{k}_in}\)</span> contributing to the supercell state <span class="arithmatex">\(\ket{\vec{K}m}\)</span>, or the amount of Bloch character <span class="arithmatex">\(\vec{k}_i\)</span> preserved in <span class="arithmatex">\(\ket{\vec{K}m}\)</span> at the same energy. 
 Based on this, one can further dervice the spectral function of <span class="arithmatex">\(E\)</span>:</p>
 <div class="arithmatex">\[
-A(\vec{k}_i, E) = \sum_m P_{\vec{k}m}(\vec{k}_i)\delta(E_m - E).
+A(\vec{k}_i, E) = \sum_m P_{\vec{K}m}(\vec{k}_i)\delta(E_m - E).
 \]</div>
 <p>In practice, the <span class="arithmatex">\(\delta\)</span> function is replaced with a Gaussian or Lorentzian function to smear the contribution with discretised <span class="arithmatex">\(E\)</span>. </p>
+<p>Hence, the central quantity to be calculated is the <span class="arithmatex">\(P_{\vec{K}m}(\vec{k}_i)\)</span>.
+For plane-wave basis, it can shown that (equation 15 in Popescu et al.):</p>
+<div class="arithmatex">\[
+P_{\vec{K}m}(\vec{k}_j) = \sum_{\vec{g}} |C_{\vec{Km}}(\vec{g} + \vec{G_j})|^2,
+\]</div>
+<p>where <span class="arithmatex">\(C_{\vec{Km}}(\vec{g} + \vec{G_j})\)</span> the plane wave coefficients of the supercell. </p>
 <h2 id="symmetry-considerations">Symmetry considerations</h2>
 <p>In practice, the set of primitive cell kpoints <span class="arithmatex">\(\vec{k}_i\)</span> is taken from a given path in the Brouline zone going through multiple high symmetry points. 
 This selection of the path depends on the space group of the primitive cell.
