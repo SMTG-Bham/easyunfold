@@ -169,6 +169,44 @@ def add_plot_options(func):
     return func
 
 
+@unfold.command('effective-mass')
+@click.pass_context
+@click.option('--intensity-tol', type=float, default=0.1)
+@click.option('--spin', type=int, default=0)
+@click.option('--npoints', type=int, default=3)
+def unfold_effective_mass(ctx, intensity_tol, spin, npoints):
+    """
+    Compute and print effective masses by tracing the unfolded weights.
+
+    Note that this functionality only works for simple unfolded band structures,
+    and it is likely to fail for complex cases.
+    """
+    from easyunfold.effective_mass import EffectiveMass
+    from easyunfold.unfold import UnfoldKSet
+    unfoldset: UnfoldKSet = ctx.obj['obj']
+    efm = EffectiveMass(unfoldset, intensity_tol=intensity_tol)
+    output = efm.get_effective_masses(ispin=spin, npoints=npoints)
+
+    ## Print data
+    def print_data(entries, tag='me'):
+        """Print the effective mass data"""
+        for entry in entries:
+            me = entry['effective_mass']
+            kf = entry['kpoint_from']
+            lf = entry['kpoint_label_from']
+            kt = entry['kpoint_to']
+            lt = entry['kpoint_label_to']
+            click.echo(f'   {tag}: {me:.3f} {kf} ({lf}) -> {kt} ({lt})')
+
+    click.echo('Electron effective masses:')
+    print_data(output['electrons'], 'm_e')
+    print('')
+    click.echo('Hole effective masses:')
+    print_data(output['holes'], 'm_h')
+
+    click.echo('Unfolded band structure can be ambiguous, please cross-check with the spectral function plot.')
+
+
 @unfold.command('plot')
 @click.pass_context
 @add_plot_options

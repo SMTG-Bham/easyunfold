@@ -30,10 +30,19 @@ where $P$ represents the probability of finding a set of primitive cell stats $\
 Based on this, one can further dervice the spectral function of $E$:
 
 $$
-A(\vec{k}_i, E) = \sum_m P_{\vec{k}m}(\vec{k}_i)\delta(E_m - E).
+A(\vec{k}_i, E) = \sum_m P_{\vec{K}m}(\vec{k}_i)\delta(E_m - E).
 $$
 
 In practice, the $\delta$ function is replaced with a Gaussian or Lorentzian function to smear the contribution with discretised $E$. 
+
+Hence, the central quantity to be calculated is the $P_{\vec{K}m}(\vec{k}_i)$.
+For plane-wave basis, it can shown that (equation 15 in Popescu et al.):
+
+$$
+P_{\vec{K}m}(\vec{k}_j) = \sum_{\vec{g}} |C_{\vec{Km}}(\vec{g} + \vec{G_j})|^2,
+$$
+
+where $C_{\vec{Km}}(\vec{g} + \vec{G_j})$ the plane wave coefficients of the supercell. 
 
 
 ## Symmetry considerations
