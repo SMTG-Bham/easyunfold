@@ -175,7 +175,8 @@ def add_plot_options(func):
 @click.option('--spin', type=int, default=0)
 @click.option('--npoints', type=int, default=3)
 @click.option('--edge-detect-tol', type=float, default=0.1)
-def unfold_effective_mass(ctx, intensity_tol, spin, npoints, edge_detect_tol):
+@click.option('--nocc', type=int)
+def unfold_effective_mass(ctx, intensity_tol, spin, npoints, edge_detect_tol, nocc):
     """
     Compute and print effective masses by tracing the unfolded weights.
 
@@ -186,6 +187,9 @@ def unfold_effective_mass(ctx, intensity_tol, spin, npoints, edge_detect_tol):
     from easyunfold.unfold import UnfoldKSet
     unfoldset: UnfoldKSet = ctx.obj['obj']
     efm = EffectiveMass(unfoldset, intensity_tol=intensity_tol, edge_detect_tol=edge_detect_tol)
+    click.echo(f'Band extrema data: {efm.get_band_extrema()}')
+    if nocc:
+        efm.set_nocc(nocc)
     output = efm.get_effective_masses(ispin=spin, npoints=npoints)
 
     ## Print data

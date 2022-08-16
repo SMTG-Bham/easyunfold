@@ -77,6 +77,10 @@ class EffectiveMass:
         self.intensity_tol = intensity_tol
         self.edge_detect_tol = edge_detect_tol
         self.parabolic = parabolic
+        self.nocc = None  # Number of occupied bands
+
+    def set_nocc(self, nocc):
+        self.nocc = nocc
 
     @property
     def kpoints(self):
@@ -180,6 +184,10 @@ class EffectiveMass:
         Workout the effective masses based on the unfolded band structure for CBM or VBM
         """
         iks, _, iband = self.get_band_extrema(mode=mode)
+        # Override occupations
+        if self.nocc:
+            iband = [self.nocc for _ in iband]
+
         results = []
         label_idx = [x[0] for x in self.kpoints_labels]
         label_names = [x[1] for x in self.kpoints_labels]
@@ -196,7 +204,11 @@ class EffectiveMass:
                 kdists, engs_effective = self._get_fitting_data(idxk, iband[0], direction, ispin=ispin, npoints=npoints)
                 me = fit_effective_mass(kdists, engs_effective, parabolic=self.parabolic)
 
-                # Workout the label of the kpoint
+                # If the identified edge is not in the list of high symmetry point, ignore it
+                # This mitigate the problem where the CBM can be duplicated....
+                if idxk not in label_idx:
+                    continue
+
                 ilabel = label_idx.index(idxk)
                 label_from = label_names[ilabel]
                 label_to = label_names[ilabel + direction]
