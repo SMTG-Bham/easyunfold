@@ -64,7 +64,7 @@ def points_with_tol(array, value, tol=1e-4):
 class EffectiveMass:
     """Calculate effective mass from unfolding data"""
 
-    def __init__(self, unfold: UnfoldKSet, intensity_tol=1e-1, parabolic=True):
+    def __init__(self, unfold: UnfoldKSet, intensity_tol=1e-1, edge_detect_tol=1e-2, parabolic=True):
         """
         Instantiate the object
 
@@ -75,6 +75,7 @@ class EffectiveMass:
         """
         self.unfold: UnfoldKSet = unfold
         self.intensity_tol = intensity_tol
+        self.edge_detect_tol = edge_detect_tol
         self.parabolic = parabolic
 
     @property
@@ -85,7 +86,7 @@ class EffectiveMass:
     def kpoints_labels(self):
         return self.unfold.kpoint_labels
 
-    def get_band_extrema(self, mode: str = 'cbm', tol: float = 1e-3):
+    def get_band_extrema(self, mode: str = 'cbm', tol: float = None):
         """
         Obtain the kpoint idx of band maximum
 
@@ -93,6 +94,8 @@ class EffectiveMass:
             A tuple of extrema locations including a list of kpoint indices, sub-indices within
             the set and the band indices.
         """
+        if tol is None:
+            tol = self.edge_detect_tol
         intensity_tol = self.intensity_tol
 
         if mode not in ['cbm', 'vbm']:
@@ -110,7 +113,7 @@ class EffectiveMass:
                 if np.any(np.abs(tmp[:, 0] - cbm) < tol):
                     itmp, _ = points_with_tol(tmp[:, 0], cbm, tol)
                     # Check if it has sufficient intensity
-                    if tmp[itmp, 1] < intensity_tol:
+                    if tmp[min(itmp), 1] < intensity_tol:
                         continue
                     k_indicies.append(idx)
 

@@ -174,7 +174,8 @@ def add_plot_options(func):
 @click.option('--intensity-tol', type=float, default=0.1)
 @click.option('--spin', type=int, default=0)
 @click.option('--npoints', type=int, default=3)
-def unfold_effective_mass(ctx, intensity_tol, spin, npoints):
+@click.option('--edge-detect-tol', type=float, default=0.1)
+def unfold_effective_mass(ctx, intensity_tol, spin, npoints, edge_detect_tol):
     """
     Compute and print effective masses by tracing the unfolded weights.
 
@@ -184,7 +185,7 @@ def unfold_effective_mass(ctx, intensity_tol, spin, npoints):
     from easyunfold.effective_mass import EffectiveMass
     from easyunfold.unfold import UnfoldKSet
     unfoldset: UnfoldKSet = ctx.obj['obj']
-    efm = EffectiveMass(unfoldset, intensity_tol=intensity_tol)
+    efm = EffectiveMass(unfoldset, intensity_tol=intensity_tol, edge_detect_tol=edge_detect_tol)
     output = efm.get_effective_masses(ispin=spin, npoints=npoints)
 
     ## Print data
