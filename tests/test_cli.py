@@ -70,6 +70,11 @@ def test_unfold(si_project_dir, tag):
 
     assert unfoldset.is_calculated
 
+    # Effective mass
+    output = runner.invoke(easyunfold, ['unfold', '--data-file', 'test.json', 'effective-mass'])
+    assert 'Hole effective masses' in output.stdout
+    assert 'm_e: -1.389 [0.0, 0.0, 0.0]' in output.stdout
+
     # Do the plotting
     output = runner.invoke(easyunfold, ['unfold', '--data-file', 'test.json', 'plot'])
     assert output.exit_code == 0

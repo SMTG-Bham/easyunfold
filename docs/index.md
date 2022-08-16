@@ -6,5 +6,3 @@ An notable improvement is that breaking symmetry is taken accounted of by sampli
 Our goal is to make the unfolding process easier to carry out and less likely to go wrong.
 
 For the methodology, see [here](https://link.aps.org/doi/10.1103/PhysRevB.85.085201).
-
-NOTE: This package is under a MIT license, although the original PyVaspwfc code does not specific a license.
