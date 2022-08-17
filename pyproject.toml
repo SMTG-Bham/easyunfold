@@ -14,6 +14,7 @@ dependencies = ["scipy", "numpy", "matplotlib", "ase", "spglib", "click", "monty
 
 [project.urls]
 "Homepage" = "https://github.com/SMTG-UCL/easyunfold"
+"Documentation" = "https://smtg-ucl.github.io/easyunfold/"
 
 [project.scripts]
 easyunfold = "easyunfold.cli:easyunfold"

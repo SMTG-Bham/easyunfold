@@ -15,19 +15,15 @@ For the methodology, see: https://link.aps.org/doi/10.1103/PhysRevB.85.085201
 
 ## Installation
 
-At the moment, the package should be installed from the git repository.
-A recently version of `pip` is needed to do this, due to the use of new style `pyproject.toml` configuration file.
-To upgrade your `pip`, do:
+### Install from pip
+
+The package can be installed from `pip`
 
 ```
-pip install -U pip
+pip install easyunfold
 ```
 
-Assuming the package is in the `easyunfold` folder, use the following command to install:
-
-```
-pip install ./easyunfold
-```
+This will also install the dependencies, if they are missing.
 
 After installation, run `easyunfold` should give the following output:
 
@@ -43,6 +39,21 @@ Commands:
   generate  Generate the kpoints for sampling the supercell
   unfold    Perform unfolding and plotting
 ```
+
+### Install from source
+A recently version of `pip` is needed to do this, due to the use of new style `pyproject.toml` configuration file.
+To upgrade your `pip`, do:
+
+```
+pip install -U pip
+```
+
+Assuming the package is in the `easyunfold` folder, use the following command to install:
+
+```
+pip install ./easyunfold
+```
+
 
 ## Usage
 
