@@ -50,8 +50,8 @@ def test_effective_mass(effective_mass_obj):
 
     assert output['electrons'][0]['kpoint_label_from'] == '\\Gamma'
     assert output['electrons'][0]['kpoint_label_to'] == 'X'
-    assert output['electrons'][0]['effective_mass'] == 0.3871366744253859
+    assert output['electrons'][0]['effective_mass'] == pytest.approx(0.3871366744253859)
 
     assert output['holes'][0]['kpoint_label_from'] == '\\Gamma'
     assert output['holes'][0]['kpoint_label_to'] == 'X'
-    assert output['holes'][0]['effective_mass'] == -2.8972969334826235
+    assert output['holes'][0]['effective_mass'] == pytest.approx(-2.8972969334826235)
