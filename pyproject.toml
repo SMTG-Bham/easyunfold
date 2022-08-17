@@ -12,6 +12,9 @@ dynamic = ["version", "description"]
 
 dependencies = ["scipy", "numpy", "matplotlib", "ase", "spglib", "click", "monty", "tqdm"]
 
+[project.urls]
+"Homepage" = "https://github.com/SMTG-UCL/easyunfold"
+
 [project.scripts]
 easyunfold = "easyunfold.cli:easyunfold"
 
