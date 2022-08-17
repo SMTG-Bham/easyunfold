@@ -42,7 +42,7 @@ def test_effective_mass(effective_mass_obj):
     assert len(kdist) == len(effective_mass_obj.kpoints)
 
     fdata = effective_mass_obj._get_fitting_data(0, 16, 1, 0, 3)
-    assert lenfdata[0] == kdist[:3]
+    assert (fdata[0] == kdist[:3]).all()
     assert len(fdata[1]) == 3
 
     assert len(output['electrons']) == 2
