@@ -451,13 +451,13 @@ def print_symmetry_data(kset):
 
     # Print space group information
     sc_spg = kset.metadata['symmetry_dataset_sc']
-    click.echo('Primitive cell information:')
+    click.echo('Supercell cell information:')
     click.echo(' ' * 8 + f'Space group number: {sc_spg["number"]}')
     click.echo(' ' * 8 + f'Internation symbol: {sc_spg["international"]}')
     click.echo(' ' * 8 + f'Point group: {sc_spg["pointgroup"]}')
 
     pc_spg = kset.metadata['symmetry_dataset_pc']
-    click.echo('\nSupercell cell information:')
+    click.echo('\nPrimitive cell information:')
     click.echo(' ' * 8 + f'Space group number: {pc_spg["number"]}')
     click.echo(' ' * 8 + f'Internation symbol: {pc_spg["international"]}')
     click.echo(' ' * 8 + f'Point group: {pc_spg["pointgroup"]}')
