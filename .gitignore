@@ -19,6 +19,7 @@
 doc/build
 build/
 dist/
+site/
 
 CHG
 CHGCAR

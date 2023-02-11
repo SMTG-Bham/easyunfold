@@ -491,6 +491,20 @@ class UnfoldKSet(MSONable):
             output[key] = getattr(self, key)
         return output
 
+    def get_kpoint_distances(self):
+        """
+        Distances between the kpoints along the path in the reciprocal space.
+        This does not take account of the breaking of the path.
+        NOTE: the reciprocal lattice vectors includes the 2pi factor, e.g. np.linalg.inv(L).T * 2 * np.pi
+        """
+        kpts = self.kpts_pc
+        pc_latt = self.pc_latt
+        kpts_path = kpts @ np.linalg.inv(pc_latt).T * np.pi * 2  # Kpoint path in the reciprocal space
+        dists = np.cumsum(np.linalg.norm(np.diff(kpts_path, axis=0), axis=-1))
+        dists = np.append([0], dists)
+
+        return dists
+
 
 def LorentzSmearing(x, x0, sigma=0.02):
     r"""
@@ -539,13 +553,13 @@ def write_kpoints(kpoints: Union[np.ndarray, list], outpath='KPOINTS', comment='
 
     with open(outpath, 'w', encoding='utf-8') as vaspkpt:
         vaspkpt.write(comment + '\n')
-        vaspkpt.write('%d\n' % nkpts)
+        vaspkpt.write(f'{nkpts}\n')
         vaspkpt.write('Rec\n')
         for ik in range(nkpts):
             if weights is not None:
-                line = '  %12.8f %12.8f %12.8f %12.8f\n' % (kpoints[ik, 0], kpoints[ik, 1], kpoints[ik, 2], weights[ik])
+                line = f'  {kpoints[ik, 0]:12.8f} {kpoints[ik, 1]:12.8f} {kpoints[ik,2]:12.8f}  {weights[ik]:12.8f}\n'
             else:
-                line = '  %12.8f %12.8f %12.8f 1.0\n' % (kpoints[ik, 0], kpoints[ik, 1], kpoints[ik, 2])
+                line = f'  {kpoints[ik, 0]:12.8f} {kpoints[ik, 1]:12.8f} {kpoints[ik,2]:12.8f}  1.0\n'
             vaspkpt.write(line)
 
 
@@ -714,7 +728,7 @@ def EBS_scatter(kpts,
                     if kname[ii] == 'G':
                         kname[ii] = r'$\mathrm{\mathsf{\Gamma}}$'
                     else:
-                        kname[ii] = r'$\mathrm{\mathsf{%s}}$' % kname[ii]
+                        kname[ii] = r'$\mathrm{{\mathsf{' + f'{kname[ii]}' + r'}}$'
                 ax.set_xticklabels(kname)
 
     fig.tight_layout(pad=0.2)
@@ -757,7 +771,7 @@ def EBS_cmaps(kpts,
         nseg: Number of points in each segment of the kpoint pathway
         explicit_labels: A list of tuplies containing tuples of `(index, label)` to explicitly set kpoint labels.
         save: Name of the file the plot to be saved to.
-        figsize: SIze of hte figure
+        figsize: Size of hte figure
         ylim: Limit for the y axis. The limit is applied *after* substracting the refence energy.
         show: To show the plot interactively or not.
         contour_plot: Plot in the contour mode
@@ -853,7 +867,7 @@ def clean_latex_string(label):
     elif label.startswith('\\'):  ## This is a latex formatted label already
         label = f'$\\mathrm{{\\mathsf{{{label}}}}}$'
     else:
-        label = r'$\mathrm{\mathsf{%s}}$' % label
+        label = r'$\mathrm{\mathsf{' + label + r'}}$'
     return label
 
 
@@ -1024,7 +1038,7 @@ class Unfold():
         where {G} is a subset of the reciprocal space vectors of the supercell.
         """
         if self.verbose:
-            print('Processing k-point %8.4f %8.4f %8.4f' % (k0[0], k0[1], k0[2]))
+            print(f'Processing k-point {k0[0]:8.4f} {k0[1]:8.4f} {k0[2]:8.4f}')
 
         # find the K0 onto which k0 folds
         # k0 = G0 + K0
@@ -1101,7 +1115,7 @@ class Unfold():
             if self.wfc._nspin == 2:
                 if self.verbose:
                     print('#' * 60)
-                    print('Spin component: %d' % ispin)
+                    print(f'Spin component: {ispin}')
                     print('#' * 60)
             sw.append([self.spectral_weight_k(kpoints[ik], whichspin=ispin + 1) for ik in range(NKPTS)])
 

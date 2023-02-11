@@ -12,6 +12,8 @@ eV_to_hartree = physical_constants['electron volt-hartree relationship'][0]
 bohr_to_m = physical_constants['Bohr radius'][0]
 angstrom_to_bohr = bohr_to_m / 1e-10
 
+TMP_DATA = {}
+
 
 def fit_effective_mass(distances, energies, parabolic=True):
     """Fit the effective masses using either a parabolic or nonparabolic fit.
@@ -44,7 +46,7 @@ def fit_effective_mass(distances, energies, parabolic=True):
         # set boundaries for curve fitting: alpha > 1e-8
         # as alpha = 0 causes an error
         bounds = ((1e-8, -np.inf), (np.inf, np.inf))
-        popt, _ = curve_fit(f, distances, energies, p0=[1.0, 1.0], bounds=bounds)
+        popt, _ = curve_fit(f, distances, energies, p0=[1.0, 1.0], bounds=bounds)  # pylint: disable=unbalanced-tuple-unpacking
         c = 2 * popt[1]
 
     # coefficient is currently in eV/Angstrom^2/h_bar^2
@@ -64,7 +66,7 @@ def points_with_tol(array, value, tol=1e-4):
 class EffectiveMass:
     """Calculate effective mass from unfolding data"""
 
-    def __init__(self, unfold: UnfoldKSet, intensity_tol=1e-1, edge_detect_tol=1e-2, parabolic=True):
+    def __init__(self, unfold: UnfoldKSet, intensity_tol=1e-1, extrema_tol=1e-3, degeneracy_tol=1e-2, parabolic=True):
         """
         Instantiate the object
 
@@ -75,7 +77,8 @@ class EffectiveMass:
         """
         self.unfold: UnfoldKSet = unfold
         self.intensity_tol = intensity_tol
-        self.edge_detect_tol = edge_detect_tol
+        self.extrema_detect_tol = extrema_tol
+        self.degeneracy_tol = degeneracy_tol
         self.parabolic = parabolic
         self.nocc = None  # Number of occupied bands
 
@@ -90,16 +93,23 @@ class EffectiveMass:
     def kpoints_labels(self):
         return self.unfold.kpoint_labels
 
-    def get_band_extrema(self, mode: str = 'cbm', tol: float = None):
+    def get_band_extrema(self, mode: str = 'cbm', extrema_tol: float = None, degeneracy_tol: float = None, ispin=0):
         """
-        Obtain the kpoint idx of band maximum
+        Obtain the kpoint idx of band maximum, sub indices in th set and the band indices.
+
+        The search takes two steps, first the kpoints at the band extrema is located by comparing the
+        band energies with that recorded in supplied *cbm* and *vbm*, based on the `exgtrema_tol`.
+        Afterwards, the band indices are selected at the these kpoints using `degeneracy_tol`.
 
         Returns:
             A tuple of extrema locations including a list of kpoint indices, sub-indices within
-            the set and the band indices.
+            the set and the band indices at each kpoint that is within the `tol` set.
         """
-        if tol is None:
-            tol = self.edge_detect_tol
+        if extrema_tol is None:
+            extrema_tol = self.extrema_detect_tol
+        if degeneracy_tol is None:
+            degeneracy_tol = self.degeneracy_tol
+
         intensity_tol = self.intensity_tol
 
         if mode not in ['cbm', 'vbm']:
@@ -111,37 +121,37 @@ class EffectiveMass:
         k_indicies = []
         k_subset_indices = []
         cbm_indices = []
-        for idx, wset in enumerate(weights):
-            tmp_spin = wset[0]
-            for isubset, tmp in enumerate(tmp_spin):
-                if np.any(np.abs(tmp[:, 0] - cbm) < tol):
-                    itmp, _ = points_with_tol(tmp[:, 0], cbm, tol)
+        for ik, wset in enumerate(weights):
+            for isubset in range(wset.shape[1]):
+                if np.any(np.abs(wset[ispin, isubset, :, 0] - cbm) < extrema_tol):
+                    itmp, _ = points_with_tol(wset[ispin, isubset, :, 0], cbm, extrema_tol)
                     # Check if it has sufficient intensity
-                    if tmp[min(itmp), 1] < intensity_tol:
+                    if np.max(wset[ispin, isubset, itmp, 1]) < intensity_tol:
                         continue
-                    k_indicies.append(idx)
-
-                    if mode == 'cbm':
-                        cbm_indices.append(min(itmp))
-                    else:
-                        cbm_indices.append(max(itmp))
+                    # Select this kpoints
+                    k_indicies.append(ik)
+                    # Select all band indices within the tolerance
                     k_subset_indices.append(isubset)
+                    # Stop looking at other kpoints in the k subset if found
                     break
 
-        if np.any(min(cbm_indices) != cbm_indices):
-            print(f'WARNING: band max detection failure - detected band indices: {cbm_indices}')
+        # Go through each case
+        for ik, iksub in zip(k_indicies, k_subset_indices):
+            itmp, _ = points_with_tol(weights[ik][ispin, iksub, :, 0], cbm, degeneracy_tol)
+            cbm_indices.append(itmp)
+
         return k_indicies, k_subset_indices, cbm_indices
 
     def _get_kpoint_distances(self):
         """
         Distances between the kpoints along the path in the reciprocal space.
         This does not take account of the breaking of the path
-        NOTE: the reciprocal lattice vectors includes the 2pi factor, e.g. np.linalg.inv(L) * 2 * np.pi
+        NOTE: the reciprocal lattice vectors includes the 2pi factor, e.g. np.linalg.inv(L).T * 2 * np.pi
         """
         kpts = self.kpoints
         pc_latt = self.unfold.pc_latt
 
-        kpts_path = kpts @ np.linalg.inv(pc_latt) * np.pi * 2  # Kpoint path in the reciprocal space
+        kpts_path = kpts @ np.linalg.inv(pc_latt).T * np.pi * 2  # Kpoint path in the reciprocal space
 
         dists = np.cumsum(np.linalg.norm(np.diff(kpts_path, axis=0), axis=-1))
         dists = np.append([0], dists)
@@ -192,7 +202,7 @@ class EffectiveMass:
         label_idx = [x[0] for x in self.kpoints_labels]
         label_names = [x[1] for x in self.kpoints_labels]
 
-        for idxk in iks:
+        for idxk, idxb in zip(iks, iband):
             for direction in (-1, 1):
                 # Check if the direction makes sense
                 if idxk + direction < 0 or idxk + direction >= len(self.kpoints):
@@ -200,29 +210,37 @@ class EffectiveMass:
                 # Check if the direction is broken
                 if idxk + direction in label_idx:
                     continue
-                # Get fitting data
-                kdists, engs_effective = self._get_fitting_data(idxk, iband[0], direction, ispin=ispin, npoints=npoints)
-                me = fit_effective_mass(kdists, engs_effective, parabolic=self.parabolic)
+                # Get fitting data for each (degenerate) band at the extrema
+                for band_id in idxb:
+                    kdists, engs_effective = self._get_fitting_data(idxk, band_id, direction, ispin=ispin, npoints=npoints)
 
-                # If the identified edge is not in the list of high symmetry point, ignore it
-                # This mitigate the problem where the CBM can be duplicated....
-                if idxk not in label_idx:
-                    continue
+                    me = fit_effective_mass(kdists, engs_effective, parabolic=self.parabolic)
 
-                ilabel = label_idx.index(idxk)
-                label_from = label_names[ilabel]
-                label_to = label_names[ilabel + direction]
+                    # If the identified edge is not in the list of high symmetry point, ignore it
+                    # This mitigate the problem where the CBM can be duplicated....
+                    if idxk not in label_idx:
+                        continue
 
-                # Record the results
-                results.append({
-                    'kpoint_index': idxk,
-                    'direction': direction,
-                    'effective_mass': me,
-                    'kpoint_label_from': label_from,
-                    'kpoint_from': self.kpoints[idxk],
-                    'kpoint_label_to': label_to,
-                    'kpoint_to': self.kpoints[label_idx[ilabel + direction]],
-                    'type': 'electrons' if mode == 'cbm' else 'holes'
-                })
-        results.sort(key=lambda x: abs(x['effective_mass']))
+                    ilabel = label_idx.index(idxk)
+                    label_from = label_names[ilabel]
+                    label_to = label_names[ilabel + direction]
+
+                    # Record the results
+                    results.append({
+                        'kpoint_index': idxk,
+                        'direction': direction,
+                        'effective_mass': me,
+                        'band_index': band_id,
+                        'kpoint_label_from': label_from,
+                        'kpoint_from': self.kpoints[idxk],
+                        'kpoint_label_to': label_to,
+                        'kpoint_to': self.kpoints[label_idx[ilabel + direction]],
+                        'type': 'electrons' if mode == 'cbm' else 'holes',
+                        'raw_data': {
+                            'kpoint_distances': kdists,
+                            'effective_energies': engs_effective
+                        }
+                    })
+        results.sort(key=lambda x: abs(abs(x['effective_mass'])))
+        results.sort(key=lambda x: abs(x['kpoint_index']))
         return results
