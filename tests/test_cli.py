@@ -74,7 +74,7 @@ def test_unfold(si_project_dir, tag):
     if tag == '':
         output = runner.invoke(easyunfold, ['unfold', '--data-file', 'test.json', 'effective-mass'])
         assert 'Hole effective masses' in output.stdout
-        assert 'm_e: -1.389 [0.0, 0.0, 0.0]' in output.stdout
+        assert 'm_e (@band 32):   -1.389 [0.0, 0.0, 0.0] (\Gamma) -> [0.5, 0.5, 0.5] (L)' in output.stdout
 
     # Do the plotting
     output = runner.invoke(easyunfold, ['unfold', '--data-file', 'test.json', 'plot'])
