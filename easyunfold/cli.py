@@ -188,7 +188,15 @@ def unfold_effective_mass(ctx, intensity_tol, spin, npoints, extrema_detect_tol,
     from easyunfold.unfold import UnfoldKSet
     unfoldset: UnfoldKSet = ctx.obj['obj']
     efm = EffectiveMass(unfoldset, intensity_tol=intensity_tol, extrema_tol=extrema_detect_tol, degeneracy_tol=degeneracy_detect_tol)
-    click.echo(f'Band extrema data: {efm.get_band_extrema()}')
+
+    click.echo('Band extrema data:')
+    click.echo('kpoint | sub_kpoint | band_index')
+    click.echo('-------+------------+-----------')
+    for kid, subkid, iband in zip(*efm.get_band_extrema()):
+        band_idx = ','.join(map(str, iband))
+        click.echo(f'{kid:<10d} {subkid:<10d} {band_idx}')
+    click.echo('')
+
     if nocc:
         efm.set_nocc(nocc)
     output = efm.get_effective_masses(ispin=spin, npoints=npoints)
@@ -200,9 +208,10 @@ def unfold_effective_mass(ctx, intensity_tol, spin, npoints, extrema_detect_tol,
             me = entry['effective_mass']
             kf = entry['kpoint_from']
             lf = entry['kpoint_label_from']
-            kt = entry['kpoint_to']
+            kt = [round(x, 5) for x in entry['kpoint_to']]
             lt = entry['kpoint_label_to']
-            click.echo(f'   {tag}: {me:.3f} {kf} ({lf}) -> {kt} ({lt})')
+            band_idx = entry['band_index']
+            click.echo(f'   {tag} (@band {band_idx}): {me:>8.3f} {kf} ({lf}) -> {kt} ({lt})')
 
     click.echo('Electron effective masses:')
     print_data(output['electrons'], 'm_e')
@@ -382,7 +391,8 @@ def _unfold_plot(ctx,
 
     This command uses the stored unfolding data to plot the effective bands structure (EBS).
     """
-    from easyunfold.unfold import UnfoldKSet, EBS_cmaps
+    from easyunfold.unfold import UnfoldKSet
+    from easyunfold.plotting import UnfoldPlotter
 
     unfoldset: UnfoldKSet = ctx.obj['obj']
     if not unfoldset.is_calculated:
@@ -417,27 +427,23 @@ def _unfold_plot(ctx,
     if emax is None:
         emax = eng.max() - eref
 
-    _ = EBS_cmaps(
-        unfoldset.kpts_pc,
-        unfoldset.pc_latt,
-        eng,
-        spectral_function,
-        eref=eref,
-        save=out_file,
-        show=False,
-        explicit_labels=unfoldset.kpoint_labels,
-        ylim=(emin, emax),
-        vscale=vscale,
-        cmap=cmap,
-        title=title,
-        ax=ax,
-    )
+    plotter = UnfoldPlotter(unfoldset)
+    fig = plotter.plot_spectral_function(eng,
+                                         spectral_function,
+                                         eref=eref,
+                                         save=out_file,
+                                         show=False,
+                                         ylim=(emin, emax),
+                                         vscale=vscale,
+                                         cmap=cmap,
+                                         title=title,
+                                         ax=ax)
+
     if out_file:
         click.echo(f'Unfolded band structure saved to {out_file}')
 
     if show:
-        import matplotlib.pyplot as plt
-        plt.show()
+        fig.show()
 
 
 def print_symmetry_data(kset):

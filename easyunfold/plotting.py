@@ -17,21 +17,23 @@ class UnfoldPlotter:
         self.unfold = unfold
 
     def plot_spectral_function(
-            self,
-            engs,
-            sf,
-            eref=None,
-            figsize=(4, 3),
-            ylim=(-3, 3),
-            dpi=150,
-            vscale=1.0,
-            contour_plot=False,
-            alpha=1.0,
-            save=False,
-            ax=None,
-            vmin=None,
-            vmax=None,
-            cmap='PuRd',
+        self,
+        engs,
+        sf,
+        eref=None,
+        figsize=(4, 3),
+        ylim=(-3, 3),
+        dpi=150,
+        vscale=1.0,
+        contour_plot=False,
+        alpha=1.0,
+        save=False,
+        ax=None,
+        vmin=None,
+        vmax=None,
+        cmap='PuRd',
+        show=False,
+        title=None,
     ):
         """
         Plot spectral function.
@@ -97,6 +99,8 @@ class UnfoldPlotter:
             ax_.set_xlim(xmin, xmax)
             ax_.set_ylim(*ylim)
             ax_.set_ylabel('Energy (eV)', labelpad=5)
+            if title:
+                ax_.set_title(title)
 
             # Label the kpoints
             self._add_kpoint_labels(ax_)
@@ -104,6 +108,8 @@ class UnfoldPlotter:
         fig.tight_layout(pad=0.2)
         if save:
             fig.savefig(save, dpi=300)
+        if show:
+            fig.show()
         return fig
 
     def _add_kpoint_labels(self, ax):
@@ -186,6 +192,8 @@ class UnfoldPlotter:
             alpha=0.5,
             save=None,
             ax=None,
+            show=False,
+            title=None,
     ):
         """
         Plot the spectral weights.
@@ -264,10 +272,14 @@ class UnfoldPlotter:
             ax_.set_xlim(0, kdist.max())
             ax_.set_ylim(ylim)
             ax_.set_ylabel('Energy [eV]', labelpad=5)
+            if title:
+                ax_.set_title(title)
             self._add_kpoint_labels(ax_)
 
         fig.tight_layout(pad=0.2)
 
         if save:
             fig.savefig(save, dpi=300)
+        if show:
+            fig.show()
         return fig
