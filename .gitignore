@@ -33,3 +33,4 @@ REPORT
 WAVECAR
 XDATCAR
 vasprun.xml
+coverage.xml

@@ -28,10 +28,10 @@ jobs:
       run: |
         pytest tests/
     - name: Run coverage from coverage-python by running pytest yet again
-      if: ${{ matrix.python }} == '3.9'
+      if: ${{ matrix.python-version }} == '3.9'
       run: pytest --cov-report=xml --cov-append --cov=easyunfold
     - name: Upload coverage to Codecov
-      if: ${{ matrix.python }} == '3.9'
+      if: ${{ matrix.python-version }} == '3.9'
       uses: codecov/codecov-action@v3
       with:
         name: easyunfold
