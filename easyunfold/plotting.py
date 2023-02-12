@@ -129,7 +129,7 @@ class UnfoldPlotter:
         ax.set_xticks(tick_locs)
         ax.set_xticklabels(tick_labels)
 
-    def plot_effective_mass(self, eff: EffectiveMass, engs, sf, eref=None, **kwargs):
+    def plot_effective_mass(self, eff: EffectiveMass, engs, sf, eref=None, save=None, show=False, effective_mass_data=None, **kwargs):
         """
         Plot the effective masses on top of the spectral function.
 
@@ -153,7 +153,9 @@ class UnfoldPlotter:
             eref = self.unfold.calculated_quantities['vbm']
 
         fig, axes = plt.subplots(1, len(all_k))
-        effective_mass_data = eff.get_effective_masses()
+        if effective_mass_data is None:
+            effective_mass_data = eff.get_effective_masses()
+
         # Plot the spectral function
         for (ik, ax) in zip(all_k, axes):
             self.plot_spectral_function(engs, sf, ax=ax, eref=eref, **kwargs)
@@ -178,7 +180,11 @@ class UnfoldPlotter:
             x = entry['raw_data']['kpoint_distances']
             y = entry['raw_data']['effective_energies']
             axes[iax].plot(x, np.asarray(y) - eref, '-o', color='C2')
+        if save:
+            fig.savefig(save)
 
+        if show:
+            fig.show()
         return fig
 
     def plot_spectral_weights(
