@@ -174,10 +174,12 @@ def add_plot_options(func):
 @click.option('--intensity-tol', type=float, default=0.1)
 @click.option('--spin', type=int, default=0)
 @click.option('--npoints', type=int, default=3)
-@click.option('--extrema-detect-tol', type=float, default=0.1)
-@click.option('--degeneracy-detect-tol', type=float, default=0.1)
+@click.option('--extrema-detect-tol', type=float, default=0.01)
+@click.option('--degeneracy-detect-tol', type=float, default=0.01)
 @click.option('--nocc', type=int)
-def unfold_effective_mass(ctx, intensity_tol, spin, npoints, extrema_detect_tol, degeneracy_detect_tol, nocc):
+@click.option('--plot', is_flag=True, default=False)
+@click.option('--out-file', default='unfold-effective-mass.png', help='Name of the output file.')
+def unfold_effective_mass(ctx, intensity_tol, spin, npoints, extrema_detect_tol, degeneracy_detect_tol, nocc, plot, out_file):
     """
     Compute and print effective masses by tracing the unfolded weights.
 
@@ -190,11 +192,11 @@ def unfold_effective_mass(ctx, intensity_tol, spin, npoints, extrema_detect_tol,
     efm = EffectiveMass(unfoldset, intensity_tol=intensity_tol, extrema_tol=extrema_detect_tol, degeneracy_tol=degeneracy_detect_tol)
 
     click.echo('Band extrema data:')
-    click.echo('kpoint | sub_kpoint | band_index')
-    click.echo('-------+------------+-----------')
-    for kid, subkid, iband in zip(*efm.get_band_extrema()):
-        band_idx = ','.join(map(str, iband))
-        click.echo(f'{kid:<10d} {subkid:<10d} {band_idx}')
+    click.echo('kpoint | kind | sub_kpoint | band_index')
+    for mode in ['cbm', 'vbm']:
+        for kid, subkid, iband in zip(*efm.get_band_extrema(mode=mode)):
+            band_idx = ','.join(map(str, iband))
+            click.echo(f'{kid:<10d} {mode} {subkid:<10d} {band_idx}')
     click.echo('')
 
     if nocc:
@@ -220,6 +222,13 @@ def unfold_effective_mass(ctx, intensity_tol, spin, npoints, extrema_detect_tol,
     print_data(output['holes'], 'm_h')
 
     click.echo('Unfolded band structure can be ambiguous, please cross-check with the spectral function plot.')
+
+    if plot:
+        from easyunfold.plotting import UnfoldPlotter
+        plotter = UnfoldPlotter(unfoldset)
+        click.echo('Generating spectral function plot for visualising detected branches...')
+        engs, sf = unfoldset.get_spectral_function()
+        plotter.plot_effective_mass(efm, engs, sf, effective_mass_data=output, save=out_file)
 
 
 @unfold.command('plot')
