@@ -189,7 +189,7 @@ class UnfoldPlotter:
 
         # Clip the alpha range
         alpha = sf[:, :, :, 3]
-        alpha = (alpha - vmin) * (vmax - vmin) * intensity
+        alpha = (alpha - vmin) / (vmax - vmin) * intensity
         alpha = np.clip(alpha, 0, 1)
         sf[:, :, :, 3] = alpha
 
@@ -506,7 +506,7 @@ class UnfoldPlotter:
 
             # Construct the color basis
             if colors is None:
-                default_colors = ['b', 'r', 'g', 'brown']
+                default_colors = ['r', 'g', 'b', 'purple']
                 colors = default_colors[0:len(all_sf)]
             # Compute spectral weight data with RGB reshape it back into the shape (nengs, nk, 3)
             sf_rgb = interpolate_colors(colors, stacked_sf, colorspace, normalize=True).reshape(sf_size + (3,))
@@ -573,7 +573,6 @@ def interpolate_colors(colors, weights, colorspace='lab', normalize=True):
     # Normalise the weights if needed
     if normalize:
         weights = weights / np.linalg.norm(weights, axis=1)[:, None]
-    weights = 3 / weights.shape[1] * weights
 
     # perform the interpolation in the colorspace basis
     interpolated_colors = colors_basis[0] * weights[:, 0][:, None]
