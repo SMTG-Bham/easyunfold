@@ -27,4 +27,4 @@ easyunfold = "easyunfold.cli:easyunfold"
 doc = [
     "mkdocs~=1.2", "mkdocs-material~=8.2.1"
 ]
-test = ["pytest"]
+test = ["pytest", "pytest-cov", "coverage"]
