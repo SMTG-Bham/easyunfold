@@ -2,10 +2,8 @@
 Tests for the CLI system
 """
 import os
-import urllib
 import pytest
 from pathlib import Path
-import shutil
 
 from monty.serialization import loadfn
 from click.testing import CliRunner
