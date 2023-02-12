@@ -7,7 +7,7 @@ import numpy as np
 import click
 from ase.io import read
 
-from easyunfold.unfold import create_white_colormap_from_existing, parse_atoms_idx
+from easyunfold.unfold import parse_atoms_idx
 
 # pylint:disable=import-outside-toplevel,too-many-locals
 
@@ -155,8 +155,8 @@ def add_plot_options(func):
     click.option('--npoints', type=int, default=2000, help='Number of bins for the energy.')(func)
     click.option('--sigma', type=float, default=0.02, help='Smearing width for the energy in eV.')(func)
     click.option('--eref', type=float, help='Reference energy in eV.')(func)
-    click.option('--emin', type=float, help='Minimum energy in eV relative to the reference.')(func)
-    click.option('--emax', type=float, help='Maximum energy in eV relative to the reference.')(func)
+    click.option('--emin', type=float, default=-5., help='Minimum energy in eV relative to the reference.')(func)
+    click.option('--emax', type=float, default=5., help='Maximum energy in eV relative to the reference.')(func)
     click.option('--vscale', type=float, help='A scaling factor for the colour mapping.', default=1.0)(func)
     click.option('--out-file', default='unfold.png', help='Name of the output file.')(func)
     click.option('--cmap', default='PuRd', help='Name of the colour map to use.')(func)
@@ -261,122 +261,37 @@ def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cm
 @click.option('--procar', multiple=True, help='PROCAR files used for atomic weighting', required=True)
 @click.option('--combined/--no-combined', is_flag=True, default=False, help='Plot all projections in a combined graph.')
 @click.option('--cmap', default='PuRd', help='Name of the colour map(s) to use. Passing a list separated by "|" for the combined plot.')
+@click.option('--intensity', default=1.0, help='Color intensity for combined plot', type=float)
+@click.option('--colors', help='Colors to be used for combined plot. Comma separated.')
 def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, procar,
-                            atoms_idx, orbitals, title, combined):
+                            atoms_idx, orbitals, title, combined, intensity, colors):
     """
     Plot with subplots with multiple atomic projections
     """
-    from easyunfold.unfold import UnfoldKSet, EBS_cmaps
+    from easyunfold.unfold import UnfoldKSet
+    from easyunfold.plotting import UnfoldPlotter
     import matplotlib.pyplot as plt
 
     unfoldset: UnfoldKSet = ctx.obj['obj']
     click.echo(f'Loading projections from: {procar}')
-    unfoldset.load_procar(procar)
 
-    atoms_idx_subplots = atoms_idx.split('|')
-    if orbitals is not None:
-        orbitals_subsplots = atoms_idx.split('|')
-
-        # Special case: if only one set is passed, apply it to all atomic specifications
-        if len(orbitals_subsplots) == 1:
-            orbitals_subsplots = orbitals_subsplots * len(atoms_idx_subplots)
-
-        if len(orbitals_subsplots) != len(atoms_idx_subplots):
-            click.echo('Please pass same number of orbital specifications as the atomic indices')
-            raise click.Abort()
-    # If not set, use all for all subsets
-    else:
-        orbitals_subsplots = ['all'] * len(atoms_idx_subplots)
-
-    # Load the data
-
-    nsub = len(atoms_idx_subplots)
-
-    all_sf = []
-    vmaxs = []
-
-    if eref is None:
-        eref = unfoldset.calculated_quantities.get('vbm', 0.0)
-    click.echo(f'Using a reference energy of {eref:.3f} eV')
-
-    # Collect spectral functions and scale
-    for this_idx, this_orbitals in zip(atoms_idx_subplots, orbitals_subsplots):
-        # Setup the atoms_idx and orbitals
-        this_idx, this_orbitals = process_projection_options(this_idx, this_orbitals)
-        eng, spectral_function = unfoldset.get_spectral_function(gamma=gamma,
-                                                                 npoints=npoints,
-                                                                 sigma=sigma,
-                                                                 ncl=ncl,
-                                                                 atoms_idx=this_idx,
-                                                                 orbitals=this_orbitals,
-                                                                 symm_average=not no_symm_average)
-        all_sf.append(spectral_function)
-
-        if emin is None:
-            emin = eng.min() - eref
-        if emax is None:
-            emax = eng.max() - eref
-
-        # Clip the effective range
-        mask = (eng < (emax + eref)) & (eng > (emin + eref))
-        vmin = spectral_function[:, mask, :].min()
-        vmax = spectral_function[:, mask, :].max()
-        vmax = (vmax - vmin) * vscale + vmin
-        vmaxs.append(vmax)
-
-    # Workout the vmax and vmin
-    vmax = max(vmaxs)
-    vmin = 0.
-
-    if not combined:
-        fig, axs = plt.subplots(1, len(atoms_idx_subplots), sharex=True, sharey=True, squeeze=False, figsize=(3.0 * nsub, 4.0))
-        # Plot the spectral function with constant colour scales
-        for spectral_function, ax in zip(all_sf, axs[0]):
-            _ = EBS_cmaps(
-                unfoldset.kpts_pc,
-                unfoldset.pc_latt,
-                eng,
-                spectral_function,
-                eref=eref,
-                save=out_file,
-                show=False,
-                explicit_labels=unfoldset.kpoint_labels,
-                ylim=(emin, emax),
-                vscale=vscale,
-                vmax=vmax,
-                vmin=vmin,
-                cmap=cmap,
-                title=title,
-                ax=ax,
-            )
-    else:
-        fig, ax = plt.subplots(1, 1, figsize=(3.0, 4.0))
-        sf_sum = sum(all_sf)
-        if '|' in cmap:
-            cmaps = cmap.split('|')
-        else:
-            cmaps = DEFAULT_CMAPS
-
-        for spectral_function, cmap_ in zip(all_sf, cmaps):
-            cmap_ = create_white_colormap_from_existing(cmap_)
-            alpha_mask = spectral_function / sf_sum * 1.5
-            alpha_mask = alpha_mask.clip(0, 1.0)
-            _ = EBS_cmaps(unfoldset.kpts_pc,
-                          unfoldset.pc_latt,
-                          eng,
-                          spectral_function,
-                          eref=eref,
-                          save=out_file,
-                          show=False,
-                          explicit_labels=unfoldset.kpoint_labels,
-                          ylim=(emin, emax),
-                          vscale=vscale,
-                          vmax=vmax,
-                          vmin=vmin,
-                          cmap=cmap_,
-                          title=title,
-                          ax=ax,
-                          alpha=alpha_mask)
+    plotter = UnfoldPlotter(unfoldset)
+    fig = plotter.plot_projected(procar,
+                                 gamma=gamma,
+                                 npoints=npoints,
+                                 sigma=sigma,
+                                 eref=eref,
+                                 ylim=(emin, emax),
+                                 cmap=cmap,
+                                 ncl=ncl,
+                                 symm_average=not no_symm_average,
+                                 atoms_idx=atoms_idx,
+                                 orbitals=orbitals,
+                                 title=title,
+                                 vscale=vscale,
+                                 use_subplot=not combined,
+                                 intensity=intensity,
+                                 colors=colors.split(',') if colors is not None else None)
 
     if out_file:
         fig.savefig(out_file, dpi=300)
