@@ -14,7 +14,7 @@ classifiers = [
 dynamic = ["version", "description"]
 requires-python = ">=3.7"
 
-dependencies = ["scipy", "numpy", "matplotlib", "ase", "spglib", "click", "monty", "tqdm"]
+dependencies = ["scipy", "numpy", "matplotlib", "ase", "spglib", "click", "monty", "tqdm", "tabulate"]
 
 [project.urls]
 "Homepage" = "https://github.com/SMTG-UCL/easyunfold"

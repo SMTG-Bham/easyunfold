@@ -188,15 +188,17 @@ def unfold_effective_mass(ctx, intensity_tol, spin, npoints, extrema_detect_tol,
     """
     from easyunfold.effective_mass import EffectiveMass
     from easyunfold.unfold import UnfoldKSet
+    from tabulate import tabulate
     unfoldset: UnfoldKSet = ctx.obj['obj']
     efm = EffectiveMass(unfoldset, intensity_tol=intensity_tol, extrema_tol=extrema_detect_tol, degeneracy_tol=degeneracy_detect_tol)
 
     click.echo('Band extrema data:')
-    click.echo('kpoint | kind | sub_kpoint | band_index')
+    table = []
     for mode in ['cbm', 'vbm']:
         for kid, subkid, iband in zip(*efm.get_band_extrema(mode=mode)):
             band_idx = ','.join(map(str, iband))
-            click.echo(f'{kid:<10d} {mode} {subkid:<10d} {band_idx}')
+            table.append([kid, mode, subkid, band_idx])
+    click.echo(tabulate(table, headers=['Kpoint index', 'Kind', 'Sub-kpoint index', 'Band indices']))
     click.echo('')
 
     if nocc:
@@ -206,14 +208,21 @@ def unfold_effective_mass(ctx, intensity_tol, spin, npoints, extrema_detect_tol,
     ## Print data
     def print_data(entries, tag='me'):
         """Print the effective mass data"""
+        table = []
         for entry in entries:
             me = entry['effective_mass']
+
             kf = entry['kpoint_from']
             lf = entry['kpoint_label_from']
+            kfrom = f'{kf} ({lf})'
+
             kt = [round(x, 5) for x in entry['kpoint_to']]
             lt = entry['kpoint_label_to']
+            kto = f'{kt} ({lt})'
             band_idx = entry['band_index']
-            click.echo(f'   {tag} (@band {band_idx}): {me:>8.3f} {kf} ({lf}) -> {kt} ({lt})')
+            #click.echo(f'   {tag} (@band {band_idx}): {me:>8.3f} {kf} ({lf}) -> {kt} ({lt})')
+            table.append([tag, me, band_idx, kfrom, kto])
+        click.echo(tabulate(table, headers=['Kind', 'Effective mass', 'Band index', 'from', 'to']))
 
     click.echo('Electron effective masses:')
     print_data(output['electrons'], 'm_e')
