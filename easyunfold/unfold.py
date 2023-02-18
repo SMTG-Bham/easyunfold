@@ -1247,7 +1247,7 @@ def parse_atoms_idx(atoms_idx):
     items = atoms_idx.split(',')
     out = []
     for item in items:
-        match = re.match(r'(\d)-(\d)', item)
+        match = re.match(r'(\d+)-(\d+)', item)
         if match:
             out.extend(range(int(match.group(1)), int(match.group(2)) + 1))
         else:
