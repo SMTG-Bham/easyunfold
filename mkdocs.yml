@@ -14,6 +14,7 @@ nav:
   - Examples:
       "Si Supercell": "example_si222.md"
       "MgO Projection": "example_mgo.md"
+      "NaBiS2 SQS Projection": "example_nabis2.md"
 
 markdown_extensions:
   - attr_list

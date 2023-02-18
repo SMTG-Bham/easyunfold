@@ -1,4 +1,4 @@
-## Unfolding the Electronic Band Structure of Cation-Disordered NaBiS$_2$, with and without Atomic Projections
+## Unfolding the Band Structure of Cation-Disordered NaBiS<sub>2</sub>, with and without Atomic Projections
 
 !!! note
     
@@ -13,7 +13,7 @@ Using the default plotting options with `easyunfold unfold plot`, we obtain the 
 
 <figure markdown>
   ![NaBiS2 unfolded band structure](img/NaBiS2_unfold-plot.png){ width="400" }
-  <figcaption> Unfolded band structure of NaBiS$_2$ </figcaption>
+  <figcaption> Unfolded band structure of NaBiS<sub>2</sub> </figcaption>
 </figure>
 
 This is nice, but we can make the plot a little clearer by adjusting some of the parameters like the intensity scaling
@@ -44,7 +44,7 @@ easyunfold unfold plot-projections --atoms-idx="1-20|21-40|41-80" --procar PROCA
 
 <figure markdown>
   ![NaBiS2 atom-projected unfolded band structure](img/NaBiS2_unfold-plot_proj.png){ width="400" }
-  <figcaption> Unfolded band structure of NaBiS$_2$ with atomic contributions </figcaption>
+  <figcaption> Unfolded band structure of NaBiS<sub>2</sub> with atomic contributions </figcaption>
 </figure>
 
 From this plot, we can see that Sulfur anions (in blue) dominate the valence band, while Bismuth cations (in green) 
@@ -72,7 +72,7 @@ easyunfold unfold plot-projections --atoms-idx="1-20|21-40|41-80" --procar PROCA
 
 <figure markdown>
   ![NaBiS2 atom-projected separated unfolded band structure](img/NaBiS2_unfold-plot_proj_sep.png){ width="800" }
-  <figcaption> Unfolded band structure of NaBiS$_2$ with atomic contributions plotted separately </figcaption>
+  <figcaption> Unfolded band structure of NaBiS<sub>2</sub> with atomic contributions plotted separately </figcaption>
 </figure>
 
 An alternative option here is also to just plot only the contributions of Na and Bi cations, with no S projections:
@@ -82,7 +82,7 @@ easyunfold unfold plot-projections --atoms-idx="1-20|21-40" --procar PROCAR  --i
 
 <figure markdown>
   ![NaBiS2 atom-projected unfolded band structure, no S](img/NaBiS2_unfold-plot_proj_noS.png){ width="400" }
-  <figcaption> Unfolded band structure of NaBiS$_2$ with atomic contributions of only Na and Bi </figcaption>
+  <figcaption> Unfolded band structure of NaBiS<sub>2</sub> with atomic contributions of only Na and Bi </figcaption>
 </figure>
 
 While this plot isn't the most aesthetic, it clearly shows that Bi (green) contributes to both the conduction band and 
