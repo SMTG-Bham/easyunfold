@@ -37,7 +37,7 @@ Note that use of one-based indexing for atoms, although in python zero-based ind
 
 !!! note
 
-    The projections are not stored in the `easyunfold.json` data file. So the `PROCAR` is should be kept for replotting in the future.
+    The projections are not stored in the `easyunfold.json` data file. So the `PROCAR` should be kept for replotting in the future.
 
 The `--combined` option creates a combined plot with each group colour with different colour maps.
 The spectral intensity is used to define the transparency (`alpha`) allowing the fusion of multiple
@@ -48,7 +48,7 @@ projections into a single plot.
   <figcaption> Unfolded MgO band structure with projections. Green for Mg atoms and red for O atoms. </figcaption>
 </figure>
 
-In some cases, especially if there are many projection to be plotted at the same time, it can be clearer to create separateted plots for each.
+In some cases, especially if there are many projection to be plotted at the same time, it can be clearer to create separated plots for each.
 
 ```
 easyunfold unfold plot-projections  --procar MgO_super/PROCAR --atoms-idx="1-4|5-8" \ 
