@@ -152,16 +152,26 @@ def add_plot_options(func):
     """Added common plotting options to a function"""
     click.option('--gamma', is_flag=True, help='Is the calculation a gamma only one?')(func)
     click.option('--ncl', is_flag=True, help='Is the calculation with non-colinear spin?')(func)
-    click.option('--npoints', type=int, default=2000, help='Number of bins for the energy.')(func)
-    click.option('--sigma', type=float, default=0.02, help='Smearing width for the energy in eV.')(func)
+    click.option('--npoints', type=int, default=2000, help='Number of bins for the energy.',
+                 show_default=True)(func)
+    click.option('--sigma', type=float, default=0.02, help='Smearing width for the energy in '
+                                                           'eV.', show_default=True)(func)
     click.option('--eref', type=float, help='Reference energy in eV.')(func)
-    click.option('--emin', type=float, default=-5., help='Minimum energy in eV relative to the reference.')(func)
-    click.option('--emax', type=float, default=5., help='Maximum energy in eV relative to the reference.')(func)
+    click.option('--emin', type=float, default=-5., help='Minimum energy in eV relative to the '
+                                                         'reference.', show_default=True)(func)
+    click.option('--emax', type=float, default=5., help='Maximum energy in eV relative to the '
+                                                        'reference.', show_default=True)(func)
     click.option('--vscale', type=float, help='A scaling factor for the colour mapping.', default=1.0)(func)
     click.option('--out-file', default='unfold.png', help='Name of the output file.')(func)
-    click.option('--cmap', default='PuRd', help='Name of the colour map to use.')(func)
+    click.option('--cmap', default='PuRd',
+                 help='Name of the colour map(s) to use. Passing a list separated by "|" for the '
+                      'combined plot.', show_default=True)(func)
     click.option('--show', is_flag=True, default=False, help='Show the plot interactively.')(func)
-    click.option('--no-symm-average', is_flag=True, default=False, help='Do not include symmetry related kpoints for averaging.')(func)
+    click.option('--no-symm-average', is_flag=True, default=False, help='Do not include symmetry '
+                                                                        'related kpoints for '
+                                                                        'averaging.',
+                 show_default=True)(
+        func)
     click.option('--procar', multiple=True, help='PROCAR files used for atomic weighting')(func)
     click.option('--atoms-idx', help='Indices of the atoms to be used for weighting (1-indexed).')(func)
     click.option('--orbitals', help='Orbitals of to be used for weighting.')(func)
@@ -257,12 +267,18 @@ def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cm
 @unfold.command('plot-projections')
 @click.pass_context
 @add_plot_options
-@click.option('--atoms-idx', help='Indices of the atoms to be used for weighting', required=True)
-@click.option('--procar', multiple=True, help='PROCAR files used for atomic weighting', required=True)
-@click.option('--combined/--no-combined', is_flag=True, default=False, help='Plot all projections in a combined graph.')
-@click.option('--cmap', default='PuRd', help='Name of the colour map(s) to use. Passing a list separated by "|" for the combined plot.')
-@click.option('--intensity', default=1.0, help='Color intensity for combined plot', type=float)
-@click.option('--colors', help='Colors to be used for combined plot. Comma separated.')
+@click.option('--combined/--no-combined',
+              is_flag=True,
+              default=False,
+              help='Plot all projections in a combined graph.'
+              )
+@click.option('--intensity',
+              default=1.0,
+              help='Color intensity for combined plot',
+              type=float,
+              show_default=True)
+@click.option('--colors',
+              help='Colors to be used for combined plot. Comma separated. Default = "r,g,b".')
 def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, procar,
                             atoms_idx, orbitals, title, combined, intensity, colors):
     """
