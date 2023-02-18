@@ -196,6 +196,7 @@ class UnfoldPlotter:
         for ispin, ax_ in zip(range(nspin), axes):
             ax_.imshow(sf[ispin], extent=[0, sf.shape[2], max(engs) - eref, min(engs) - eref], aspect='auto')
             ax_.set_ylim(ylim)
+            ax_.set_ylabel('Energy (eV)', labelpad=5)
             ax_.set_title(title)
             self._add_kpoint_labels(ax_, x_is_kidx=True)
 
