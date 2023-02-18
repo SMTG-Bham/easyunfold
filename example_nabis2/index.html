@@ -13,7 +13,7 @@
     
     
       
-        <title>MgO Projection - easyunfold Docs</title>
+        <title>Example nabis2 - easyunfold Docs</title>
       
     
     
@@ -63,7 +63,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#unfolding-mgo-band-structure-with-atomic-projections" class="md-skip">
+        <a href="#unfolding-the-electronic-band-structure-of-cation-disordered-nabis_2-with-and-without-atomic-projections" class="md-skip">
           Skip to content
         </a>
       
@@ -96,7 +96,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              MgO Projection
+              Example nabis2
             
           </span>
         </div>
@@ -264,14 +264,12 @@
 
   
   
-    
-  
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
       
       
       
@@ -306,48 +304,11 @@
               
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          MgO Projection
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../example_mgo/" class="md-nav__link">
         MgO Projection
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#unfolding-mgo-band-structure-with-atomic-projections" class="md-nav__link">
-    Unfolding MgO band structure with atomic projections
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -384,8 +345,8 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#unfolding-mgo-band-structure-with-atomic-projections" class="md-nav__link">
-    Unfolding MgO band structure with atomic projections
+  <a href="#unfolding-the-electronic-band-structure-of-cation-disordered-nabis_2-with-and-without-atomic-projections" class="md-nav__link">
+    Unfolding the Electronic Band Structure of Cation-Disordered NaBiS\(_2\), with and without Atomic Projections
   </a>
   
 </li>
@@ -402,60 +363,97 @@
             <article class="md-content__inner md-typeset">
               
                 
-  <a href="https://github.com/SMTG-UCL/easyunfold/edit/master/docs/example_mgo.md" title="Edit this page" class="md-content__button md-icon">
+  <a href="https://github.com/SMTG-UCL/easyunfold/edit/master/docs/example_nabis2.md" title="Edit this page" class="md-content__button md-icon">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
   </a>
 
 
 
-  <h1>MgO Projection</h1>
+  <h1>Example nabis2</h1>
 
-<h2 id="unfolding-mgo-band-structure-with-atomic-projections">Unfolding MgO band structure with atomic projections</h2>
+<h2 id="unfolding-the-electronic-band-structure-of-cation-disordered-nabis_2-with-and-without-atomic-projections">Unfolding the Electronic Band Structure of Cation-Disordered NaBiS<span class="arithmatex">\(_2\)</span>, with and without Atomic Projections</h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Relevant files can be found in the <code>examples/MgO</code> folder.</p>
+<p>Relevant files can be found in the <code>examples/NaBiS2</code> folder. 
+Note that the <code>PROCAR.gz</code> file will need to be decompressed with <code>gzip -d PROCAR.gz</code> if reproducing these example plots with the raw data.</p>
 </div>
-<p>In some cases, it is useful to know the atomic contributions of the bands.
-This can be done for unfolded bands as well.</p>
-<p>For a normal band structure, the contributions can be inferred by colouring the band according to the elemental contributions.</p>
+<p>In this example, we unfold the bands from a 80-atom special-quasirandom (SQS) supercell of NaBiS<span class="arithmatex">\(_2\)</span>, where the Na and 
+Bi cations are quasi-randomly distributed, in order to simulate randomised cation disorder in the material. </p>
+<p>We have previously calculated the <code>easyunfold.json</code> file from the calculation using <code>easyunfold calculate WAVECAR</code>. 
+Using the default plotting options with <code>easyunfold unfold plot</code>, we obtain the following unfolded band structure:</p>
 <figure>
-<p><img alt="MgO band structure" src="../img/MgO_band.png" width="400" />
+<p><img alt="NaBiS2 unfolded band structure" src="../img/NaBiS2_unfold-plot.png" width="400" />
   </p>
-<figcaption> Band structure of MgO with atomic contribution </figcaption>
+<figcaption> Unfolded band structure of NaBiS$_2$ </figcaption>
 </figure>
-<p>Similar plots can be generate for unfolded band structure. However, because the spectral function itself contains both the <em>location</em> of the band and its <em>intensity</em>, adding a third information regarding the projection can be tricky.</p>
-<p>In this example, we unfold the bands from a MgO 2x1x2 supercell with the first Mg atom displaced. The procedure is essentially the same as the Si supercell example.</p>
-<p>The only difference is that we turn on the calculation of orbital projections with <code>LORBIT=11</code> in the <code>INCAR</code> file.</p>
-<p>When plotting the unfolded band, the <code>plot-projections</code> subcommand is used:</p>
-<div class="highlight"><pre><span></span><code>easyunfold unfold plot-projections  --procar MgO_super/PROCAR \ 
---atoms-idx=&quot;1-4|5-8&quot; --out-file unfold_project.png --combined --cmap=&quot;Greens|Reds&quot;
+<p>This is nice, but we can make the plot a little clearer by adjusting some of the parameters like the intensity scaling
+(via <code>--vscale</code>) and the colour map (via <code>--cmap</code>). Below we set <code>--vscale 0.4</code> to increase the colourmap intensity, 
+and try <code>BuPu</code>, <code>viridis</code> and <code>bone_r</code> from left to right below: </p>
+<div class="highlight"><pre><span></span><code>easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot<span class="w"> </span>--vscale<span class="w"> </span><span class="m">0</span>.4<span class="w"> </span>--cmap<span class="w"> </span><span class="s2">&quot;BuPu&quot;</span>
+easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot<span class="w"> </span>--vscale<span class="w"> </span><span class="m">0</span>.4<span class="w"> </span>--cmap<span class="w"> </span><span class="s2">&quot;viridis&quot;</span>
+easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot<span class="w"> </span>--vscale<span class="w"> </span><span class="m">0</span>.4<span class="w"> </span>--cmap<span class="w"> </span><span class="s2">&quot;bone_r&quot;</span>
 </code></pre></div>
+<table>
+<thead>
+<tr>
+<th align="center">BuPu</th>
+<th align="center">viridis</th>
+<th align="center">bone_r</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><img alt="" src="../img/NaBiS2_unfold-plot_BuPu.png" /></td>
+<td align="center"><img alt="" src="../img/NaBiS2_unfold-plot_viridis.png" /></td>
+<td align="center"><img alt="" src="../img/NaBiS2_unfold-plot_bone_r.png" /></td>
+</tr>
+</tbody>
+</table>
+<p>We can also plot the unfolded band structure with atomic projections, which is useful for understanding the electronic 
+structure of the material. In this case, we are curious as to which atoms are contributing to the band edges, and so 
+the atomic projections will be useful. For this, we need the <code>PROCAR</code> output from VASP with the atomic and orbital 
+projection information, and so <code>LORBIT</code> should be set to <code>11</code> or <code>12</code> in the <code>INCAR</code> for the original calculation.</p>
+<p>When plotting the unfolded band, the <code>plot-projections</code> subcommand is used with the <code>--procar &lt;PROCAR&gt;</code> and 
+<code>--atoms-idx &lt;atoms-idx&gt;</code> options:</p>
+<div class="highlight"><pre><span></span><code>easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot-projections<span class="w"> </span>--atoms-idx<span class="o">=</span><span class="s2">&quot;1-20|21-40|41-80&quot;</span><span class="w"> </span>--procar<span class="w"> </span>PROCAR<span class="w">  </span>--intensity<span class="o">=</span><span class="m">2</span><span class="w">  </span>--combined
+</code></pre></div>
+<figure>
+<p><img alt="NaBiS2 atom-projected unfolded band structure" src="../img/NaBiS2_unfold-plot_proj.png" width="400" />
+  </p>
+<figcaption> Unfolded band structure of NaBiS$_2$ with atomic contributions </figcaption>
+</figure>
+<p>From this plot, we can see that Sulfur anions (in blue) dominate the valence band, while Bismuth cations (in green) 
+dominate the conduction band, with minimal contributions from the Sodium cations as expected.</p>
 <p>Note that the path of the <code>PROCAR</code> is passed along with the group of atoms.
-In this example, the first four atoms are <code>Mg</code> the last four are <code>O</code>, and we would
-like to show the contribution of the band based on the elements.
-Different groups are separated by <code>|</code>, and <code>-</code> can be used to define the range.
-Note that use of one-based indexing for atoms, although in python zero-based indexing is used internally.</p>
+In this example, the first 20 atoms are <code>Na</code>, the second 20 are <code>Bi</code> and the last 40 are <code>S</code>. Different groups are 
+separated by <code>|</code>, and <code>-</code> can be used to define the range.
+Note that we use "1-based indexing" for the atoms here, matching the VASP format (i.e. the index of the first atom is 1, 
+not zero as in python).</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The projections are not stored in the <code>easyunfold.json</code> data file. So the <code>PROCAR</code> should be kept for replotting in the future.</p>
 </div>
-<p>The <code>--combined</code> option creates a combined plot with each group colour with different colour maps.
-The spectral intensity is used to define the transparency (<code>alpha</code>) allowing the fusion of multiple
-projections into a single plot.</p>
-<figure>
-<p><img alt="MgO unfolded band structure" src="../img/MgO_unfold_project.png" width="400" />
-  </p>
-<figcaption> Unfolded MgO band structure with projections. Green for Mg atoms and red for O atoms. </figcaption>
-</figure>
-<p>In some cases, especially if there are many projection to be plotted at the same time, it can be clearer to create separated plots for each.</p>
-<div class="highlight"><pre><span></span><code>easyunfold unfold plot-projections  --procar MgO_super/PROCAR --atoms-idx=&quot;1-4|5-8&quot; \ 
---out-file unfold_project_sep.png
+<p>While the main conclusions of S dominating the valence band and Bi dominating the conduction band are clear from the 
+plot above, the high intensity of the S projections in the valence band makes the Bi contributions in the conduction 
+band more faint and less apparent. </p>
+<p>So, we can create separated plots for each atom type to make their individual contributions more clear:</p>
+<div class="highlight"><pre><span></span><code>easyunfold unfold plot-projections --atoms-idx=&quot;1-20|21-40|41-80&quot; --procar PROCAR  --cmap=&quot;bone_r&quot; --vscale 0.4
 </code></pre></div>
 <figure>
-<p><img alt="MgO unfolded band structure" src="../img/MgO_unfold_project_sep.png" width="800" />
+<p><img alt="NaBiS2 atom-projected separated unfolded band structure" src="../img/NaBiS2_unfold-plot_proj_sep.png" width="800" />
   </p>
-<figcaption> Unfolded MgO band structure with projections plotted separately. </figcaption>
+<figcaption> Unfolded band structure of NaBiS$_2$ with atomic contributions plotted separately </figcaption>
 </figure>
+<p>An alternative option here is also to just plot only the contributions of Na and Bi cations, with no S projections:
+<div class="highlight"><pre><span></span><code>easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot-projections<span class="w"> </span>--atoms-idx<span class="o">=</span><span class="s2">&quot;1-20|21-40&quot;</span><span class="w"> </span>--procar<span class="w"> </span>PROCAR<span class="w">  </span>--intensity<span class="o">=</span><span class="m">2</span><span class="w">  </span>--combined<span class="w"> </span>--colors<span class="o">=</span><span class="s2">&quot;r,g&quot;</span>
+</code></pre></div></p>
+<figure>
+<p><img alt="NaBiS2 atom-projected unfolded band structure, no S" src="../img/NaBiS2_unfold-plot_proj_noS.png" width="400" />
+  </p>
+<figcaption> Unfolded band structure of NaBiS$_2$ with atomic contributions of only Na and Bi </figcaption>
+</figure>
+<p>While this plot isn't the most aesthetic, it clearly shows that Bi (green) contributes to both the conduction band and 
+(less so) valence states, but Na (red) doesn't contribute significantly at all. </p>
 
               
             </article>
@@ -465,26 +463,6 @@ projections into a single plot.</p>
       </main>
       
         <footer class="md-footer">
-  
-    <nav class="md-footer__inner md-grid" aria-label="Footer">
-      
-        
-        <a href="../example_si222/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Si Supercell" rel="prev">
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
-          </div>
-          <div class="md-footer__title">
-            <div class="md-ellipsis">
-              <span class="md-footer__direction">
-                Previous
-              </span>
-              Si Supercell
-            </div>
-          </div>
-        </a>
-      
-      
-    </nav>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
