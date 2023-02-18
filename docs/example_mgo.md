@@ -48,6 +48,7 @@ projections into a single plot.
   <figcaption> Unfolded MgO band structure with projections. Green for Mg atoms and red for O atoms. </figcaption>
 </figure>
 
+
 In some cases, especially if there are many projection to be plotted at the same time, it can be clearer to create separated plots for each.
 
 ```
