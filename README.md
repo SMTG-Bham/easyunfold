@@ -2,7 +2,7 @@
 
 
 ![build](https://github.com/SMTG-UCL/easyunfold/actions/workflows/ci.yaml/badge.svg)
-![docs](https://github.com/SMTG-UCL/easyunfold/actions/workflows/docs.yaml/badge.svg)
+[![docs](https://github.com/SMTG-UCL/easyunfold/actions/workflows/docs.yaml/badge.svg)](https://smtg-ucl.github.io/easyunfold/)
 [![codecov](https://codecov.io/gh/SMTG-UCL/easyunfold/branch/dev/graph/badge.svg?token=XLLWWU5UM2)](https://codecov.io/gh/SMTG-UCL/easyunfold)
 
 
@@ -80,10 +80,10 @@ Please see the documentation for guide and examples.
 
 Code Contributors:
   [Bonan Zhu](https://github.com/zhubonan)
-  [Sean kavanagh](https://github.com/kavanase)
-  [Adair Nicholson](https://github.com/https://github.com/adair-nicolson)
+  [Seán Kavanagh](https://github.com/kavanase)
+  [Adair Nicolson](https://github.com/https://github.com/adair-nicolson)
 
 And those who helped in the development:
 
-  [Joe Wills](https://github.com/joebesity)
+  [Joe Willis](https://github.com/joebesity)
   [David O. Scanlon](http://davidscanlon.com/?page_id=5)

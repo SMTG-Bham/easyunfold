@@ -196,6 +196,7 @@ class UnfoldPlotter:
         for ispin, ax_ in zip(range(nspin), axes):
             ax_.imshow(sf[ispin], extent=[0, sf.shape[2], max(engs) - eref, min(engs) - eref], aspect='auto')
             ax_.set_ylim(ylim)
+            ax_.set_ylabel('Energy (eV)', labelpad=5)
             ax_.set_title(title)
             self._add_kpoint_labels(ax_, x_is_kidx=True)
 
@@ -226,7 +227,8 @@ class UnfoldPlotter:
         ax.set_xticks(tick_locs)
         ax.set_xticklabels(tick_labels)
 
-    def plot_effective_mass(self, eff: EffectiveMass, engs, sf, eref=None, save=None, show=False, effective_mass_data=None, **kwargs):
+    def plot_effective_mass(self, eff: EffectiveMass, engs, sf, eref=None, save=None, show=False,
+                            effective_mass_data=None, **kwargs):
         """
         Plot the effective masses on top of the spectral function.
 
@@ -301,9 +303,10 @@ class UnfoldPlotter:
         """
         Plot the spectral weights.
 
-        Note: The reduction of symmetry means there can be multiple supercell kpoints for each
-        primitive cell kpoint. When using this scattering plot representation, the markers can
-        overlap each other leading to misrepresentations of the actual effective band structure.
+        Note:
+            The reduction of symmetry means there can be multiple supercell kpoints for each
+            primitive cell kpoint. When using this scattering plot representation, the markers can
+            overlap each other leading to misrepresentations of the actual effective band structure.
 
         However, this function is still useful when: 1. the symmetry splitting is turned off. 2.
         direct visualization of the underlying spectral weight is needed. 3. Check the correctness
