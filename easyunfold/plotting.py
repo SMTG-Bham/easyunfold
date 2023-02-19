@@ -227,7 +227,8 @@ class UnfoldPlotter:
         ax.set_xticks(tick_locs)
         ax.set_xticklabels(tick_labels)
 
-    def plot_effective_mass(self, eff: EffectiveMass, engs, sf, eref=None, save=None, show=False, effective_mass_data=None, **kwargs):
+    def plot_effective_mass(self, eff: EffectiveMass, engs, sf, eref=None, save=None, show=False,
+                            effective_mass_data=None, **kwargs):
         """
         Plot the effective masses on top of the spectral function.
 
@@ -302,9 +303,10 @@ class UnfoldPlotter:
         """
         Plot the spectral weights.
 
-        Note: The reduction of symmetry means there can be multiple supercell kpoints for each
-        primitive cell kpoint. When using this scattering plot representation, the markers can
-        overlap each other leading to misrepresentations of the actual effective band structure.
+        Note:
+            The reduction of symmetry means there can be multiple supercell kpoints for each
+            primitive cell kpoint. When using this scattering plot representation, the markers can
+            overlap each other leading to misrepresentations of the actual effective band structure.
 
         However, this function is still useful when: 1. the symmetry splitting is turned off. 2.
         direct visualization of the underlying spectral weight is needed. 3. Check the correctness

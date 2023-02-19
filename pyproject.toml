@@ -25,6 +25,6 @@ easyunfold = "easyunfold.cli:easyunfold"
 
 [project.optional-dependencies]
 doc = [
-    "mkdocs~=1.2", "mkdocs-material~=8.2.1"
+    "mkdocs~=1.2", "mkdocs-material~=8.2.1", "mkgendocs", "mkdocs-click"
 ]
 test = ["pytest", "pytest-cov", "coverage"]
