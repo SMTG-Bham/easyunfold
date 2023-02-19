@@ -13,7 +13,7 @@
     
     
       
-        <title>MgO Projection - easyunfold Docs</title>
+        <title>CLI Commands - easyunfold Docs</title>
       
     
     
@@ -63,7 +63,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#unfolding-mgo-band-structure-with-atomic-projections" class="md-skip">
+        <a href="#cli-reference" class="md-skip">
           Skip to content
         </a>
       
@@ -96,7 +96,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              MgO Projection
+              CLI Commands
             
           </span>
         </div>
@@ -249,11 +249,21 @@
 
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../cli/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         CLI Commands
       </a>
+      
     </li>
   
 
@@ -383,14 +393,12 @@
 
   
   
-    
-  
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" >
       
       
       
@@ -425,48 +433,11 @@
               
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          MgO Projection
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../example_mgo/" class="md-nav__link">
         MgO Projection
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#unfolding-mgo-band-structure-with-atomic-projections" class="md-nav__link">
-    Unfolding MgO band structure with atomic projections
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -509,21 +480,8 @@
   
   
   
+    
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#unfolding-mgo-band-structure-with-atomic-projections" class="md-nav__link">
-    Unfolding MgO band structure with atomic projections
-  </a>
-  
-</li>
-      
-    </ul>
   
 </nav>
                   </div>
@@ -535,60 +493,151 @@
             <article class="md-content__inner md-typeset">
               
                 
-  <a href="https://github.com/SMTG-UCL/easyunfold/edit/master/docs/example_mgo.md" title="Edit this page" class="md-content__button md-icon">
+  <a href="https://github.com/SMTG-UCL/easyunfold/edit/master/docs/cli.md" title="Edit this page" class="md-content__button md-icon">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
   </a>
 
 
 
-  <h1>MgO Projection</h1>
-
-<h2 id="unfolding-mgo-band-structure-with-atomic-projections">Unfolding MgO band structure with atomic projections</h2>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Relevant files can be found in the <code>examples/MgO</code> folder.</p>
-</div>
-<p>In some cases, it is useful to know the atomic contributions of the bands.
-This can be done for unfolded bands as well.</p>
-<p>For a normal band structure, the contributions can be inferred by colouring the band according to the elemental contributions.</p>
-<figure>
-<p><img alt="MgO band structure" src="../img/MgO_band.png" width="400" />
-  </p>
-<figcaption> Band structure of MgO with atomic contribution </figcaption>
-</figure>
-<p>Similar plots can be generate for unfolded band structure. However, because the spectral function itself contains both the <em>location</em> of the band and its <em>intensity</em>, adding a third information regarding the projection can be tricky.</p>
-<p>In this example, we unfold the bands from a MgO 2x1x2 supercell with the first Mg atom displaced. The procedure is essentially the same as the Si supercell example.</p>
-<p>The only difference is that we turn on the calculation of orbital projections with <code>LORBIT=11</code> in the <code>INCAR</code> file.</p>
-<p>When plotting the unfolded band, the <code>plot-projections</code> subcommand is used:</p>
-<div class="highlight"><pre><span></span><code>easyunfold unfold plot-projections  --procar MgO_super/PROCAR \ 
---atoms-idx=&quot;1-4|5-8&quot; --out-file unfold_project.png --combined --cmap=&quot;Greens|Reds&quot;
+<h1 id="cli-reference">CLI Reference</h1>
+<p>This page provides documentation for our command line tools.</p>
+<h1 id="easyunfold">easyunfold</h1>
+<p>Tool for performing band unfolding</p>
+<p><strong>Usage:</strong></p>
+<div class="highlight"><pre><span></span><code>easyunfold [OPTIONS] COMMAND [ARGS]...
 </code></pre></div>
-<p>Note that the path of the <code>PROCAR</code> is passed along with the group of atoms.
-In this example, the first four atoms are <code>Mg</code> the last four are <code>O</code>, and we would
-like to show the contribution of the band based on the elements.
-Different groups are separated by <code>|</code>, and <code>-</code> can be used to define the range.
-Note that use of one-based indexing for atoms, although in python zero-based indexing is used internally.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The projections are not stored in the <code>easyunfold.json</code> data file. So the <code>PROCAR</code> should be kept for replotting in the future.</p>
-</div>
-<p>The <code>--combined</code> option creates a combined plot with each group colour with different colour maps.
-The spectral intensity is used to define the transparency (<code>alpha</code>) allowing the fusion of multiple
-projections into a single plot.</p>
-<figure>
-<p><img alt="MgO unfolded band structure" src="../img/MgO_unfold_project.png" width="400" />
-  </p>
-<figcaption> Unfolded MgO band structure with projections. Green for Mg atoms and red for O atoms. </figcaption>
-</figure>
-<p>In some cases, especially if there are many projection to be plotted at the same time, it can be clearer to create separated plots for each.</p>
-<div class="highlight"><pre><span></span><code>easyunfold unfold plot-projections  --procar MgO_super/PROCAR --atoms-idx=&quot;1-4|5-8&quot; \ 
---out-file unfold_project_sep.png
+<p><strong>Options:</strong></p>
+<div class="highlight"><pre><span></span><code>  --help  Show this message and exit.
 </code></pre></div>
-<figure>
-<p><img alt="MgO unfolded band structure" src="../img/MgO_unfold_project_sep.png" width="800" />
-  </p>
-<figcaption> Unfolded MgO band structure with projections plotted separately. </figcaption>
-</figure>
+<h2 id="easyunfold-generate">easyunfold generate</h2>
+<p>Generate the kpoints for sampling the supercell</p>
+<p><strong>Usage:</strong></p>
+<div class="highlight"><pre><span></span><code>easyunfold generate [OPTIONS] PC_FILE SC_FILE KPOINTS
+</code></pre></div>
+<p><strong>Options:</strong></p>
+<div class="highlight"><pre><span></span><code>  --time-reversal / --no-time-reversal
+  -m, --matrix TEXT               Transformation matrix
+  --symprec FLOAT                 Transformation matrix
+  --out-file TEXT                 Name of the output file
+  --no-expand                     Do not expand the kpoints by symmetry
+  --nk-per-split INTEGER          Number of band structure kpoints per split.
+  --scf-kpoints FILE              File (IBZKPT) to provide SCF kpoints for
+                                  self-consistent calculations. Needed for
+                                  hybrid functional calculations.
+  --help                          Show this message and exit.
+</code></pre></div>
+<h2 id="easyunfold-unfold">easyunfold unfold</h2>
+<p>Perform unfolding and plotting</p>
+<p><strong>Usage:</strong></p>
+<div class="highlight"><pre><span></span><code>easyunfold unfold [OPTIONS] COMMAND [ARGS]...
+</code></pre></div>
+<p><strong>Options:</strong></p>
+<div class="highlight"><pre><span></span><code>  --data-file FILE
+  --help            Show this message and exit.
+</code></pre></div>
+<h3 id="easyunfold-unfold-calculate">easyunfold unfold calculate</h3>
+<p>Perform the unfolding</p>
+<p>Multiple WAVECAR files can be supplied for split-path calculations.</p>
+<p><strong>Usage:</strong></p>
+<div class="highlight"><pre><span></span><code>easyunfold unfold calculate [OPTIONS] [WAVECAR]...
+</code></pre></div>
+<p><strong>Options:</strong></p>
+<div class="highlight"><pre><span></span><code>  --save-as TEXT
+  --gamma
+  --ncl
+  --help          Show this message and exit.
+</code></pre></div>
+<h3 id="easyunfold-unfold-effective-mass">easyunfold unfold effective-mass</h3>
+<p>Compute and print effective masses by tracing the unfolded weights.</p>
+<p>Note that this functionality only works for simple unfolded band structures,
+and it is likely to fail for complex cases.</p>
+<p><strong>Usage:</strong></p>
+<div class="highlight"><pre><span></span><code>easyunfold unfold effective-mass [OPTIONS]
+</code></pre></div>
+<p><strong>Options:</strong></p>
+<div class="highlight"><pre><span></span><code>  --intensity-tol FLOAT
+  --spin INTEGER
+  --npoints INTEGER
+  --extrema-detect-tol FLOAT
+  --degeneracy-detect-tol FLOAT
+  --nocc INTEGER
+  --plot
+  --out-file TEXT                Name of the output file.
+  --help                         Show this message and exit.
+</code></pre></div>
+<h3 id="easyunfold-unfold-plot">easyunfold unfold plot</h3>
+<p>Plot the spectral function</p>
+<p>This command uses the stored unfolding data to plot the effective bands structure (EBS).</p>
+<p><strong>Usage:</strong></p>
+<div class="highlight"><pre><span></span><code>easyunfold unfold plot [OPTIONS]
+</code></pre></div>
+<p><strong>Options:</strong></p>
+<div class="highlight"><pre><span></span><code>  --title TEXT       Title to be used
+  --orbitals TEXT    Orbitals of to be used for weighting.
+  --atoms-idx TEXT   Indices of the atoms to be used for weighting
+                     (1-indexed).
+  --procar TEXT      PROCAR files used for atomic weighting
+  --no-symm-average  Do not include symmetry related kpoints for averaging.
+  --show             Show the plot interactively.
+  --cmap TEXT        Name of the colour map(s) to use. Passing a list
+                     separated by &quot;|&quot; for the combined plot.  [default: PuRd]
+  --out-file TEXT    Name of the output file.
+  --vscale FLOAT     A scaling factor for the colour mapping.
+  --emax FLOAT       Maximum energy in eV relative to the reference.
+                     [default: 5.0]
+  --emin FLOAT       Minimum energy in eV relative to the reference.
+                     [default: -5.0]
+  --eref FLOAT       Reference energy in eV.
+  --sigma FLOAT      Smearing width for the energy in eV.  [default: 0.02]
+  --npoints INTEGER  Number of bins for the energy.  [default: 2000]
+  --ncl              Is the calculation with non-colinear spin?
+  --gamma            Is the calculation a gamma only one?
+  --help             Show this message and exit.
+</code></pre></div>
+<h3 id="easyunfold-unfold-plot-projections">easyunfold unfold plot-projections</h3>
+<p>Plot with subplots with multiple atomic projections</p>
+<p><strong>Usage:</strong></p>
+<div class="highlight"><pre><span></span><code>easyunfold unfold plot-projections [OPTIONS]
+</code></pre></div>
+<p><strong>Options:</strong></p>
+<div class="highlight"><pre><span></span><code>  --title TEXT                Title to be used
+  --orbitals TEXT             Orbitals of to be used for weighting.
+  --atoms-idx TEXT            Indices of the atoms to be used for weighting
+                              (1-indexed).
+  --procar TEXT               PROCAR files used for atomic weighting
+  --no-symm-average           Do not include symmetry related kpoints for
+                              averaging.
+  --show                      Show the plot interactively.
+  --cmap TEXT                 Name of the colour map(s) to use. Passing a list
+                              separated by &quot;|&quot; for the combined plot.
+                              [default: PuRd]
+  --out-file TEXT             Name of the output file.
+  --vscale FLOAT              A scaling factor for the colour mapping.
+  --emax FLOAT                Maximum energy in eV relative to the reference.
+                              [default: 5.0]
+  --emin FLOAT                Minimum energy in eV relative to the reference.
+                              [default: -5.0]
+  --eref FLOAT                Reference energy in eV.
+  --sigma FLOAT               Smearing width for the energy in eV.  [default:
+                              0.02]
+  --npoints INTEGER           Number of bins for the energy.  [default: 2000]
+  --ncl                       Is the calculation with non-colinear spin?
+  --gamma                     Is the calculation a gamma only one?
+  --combined / --no-combined  Plot all projections in a combined graph.
+  --intensity FLOAT           Color intensity for combined plot  [default:
+                              1.0]
+  --colors TEXT               Colors to be used for combined plot. Comma
+                              separated. Default = &quot;r,g,b&quot;.
+  --help                      Show this message and exit.
+</code></pre></div>
+<h3 id="easyunfold-unfold-status">easyunfold unfold status</h3>
+<p>Print the status</p>
+<p><strong>Usage:</strong></p>
+<div class="highlight"><pre><span></span><code>easyunfold unfold status [OPTIONS]
+</code></pre></div>
+<p><strong>Options:</strong></p>
+<div class="highlight"><pre><span></span><code>  --help  Show this message and exit.
+</code></pre></div>
 
               
             </article>
@@ -602,7 +651,7 @@ projections into a single plot.</p>
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
         
-        <a href="../example_si222/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Si Supercell" rel="prev">
+        <a href="../guide/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Guide" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
           </div>
@@ -611,20 +660,20 @@ projections into a single plot.</p>
               <span class="md-footer__direction">
                 Previous
               </span>
-              Si Supercell
+              Guide
             </div>
           </div>
         </a>
       
       
         
-        <a href="../example_nabis2/" class="md-footer__link md-footer__link--next" aria-label="Next: NaBiS2 SQS Projection" rel="next">
+        <a href="../sources/modules/easyunfold/effective_mass/" class="md-footer__link md-footer__link--next" aria-label="Next: easyunfold.effective_mass" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              NaBiS2 SQS Projection
+              easyunfold.effective_mass
             </div>
           </div>
           <div class="md-footer__button md-icon">
