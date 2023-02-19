@@ -215,47 +215,9 @@
         
       
       
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Home
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
       <a href="." class="md-nav__link md-nav__link--active">
         Home
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#usage" class="md-nav__link">
-    Usage
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#contributors" class="md-nav__link">
-    Contributors
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
       
     </li>
   
@@ -299,8 +261,8 @@
   
   
     <li class="md-nav__item">
-      <a href="cli/" class="md-nav__link">
-        CLI Commands
+      <a href="theory/" class="md-nav__link">
+        Theory
       </a>
     </li>
   
@@ -323,131 +285,12 @@
       
       
         <label class="md-nav__link" for="__nav_5">
-          API Docs
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <nav class="md-nav" aria-label="API Docs" data-md-level="1">
-        <label class="md-nav__title" for="__nav_5">
-          <span class="md-nav__icon md-icon"></span>
-          API Docs
-        </label>
-        <ul class="md-nav__list" data-md-scrollfix>
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="sources/modules/easyunfold/effective_mass/" class="md-nav__link">
-        easyunfold.effective_mass
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="sources/modules/easyunfold/plotting/" class="md-nav__link">
-        easyunfold.plotting
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="sources/modules/easyunfold/procar/" class="md-nav__link">
-        easyunfold.procar
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="sources/modules/easyunfold/unfold/" class="md-nav__link">
-        easyunfold.unfold
-      </a>
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="sources/modules/easyunfold/wavecar/" class="md-nav__link">
-        easyunfold.wavecar
-      </a>
-    </li>
-  
-
-            
-          
-        </ul>
-      </nav>
-    </li>
-  
-
-    
-      
-      
-      
-
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="theory/" class="md-nav__link">
-        Theory
-      </a>
-    </li>
-  
-
-    
-      
-      
-      
-
-  
-  
-  
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-      
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" >
-      
-      
-      
-      
-        <label class="md-nav__link" for="__nav_7">
           Examples
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Examples" data-md-level="1">
-        <label class="md-nav__title" for="__nav_7">
+        <label class="md-nav__title" for="__nav_5">
           <span class="md-nav__icon md-icon"></span>
           Examples
         </label>
@@ -481,20 +324,6 @@
 
             
           
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="example_nabis2/" class="md-nav__link">
-        NaBiS2 SQS Projection
-      </a>
-    </li>
-  
-
-            
-          
         </ul>
       </nav>
     </li>
@@ -521,28 +350,6 @@
     
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#usage" class="md-nav__link">
-    Usage
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#contributors" class="md-nav__link">
-    Contributors
-  </a>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -560,37 +367,11 @@
 
 
 <h1 id="welcome-to-easyunfold-documentation">Welcome to easyunfold documentation</h1>
-<p><img alt="build" src="https://github.com/SMTG-UCL/easyunfold/actions/workflows/ci.yaml/badge.svg" />
-<a href="https://smtg-ucl.github.io/easyunfold/"><img alt="docs" src="https://github.com/SMTG-UCL/easyunfold/actions/workflows/docs.yaml/badge.svg" /></a>
-<a href="https://codecov.io/gh/SMTG-UCL/easyunfold"><img alt="codecov" src="https://codecov.io/gh/SMTG-UCL/easyunfold/branch/dev/graph/badge.svg?token=XLLWWU5UM2" /></a></p>
 <p>This package is intended for obtaining the effective band structure of a supercell for a certain path of the primitive cell.
 It was originally based on <a href="https://github.com/QijingZheng/VaspBandUnfolding">PyVaspwfc</a> for reading wavefunction output of VASP, and contains some code of the latter.
 An notable improvement is that breaking symmetry is taken accounted of by sampling additional kpoints and taking average accordingly, which was previously missing.
 Our goal is to make the unfolding process easier to carry out and less likely to go wrong.</p>
 <p>For the methodology, see <a href="https://link.aps.org/doi/10.1103/PhysRevB.85.085201">here</a>.</p>
-<h2 id="usage">Usage</h2>
-<p>Main goal of this tool is to make the unfolding process easier.
-To generate a unfolded band structure, one typically needs to perform the following step:</p>
-<ol>
-<li>Create a primitive cell, and generate a k point path for this primitive cell.</li>
-<li>Create a supercell, and obtain its optimised structure.</li>
-<li>Generate a series of kpoints in the supercell to be calculated.</li>
-<li>Perform a band structure calculation using the supercell, and save its wave function.</li>
-<li>Run post-processing to obtain the unfolded band structure.</li>
-</ol>
-<p>The supercell usually contains certain defects, or a special quasi random structure.
-In both cases, its symmetry is lowered when compared to the perfect primitive cell.
-Hence, for a given kpoint path in the primitive cell, additional kpoints may need to be sampled, and the extracted spectral weights need to be averaged in the end to obtained the effective band structure (EBS).</p>
-<p>At the moment, only VASP calculations are supported, although in principle other PW code can be supported easily if the wavefunction can be read in.</p>
-<p>Please see the documentation for guide and examples.</p>
-<h2 id="contributors">Contributors</h2>
-<p>Code Contributors:
-  <a href="https://github.com/zhubonan">Bonan Zhu</a>
-  <a href="https://github.com/kavanase">Seán Kavanagh</a>
-  <a href="https://github.com/https://github.com/adair-nicolson">Adair Nicolson</a></p>
-<p>And those who helped in the development:</p>
-<p><a href="https://github.com/joebesity">Joe Willis</a>
-  <a href="http://davidscanlon.com/?page_id=5">David O. Scanlon</a></p>
 
               
             </article>
