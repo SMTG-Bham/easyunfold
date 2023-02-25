@@ -550,7 +550,12 @@
 Note that the <code>PROCAR.gz</code> file will need to be decompressed with <code>gzip -d PROCAR.gz</code> if reproducing these example plots with the raw data.</p>
 </div>
 <p>In this example, we unfold the bands from a 80-atom special-quasirandom (SQS) supercell of NaBiS<span class="arithmatex">\(_2\)</span>, where the Na and 
-Bi cations are quasi-randomly distributed, in order to simulate randomised cation disorder in the material. </p>
+Bi cations are quasi-randomly distributed, in order to simulate randomised cation disorder in the material.
+These results were published in Y. T. Huang &amp; S. R. Kavanagh et al. 
+<a href="https://www.nature.com/articles/s41467-022-32669-3"><em>Nature Communications</em></a> 2022, and an early version of 
+<code>easyunfold</code> was used for the similar AgBiS<span class="arithmatex">\(_2\)</span> in Y. Wang &amp; S. R. Kavanagh et al. 
+<a href="https://www.nature.com/articles/s41566-021-00950-4"><em>Nature Photonics</em></a> 2022, with these plots demonstrating the key 
+differences in electronic structure and thus photovoltaic performance between these two materials.</p>
 <p>We have previously calculated the <code>easyunfold.json</code> file from the calculation using <code>easyunfold calculate WAVECAR</code>. 
 Using the default plotting options with <code>easyunfold unfold plot</code>, we obtain the following unfolded band structure:</p>
 <figure>
