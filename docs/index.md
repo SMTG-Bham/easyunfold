@@ -31,6 +31,12 @@ At the moment, only VASP calculations are supported, although in principle other
 
 Please see the documentation for guide and examples.
 
+## Studies using `easyunfold`
+We'll add papers that use `easyunfold` to this list as they come out!
+- Y. T. Huang & S. R. Kavanagh et al. [_Nature Communications_](https://www.nature.com/articles/s41467-022-32669-3) 2022
+- A. T. J. Nicolson et al. [_ChemRxiv_](https://chemrxiv.org/engage/chemrxiv/article-details/63a5d1ffa53ea69e935559e2) 2023
+- Y. Wang & S. R. Kavanagh et al. [_Nature Photonics_](https://www.nature.com/articles/s41566-021-00950-4) 2022 (early version)
+
 ## Contributors
 
 Code Contributors:
