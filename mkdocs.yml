@@ -49,3 +49,12 @@ extra_javascript:
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
 
 repo_url: https://github.com/SMTG-UCL/easyunfold
+
+modules:
+- easyunfold:
+  - cli: modules/easyunfold/cli.md
+  - effective_mass: modules/easyunfold/effective_mass.md
+  - plotting: modules/easyunfold/plotting.md
+  - procar: modules/easyunfold/procar.md
+  - unfold: modules/easyunfold/unfold.md
+  - wavecar: modules/easyunfold/wavecar.md

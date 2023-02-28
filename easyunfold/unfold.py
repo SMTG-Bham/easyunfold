@@ -11,7 +11,6 @@ from pathlib import Path
 
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib as mpl
 from matplotlib.colors import ListedColormap, hex2color
 from monty.json import MSONable
 from tqdm import tqdm
@@ -644,222 +643,6 @@ def make_kpath(kbound, nseg=40):
     return kpath
 
 
-def EBS_scatter(kpts,
-                cell,
-                spectral_weight,
-                atomic_weights=None,
-                atomic_colors=None,
-                eref=0.0,
-                nseg=None,
-                save='ebs_s.png',
-                kpath_label=None,
-                factor=20,
-                figsize=(3.0, 4.0),
-                ylim=(-3, 3),
-                show=True,
-                ax=None,
-                color='b'):
-    """
-    plot the effective band structure with scatter, the size of the scatter
-    indicates the spectral weight.
-    The plotting function utilizes Matplotlib package.
-
-    inputs:
-        kpts: the kpoints vectors in fractional coordinates.
-        cell: the primitive cell basis
-        spectral_weight: self-explanatory
-    """
-
-    atomic_colors = [] if atomic_colors is None else atomic_colors
-    kpath_label = [] if kpath_label is None else kpath_label
-
-    nspin = spectral_weight.shape[0]
-    kpt_c = np.dot(kpts, np.linalg.inv(cell).T)
-    kdist = np.r_[0, np.cumsum(np.linalg.norm(np.diff(kpt_c, axis=0), axis=1))]
-    nb = spectral_weight.shape[2]
-    x0 = np.tile(kdist, (nb, 1)).T
-
-    if atomic_weights is not None:
-        atomic_weights = np.asarray(atomic_weights)
-        assert atomic_weights.shape[1:] == spectral_weight.shape[:-1]
-
-        if not atomic_colors:
-            atomic_colors = mpl.rcParams['axes.prop_cycle'].by_key()['color']
-
-    if ax is None:
-        fig = plt.figure()
-        if nspin == 1:
-            axes = [plt.subplot(111)]
-            fig.set_size_inches(figsize)
-        else:
-            axes = [plt.subplot(121), plt.subplot(122)]
-            fig.set_size_inches((figsize[0] * 2, figsize[1]))
-    else:
-        if not isinstance(ax, list):
-            axes = [ax]
-        else:
-            axes = ax
-        fig = axes[0].figure
-
-    for ispin in range(nspin):
-        ax = axes[ispin]
-        if atomic_weights is not None:
-            for iatom in range(atomic_weights.shape[0]):
-                ax.scatter(x0,
-                           spectral_weight[ispin, :, :, 0] - eref,
-                           s=spectral_weight[ispin, :, :, 1] * factor * atomic_weights[iatom][ispin, :, :],
-                           lw=0.0,
-                           color=atomic_colors[iatom])
-        else:
-            ax.scatter(x0, spectral_weight[ispin, :, :, 0] - eref, s=spectral_weight[ispin, :, :, 1] * factor, lw=0.0, color=color)
-
-        ax.set_xlim(0, kdist.max())
-        ax.set_ylim(*ylim)
-        ax.set_ylabel('Energy [eV]', labelpad=5)
-
-        if nseg:
-            for kb in kdist[::nseg]:
-                ax.axvline(x=kb, lw=0.5, color='k', ls=':', alpha=0.8)
-
-            if kpath_label:
-                ax.set_xticks(kdist[::nseg])
-                kname = [x.upper() for x in kpath_label]
-                for ii, _ in enumerate(kname):
-                    if kname[ii] == 'G':
-                        kname[ii] = r'$\mathrm{\mathsf{\Gamma}}$'
-                    else:
-                        kname[ii] = r'$\mathrm{{\mathsf{' + f'{kname[ii]}' + r'}}$'
-                ax.set_xticklabels(kname)
-
-    fig.tight_layout(pad=0.2)
-    fig.savefig(save, dpi=360)
-    if show:
-        fig.show()
-
-
-def EBS_cmaps(kpts,
-              cell,
-              E0,
-              spectral_function,
-              eref=0.0,
-              nseg=None,
-              kpath_label=None,
-              explicit_labels=None,
-              save=None,
-              figsize=(3.0, 4.0),
-              ylim=(-3, 3),
-              show=True,
-              contour_plot=False,
-              ax=None,
-              vscale=1.0,
-              title=None,
-              vmax=None,
-              vmin=None,
-              alpha=1.0,
-              cmap='jet'):
-    """
-    plot the effective band structure with colormaps.  The plotting function
-    utilizes Matplotlib package.
-
-    Args:
-        kpts: the kpoints vectors in fractional coordinates.
-        cell: the primitive cell basis
-        E0: The energies corresponds to each element of the spectral function
-        spectral_function: The spectral function array in the shape of (nspin, nk, neng)
-        eref: Refernce point for zero energy
-        kpath_label: Label of the high symmetry kpoints along the pathway
-        nseg: Number of points in each segment of the kpoint pathway
-        explicit_labels: A list of tuplies containing tuples of `(index, label)` to explicitly set kpoint labels.
-        save: Name of the file the plot to be saved to.
-        figsize: Size of hte figure
-        ylim: Limit for the y axis. The limit is applied *after* substracting the refence energy.
-        show: To show the plot interactively or not.
-        contour_plot: Plot in the contour mode
-        ax: Existing axis(axes) to plot onto
-        cmap: Colour mapping for the density/contour plot
-        title: Title to be used
-        vscale: Scale factor for color coding
-    """
-
-    kpath_label = [] if not kpath_label else kpath_label
-    nspin = spectral_function.shape[0]
-    kpt_c = np.dot(kpts, np.linalg.inv(cell).T)
-    kdist = np.r_[0., np.cumsum(np.linalg.norm(np.diff(kpt_c, axis=0), axis=1))]
-    xmin, xmax = kdist.min(), kdist.max()
-
-    if ax is None:
-        fig = plt.figure()
-        if nspin == 1:
-            axes = [plt.subplot(111)]
-            fig.set_size_inches(figsize)
-        else:
-            axes = [plt.subplot(121), plt.subplot(122)]
-            fig.set_size_inches((figsize[0] * 2, figsize[1]))
-    else:
-        if not isinstance(ax, list):
-            axes = [ax]
-        else:
-            axes = ax
-        fig = axes[0].figure
-
-    X, Y = np.meshgrid(kdist, E0 - eref)
-
-    # Calculate the min and max values within the field of view, scaled by the factor
-    mask = (E0 < (ylim[1] + eref)) & (E0 > (ylim[0] + eref))
-    vmin = spectral_function[:, mask, :].min() if vmin is None else vmin
-    if vmax is None:
-        vmax = spectral_function[:, mask, :].max()
-        vmax = (vmax - vmin) * vscale + vmin
-
-    for ispin in range(nspin):
-        ax = axes[ispin]
-        if contour_plot:
-            ax.contourf(X, Y, spectral_function[ispin], cmap=cmap, vmax=vmax, vmin=vmin, alpha=alpha)
-        else:
-            ax.pcolormesh(X, Y, spectral_function[ispin], cmap=cmap, shading='auto', vmax=vmax, vmin=vmin, alpha=alpha)
-
-        ax.set_xlim(xmin, xmax)
-        ax.set_ylim(*ylim)
-        ax.set_ylabel('Energy (eV)', labelpad=5)
-
-        if nseg:
-            # labels given for each segment
-            for kb in kdist[::nseg]:
-                ax.axvline(x=kb, lw=0.5, color='k', ls=':', alpha=0.8)
-
-            if kpath_label:
-                tick_pos = list(kdist[::nseg])
-                ax.set_xticks(tick_pos)
-                kname = [x.upper() for x in kpath_label]
-                for ii, _ in enumerate(kname):
-                    kname[ii] = clean_latex_string(kname[ii])
-                ax.set_xticklabels(kname)
-        elif explicit_labels:
-            # Explicit label indices
-            tick_locs = []
-            tick_labels = []
-            for index, label in explicit_labels:
-                ax.axvline(x=kdist[index], lw=0.5, color='k', ls=':', alpha=0.8)
-                tick_locs.append(kdist[index])
-                tick_labels.append(label)
-            ticks = []
-            tick_labels = []
-            for index, label in explicit_labels:
-                ticks.append(kdist[index])
-                tick_labels.append(clean_latex_string(label))
-            ax.set_xticks(tick_locs)
-            ax.set_xticklabels(tick_labels)
-        if title:
-            ax.set_title(title)
-
-    fig.tight_layout(pad=0.2)
-    if save:
-        fig.savefig(save, dpi=300)
-    if show:
-        fig.show()
-    return fig
-
-
 def clean_latex_string(label):
     """Clean up latex labels and convert if necessary"""
     if label == 'G':
@@ -1244,7 +1027,7 @@ def parse_atoms_idx(atoms_idx):
 
     For example, `1,2,3,4-6` will be expanded as `1,2,3,4,5,6`.
     """
-    items = atoms_idx.split(',')
+    items = re.split(', *', atoms_idx)
     out = []
     for item in items:
         match = re.match(r'(\d+)-(\d+)', item)
@@ -1255,3 +1038,13 @@ def parse_atoms_idx(atoms_idx):
     # Expect passing 1-based indexing
     out = [x - 1 for x in out]
     return out
+
+
+def process_projection_options(atoms_idx, orbitals):
+    """Process commandline type specifications"""
+    indices = parse_atoms_idx(atoms_idx)
+    if orbitals and orbitals != 'all':
+        orbitals = [token.strip() for token in orbitals.split(',')]
+    else:
+        orbitals = 'all'
+    return indices, orbitals

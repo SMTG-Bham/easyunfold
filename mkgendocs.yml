@@ -7,12 +7,25 @@ repo_url: https://github.com/SMTG-UCL/easyunfold
 
 #This specifies the autogeneration portion
 pages:
-  - page: "cli.md"
-      source: "easyunfold/cli.py"
-      functions:
-        - easyunfold
-        - generate
-        - unfold
+  - page: "modules/easyunfold/plotting.md"
+    source: "easyunfold/plotting.py"
+    classes:
+      - UnfoldPlotter
+    functions:
+      - interpolate_colors
+
+  - page: "modules/easyunfold/cli.md"
+    source: "easyunfold/cli.py"
+    functions:
+      - add_plot_options
+      - _unfold_plot
+      - print_symmetry_data
+      - matrix_from_string
+
+  - page: "modules/easyunfold/wavecar.md"
+    source: "easyunfold/wavecar.py"
+    classes:
+      - Wavecar
 
   - page: "modules/easyunfold/unfold.md"
     source: "easyunfold/unfold.py"
@@ -31,8 +44,6 @@ pages:
       - read_kpoints
       - read_kpoints_line
       - make_kpath
-      - EBS_scatter
-      - EBS_cmaps
       - clean_latex_string
       - spectral_function_from_weight_sets
       - spectral_weight_multiple_source
@@ -40,13 +51,6 @@ pages:
       - create_white_colormap
       - create_white_colormap_from_existing
       - parse_atoms_idx
-
-  - page: "modules/easyunfold/plotting.md"
-    source: "easyunfold/plotting.py"
-    classes:
-      - UnfoldPlotter
-    functions:
-      - interpolate_colors
       - process_projection_options
 
   - page: "modules/easyunfold/effective_mass.md"
@@ -57,13 +61,7 @@ pages:
       - fit_effective_mass
       - points_with_tol
 
-  - page: "modules/easyunfold/wavecar.md"
-    source: "easyunfold/wavecar.py"
-    classes:
-      - Wavecar
-
   - page: "modules/easyunfold/procar.md"
     source: "easyunfold/procar.py"
     classes:
       - Procar
-

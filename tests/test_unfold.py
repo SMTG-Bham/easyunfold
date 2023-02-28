@@ -226,3 +226,25 @@ def test_colourmap():
 
     cmap = unfold.create_white_colormap_from_existing('Reds')
     assert cmap(cmap.N) == plt.get_cmap('Reds')(256)
+
+
+def test_atoms_index_process():
+    """Test parsing syntax for passing atomic indices"""
+
+    assert unfold.parse_atoms_idx('1,2') == [0, 1]
+    assert unfold.parse_atoms_idx('1, 2') == [0, 1]
+    assert unfold.parse_atoms_idx('1 , 2') == [0, 1]
+    assert unfold.parse_atoms_idx('1,2,4-5') == [0, 1, 3, 4]
+    assert unfold.parse_atoms_idx('1-10') == list(range(0, 10))
+
+
+def test_project_option_processing():
+    """Test for parsing projection options """
+
+    a, b = unfold.process_projection_options('1,2', None)
+    assert a == [0, 1]
+    assert b == 'all'
+
+    a, b = unfold.process_projection_options('1,2', 's,p ')
+    assert a == [0, 1]
+    assert b == ['s', 'p']
