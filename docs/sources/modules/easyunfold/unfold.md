@@ -471,67 +471,6 @@ Return a list of kpoints defining the path between the given kpoints.
 ----
 
 
-### EBS_scatter
-```python
-.EBS_scatter(
-   kpts, cell, spectral_weight, atomic_weights = None, atomic_colors = None,
-   eref = 0.0, nseg = None, save = 'ebs_s.png', kpath_label = None, factor = 20,
-   figsize = (3.0, 4.0), ylim = (-3, 3), show = True, ax = None, color = 'b'
-)
-```
-
----
-plot the effective band structure with scatter, the size of the scatter
-indicates the spectral weight.
-The plotting function utilizes Matplotlib package.
-
-inputs:
-kpts: the kpoints vectors in fractional coordinates.
-cell: the primitive cell basis
-spectral_weight: self-explanatory
-
-----
-
-
-### EBS_cmaps
-```python
-.EBS_cmaps(
-   kpts, cell, E0, spectral_function, eref = 0.0, nseg = None, kpath_label = None,
-   explicit_labels = None, save = None, figsize = (3.0, 4.0), ylim = (-3, 3), show = True,
-   contour_plot = False, ax = None, vscale = 1.0, title = None, vmax = None, vmin = None,
-   alpha = 1.0, cmap = 'jet'
-)
-```
-
----
-plot the effective band structure with colormaps.  The plotting function
-utilizes Matplotlib package.
-
-
-**Args**
-
-* **kpts**  : the kpoints vectors in fractional coordinates.
-* **cell**  : the primitive cell basis
-* **E0**  : The energies corresponds to each element of the spectral function
-* **spectral_function**  : The spectral function array in the shape of (nspin, nk, neng)
-* **eref**  : Refernce point for zero energy
-* **kpath_label**  : Label of the high symmetry kpoints along the pathway
-* **nseg**  : Number of points in each segment of the kpoint pathway
-* **explicit_labels**  : A list of tuplies containing tuples of `(index, label)` to explicitly set kpoint labels.
-* **save**  : Name of the file the plot to be saved to.
-* **figsize**  : Size of hte figure
-* **ylim**  : Limit for the y axis. The limit is applied *after* substracting the refence energy.
-* **show**  : To show the plot interactively or not.
-* **contour_plot**  : Plot in the contour mode
-* **ax**  : Existing axis(axes) to plot onto
-* **cmap**  : Colour mapping for the density/contour plot
-* **title**  : Title to be used
-* **vscale**  : Scale factor for color coding
-
-
-----
-
-
 ### clean_latex_string
 ```python
 .clean_latex_string(
@@ -641,3 +580,16 @@ Create a white-based color map from an existing one.
 Expanding syntex like `1-2` (inclusive)
 
 For example, `1,2,3,4-6` will be expanded as `1,2,3,4,5,6`.
+
+----
+
+
+### process_projection_options
+```python
+.process_projection_options(
+   atoms_idx, orbitals
+)
+```
+
+---
+Process commandline type specifications

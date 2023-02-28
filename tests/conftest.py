@@ -42,3 +42,10 @@ def si_project_dir(datapath, tmp_path):
         return tmp_path / 'Si-project'
 
     return _inner
+
+
+@pytest.fixture
+def mgo_project_dir(datapath, tmp_path):
+    shutil.copy2(datapath('mgo.json'), tmp_path / 'mgo.json')
+    shutil.copy2(datapath('PROCAR.mgo'), tmp_path / 'PROCAR')
+    return tmp_path

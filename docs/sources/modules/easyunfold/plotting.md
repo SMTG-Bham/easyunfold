@@ -194,16 +194,3 @@ Interpolate colors at a number of points within a colorspace.
 **Returns**
 
 A list of colors, specified in the rgb format as a (n, 3) array.
-
-----
-
-
-### process_projection_options
-```python
-.process_projection_options(
-   atoms_idx, orbitals
-)
-```
-
----
-Process commandline type specifications

@@ -15,7 +15,7 @@ from colormath.color_objects import (
 )
 from matplotlib.colors import to_rgb
 
-from .unfold import UnfoldKSet, clean_latex_string, parse_atoms_idx
+from .unfold import UnfoldKSet, clean_latex_string, process_projection_options
 from .effective_mass import EffectiveMass
 
 # pylint: disable=too-many-locals, too-many-arguments
@@ -227,8 +227,7 @@ class UnfoldPlotter:
         ax.set_xticks(tick_locs)
         ax.set_xticklabels(tick_labels)
 
-    def plot_effective_mass(self, eff: EffectiveMass, engs, sf, eref=None, save=None, show=False,
-                            effective_mass_data=None, **kwargs):
+    def plot_effective_mass(self, eff: EffectiveMass, engs, sf, eref=None, save=None, show=False, effective_mass_data=None, **kwargs):
         """
         Plot the effective masses on top of the spectral function.
 
@@ -432,7 +431,7 @@ class UnfoldPlotter:
 
         atoms_idx_subplots = atoms_idx.split('|')
         if orbitals is not None:
-            orbitals_subsplots = atoms_idx.split('|')
+            orbitals_subsplots = orbitals.split('|')
 
             # Special case: if only one set is passed, apply it to all atomic specifications
             if len(orbitals_subsplots) == 1:
@@ -584,16 +583,8 @@ def interpolate_colors(colors, weights, colorspace='lab', normalize=True):
 
     # convert the interpolated colors back to RGB
     rgb_colors = [convert_color(colorspace(*c), sRGBColor).get_value_tuple() for c in interpolated_colors]
+    rgb_colors = np.stack(rgb_colors, axis=0)
 
     # ensure all rgb values are less than 1 (sometimes issues in interpolation gives
-    return np.minimum(rgb_colors, 1)
-
-
-def process_projection_options(atoms_idx, orbitals):
-    """Process commandline type specifications"""
-    indices = parse_atoms_idx(atoms_idx)
-    if orbitals and orbitals != 'all':
-        orbitals = [token.strip() for token in orbitals.split(',')]
-    else:
-        orbitals = 'all'
-    return indices, orbitals
+    np.clip(rgb_colors, 0, 1, rgb_colors)
+    return rgb_colors

@@ -57,12 +57,24 @@ def test_unfold(si_project_dir, tag):
 
     output = runner.invoke(easyunfold, ['generate', 'Si/POSCAR', 'Si_super_deformed/POSCAR', 'KPOINTS_band_low', '--out-file', 'test.json'])
 
+    # Status check
+    args_calc = ['unfold', '--data-file', 'test.json', 'status']
+    output = runner.invoke(easyunfold, args_calc)
+    assert output.exit_code == 0
+    assert 'Please run the supercell' in output.stdout
+
     # Perform the unfold
     args_calc = ['unfold', '--data-file', 'test.json', 'calculate', f'Si_super_deformed{tag}/WAVECAR']
     if 'soc' in tag:
         args_calc.append('--ncl')
     output = runner.invoke(easyunfold, args_calc)
     assert output.exit_code == 0
+
+    # Status check after unfolding is done
+    args_calc = ['unfold', '--data-file', 'test.json', 'status']
+    output = runner.invoke(easyunfold, args_calc)
+    assert output.exit_code == 0
+    assert 'had been performed' in output.stdout
 
     unfoldset = loadfn('test.json')
 
@@ -73,9 +85,37 @@ def test_unfold(si_project_dir, tag):
         output = runner.invoke(easyunfold, ['unfold', '--data-file', 'test.json', 'effective-mass'])
         assert 'Hole effective masses' in output.stdout
         assert r'm_e             -1.38922            32  [0.0, 0.0, 0.0] (\Gamma)  [0.5, 0.5, 0.5] (L)' in output.stdout
+        # Plot effective mass
+        output = runner.invoke(easyunfold, ['unfold', '--data-file', 'test.json', 'effective-mass', '--plot'])
+        assert Path('unfold-effective-mass.png').is_file()
 
     # Do the plotting
     output = runner.invoke(easyunfold, ['unfold', '--data-file', 'test.json', 'plot'])
     assert output.exit_code == 0
     print(output.stdout)
     assert Path('unfold.png').is_file()
+
+
+def test_plot_projection(mgo_project_dir):
+    """Test plot projection"""
+    os.chdir(mgo_project_dir)
+    runner = CliRunner()
+    output = runner.invoke(easyunfold,
+                           ['unfold', '--data-file', 'mgo.json', 'plot-projections', '--atoms-idx', '1,2|3-4', '--procar', 'PROCAR'])
+    assert output.exit_code == 0
+    assert Path('unfold.png').is_file()
+    Path('unfold.png').unlink()
+
+    output = runner.invoke(
+        easyunfold, ['unfold', '--data-file', 'mgo.json', 'plot-projections', '--atoms-idx', '1,2|3-4', '--procar', 'PROCAR', '--combined'])
+    assert output.exit_code == 0
+    assert Path('unfold.png').is_file()
+    Path('unfold.png').unlink()
+
+    output = runner.invoke(easyunfold, [
+        'unfold', '--data-file', 'mgo.json', 'plot-projections', '--atoms-idx', '1,2|3-4', '--procar', 'PROCAR', '--combined', '--orbitals',
+        'px,py|pz'
+    ])
+    assert output.exit_code == 0
+    assert Path('unfold.png').is_file()
+    Path('unfold.png').unlink()
