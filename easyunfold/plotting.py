@@ -431,7 +431,7 @@ class UnfoldPlotter:
 
         atoms_idx_subplots = atoms_idx.split('|')
         if orbitals is not None:
-            orbitals_subsplots = atoms_idx.split('|')
+            orbitals_subsplots = orbitals.split('|')
 
             # Special case: if only one set is passed, apply it to all atomic specifications
             if len(orbitals_subsplots) == 1:
