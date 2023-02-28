@@ -650,20 +650,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#ebs_scatter" class="md-nav__link">
-    EBS_scatter
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ebs_cmaps" class="md-nav__link">
-    EBS_cmaps
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#clean_latex_string" class="md-nav__link">
     clean_latex_string
   </a>
@@ -708,6 +694,13 @@
           <li class="md-nav__item">
   <a href="#parse_atoms_idx" class="md-nav__link">
     parse_atoms_idx
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#process_projection_options" class="md-nav__link">
+    process_projection_options
   </a>
   
 </li>
@@ -1144,20 +1137,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#ebs_scatter" class="md-nav__link">
-    EBS_scatter
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ebs_cmaps" class="md-nav__link">
-    EBS_cmaps
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#clean_latex_string" class="md-nav__link">
     clean_latex_string
   </a>
@@ -1202,6 +1181,13 @@
           <li class="md-nav__item">
   <a href="#parse_atoms_idx" class="md-nav__link">
     parse_atoms_idx
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#process_projection_options" class="md-nav__link">
+    process_projection_options
   </a>
   
 </li>
@@ -1533,54 +1519,6 @@ is also returned.</p>
 <hr />
 <p>Return a list of kpoints defining the path between the given kpoints.</p>
 <hr />
-<h3 id="ebs_scatter">EBS_scatter</h3>
-<div class="highlight"><pre><span></span><code><span class="o">.</span><span class="n">EBS_scatter</span><span class="p">(</span>
-   <span class="n">kpts</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">spectral_weight</span><span class="p">,</span> <span class="n">atomic_weights</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">atomic_colors</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-   <span class="n">eref</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">nseg</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">save</span> <span class="o">=</span> <span class="s1">&#39;ebs_s.png&#39;</span><span class="p">,</span> <span class="n">kpath_label</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">factor</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
-   <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">),</span> <span class="n">ylim</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">show</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;b&#39;</span>
-<span class="p">)</span>
-</code></pre></div>
-<hr />
-<p>plot the effective band structure with scatter, the size of the scatter
-indicates the spectral weight.
-The plotting function utilizes Matplotlib package.</p>
-<p>inputs:
-kpts: the kpoints vectors in fractional coordinates.
-cell: the primitive cell basis
-spectral_weight: self-explanatory</p>
-<hr />
-<h3 id="ebs_cmaps">EBS_cmaps</h3>
-<div class="highlight"><pre><span></span><code><span class="o">.</span><span class="n">EBS_cmaps</span><span class="p">(</span>
-   <span class="n">kpts</span><span class="p">,</span> <span class="n">cell</span><span class="p">,</span> <span class="n">E0</span><span class="p">,</span> <span class="n">spectral_function</span><span class="p">,</span> <span class="n">eref</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">nseg</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">kpath_label</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-   <span class="n">explicit_labels</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">save</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mf">3.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">),</span> <span class="n">ylim</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">show</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-   <span class="n">contour_plot</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">vscale</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">title</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">vmin</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-   <span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="s1">&#39;jet&#39;</span>
-<span class="p">)</span>
-</code></pre></div>
-<hr />
-<p>plot the effective band structure with colormaps.  The plotting function
-utilizes Matplotlib package.</p>
-<p><strong>Args</strong></p>
-<ul>
-<li><strong>kpts</strong>  : the kpoints vectors in fractional coordinates.</li>
-<li><strong>cell</strong>  : the primitive cell basis</li>
-<li><strong>E0</strong>  : The energies corresponds to each element of the spectral function</li>
-<li><strong>spectral_function</strong>  : The spectral function array in the shape of (nspin, nk, neng)</li>
-<li><strong>eref</strong>  : Refernce point for zero energy</li>
-<li><strong>kpath_label</strong>  : Label of the high symmetry kpoints along the pathway</li>
-<li><strong>nseg</strong>  : Number of points in each segment of the kpoint pathway</li>
-<li><strong>explicit_labels</strong>  : A list of tuplies containing tuples of <code>(index, label)</code> to explicitly set kpoint labels.</li>
-<li><strong>save</strong>  : Name of the file the plot to be saved to.</li>
-<li><strong>figsize</strong>  : Size of hte figure</li>
-<li><strong>ylim</strong>  : Limit for the y axis. The limit is applied <em>after</em> substracting the refence energy.</li>
-<li><strong>show</strong>  : To show the plot interactively or not.</li>
-<li><strong>contour_plot</strong>  : Plot in the contour mode</li>
-<li><strong>ax</strong>  : Existing axis(axes) to plot onto</li>
-<li><strong>cmap</strong>  : Colour mapping for the density/contour plot</li>
-<li><strong>title</strong>  : Title to be used</li>
-<li><strong>vscale</strong>  : Scale factor for color coding</li>
-</ul>
-<hr />
 <h3 id="clean_latex_string">clean_latex_string</h3>
 <div class="highlight"><pre><span></span><code><span class="o">.</span><span class="n">clean_latex_string</span><span class="p">(</span>
    <span class="n">label</span>
@@ -1652,6 +1590,14 @@ from a list of WAVECARs.</p>
 <hr />
 <p>Expanding syntex like <code>1-2</code> (inclusive)</p>
 <p>For example, <code>1,2,3,4-6</code> will be expanded as <code>1,2,3,4,5,6</code>.</p>
+<hr />
+<h3 id="process_projection_options">process_projection_options</h3>
+<div class="highlight"><pre><span></span><code><span class="o">.</span><span class="n">process_projection_options</span><span class="p">(</span>
+   <span class="n">atoms_idx</span><span class="p">,</span> <span class="n">orbitals</span>
+<span class="p">)</span>
+</code></pre></div>
+<hr />
+<p>Process commandline type specifications</p>
 
               
             </article>
