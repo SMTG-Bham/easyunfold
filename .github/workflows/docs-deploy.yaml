@@ -3,7 +3,9 @@
 
 name: docs
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [ master ]
 
 jobs:
   doc:
@@ -26,3 +28,11 @@ jobs:
       - name: Build documentation
         run: |
           mkdocs build -d ./docs_build
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        # Deply the documentation built only on the push even
+        if: ${{ (github.event_name != 'pull_request') && (github.repository == 'SMTG-UCL/easyunfold') }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs_build
