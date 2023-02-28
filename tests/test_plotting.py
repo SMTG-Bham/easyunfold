@@ -5,11 +5,35 @@ from pathlib import Path
 import pytest
 import numpy as np
 from monty.serialization import loadfn
+from ase.io import read
 import easyunfold.effective_mass as em
-from easyunfold.unfold import UnfoldKSet
+from easyunfold.unfold import UnfoldKSet, read_kpoints
+from easyunfold.effective_mass import EffectiveMass
 import easyunfold.plotting as pl
 import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
+
+
+@pytest.fixture
+def silicon_unfolded(si_project_dir) -> UnfoldKSet:
+    """
+    Test unfolding on the real data
+    """
+    tag = ''
+    nspin = 1
+    ncl = False
+    si_project_dir = si_project_dir(tag)
+    folder_name = f'Si_super_deformed{tag}'
+
+    atoms_primitive = read(si_project_dir / 'Si/POSCAR')
+    atoms_supercell = read(si_project_dir / f'{folder_name}/POSCAR')
+    kpoints, _, labels, _ = read_kpoints(si_project_dir / 'KPOINTS_band_low')
+
+    unfolder: UnfoldKSet = UnfoldKSet.from_atoms(np.diag([2, 2, 2]), kpoints, atoms_primitive, atoms_supercell)
+    unfolder.kpoint_labels = labels
+    # Test unfold
+    unfolder.get_spectral_weights(si_project_dir / f'{folder_name}/WAVECAR', ncl=ncl)
+    return unfolder
 
 
 @pytest.fixture(scope='module')
@@ -60,3 +84,15 @@ def test_color_interpolation():
 
     assert output.shape == (10, 3)
     assert np.max(output) <= 1.0
+
+
+def test_effective_mass_plot(silicon_unfolded):
+    """Test plotting effective mass information"""
+
+    unfold: UnfoldKSet = silicon_unfolded
+    plotter = pl.UnfoldPlotter(unfold)
+    eff = EffectiveMass(unfold)
+    engs, sf = unfold.get_spectral_function(npoints=200)
+    fig = plotter.plot_effective_mass(eff, engs, sf)
+
+    assert isinstance(fig, Figure)
