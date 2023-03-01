@@ -35,3 +35,4 @@ jobs:
       uses: codecov/codecov-action@v3
       with:
         name: easyunfold
+        token: ${{ secrets.CODECOV_TOKEN }}
