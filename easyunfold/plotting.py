@@ -16,7 +16,7 @@ from colormath.color_objects import (
 from matplotlib.colors import to_rgb
 
 from .unfold import UnfoldKSet, clean_latex_string, process_projection_options
-from .effective_mass import EffectiveMass
+from .effective_mass import EffectiveMass, fitted_band
 
 # pylint: disable=too-many-locals, too-many-arguments
 
@@ -532,6 +532,26 @@ class UnfoldPlotter:
                 ylim=ylim,
             )
 
+        return fig
+
+    @staticmethod
+    def plot_effective_mass_fit(efm, npoints=3, carrier='electrons', idx=0, ax=None, save=None, dpi=120):
+        """
+        Plot detected band edges and the fitted effective masses.
+        """
+        data = efm.get_effective_masses(npoints=npoints)[carrier][idx]
+
+        x = data['raw_data']['kpoint_distances']
+        y = data['raw_data']['effective_energies']
+        me = data['effective_mass']
+        x1, y1 = fitted_band(x, me)
+        if ax is None:
+            fig, ax = plt.subplots(1, 1)
+        ax.plot(x, y, 'x-', label='Energy ')
+        ax.plot(x1, y1 + y[0], label='fitted')
+        ax.legend()
+        if save:
+            fig.savefig(save, dpi=dpi)
         return fig
 
 

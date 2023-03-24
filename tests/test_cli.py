@@ -88,6 +88,9 @@ def test_unfold(si_project_dir, tag):
         # Plot effective mass
         output = runner.invoke(easyunfold, ['unfold', '--data-file', 'test.json', 'effective-mass', '--plot'])
         assert Path('unfold-effective-mass.png').is_file()
+        # Plot effective mass fits
+        output = runner.invoke(easyunfold, ['unfold', '--data-file', 'test.json', 'effective-mass', '--plot-fit'])
+        assert Path('unfold-effective-mass.png').is_file()
 
     # Do the plotting
     output = runner.invoke(easyunfold, ['unfold', '--data-file', 'test.json', 'plot'])

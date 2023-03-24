@@ -13,6 +13,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap, hex2color
 from monty.json import MSONable
+from monty.serialization import loadfn
 from tqdm import tqdm
 import spglib
 
@@ -112,17 +113,17 @@ class UnfoldKSet(MSONable):
     _VERSION = '0.1.0'
 
     def __init__(self,
-                 M,
-                 kpts_pc,
-                 pc_latt,
-                 pc_opts,
-                 sc_opts,
-                 time_reversal=True,
-                 expand=True,
-                 metadata=None,
-                 expansion_results=None,
-                 calculated_quantities=None,
-                 kpoint_labels=None):
+                 M: np.ndarray,
+                 kpts_pc: list,
+                 pc_latt: np.ndarray,
+                 pc_opts: np.ndarray,
+                 sc_opts: np.ndarray,
+                 time_reversal: bool = True,
+                 expand: bool = True,
+                 metadata: Union[None, dict] = None,
+                 expansion_results: Union[None, dict] = None,
+                 calculated_quantities: Union[None, dict] = None,
+                 kpoint_labels: Union[None, list] = None):
         """
         Args:
             kpts_pc: A list of kpoints in the PC
@@ -183,8 +184,13 @@ class UnfoldKSet(MSONable):
             },
         )
 
+    @classmethod
+    def from_file(cls, fname):
+        """Load from a file"""
+        return loadfn(fname)
+
     def expand_pc_kpoints(self):
-        """Comptue the pc kpoints to be unfolded into"""
+        """Compute the pc kpoints to be unfolded into"""
         expended_k = []
         expended_weights = []
         for kpt in self.kpts_pc:
