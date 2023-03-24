@@ -181,26 +181,33 @@ def add_plot_options(func):
 
 @unfold.command('effective-mass')
 @click.pass_context
-@click.option('--intensity-tol', type=float, default=0.1)
-@click.option('--spin', type=int, default=0)
-@click.option('--npoints', type=int, default=3)
-@click.option('--extrema-detect-tol', type=float, default=0.01)
-@click.option('--degeneracy-detect-tol', type=float, default=0.01)
+@click.option('--intensity-threshold', type=float, default=0.1, help='Intensity threshold for detecting valid bands.')
+@click.option('--spin', type=int, default=0, help='Index of the spin channel.')
+@click.option('--npoints', type=int, default=3, help='Number of kpoints used for fitting from the extrema.')
+@click.option('--extrema-detect-tol', type=float, default=0.01, help='Tolerance for band extrema detection.')
+@click.option('--degeneracy-detect-tol', type=float, default=0.01, help='Tolerance for band degeneracy detection at extrema.')
 @click.option('--nocc', type=int)
 @click.option('--plot', is_flag=True, default=False)
+@click.option('--plot-fit', is_flag=True, default=False, help='Generate plots of the band edge and parabolic fits.')
+@click.option('--fit-label', help='Which branch to use for plot fitting. e.g. electrons:0', default='electrons:0')
+@click.option('--band-filter', default=None, type=int, help='Only displace information for this band.')
 @click.option('--out-file', default='unfold-effective-mass.png', help='Name of the output file.')
-def unfold_effective_mass(ctx, intensity_tol, spin, npoints, extrema_detect_tol, degeneracy_detect_tol, nocc, plot, out_file):
+def unfold_effective_mass(ctx, intensity_threshold, spin, band_filter, npoints, extrema_detect_tol, degeneracy_detect_tol, nocc, plot,
+                          plot_fit, fit_label, out_file):
     """
     Compute and print effective masses by tracing the unfolded weights.
 
     Note that this functionality only works for simple unfolded band structures,
     and it is likely to fail for complex cases.
+
+    Use the `--plot-fit` flag to generate the detected band edge verses the parabolic fit
+    for visual confirmation if unsure.
     """
     from easyunfold.effective_mass import EffectiveMass
     from easyunfold.unfold import UnfoldKSet
     from tabulate import tabulate
     unfoldset: UnfoldKSet = ctx.obj['obj']
-    efm = EffectiveMass(unfoldset, intensity_tol=intensity_tol, extrema_tol=extrema_detect_tol, degeneracy_tol=degeneracy_detect_tol)
+    efm = EffectiveMass(unfoldset, intensity_tol=intensity_threshold, extrema_tol=extrema_detect_tol, degeneracy_tol=degeneracy_detect_tol)
 
     click.echo('Band extrema data:')
     table = []
@@ -215,11 +222,16 @@ def unfold_effective_mass(ctx, intensity_tol, spin, npoints, extrema_detect_tol,
         efm.set_nocc(nocc)
     output = efm.get_effective_masses(ispin=spin, npoints=npoints)
 
+    # Filter by band if requested
+    if band_filter is not None:
+        for carrier in ['electrons', 'holes']:
+            output[carrier] = [entry for entry in output[carrier] if entry['band_index'] == band_filter]
+
     ## Print data
     def print_data(entries, tag='me'):
         """Print the effective mass data"""
         table = []
-        for entry in entries:
+        for i, entry in enumerate(entries):
             me = entry['effective_mass']
 
             kf = entry['kpoint_from']
@@ -229,10 +241,9 @@ def unfold_effective_mass(ctx, intensity_tol, spin, npoints, extrema_detect_tol,
             kt = [round(x, 5) for x in entry['kpoint_to']]
             lt = entry['kpoint_label_to']
             kto = f'{kt} ({lt})'
-            band_idx = entry['band_index']
-            #click.echo(f'   {tag} (@band {band_idx}): {me:>8.3f} {kf} ({lf}) -> {kt} ({lt})')
-            table.append([tag, me, band_idx, kfrom, kto])
-        click.echo(tabulate(table, headers=['Kind', 'Effective mass', 'Band index', 'from', 'to']))
+            bidx = entry['band_index']
+            table.append([i, tag, me, bidx, kfrom, kto])
+        click.echo(tabulate(table, headers=['index', 'Kind', 'Effective mass', 'Band index', 'from', 'to']))
 
     click.echo('Electron effective masses:')
     print_data(output['electrons'], 'm_e')
@@ -248,6 +259,20 @@ def unfold_effective_mass(ctx, intensity_tol, spin, npoints, extrema_detect_tol,
         click.echo('Generating spectral function plot for visualising detected branches...')
         engs, sf = unfoldset.get_spectral_function()
         plotter.plot_effective_mass(efm, engs, sf, effective_mass_data=output, save=out_file)
+
+    elif plot_fit:
+        from easyunfold.plotting import UnfoldPlotter
+        plotter = UnfoldPlotter(unfoldset)
+        carrier, idx = fit_label.split(':')
+        fname = Path(out_file).stem
+        ext = Path(out_file).suffix
+        for carrier in ['electrons', 'holes']:
+            for idx, _ in enumerate(output[carrier]):
+                plotter.plot_effective_mass_fit(efm=efm,
+                                                npoints=npoints,
+                                                carrier=carrier,
+                                                idx=int(idx),
+                                                save=fname + f'_fit_{carrier}_{idx}' + ext)
 
 
 @unfold.command('plot')
