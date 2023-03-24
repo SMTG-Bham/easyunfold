@@ -551,17 +551,27 @@
 <p>Compute and print effective masses by tracing the unfolded weights.</p>
 <p>Note that this functionality only works for simple unfolded band structures,
 and it is likely to fail for complex cases.</p>
+<p>Use the <code>--plot-fit</code> flag to generate the detected band edge verses the parabolic fit
+for visual confirmation if unsure.</p>
 <p><strong>Usage:</strong></p>
 <div class="highlight"><pre><span></span><code>easyunfold unfold effective-mass [OPTIONS]
 </code></pre></div>
 <p><strong>Options:</strong></p>
-<div class="highlight"><pre><span></span><code>  --intensity-tol FLOAT
-  --spin INTEGER
-  --npoints INTEGER
-  --extrema-detect-tol FLOAT
-  --degeneracy-detect-tol FLOAT
+<div class="highlight"><pre><span></span><code>  --intensity-threshold FLOAT    Intensity threshold for detecting valid
+                                 bands.
+  --spin INTEGER                 Index of the spin channel.
+  --npoints INTEGER              Number of kpoints used for fitting from the
+                                 extrema.
+  --extrema-detect-tol FLOAT     Tolerance for band extrema detection.
+  --degeneracy-detect-tol FLOAT  Tolerance for band degeneracy detection at
+                                 extrema.
   --nocc INTEGER
   --plot
+  --plot-fit                     Generate plots of the band edge and parabolic
+                                 fits.
+  --fit-label TEXT               Which branch to use for plot fitting. e.g.
+                                 electrons:0
+  --band-filter INTEGER          Only displace information for this band.
   --out-file TEXT                Name of the output file.
   --help                         Show this message and exit.
 </code></pre></div>
