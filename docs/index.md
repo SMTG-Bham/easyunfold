@@ -44,7 +44,7 @@ We'll add papers that use `easyunfold` to this list as they come out!
 Code Contributors:
   [Bonan Zhu](https://github.com/zhubonan)
   [Seán Kavanagh](https://github.com/kavanase)
-  [Adair Nicolson](https://github.com/https://github.com/adair-nicolson)
+  [Adair Nicolson](https://github.com/adair-nicolson)
 
 And those who helped in the development:
 

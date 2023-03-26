@@ -1,7 +1,7 @@
 # Cation-Disordered NaBiS<sub>2</sub> with and without Atomic Projections
 
 :::{note}
-Relevant files can be found in the [examples/NaBiS2](https://github.com/SMTG-UCL/easyunfold/tree/main/examples/NaBiSi2) folder. 
+Relevant files can be found in the [examples/NaBiS2](https://github.com/SMTG-UCL/easyunfold/tree/main/examples/NaBiS2) folder. 
 Note that the `PROCAR.gz` file will need to be decompressed with `gzip -d PROCAR.gz` if reproducing these example plots with the raw data.
 :::
 
