@@ -50,3 +50,16 @@ And those who helped in the development:
 
   [Joe Willis](https://github.com/joebesity)
   [David O. Scanlon](http://davidscanlon.com/?page_id=5)
+
+# Table of contents
+
+```{toctree}
+:maxdepth: 2
+
+installation.md
+guide.md
+examples.md
+theory.md
+cli.rst
+apidocs/index
+```

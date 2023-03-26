@@ -36,8 +36,20 @@ autodoc2_packages = [
 ]
 
 myst_enable_extensions = [
-  "colon_fence",
-  "fieldlist"
+    "amsmath",
+    "attrs_inline",
+    "colon_fence",
+    "deflist",
+    "dollarmath",
+    "fieldlist",
+    "html_admonition",
+    "html_image",
+    "replacements",
+    "smartquotes",
+    "linkify",
+    "strikethrough",
+    "substitution",
+    "tasklist",
 ]
 
 autodoc2_render_plugin = "myst"
@@ -57,6 +69,9 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # a list of builtin themes.
 #
 html_theme = 'sphinx_book_theme'
+html_theme_options = {
+  'navigation_depth': 2
+}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,

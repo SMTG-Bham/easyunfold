@@ -1,4 +1,4 @@
-
+# Installation
 
 At the moment, the package should be installed from the git repository.
 A recently version of `pip` is needed to do this, due to the use of new style `pyproject.toml` configuration file.
@@ -28,4 +28,3 @@ Commands:
   generate  Generate the kpoints for sampling the supercell
   unfold    Perform unfolding and plotting
 ```
-

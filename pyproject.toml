@@ -25,6 +25,7 @@ easyunfold = "easyunfold.cli:easyunfold"
 
 [project.optional-dependencies]
 doc = [
-    "mkdocs~=1.2", "mkdocs-material~=8.2.1", "mkgendocs", "mkdocs-click"
+    "sphinx-click~=4", "sphinx-autodoc2~=0.4", "sphinx-book-theme~=1", "sphinx-copybutton~0.3",
+    "myst-parser[linkify]", "sphinx~=6"
 ]
 test = ["pytest", "pytest-cov", "coverage"]

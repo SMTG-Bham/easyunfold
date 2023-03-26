@@ -1,4 +1,4 @@
-
+# Guide
 Main goal of this tool is to make the unfolding process easier.
 To generate a unfolded band structure, one typically needs to perform the following step:
 
@@ -12,12 +12,11 @@ The supercell usually contains certain defects, or a special quasi random struct
 In both cases, its symmetry is lowered when compared to the perfect primitive cell.
 Hence, for a given kpoint path in the primitive cell, additional kpoints may need to be sampled, and the extracted spectral weights need to be averaged in the end to obtained the effective band structure (EBS).
 
-## Step-by-step instructions
 
 At the moment, only VASP calculations are supported, although in principle other PW code can be supported easily if the wavefunction can be read in.
 Use of VASP is assumed for the guide below.
 
-### Step 1 - Generate the kpoints path of the primitive cell
+## Step 1 - Generate the kpoints path of the primitive cell
 
 This can be done by well established packages such as [seekpath](https://www.materialscloud.org/work/tools/seekpath).
 Be careful that the "standardised" primitive cell may be different from input structure,
@@ -32,7 +31,7 @@ Care should be taken if one uses the initial structure for further supercell gen
 A `POSCAR_prim` file will be written out if `sumo` think the primitive cell is different from the input structure.
 The kpoints along the path is written to `KPOINTS_band`.
 
-### Step 2 - Generate the kpoints to be used for the supercell calculation
+## Step 2 - Generate the kpoints to be used for the supercell calculation
 
 At this point, you should have your relaxed supercell structure (which may have a lower symmetry).
 The set of kpoints for the supercell band structure can be generated with:
@@ -71,7 +70,7 @@ This will generate files named as `KPOINTS_easyunfold_001`, `KPOINTS_easyunfold_
 If a `IBZKPT` file is the provided, its kpoints will be included with their original weights,  and all of the kpoints included by easyunfold will be zero-weighted.
 This is necessary for hybrid functional calculations where the electronic minimisation must be conducted self-consistently (e.g. `ICHARG<10`).
 
-### Step 3 - Perform the unfolding
+## Step 3 - Perform the unfolding
 
 At this point, a supercell calculation should be completed with a `WAVECAR` written containing all of the kpoints in the `KPOINTS_easyunfold` file generated.
 This is typically a non self-consistent calculation with `ICHARG=11` for standard DFT, or a self-consistent calculation with zero-weighted kpoints if hybrid functional is used.
@@ -93,7 +92,7 @@ easyunfold unfold calculate calc1/WAVECAR calc2/WAVECAR
 
 For large `WAVECAR`, it may take some time to parse and compute the weights.
 
-### Step 4 - Plot the results
+## Step 4 - Plot the results
 
 Simply do:
 
