@@ -1,4 +1,4 @@
-# easyunfold
+# Easyunfold
 
 
 ![build](https://github.com/SMTG-UCL/easyunfold/actions/workflows/ci.yaml/badge.svg)
