@@ -27,9 +27,20 @@ We recommand using [sumo](https://github.com/SMTG-UCL/sumo) for generating the k
 sumo-kgen -p POSCAR
 ```
 
+
+
 Care should be taken if one uses the initial structure for further supercell generation, do verify that the lattice parameters are identical between the two.
 A `POSCAR_prim` file will be written out if `sumo` think the primitive cell is different from the input structure.
 The kpoints along the path is written to `KPOINTS_band`.
+
+:::{tip}
+`sumo` can be installed with `pip`:
+
+```bash
+pip install sumo
+```
+
+:::
 
 ## Step 2 - Generate the kpoints to be used for the supercell calculation
 

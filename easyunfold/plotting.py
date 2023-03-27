@@ -580,7 +580,7 @@ class UnfoldPlotter:
         return fig
 
 
-def interpolate_colors(colors, weights, colorspace='lab', normalize=True):
+def interpolate_colors(colors: list, weights: list, colorspace='lab', normalize=True):
     """
     Interpolate colors at a number of points within a colorspace.
 

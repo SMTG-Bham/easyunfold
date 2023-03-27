@@ -9,7 +9,7 @@ import numpy as np
 from .vasp_constant import RYTOEV, TPI, AUTOA, HSQDTM
 
 
-class Wavecar:
+class Wavecar:  # pylint: disable=too-many-instance-attributes
     """
     Class for processing VASP Pseudowavefunction stored in WAVECAR.
 
@@ -22,6 +22,7 @@ class Wavecar:
     The format of VASP WAVECAR, as shown in
         http://www.andrew.cmu.edu/user/feenstra/wavetrans/
     is:
+    ```
         Record-length #spin components RTAG(a value specifying the precision)
         #k-points #bands ENCUT(maximum energy for plane waves)
         LatVec-A
@@ -40,11 +41,16 @@ class Wavecar:
               End loop over bands
            End loop over k-points
         End loop over spin
+    ```
     """
 
-    def __init__(self, fnm='WAVECAR', lsorbit=False, lgamma=False, gamma_half='x', omp_num_threads=1):
-        """
+    def __init__(self, fnm='WAVECAR', lsorbit=False, lgamma=False, gamma_half='x'):
+        r"""
         Initialization.
+
+        :param fnm: Path to the `WAVECAR` file
+        :param lsorbit: Whether the `WAVECAR` is from a spint-orbit coupling calculation
+        :param lgamma: Wether the `WAVECAR` is from a $\Gamma$-only calculation
         """
 
         self._fname = fnm
@@ -57,52 +63,50 @@ class Wavecar:
         self._lgam = lgamma
         self._gam_half = gamma_half.lower()
 
-        # It seems that some modules in scipy uses OPENMP, it is therefore
-        # desirable to set the OMP_NUM_THREADS to tune the parallization.
-        os.environ['OMP_NUM_THREADS'] = str(omp_num_threads)
+        assert not (lsorbit and lgamma), 'Cannot have both `lsorbit` and `lgamma`!'
+        assert self._gam_half in ['x', 'z'], 'Gamma_half must be "x" or "z"'
 
-        assert not (lsorbit and lgamma), 'The two settings conflict!'
-        assert self._gam_half == 'x' or self._gam_half == 'z', \
-            'Gamma_half must be "x" or "z"'
-
-        try:
-            self._wfc = open(self._fname, 'rb')
-        except:
-            raise IOError('Failed to open %s' % self._fname)
+        self._wfc = open(self._fname, 'rb')  # pylint:disable=consider-using-with
 
         # read the basic information
-        self.readWFHeader()
+        self.read_wf_header()
         # read the band information
-        self.readWFBand()
+        self.read_bands()
 
         if self._lsoc:
             assert self._nspin == 1, 'NSPIN = 1 for noncollinear version WAVECAR!'
 
-    def isSocWfc(self):
-        """
-        Is the WAVECAR from an SOC calculation?
-        """
-        return True if self._lsoc else False
+    def close(self):
+        """Close the file handle"""
+        self._wfc.close()
 
-    def isGammaWfc(self):
+    def is_soc(self):
         """
-        Is the WAVECAR from an SOC calculation?
+        Return `True` if the WAVECAR from an SOC calculation.
         """
-        return True if self._lgam else False
+        return bool(self._lsoc)
 
-    def readWFHeader(self):
+    def is_gamma(self):
+        r"""
+        Return `True` is the WAVECAR is from an $\Gamma$-only calculation.
+        """
+        return bool(self._lgam)
+
+    def read_wf_header(self):
         """
         Read the system information from WAVECAR, which is written in the first
         two record.
 
-        rec1: recl, nspin, rtag
-        rec2: nkpts, nbands, encut, ((cell(i,j) i=1, 3), j=1, 3)
+        :rec1:
+            `recl, nspin, rtag`
+        :rec2:
+            `nkpts, nbands, encut, ((cell(i,j) i=1, 3), j=1, 3)`
         """
 
         # goto the start of the file and read the first record
         self._wfc.seek(0)
         self._recl, self._nspin, self._rtag = np.array(np.fromfile(self._wfc, dtype=np.float64, count=3), dtype=np.int64)
-        self._WFPrec = self.setWFPrec()
+        self._precision = self.set_wf_prec()
         # the second record
         self._wfc.seek(self._recl)
         dump = np.fromfile(self._wfc, dtype=np.float64, count=12)
@@ -111,35 +115,37 @@ class Wavecar:
         self._nbands = int(dump[1])  # No. of bands
         self._encut = dump[2]  # Energy cutoff
         # real space supercell basis
-        self._Acell = dump[3:].reshape((3, 3))
+        self._realspace_cell = dump[3:].reshape((3, 3))
         # real space supercell volume
-        self._Omega = np.linalg.det(self._Acell)
+        self._realspace_cell_volume = np.linalg.det(self._realspace_cell)
         # reciprocal space supercell volume
-        self._Bcell = np.linalg.inv(self._Acell).T
+        self._reciprocal_cell_volume = np.linalg.inv(self._realspace_cell).T
 
         # Minimum FFT grid size
-        Anorm = np.linalg.norm(self._Acell, axis=1)
-        CUTOF = np.ceil(sqrt(self._encut / RYTOEV) / (TPI / (Anorm / AUTOA)))
-        self._ngrid = np.array(2 * CUTOF + 1, dtype=int)
+        cell_abc = np.linalg.norm(self._realspace_cell, axis=1)
+        cut_off = np.ceil(sqrt(self._encut / RYTOEV) / (TPI / (cell_abc / AUTOA)))
+        self._ngrid = np.array(2 * cut_off + 1, dtype=int)
 
-    def setWFPrec(self):
+    def set_wf_prec(self):
         """
         Set wavefunction coefficients precision:
-            TAG = 45200: single precision complex, np.complex64, or complex(qs)
-            TAG = 45210: double precision complex, np.complex128, or complex(q)
+
+        :TAG = 45200:
+            single precision complex, np.complex64, or complex(qs)
+        :TAG = 45210:
+            double precision complex, np.complex128, or complex(q)
         """
         if self._rtag == 45200:
             return np.complex64
-        elif self._rtag == 45210:
+        if self._rtag == 45210:
             return np.complex128
-        elif self._rtag == 53300:
+        if self._rtag == 53300:
             raise ValueError('VASP5 WAVECAR format, not implemented yet')
-        elif self._rtag == 53310:
+        if self._rtag == 53310:
             raise ValueError('VASP5 WAVECAR format with double precision ' + 'coefficients, not implemented yet')
-        else:
-            raise ValueError('Invalid TAG values: {}'.format(self._rtag))
+        raise ValueError(f'Invalid TAG values: {self._rtag}')
 
-    def readWFBand(self):
+    def read_bands(self) -> tuple:
         """
         Extract KS energies and Fermi occupations from WAVECAR.
         """
@@ -151,7 +157,7 @@ class Wavecar:
 
         for ii in range(self._nspin):
             for jj in range(self._nkpts):
-                rec = self.whereRec(ii + 1, jj + 1, 1) - 1
+                rec = self.locate_rec(ii + 1, jj + 1, 1) - 1
                 self._wfc.seek(rec * self._recl)
                 dump = np.fromfile(self._wfc, dtype=np.float64, count=4 + 3 * self._nbands)
                 if ii == 0:
@@ -162,7 +168,7 @@ class Wavecar:
                 self._occs[ii, jj, :] = dump[:, 2]
 
         if self._nkpts > 1:
-            tmp = np.linalg.norm(np.dot(np.diff(self._kvecs, axis=0), self._Bcell), axis=1)
+            tmp = np.linalg.norm(np.dot(np.diff(self._kvecs, axis=0), self._reciprocal_cell_volume), axis=1)
             self._kpath = np.concatenate(([
                 0,
             ], np.cumsum(tmp)))
@@ -170,16 +176,20 @@ class Wavecar:
             self._kpath = None
         return self._kpath, self._bands
 
-    def gvectors(self, ikpt=1, force_Gamma=False, check_consistency=True):
-        """
+    def get_gvectors(self, ikpt=1, force_gamma=False, check_consistency=True):
+        r"""
         Generate the G-vectors that satisfies the following relation
-            (G + k)**2 / 2 < ENCUT
+
+        $$
+            \frac{|\vec{G} + \vec{k}|^2}{2} < E_{cut}
+        $$
+
         """
         assert 1 <= ikpt <= self._nkpts, 'Invalid kpoint index!'
 
         kvec = self._kvecs[ikpt - 1]
-        # force_Gamma: consider gamma-only case regardless of the actual setting
-        lgam = True if force_Gamma else self._lgam
+        # force_gamma: consider gamma-only case regardless of the actual setting
+        lgam = True if force_gamma else self._lgam
 
         fx, fy, fz = [np.arange(n, dtype=int) for n in self._ngrid]
         fx[self._ngrid[0] // 2 + 1:] -= self._ngrid[0]
@@ -201,16 +211,16 @@ class Wavecar:
                 kgrid = kgrid[(gx > 0) | ((gx == 0) & (gy > 0)) | ((gx == 0) & (gy == 0) & (gz >= 0))]
 
         # Kinetic_Energy = (G + k)**2 / 2
-        KENERGY = HSQDTM * np.linalg.norm(np.dot(kgrid + kvec[np.newaxis, :], TPI * self._Bcell), axis=1)**2
+        kinetic_energy = HSQDTM * np.linalg.norm(np.dot(kgrid + kvec[np.newaxis, :], TPI * self._reciprocal_cell_volume), axis=1)**2
         # find Gvectors where (G + k)**2 / 2 < ENCUT
-        Gvec = kgrid[np.where(KENERGY < self._encut)[0]]
+        g_vectors = kgrid[np.where(kinetic_energy < self._encut)[0]]
 
         # Check if the calculated number of planewaves and the one recorded in the
         # WAVECAR are equal
         if check_consistency:
 
-            if Gvec.shape[0] != self._nplws[ikpt - 1]:
-                if Gvec.shape[0] * 2 == self._nplws[ikpt - 1]:
+            if g_vectors.shape[0] != self._nplws[ikpt - 1]:
+                if g_vectors.shape[0] * 2 == self._nplws[ikpt - 1]:
                     if not self._lsoc:
                         raise ValueError("""
                         It seems that you are reading a WAVECAR from a NONCOLLINEAR VASP.
@@ -219,7 +229,7 @@ class Wavecar:
 
                             wfc = Wavecar('WAVECAR', lsorbit=True)
                         """)
-                elif Gvec.shape[0] == 2 * self._nplws[ikpt - 1] - 1:
+                elif g_vectors.shape[0] == 2 * self._nplws[ikpt - 1] - 1:
                     if not self._lgam:
                         raise ValueError("""
                         It seems that you are reading a WAVECAR from a GAMMA-ONLY VASP.  Please set
@@ -244,47 +254,47 @@ class Wavecar:
                             wfc = Wavecar('WAVECAR', lgamma=True, gamma_half='x')
                         """)
                 else:
-                    raise ValueError("""
+                    raise ValueError(f"""
                     NO. OF PLANEWAVES NOT CONSISTENT:
 
-                        THIS CODE -> %d
-                        FROM VASP -> %d
-                           NGRIDS -> %d
-                    """ % (Gvec.shape[0], self._nplws[ikpt - 1] // 2 if self._lsoc else self._nplws[ikpt - 1], np.prod(self._ngrid)))
+                        THIS CODE -> {g_vectors.shape[0]}
+                        FROM VASP -> {self._nplws[ikpt - 1] // 2 if self._lsoc else self._nplws[ikpt - 1]}
+                           NGRIDS -> {np.prod(self._ngrid)}
+                    """)
 
-        return np.asarray(Gvec, dtype=int)
+        return np.asarray(g_vectors, dtype=int)
 
-    def readBandCoeff(self, ispin=1, ikpt=1, iband=1, norm=False):
+    def read_band_coeffs(self, ispin=1, ikpt=1, iband=1, norm=False):
         """
         Read the planewave coefficients of specified KS states.
         """
 
-        self.checkIndex(ispin, ikpt, iband)
+        self.check_index(ispin, ikpt, iband)
 
-        rec = self.whereRec(ispin, ikpt, iband)
+        rec = self.locate_rec(ispin, ikpt, iband)
         self._wfc.seek(rec * self._recl)
 
         nplw = self._nplws[ikpt - 1]
-        dump = np.fromfile(self._wfc, dtype=self._WFPrec, count=nplw)
+        dump = np.fromfile(self._wfc, dtype=self._precision, count=nplw)
 
         cg = np.asarray(dump, dtype=np.complex128)
         if norm:
             cg /= np.linalg.norm(cg)
         return cg
 
-    def whereRec(self, ispin=1, ikpt=1, iband=1):
+    def locate_rec(self, ispin=1, ikpt=1, iband=1):
         """
         Return the rec position for specified KS state.
         """
 
-        self.checkIndex(ispin, ikpt, iband)
+        self.check_index(ispin, ikpt, iband)
 
         rec = 2 + (ispin - 1) * self._nkpts * (self._nbands + 1) + \
                   (ikpt - 1) * (self._nbands + 1) + \
             iband
         return rec
 
-    def checkIndex(self, ispin, ikpt, iband):
+    def check_index(self, ispin, ikpt, iband):
         """
         Check if the index is valid!
         """

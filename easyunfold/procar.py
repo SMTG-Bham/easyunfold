@@ -12,7 +12,10 @@ class Procar:
 
     def __init__(self, fobj_or_path=None, is_soc=False):
         """
-        Read the PROCAR file
+        Read the PROCAR file from a handle or path
+
+        :param fobj_or_path:  A file-like obj or a path
+        :param is_soc: Whether the PROCAR is from a calculation with spin-orbit coupling
         """
         self._is_soc = is_soc
         self.eigenvalues = None
@@ -30,7 +33,7 @@ class Procar:
 
         # Read the PROCAR
         if isinstance(fobj_or_path, (str, Path)):
-            with open(fobj_or_path) as fhandle:
+            with open(fobj_or_path, encoding='utf-8') as fhandle:
                 self._read(fhandle)
         else:
             self._read(fobj_or_path)
@@ -100,12 +103,12 @@ class Procar:
         """
         Get project for specific atoms and specific projectors
 
-        Args:
-            atom_idx (list): A list of index of the atoms to be selected
-            proj (list): A list of the projector names to be selected
-            weight_by_k: Apply k weighting or not.
-        Returns:
-            The project summed over the selected atoms and the projectors
+
+        :param atom_idx: A list of index of the atoms to be selected
+        :param proj: A list of the projector names to be selected
+        :param weight_by_k: Apply k weighting or not.
+
+        :returns: The project summed over the selected atoms and the projectors
         """
         atom_mask = [iatom in atom_idx for iatom in range(self.nion)]
         assert any(atom_mask)
