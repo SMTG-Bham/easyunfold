@@ -1,4 +1,4 @@
-# Welcome to easyunfold documentation
+# Easyunfold documentation
 
 ![build](https://github.com/SMTG-UCL/easyunfold/actions/workflows/ci.yaml/badge.svg)
 [![docs](https://github.com/SMTG-UCL/easyunfold/actions/workflows/docs.yaml/badge.svg)](https://smtg-ucl.github.io/easyunfold/)
@@ -44,9 +44,22 @@ We'll add papers that use `easyunfold` to this list as they come out!
 Code Contributors:
   [Bonan Zhu](https://github.com/zhubonan)
   [Seán Kavanagh](https://github.com/kavanase)
-  [Adair Nicolson](https://github.com/https://github.com/adair-nicolson)
+  [Adair Nicolson](https://github.com/adair-nicolson)
 
 And those who helped in the development:
 
   [Joe Willis](https://github.com/joebesity)
   [David O. Scanlon](http://davidscanlon.com/?page_id=5)
+
+# Table of contents
+
+```{toctree}
+:maxdepth: 2
+
+installation.md
+guide.md
+examples.md
+theory.md
+cli.rst
+apidocs/index
+```

@@ -1,4 +1,4 @@
-exclude: '^(doc)|(cookiecutters)|(aiida_vasp/test_data)'
+exclude: '^(doc)|(cookiecutters)'
 repos:
 - repo: https://github.com/pre-commit/pre-commit-hooks
   rev: v2.5.0
