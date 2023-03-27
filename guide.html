@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Easyunfold documentation &#8212; Easyunfold</title>
+    <title>Guide &#8212; Easyunfold</title>
   
   
   
@@ -43,10 +43,11 @@
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
     <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'guide';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Installation" href="installation.html" />
+    <link rel="next" title="Examples" href="examples.html" />
+    <link rel="prev" title="Installation" href="installation.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -112,7 +113,7 @@
         <div class="sidebar-primary-item">
   
 
-<a class="navbar-brand logo" href="#">
+<a class="navbar-brand logo" href="index.html">
   
   
   
@@ -157,15 +158,15 @@
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
-            <li class="toctree-l1 current active">
-                <a class="reference internal" href="#">
+            <li class="toctree-l1">
+                <a class="reference internal" href="index.html">
                     Easyunfold documentation
                 </a>
             </li>
         </ul>
-        <ul class="nav bd-sidenav">
+        <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="guide.html">Guide</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Guide</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="examples.html">Examples</a><input checked class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="examples/example_si222.html">Si supercell with a displaced atom</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/example_mgo.html">MgO with atomic projections</a></li>
@@ -256,7 +257,7 @@
       
       
       
-      <li><a href="_sources/index.md" target="_blank"
+      <li><a href="_sources/guide.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -338,7 +339,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Easyunfold documentation</h1>
+    <h1>Guide</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -348,15 +349,11 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Easyunfold documentation</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#studies-using-easyunfold">Studies using <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contributors">Contributors</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-generate-the-kpoints-path-of-the-primitive-cell">Step 1 - Generate the kpoints path of the primitive cell</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-generate-the-kpoints-to-be-used-for-the-supercell-calculation">Step 2 - Generate the kpoints to be used for the supercell calculation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-perform-the-unfolding">Step 3 - Perform the unfolding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-plot-the-results">Step 4 - Plot the results</a></li>
 </ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of contents</a></li>
-</ul>
-
             </nav>
         </div>
     </div>
@@ -367,18 +364,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="easyunfold-documentation">
-<h1>Easyunfold documentation<a class="headerlink" href="#easyunfold-documentation" title="Permalink to this heading">#</a></h1>
-<p><img alt="build" src="https://github.com/SMTG-UCL/easyunfold/actions/workflows/ci.yaml/badge.svg" />
-<a class="reference external" href="https://smtg-ucl.github.io/easyunfold/"><img alt="docs" src="https://github.com/SMTG-UCL/easyunfold/actions/workflows/docs.yaml/badge.svg" /></a>
-<a class="reference external" href="https://codecov.io/gh/SMTG-UCL/easyunfold"><img alt="codecov" src="https://codecov.io/gh/SMTG-UCL/easyunfold/branch/dev/graph/badge.svg?token=XLLWWU5UM2" /></a></p>
-<p>This package is intended for obtaining the effective band structure of a supercell for a certain path of the primitive cell.
-It was originally based on <a class="reference external" href="https://github.com/QijingZheng/VaspBandUnfolding">PyVaspwfc</a> for reading wavefunction output of VASP, and contains some code of the latter.
-An notable improvement is that breaking symmetry is taken accounted of by sampling additional kpoints and taking average accordingly, which was previously missing.
-Our goal is to make the unfolding process easier to carry out and less likely to go wrong.</p>
-<p>For the methodology, see <a class="reference external" href="https://link.aps.org/doi/10.1103/PhysRevB.85.085201">here</a>.</p>
-<section id="usage">
-<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this heading">#</a></h2>
+  <section class="tex2jax_ignore mathjax_ignore" id="guide">
+<h1>Guide<a class="headerlink" href="#guide" title="Permalink to this heading">#</a></h1>
 <p>Main goal of this tool is to make the unfolding process easier.
 To generate a unfolded band structure, one typically needs to perform the following step:</p>
 <ol class="arabic simple">
@@ -391,61 +378,81 @@ To generate a unfolded band structure, one typically needs to perform the follow
 <p>The supercell usually contains certain defects, or a special quasi random structure.
 In both cases, its symmetry is lowered when compared to the perfect primitive cell.
 Hence, for a given kpoint path in the primitive cell, additional kpoints may need to be sampled, and the extracted spectral weights need to be averaged in the end to obtained the effective band structure (EBS).</p>
-<p>At the moment, only VASP calculations are supported, although in principle other PW code can be supported easily if the wavefunction can be read in.</p>
-<p>Please see the documentation for guide and examples.</p>
-</section>
-<section id="studies-using-easyunfold">
-<h2>Studies using <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code><a class="headerlink" href="#studies-using-easyunfold" title="Permalink to this heading">#</a></h2>
-<p>We’ll add papers that use <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code> to this list as they come out!</p>
-<ul class="simple">
-<li><p>Y. T. Huang &amp; S. R. Kavanagh et al. <a class="reference external" href="https://www.nature.com/articles/s41467-022-32669-3"><em>Nature Communications</em></a> 2022</p></li>
-<li><p>A. T. J. Nicolson et al. <a class="reference external" href="https://chemrxiv.org/engage/chemrxiv/article-details/63a5d1ffa53ea69e935559e2"><em>ChemRxiv</em></a> 2023</p></li>
-<li><p>Y. Wang &amp; S. R. Kavanagh et al. <a class="reference external" href="https://www.nature.com/articles/s41566-021-00950-4"><em>Nature Photonics</em></a> 2022 (early version)</p></li>
-</ul>
-</section>
-<section id="contributors">
-<h2>Contributors<a class="headerlink" href="#contributors" title="Permalink to this heading">#</a></h2>
-<p>Code Contributors:
-<a class="reference external" href="https://github.com/zhubonan">Bonan Zhu</a>
-<a class="reference external" href="https://github.com/kavanase">Seán Kavanagh</a>
-<a class="reference external" href="https://github.com/adair-nicolson">Adair Nicolson</a></p>
-<p>And those who helped in the development:</p>
-<p><a class="reference external" href="https://github.com/joebesity">Joe Willis</a>
-<a class="reference external" href="http://davidscanlon.com/?page_id=5">David O. Scanlon</a></p>
-</section>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="table-of-contents">
-<h1>Table of contents<a class="headerlink" href="#table-of-contents" title="Permalink to this heading">#</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="guide.html">Guide</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="guide.html#step-1-generate-the-kpoints-path-of-the-primitive-cell">Step 1 - Generate the kpoints path of the primitive cell</a></li>
-<li class="toctree-l2"><a class="reference internal" href="guide.html#step-2-generate-the-kpoints-to-be-used-for-the-supercell-calculation">Step 2 - Generate the kpoints to be used for the supercell calculation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="guide.html#step-3-perform-the-unfolding">Step 3 - Perform the unfolding</a></li>
-<li class="toctree-l2"><a class="reference internal" href="guide.html#step-4-plot-the-results">Step 4 - Plot the results</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="examples/example_si222.html">Si supercell with a displaced atom</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/example_mgo.html">MgO with atomic projections</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/example_nabis2.html">Cation-Disordered NaBiS<sub>2</sub> with and without Atomic Projections</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory of unfolding</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="theory.html#symmetry-considerations">Symmetry considerations</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="cli.html">CLI Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="cli.html#easyunfold">easyunfold</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="apidocs/index.html">API Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="apidocs/easyunfold/easyunfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold</span></code></a></li>
-</ul>
-</li>
-</ul>
+<p>At the moment, only VASP calculations are supported, although in principle other PW code can be supported easily if the wavefunction can be read in.
+Use of VASP is assumed for the guide below.</p>
+<section id="step-1-generate-the-kpoints-path-of-the-primitive-cell">
+<h2>Step 1 - Generate the kpoints path of the primitive cell<a class="headerlink" href="#step-1-generate-the-kpoints-path-of-the-primitive-cell" title="Permalink to this heading">#</a></h2>
+<p>This can be done by well established packages such as <a class="reference external" href="https://www.materialscloud.org/work/tools/seekpath">seekpath</a>.
+Be careful that the “standardised” primitive cell may be different from input structure,
+and the generated path is correct for the standard primitive cell only.
+We recommand using <a class="reference external" href="https://github.com/SMTG-UCL/sumo">sumo</a> for generating the kpoints, which provides a nice command line interface:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sumo</span><span class="o">-</span><span class="n">kgen</span> <span class="o">-</span><span class="n">p</span> <span class="n">POSCAR</span>
+</pre></div>
 </div>
+<p>Care should be taken if one uses the initial structure for further supercell generation, do verify that the lattice parameters are identical between the two.
+A <code class="docutils literal notranslate"><span class="pre">POSCAR_prim</span></code> file will be written out if <code class="docutils literal notranslate"><span class="pre">sumo</span></code> think the primitive cell is different from the input structure.
+The kpoints along the path is written to <code class="docutils literal notranslate"><span class="pre">KPOINTS_band</span></code>.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p><code class="docutils literal notranslate"><span class="pre">sumo</span></code> can be installed with <code class="docutils literal notranslate"><span class="pre">pip</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>sumo
+</pre></div>
+</div>
+</div>
+</section>
+<section id="step-2-generate-the-kpoints-to-be-used-for-the-supercell-calculation">
+<h2>Step 2 - Generate the kpoints to be used for the supercell calculation<a class="headerlink" href="#step-2-generate-the-kpoints-to-be-used-for-the-supercell-calculation" title="Permalink to this heading">#</a></h2>
+<p>At this point, you should have your relaxed supercell structure (which may have a lower symmetry).
+The set of kpoints for the supercell band structure can be generated with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">easyunfold</span> <span class="n">generate</span> <span class="n">primitive</span><span class="o">/</span><span class="n">POSCAR</span> <span class="n">supercell</span><span class="o">/</span><span class="n">POSCAR</span> <span class="n">primitive</span><span class="o">/</span><span class="n">KPOINTS_band</span> <span class="o">--</span><span class="n">matrix</span> <span class="s2">&quot;2 2 2&quot;</span>
+</pre></div>
+</div>
+<p>for hybrid functional calculations, it an be useful to split the kpoints into multiple calculations for reduced costs or memory consumptions.</p>
+<p>Note that the <code class="docutils literal notranslate"><span class="pre">--matrix</span></code> input is for setting the transformation matrix such that</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cell_super</span> <span class="o">=</span> <span class="n">M</span> <span class="o">@</span> <span class="n">cell_primitive</span>
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">cell_super</span></code> and <code class="docutils literal notranslate"><span class="pre">cell_primitive</span></code> are (3,3) matrix made of <strong>row vectors</strong>.
+If <code class="docutils literal notranslate"><span class="pre">M</span></code> is non-diagonal, all nine elements must be passed in a row-major order.</p>
+<p>It is possible to omit `–matrix`` if the supercell is perfectly commensurate with the primitive cell.
+This can be the case if the supercell calculation did not undergo cell relaxation.</p>
+<p>If cell relaxation did take place, it is important to note that the unfolded band structure is not for exact  original primitive cell, but for a primitive cell deformed in a similar way as the supercell.</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">easyunfold.json</span></code> file will be written which contains the information of the unfolding.
+The kpoints needed to be calculated for the supercell is written to a file named <code class="docutils literal notranslate"><span class="pre">KPOINTS_easyunfold</span></code>.
+It is possible to change the name <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code> by passing a explicit tag with the command line <code class="docutils literal notranslate"><span class="pre">--out-file</span></code>.</p>
+<p>For hybrid functional calculations, you may want to split the kpoints into multiple calculations:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">easyunfold</span> <span class="n">generate</span> <span class="n">primitive</span><span class="o">/</span><span class="n">POSCAR</span> <span class="n">supercell</span><span class="o">/</span><span class="n">POSCAR</span> <span class="n">primitive</span><span class="o">/</span><span class="n">KPOINTS_band</span> <span class="o">--</span><span class="n">matrix</span> <span class="s2">&quot;2 2 2&quot;</span> <span class="o">--</span><span class="n">scf</span><span class="o">-</span><span class="n">kpoints</span> <span class="n">IBZKPT</span> <span class="o">--</span><span class="n">nk</span><span class="o">-</span><span class="n">per</span><span class="o">-</span><span class="n">split</span> <span class="mi">60</span>
+</pre></div>
+</div>
+<p>This will generate files named as <code class="docutils literal notranslate"><span class="pre">KPOINTS_easyunfold_001</span></code>, <code class="docutils literal notranslate"><span class="pre">KPOINTS_easyunfold_002</span></code>, each containing 60 kpoints.
+If a <code class="docutils literal notranslate"><span class="pre">IBZKPT</span></code> file is the provided, its kpoints will be included with their original weights,  and all of the kpoints included by easyunfold will be zero-weighted.
+This is necessary for hybrid functional calculations where the electronic minimisation must be conducted self-consistently (e.g. <code class="docutils literal notranslate"><span class="pre">ICHARG&lt;10</span></code>).</p>
+</section>
+<section id="step-3-perform-the-unfolding">
+<h2>Step 3 - Perform the unfolding<a class="headerlink" href="#step-3-perform-the-unfolding" title="Permalink to this heading">#</a></h2>
+<p>At this point, a supercell calculation should be completed with a <code class="docutils literal notranslate"><span class="pre">WAVECAR</span></code> written containing all of the kpoints in the <code class="docutils literal notranslate"><span class="pre">KPOINTS_easyunfold</span></code> file generated.
+This is typically a non self-consistent calculation with <code class="docutils literal notranslate"><span class="pre">ICHARG=11</span></code> for standard DFT, or a self-consistent calculation with zero-weighted kpoints if hybrid functional is used.</p>
+<p>To compute the spectral weights, run the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">easyunfold</span> <span class="n">unfold</span> <span class="n">calculate</span> <span class="n">WAVECAR</span>
+</pre></div>
+</div>
+<p>This command compute the spectral weight and save them into the  <code class="docutils literal notranslate"><span class="pre">easyunfold.json</span></code> file.
+You can load the <code class="docutils literal notranslate"><span class="pre">easyunfold.json</span></code> file to read the spectral weights manually, or proceed with the command line interface to generate a plot.</p>
+<p>If the kpoints has been split into multiple calculations (for example, for those involving hybrid functional), all of the <code class="docutils literal notranslate"><span class="pre">WAVECAR</span></code> files need to be passed:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">easyunfold</span> <span class="n">unfold</span> <span class="n">calculate</span> <span class="n">calc1</span><span class="o">/</span><span class="n">WAVECAR</span> <span class="n">calc2</span><span class="o">/</span><span class="n">WAVECAR</span>
+</pre></div>
+</div>
+<p>For large <code class="docutils literal notranslate"><span class="pre">WAVECAR</span></code>, it may take some time to parse and compute the weights.</p>
+</section>
+<section id="step-4-plot-the-results">
+<h2>Step 4 - Plot the results<a class="headerlink" href="#step-4-plot-the-results" title="Permalink to this heading">#</a></h2>
+<p>Simply do:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">easyunfold</span> <span class="n">unfold</span> <span class="n">plot</span>
+</pre></div>
+</div>
+<p>to generate a plot of the spectral function.
+It is possible to further customise the plot though command line arguments - see the help with <code class="docutils literal notranslate"><span class="pre">easyunfold</span> <span class="pre">unfold</span> <span class="pre">plot</span> <span class="pre">--help</span></code>.</p>
+</section>
 </section>
 
 
@@ -457,12 +464,21 @@ Hence, for a given kpoint path in the primitive cell, additional kpoints may nee
                 <footer class="bd-footer-article">
                   <!-- Previous / next buttons -->
 <div class="prev-next-area">
-    <a class="right-next"
+    <a class="left-prev"
        href="installation.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Installation</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="examples.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Installation</p>
+        <p class="prev-next-title">Examples</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -481,15 +497,11 @@ Hence, for a given kpoint path in the primitive cell, additional kpoints may nee
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Easyunfold documentation</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#studies-using-easyunfold">Studies using <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contributors">Contributors</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-generate-the-kpoints-path-of-the-primitive-cell">Step 1 - Generate the kpoints path of the primitive cell</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-generate-the-kpoints-to-be-used-for-the-supercell-calculation">Step 2 - Generate the kpoints to be used for the supercell calculation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-perform-the-unfolding">Step 3 - Perform the unfolding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-plot-the-results">Step 4 - Plot the results</a></li>
 </ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of contents</a></li>
-</ul>
-
   </nav></div>
 
 </div></div>

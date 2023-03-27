@@ -1,0 +1,626 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Si supercell with a displaced atom &#8212; Easyunfold</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d" />
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'examples/example_si222';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="MgO with atomic projections" href="example_mgo.html" />
+    <link rel="prev" title="Examples" href="../examples.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.svg" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../_static/logo.svg" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/SMTG-UCL/easyunfold" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/easyunfold/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/pypi/v/easyunfold" class="icon-link-image" alt="PyPI"/></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../index.html">
+                    Easyunfold documentation
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guide.html">Guide</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../examples.html">Examples</a><input checked class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Si supercell with a displaced atom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_mgo.html">MgO with atomic projections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_nabis2.html">Cation-Disordered NaBiS<sub>2</sub> with and without Atomic Projections</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../theory.html">Theory of unfolding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">CLI Reference</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../apidocs/index.html">API Reference</a><input checked class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.vasp_constant.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.vasp_constant</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.plotting.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.plotting</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.effective_mass.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.effective_mass</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.procar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.procar</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.cli.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.cli</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.unfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.unfold</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.wavecar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavecar</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/SMTG-UCL/easyunfold" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/examples/example_si222.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Si supercell with a displaced atom</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-project-file-and-kpoints-for-supercell-calculation">Generate project file and kpoints for supercell calculation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#performing-supercell-band-structure-calculation">Performing supercell band structure calculation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#perform-unfolding">Perform unfolding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-happens-if-the-symmetry-is-not-taken-into-account">What happens if the symmetry is not taken into account?</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="si-supercell-with-a-displaced-atom">
+<h1>Si supercell with a displaced atom<a class="headerlink" href="#si-supercell-with-a-displaced-atom" title="Permalink to this heading">#</a></h1>
+<section id="generate-project-file-and-kpoints-for-supercell-calculation">
+<h2>Generate project file and kpoints for supercell calculation<a class="headerlink" href="#generate-project-file-and-kpoints-for-supercell-calculation" title="Permalink to this heading">#</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The files needed as provided in expamples/Si222. This guide assumes the current
+working directory is located at the root of that folder.</p>
+</div>
+<p>First, generate the supercell kpoints:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>generate<span class="w"> </span>Si/POSCAR<span class="w"> </span>Si_super_deformed/POSCAR<span class="w"> </span>Si/KPOINTS_band
+</pre></div>
+</div>
+<p>Copy the kpoints to the supercell calculation folder:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cp<span class="w"> </span>KPOINTS_easyunfold<span class="w"> </span>Si_supercell_deformed
+</pre></div>
+</div>
+<p>This generates an  <code class="docutils literal notranslate"><span class="pre">easyunfold.json</span></code> file in the current direction containing information about the unfolding.
+Name of this file can be modified with the <code class="docutils literal notranslate"><span class="pre">--out-file</span></code> commandline argument.</p>
+<p>Information stored in this file can be inspected with command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>status
+Loaded<span class="w"> </span>data<span class="w"> </span>from<span class="w"> </span>easyunfold.json
+Primitive<span class="w"> </span>cell<span class="w"> </span>information:
+<span class="w">        </span>Space<span class="w"> </span>group<span class="w"> </span>number:<span class="w"> </span><span class="m">160</span>
+<span class="w">        </span>Internation<span class="w"> </span>symbol:<span class="w"> </span>R3m
+<span class="w">        </span>Point<span class="w"> </span>group:<span class="w"> </span>3m
+
+Supercell<span class="w"> </span>cell<span class="w"> </span>information:
+<span class="w">        </span>Space<span class="w"> </span>group<span class="w"> </span>number:<span class="w"> </span><span class="m">227</span>
+<span class="w">        </span>Internation<span class="w"> </span>symbol:<span class="w"> </span>Fd-3m
+<span class="w">        </span>Point<span class="w"> </span>group:<span class="w"> </span>m-3m
+
+No.<span class="w"> </span>of<span class="w"> </span>k<span class="w"> </span>points<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>primitive<span class="w"> </span>cell<span class="w">           </span>:<span class="w"> </span><span class="m">73</span>
+No.<span class="w"> </span>of<span class="w"> </span>expanded<span class="w"> </span>kpoints<span class="w"> </span>to<span class="w"> </span>be<span class="w"> </span>calculated<span class="w"> </span>cell<span class="w">   </span>:<span class="w"> </span><span class="m">132</span><span class="w"> </span><span class="o">(</span><span class="m">136</span><span class="o">)</span>
+No.<span class="w"> </span>of<span class="w"> </span>rotations<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>primitive<span class="w"> </span>cell<span class="w">          </span>:<span class="w"> </span><span class="m">48</span>
+No.<span class="w"> </span>of<span class="w"> </span>rotations<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>super<span class="w"> </span>cell<span class="w">              </span>:<span class="w"> </span><span class="m">6</span>
+
+Path<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>primitive<span class="w"> </span>cell:
+<span class="w">   </span><span class="se">\G</span>amma<span class="w">    </span>:<span class="w"> </span><span class="m">1</span><span class="w">    </span>
+<span class="w">   </span>L<span class="w">         </span>:<span class="w"> </span><span class="m">21</span><span class="w">   </span>
+<span class="w">   </span>W<span class="w">         </span>:<span class="w"> </span><span class="m">38</span><span class="w">   </span>
+<span class="w">   </span>X<span class="w">         </span>:<span class="w"> </span><span class="m">50</span><span class="w">   </span>
+<span class="w">   </span><span class="se">\G</span>amma<span class="w">    </span>:<span class="w"> </span><span class="m">73</span><span class="w">   </span>
+Please<span class="w"> </span>run<span class="w"> </span>the<span class="w"> </span>supercell<span class="w"> </span>band<span class="w"> </span>structure<span class="w"> </span>calculation<span class="w"> </span>and<span class="w"> </span>run<span class="w"> </span><span class="sb">`</span>unfold<span class="w"> </span>calculate<span class="sb">`</span>.
+</pre></div>
+</div>
+</section>
+<section id="performing-supercell-band-structure-calculation">
+<h2>Performing supercell band structure calculation<a class="headerlink" href="#performing-supercell-band-structure-calculation" title="Permalink to this heading">#</a></h2>
+<p>Band structure calculation in VASP normally involves two steps. First, a normal single point calculation is performed to obtain the charge density.
+Afterwards, a none self-consistent calculation is carried out to compute the eigenvalues of the kpoints along the band structure paths defined.</p>
+<p>First, ensure the kpoints for SCF is used and run the supercell calculation. The <code class="docutils literal notranslate"><span class="pre">ICHARG=11</span></code> must commented out in the INCAR for the single point calculation:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>Si_supercell_deformed
+cp<span class="w"> </span>KPOINTS_scf<span class="w"> </span>KPOINTS
+sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">&#39;s/^ICHARG = 11/!ICHARG = 11/g&#39;</span><span class="w"> </span>INCAR
+mpirun<span class="w"> </span>-np<span class="w"> </span><span class="m">4</span><span class="w"> </span>vasp_std<span class="w"> </span>
+</pre></div>
+</div>
+<p>Now run the band structure calculation with <code class="docutils literal notranslate"><span class="pre">ICHARG=11</span></code>, and the kpoints mapped to the supercell from the primitive cell path:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">&#39;s/.*ICHARG = 11/ICHARG = 11/g&#39;</span><span class="w"> </span>INCAR
+cp<span class="w"> </span>KPOINTS_easyunfold<span class="w"> </span>KPOINTS
+mpirun<span class="w"> </span>-np<span class="w"> </span><span class="m">4</span><span class="w"> </span>vasp_std<span class="w"> </span>
+</pre></div>
+</div>
+</section>
+<section id="perform-unfolding">
+<h2>Perform unfolding<a class="headerlink" href="#perform-unfolding" title="Permalink to this heading">#</a></h2>
+<p>Calculate the weights and record the VBM:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">../</span>
+<span class="n">easyunfold</span> <span class="n">unfold</span> <span class="n">calculate</span> <span class="n">Si_super_deformed</span><span class="o">/</span><span class="n">WAVECAR</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you don’t wnat to run the VASP calculation by yourself, the calculated <code class="docutils literal notranslate"><span class="pre">WAVECAR</span></code> and <code class="docutils literal notranslate"><span class="pre">vasprun.xml</span></code> for this example with:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>wget -o Si_super_deformed/WAVECAR https://www.dropbox.com/s/3cmn2epw7d290jd/WAVECAR?dl=1
+wget -o Si_super_deformed/vasprun.xml https://www.dropbox.com/s/ota78qqdvxsehmi/vasprun.xml?dl=1
+</pre></div>
+</div>
+</div>
+<p>Plot the unfolded band structure:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot
+</pre></div>
+</div>
+<p>Output:</p>
+<figure class="align-default" id="id1">
+<a class="reference internal image-reference" href="../_images/unfold.png"><img alt="Spectral function" src="../_images/unfold.png" style="width: 400px;" /></a>
+<figcaption>
+<p><span class="caption-text">Spectral function of the unfolded bands.</span><a class="headerlink" href="#id1" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Band structure of the primitive cell:</p>
+<figure class="align-default" id="id2">
+<a class="reference internal image-reference" href="../_images/band1.png"><img alt="Primitive cell band structure" src="../_images/band1.png" style="width: 400px;" /></a>
+<figcaption>
+<p><span class="caption-text">Primitive cell band structure of Si.</span><a class="headerlink" href="#id2" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Note the appearance of extra branches due to symmetry breaking.</p>
+</section>
+<section id="what-happens-if-the-symmetry-is-not-taken-into-account">
+<h2>What happens if the symmetry is not taken into account?<a class="headerlink" href="#what-happens-if-the-symmetry-is-not-taken-into-account" title="Permalink to this heading">#</a></h2>
+<p>We can create a new unfolding project (data file) using the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>generate<span class="w"> </span>Si/POSCAR<span class="w"> </span>Si_super_deformed/POSCAR<span class="w"> </span>Si/KPOINTS_band<span class="w"> </span>--no-expand<span class="w"> </span>--out-file<span class="w"> </span>no-expand.json
+</pre></div>
+</div>
+<p>Swap the <code class="docutils literal notranslate"><span class="pre">KPOINTS</span></code> to the new file</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cp<span class="w"> </span>KPOINTS_no-expand<span class="w"> </span>Si_super_deformed/KPOINTS
+<span class="nb">cd</span><span class="w"> </span>Si_super_deformed
+mpirun<span class="w"> </span>-np<span class="w"> </span><span class="m">4</span><span class="w"> </span>vasp_std
+<span class="nb">cd</span><span class="w"> </span>../
+easyunfold<span class="w"> </span>--help<span class="w"> </span>no-expand.json<span class="w"> </span>calculate<span class="w"> </span>Si_super_deformed/WAVECAR
+easyunfold<span class="w"> </span>unfold<span class="w"> </span>--data-file<span class="w">  </span>no-expand.json<span class="w">  </span>plot<span class="w"> </span>--out-file<span class="w"> </span>unfold_no-expand.png
+</pre></div>
+</div>
+<p>output:</p>
+<figure class="align-default" id="id3">
+<a class="reference internal image-reference" href="../_images/unfold_no-expand.png"><img alt="Spectral function" src="../_images/unfold_no-expand.png" style="width: 400px;" /></a>
+<figcaption>
+<p><span class="caption-text">Spectral function of the unfolded bands with out additional kpoints due to reduced symmetry.</span><a class="headerlink" href="#id3" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Comparing with the one above, there are breaking of the bands and some branches are missing (near the gamma point).</p>
+<p>Nevertheless, by not expanding the kpoint paths, fewer supercell kpoints need to be calculated.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>--data-file<span class="w">  </span>no-expand.json<span class="w">  </span>plot<span class="w"> </span>--out-file<span class="w"> </span>unfold_no-expand.png
+
+Loaded<span class="w"> </span>data<span class="w"> </span>from<span class="w"> </span>no-expand.json
+Using<span class="w"> </span>a<span class="w"> </span>reference<span class="w"> </span>energy<span class="w"> </span>of<span class="w"> </span><span class="m">5</span>.284<span class="w"> </span>eV
+Unfolded<span class="w"> </span>band<span class="w"> </span>structure<span class="w"> </span>saved<span class="w"> </span>to<span class="w"> </span>unfold_no-expand.png
+
+$<span class="w"> </span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>--data-file<span class="w">  </span>no-expand.json<span class="w">  </span>status
+
+Loaded<span class="w"> </span>data<span class="w"> </span>from<span class="w"> </span>no-expand.json
+Supercell<span class="w"> </span>cell<span class="w"> </span>information:
+<span class="w">        </span>Space<span class="w"> </span>group<span class="w"> </span>number:<span class="w"> </span><span class="m">160</span>
+<span class="w">        </span>Internation<span class="w"> </span>symbol:<span class="w"> </span>R3m
+<span class="w">        </span>Point<span class="w"> </span>group:<span class="w"> </span>3m
+
+Primitive<span class="w"> </span>cell<span class="w"> </span>information:
+<span class="w">        </span>Space<span class="w"> </span>group<span class="w"> </span>number:<span class="w"> </span><span class="m">227</span>
+<span class="w">        </span>Internation<span class="w"> </span>symbol:<span class="w"> </span>Fd-3m
+<span class="w">        </span>Point<span class="w"> </span>group:<span class="w"> </span>m-3m
+
+No.<span class="w"> </span>of<span class="w"> </span>k<span class="w"> </span>points<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>primitive<span class="w"> </span>cell<span class="w">           </span>:<span class="w"> </span><span class="m">73</span>
+No.<span class="w"> </span>of<span class="w"> </span>expanded<span class="w"> </span>kpoints<span class="w"> </span>to<span class="w"> </span>be<span class="w"> </span>calculated<span class="w"> </span>cell<span class="w">   </span>:<span class="w"> </span><span class="m">70</span><span class="w"> </span><span class="o">(</span><span class="m">73</span><span class="o">)</span>
+No.<span class="w"> </span>of<span class="w"> </span>rotations<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>primitive<span class="w"> </span>cell<span class="w">          </span>:<span class="w"> </span><span class="m">48</span>
+No.<span class="w"> </span>of<span class="w"> </span>rotations<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>super<span class="w"> </span>cell<span class="w">              </span>:<span class="w"> </span><span class="m">6</span>
+
+Path<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>primitive<span class="w"> </span>cell:
+<span class="w">   </span><span class="se">\G</span>amma<span class="w">    </span>:<span class="w"> </span><span class="m">1</span><span class="w">    </span>
+<span class="w">   </span>L<span class="w">         </span>:<span class="w"> </span><span class="m">21</span><span class="w">   </span>
+<span class="w">   </span>W<span class="w">         </span>:<span class="w"> </span><span class="m">38</span><span class="w">   </span>
+<span class="w">   </span>X<span class="w">         </span>:<span class="w"> </span><span class="m">50</span><span class="w">   </span>
+<span class="w">   </span><span class="se">\G</span>amma<span class="w">    </span>:<span class="w"> </span><span class="m">73</span><span class="w">   </span>
+Unfolding<span class="w"> </span>had<span class="w"> </span>been<span class="w"> </span>performed<span class="w"> </span>-<span class="w"> </span>use<span class="w"> </span><span class="sb">`</span>unfold<span class="w"> </span>plot<span class="sb">`</span><span class="w"> </span>to<span class="w"> </span>plot<span class="w"> </span>the<span class="w"> </span>spectral<span class="w"> </span><span class="k">function</span>.
+</pre></div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../examples.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Examples</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="example_mgo.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">MgO with atomic projections</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-project-file-and-kpoints-for-supercell-calculation">Generate project file and kpoints for supercell calculation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#performing-supercell-band-structure-calculation">Performing supercell band structure calculation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#perform-unfolding">Perform unfolding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-happens-if-the-symmetry-is-not-taken-into-account">What happens if the symmetry is not taken into account?</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            <div class="bd-footer-content__inner">
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Bonan ZHu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2023, Bonan ZHu.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div></div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

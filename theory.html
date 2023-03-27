@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Easyunfold documentation &#8212; Easyunfold</title>
+    <title>Theory of unfolding &#8212; Easyunfold</title>
   
   
   
@@ -43,10 +43,13 @@
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
     <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'theory';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Installation" href="installation.html" />
+    <link rel="next" title="CLI Reference" href="cli.html" />
+    <link rel="prev" title="Cation-Disordered NaBiS2 with and without Atomic Projections" href="examples/example_nabis2.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -112,7 +115,7 @@
         <div class="sidebar-primary-item">
   
 
-<a class="navbar-brand logo" href="#">
+<a class="navbar-brand logo" href="index.html">
   
   
   
@@ -157,13 +160,13 @@
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
-            <li class="toctree-l1 current active">
-                <a class="reference internal" href="#">
+            <li class="toctree-l1">
+                <a class="reference internal" href="index.html">
                     Easyunfold documentation
                 </a>
             </li>
         </ul>
-        <ul class="nav bd-sidenav">
+        <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="guide.html">Guide</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="examples.html">Examples</a><input checked class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -172,7 +175,7 @@
 <li class="toctree-l2"><a class="reference internal" href="examples/example_nabis2.html">Cation-Disordered NaBiS<sub>2</sub> with and without Atomic Projections</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory of unfolding</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Theory of unfolding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cli.html">CLI Reference</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/index.html">API Reference</a><input checked class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="apidocs/easyunfold/easyunfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
@@ -256,7 +259,7 @@
       
       
       
-      <li><a href="_sources/index.md" target="_blank"
+      <li><a href="_sources/theory.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -338,7 +341,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Easyunfold documentation</h1>
+    <h1>Theory of unfolding</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -348,15 +351,8 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Easyunfold documentation</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#studies-using-easyunfold">Studies using <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contributors">Contributors</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symmetry-considerations">Symmetry considerations</a></li>
 </ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of contents</a></li>
-</ul>
-
             </nav>
         </div>
     </div>
@@ -367,85 +363,52 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="easyunfold-documentation">
-<h1>Easyunfold documentation<a class="headerlink" href="#easyunfold-documentation" title="Permalink to this heading">#</a></h1>
-<p><img alt="build" src="https://github.com/SMTG-UCL/easyunfold/actions/workflows/ci.yaml/badge.svg" />
-<a class="reference external" href="https://smtg-ucl.github.io/easyunfold/"><img alt="docs" src="https://github.com/SMTG-UCL/easyunfold/actions/workflows/docs.yaml/badge.svg" /></a>
-<a class="reference external" href="https://codecov.io/gh/SMTG-UCL/easyunfold"><img alt="codecov" src="https://codecov.io/gh/SMTG-UCL/easyunfold/branch/dev/graph/badge.svg?token=XLLWWU5UM2" /></a></p>
-<p>This package is intended for obtaining the effective band structure of a supercell for a certain path of the primitive cell.
-It was originally based on <a class="reference external" href="https://github.com/QijingZheng/VaspBandUnfolding">PyVaspwfc</a> for reading wavefunction output of VASP, and contains some code of the latter.
-An notable improvement is that breaking symmetry is taken accounted of by sampling additional kpoints and taking average accordingly, which was previously missing.
-Our goal is to make the unfolding process easier to carry out and less likely to go wrong.</p>
-<p>For the methodology, see <a class="reference external" href="https://link.aps.org/doi/10.1103/PhysRevB.85.085201">here</a>.</p>
-<section id="usage">
-<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this heading">#</a></h2>
-<p>Main goal of this tool is to make the unfolding process easier.
-To generate a unfolded band structure, one typically needs to perform the following step:</p>
-<ol class="arabic simple">
-<li><p>Create a primitive cell, and generate a k point path for this primitive cell.</p></li>
-<li><p>Create a supercell, and obtain its optimised structure.</p></li>
-<li><p>Generate a series of kpoints in the supercell to be calculated.</p></li>
-<li><p>Perform a band structure calculation using the supercell, and save its wave function.</p></li>
-<li><p>Run post-processing to obtain the unfolded band structure.</p></li>
-</ol>
-<p>The supercell usually contains certain defects, or a special quasi random structure.
-In both cases, its symmetry is lowered when compared to the perfect primitive cell.
-Hence, for a given kpoint path in the primitive cell, additional kpoints may need to be sampled, and the extracted spectral weights need to be averaged in the end to obtained the effective band structure (EBS).</p>
-<p>At the moment, only VASP calculations are supported, although in principle other PW code can be supported easily if the wavefunction can be read in.</p>
-<p>Please see the documentation for guide and examples.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="theory-of-unfolding">
+<h1>Theory of unfolding<a class="headerlink" href="#theory-of-unfolding" title="Permalink to this heading">#</a></h1>
+<p>Notation: <span class="math notranslate nohighlight">\(\vec{k}\)</span> is the kpoint of the supercell and <span class="math notranslate nohighlight">\(\vec{k}\)</span> is that of the primitive cell.
+Reference: <a class="reference external" href="https://link.aps.org/doi/10.1103/PhysRevB.85.085201">https://link.aps.org/doi/10.1103/PhysRevB.85.085201</a></p>
+<p>Each <span class="math notranslate nohighlight">\(k\)</span> in the primitive cell can be mapped to that in the supercell where:</p>
+<div class="math notranslate nohighlight">
+\[
+\vec{K} = \vec{k} - \vec{G}_0.
+\]</div>
+<p>with <span class="math notranslate nohighlight">\(\vec{G}_0\)</span> being an reciprocal lattice vector.
+Naturally, each <span class="math notranslate nohighlight">\(\vec{K}\)</span> in the supercell can be unfolded into a set of <span class="math notranslate nohighlight">\(\vec{k}_i\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+\vec{k_i} = \vec{K} + \vec{G}_i, i=1,...,N_\vec{K}.
+\]</div>
+<p>The key implication is that for a given <span class="math notranslate nohighlight">\(\vec{k}\)</span>, there is a unique <span class="math notranslate nohighlight">\(\vec{K}\)</span> that it folds to.</p>
+<p>The goal of the band folding procedure is to obtain the <span class="math notranslate nohighlight">\(E(\vec{k})\)</span> from the complicated <span class="math notranslate nohighlight">\(E(\vec{K})\)</span>, where E is the energy of the Kohn-Sham states.
+This can be achieved by projecting <span class="math notranslate nohighlight">\(\ket{\vec{K}m}\)</span> on all of the primitive cell Block states <span class="math notranslate nohighlight">\(\ket{\vec{k}_i}\)</span> of a set of <span class="math notranslate nohighlight">\(\vec{k_i}\)</span> and compute the spectral weight:</p>
+<div class="math notranslate nohighlight">
+\[
+P_{\vec{K}m}(\vec{k}_i) = \sum_n |\braket{\vec{K}m |\vec{k}_i n}|^2.
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(P\)</span> represents the probability of finding a set of primitive cell stats <span class="math notranslate nohighlight">\(\ket{\vec{k}_in}\)</span> contributing to the supercell state <span class="math notranslate nohighlight">\(\ket{\vec{K}m}\)</span>, or the amount of Bloch character <span class="math notranslate nohighlight">\(\vec{k}_i\)</span> preserved in <span class="math notranslate nohighlight">\(\ket{\vec{K}m}\)</span> at the same energy.
+Based on this, one can further dervice the spectral function of <span class="math notranslate nohighlight">\(E\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+A(\vec{k}_i, E) = \sum_m P_{\vec{K}m}(\vec{k}_i)\delta(E_m - E).
+\]</div>
+<p>In practice, the <span class="math notranslate nohighlight">\(\delta\)</span> function is replaced with a Gaussian or Lorentzian function to smear the contribution with discretised <span class="math notranslate nohighlight">\(E\)</span>.</p>
+<p>Hence, the central quantity to be calculated is the <span class="math notranslate nohighlight">\(P_{\vec{K}m}(\vec{k}_i)\)</span>.
+For plane-wave basis, it can shown that (equation 15 in Popescu et al.):</p>
+<div class="math notranslate nohighlight">
+\[
+P_{\vec{K}m}(\vec{k}_j) = \sum_{\vec{g}} |C_{\vec{Km}}(\vec{g} + \vec{G_j})|^2,
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(C_{\vec{Km}}(\vec{g} + \vec{G_j})\)</span> the plane wave coefficients of the supercell.</p>
+<section id="symmetry-considerations">
+<h2>Symmetry considerations<a class="headerlink" href="#symmetry-considerations" title="Permalink to this heading">#</a></h2>
+<p>In practice, the set of primitive cell kpoints <span class="math notranslate nohighlight">\(\vec{k}_i\)</span> is taken from a given path in the Brouline zone going through multiple high symmetry points.
+This selection of the path depends on the space group of the primitive cell.
+Only a limited set of paths are needed because of the presence of point group symmetry, as symmetrically equivalent kpoints contains the same eigenstates.</p>
+<p>However, the supercell to be unfolded often contains reduced point group symmetry compared to that of the primitive cell due to imperfections (presence of defects, strain, distorations e.t.c).
+This broken symmetry means that previously equivalent kpoints are no longer equivalent.</p>
+<p>We account of this by including images of the primitive kpoints that are no longer equivalent under the point group of that of the supercell.
+Weighted contributions of these extra kpoints are added to the spectral function.</p>
 </section>
-<section id="studies-using-easyunfold">
-<h2>Studies using <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code><a class="headerlink" href="#studies-using-easyunfold" title="Permalink to this heading">#</a></h2>
-<p>We’ll add papers that use <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code> to this list as they come out!</p>
-<ul class="simple">
-<li><p>Y. T. Huang &amp; S. R. Kavanagh et al. <a class="reference external" href="https://www.nature.com/articles/s41467-022-32669-3"><em>Nature Communications</em></a> 2022</p></li>
-<li><p>A. T. J. Nicolson et al. <a class="reference external" href="https://chemrxiv.org/engage/chemrxiv/article-details/63a5d1ffa53ea69e935559e2"><em>ChemRxiv</em></a> 2023</p></li>
-<li><p>Y. Wang &amp; S. R. Kavanagh et al. <a class="reference external" href="https://www.nature.com/articles/s41566-021-00950-4"><em>Nature Photonics</em></a> 2022 (early version)</p></li>
-</ul>
-</section>
-<section id="contributors">
-<h2>Contributors<a class="headerlink" href="#contributors" title="Permalink to this heading">#</a></h2>
-<p>Code Contributors:
-<a class="reference external" href="https://github.com/zhubonan">Bonan Zhu</a>
-<a class="reference external" href="https://github.com/kavanase">Seán Kavanagh</a>
-<a class="reference external" href="https://github.com/adair-nicolson">Adair Nicolson</a></p>
-<p>And those who helped in the development:</p>
-<p><a class="reference external" href="https://github.com/joebesity">Joe Willis</a>
-<a class="reference external" href="http://davidscanlon.com/?page_id=5">David O. Scanlon</a></p>
-</section>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="table-of-contents">
-<h1>Table of contents<a class="headerlink" href="#table-of-contents" title="Permalink to this heading">#</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="guide.html">Guide</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="guide.html#step-1-generate-the-kpoints-path-of-the-primitive-cell">Step 1 - Generate the kpoints path of the primitive cell</a></li>
-<li class="toctree-l2"><a class="reference internal" href="guide.html#step-2-generate-the-kpoints-to-be-used-for-the-supercell-calculation">Step 2 - Generate the kpoints to be used for the supercell calculation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="guide.html#step-3-perform-the-unfolding">Step 3 - Perform the unfolding</a></li>
-<li class="toctree-l2"><a class="reference internal" href="guide.html#step-4-plot-the-results">Step 4 - Plot the results</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="examples/example_si222.html">Si supercell with a displaced atom</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/example_mgo.html">MgO with atomic projections</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/example_nabis2.html">Cation-Disordered NaBiS<sub>2</sub> with and without Atomic Projections</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory of unfolding</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="theory.html#symmetry-considerations">Symmetry considerations</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="cli.html">CLI Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="cli.html#easyunfold">easyunfold</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="apidocs/index.html">API Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="apidocs/easyunfold/easyunfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold</span></code></a></li>
-</ul>
-</li>
-</ul>
-</div>
 </section>
 
 
@@ -457,12 +420,21 @@ Hence, for a given kpoint path in the primitive cell, additional kpoints may nee
                 <footer class="bd-footer-article">
                   <!-- Previous / next buttons -->
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="examples/example_nabis2.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Cation-Disordered NaBiS<sub>2</sub> with and without Atomic Projections</p>
+      </div>
+    </a>
     <a class="right-next"
-       href="installation.html"
+       href="cli.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Installation</p>
+        <p class="prev-next-title">CLI Reference</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -481,15 +453,8 @@ Hence, for a given kpoint path in the primitive cell, additional kpoints may nee
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Easyunfold documentation</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#studies-using-easyunfold">Studies using <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contributors">Contributors</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symmetry-considerations">Symmetry considerations</a></li>
 </ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of contents</a></li>
-</ul>
-
   </nav></div>
 
 </div></div>

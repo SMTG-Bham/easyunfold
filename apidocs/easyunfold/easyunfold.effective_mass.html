@@ -1,0 +1,705 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>easyunfold.effective_mass &#8212; Easyunfold</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=12da95d707ffb74b382d" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d" />
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'apidocs/easyunfold/easyunfold.effective_mass';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="easyunfold.procar" href="easyunfold.procar.html" />
+    <link rel="prev" title="easyunfold.plotting" href="easyunfold.plotting.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.svg" class="logo__image only-light" alt="Logo image"/>
+    <script>document.write(`<img src="../../_static/logo.svg" class="logo__image only-dark" alt="Logo image"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/SMTG-UCL/easyunfold" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github"></i></span>
+            <label class="sr-only">GitHub</label></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/easyunfold/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/pypi/v/easyunfold" class="icon-link-image" alt="PyPI"/></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    Easyunfold documentation
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../guide.html">Guide</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../examples.html">Examples</a><input checked class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/example_si222.html">Si supercell with a displaced atom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/example_mgo.html">MgO with atomic projections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/example_nabis2.html">Cation-Disordered NaBiS<sub>2</sub> with and without Atomic Projections</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../theory.html">Theory of unfolding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cli.html">CLI Reference</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Reference</a><input checked class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="easyunfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="easyunfold.vasp_constant.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.vasp_constant</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="easyunfold.plotting.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.plotting</span></code></a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.effective_mass</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="easyunfold.procar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.procar</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="easyunfold.cli.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.cli</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="easyunfold.unfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.unfold</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="easyunfold.wavecar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavecar</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/SMTG-UCL/easyunfold" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/apidocs/easyunfold/easyunfold.effective_mass.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="theme-switch-button btn btn-sm btn-outline-primary navbar-btn rounded-circle" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch" data-mode="light"><i class="fa-solid fa-sun"></i></span>
+    <span class="theme-switch" data-mode="dark"><i class="fa-solid fa-moon"></i></span>
+    <span class="theme-switch" data-mode="auto"><i class="fa-solid fa-circle-half-stroke"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>easyunfold.effective_mass</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">Module Contents</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#classes">Classes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#functions">Functions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data">Data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api">API</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.effective_mass.eV_to_hartree"><code class="docutils literal notranslate"><span class="pre">eV_to_hartree</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.effective_mass.bohr_to_m"><code class="docutils literal notranslate"><span class="pre">bohr_to_m</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.effective_mass.angstrom_to_bohr"><code class="docutils literal notranslate"><span class="pre">angstrom_to_bohr</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.effective_mass.TMP_DATA"><code class="docutils literal notranslate"><span class="pre">TMP_DATA</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.effective_mass.fit_effective_mass"><code class="docutils literal notranslate"><span class="pre">fit_effective_mass()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.effective_mass.fitted_band"><code class="docutils literal notranslate"><span class="pre">fitted_band()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.effective_mass.points_with_tol"><code class="docutils literal notranslate"><span class="pre">points_with_tol()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.effective_mass.EffectiveMass"><code class="docutils literal notranslate"><span class="pre">EffectiveMass</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.effective_mass.EffectiveMass.set_nocc"><code class="docutils literal notranslate"><span class="pre">EffectiveMass.set_nocc()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.effective_mass.EffectiveMass.kpoints"><code class="docutils literal notranslate"><span class="pre">EffectiveMass.kpoints</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.effective_mass.EffectiveMass.kpoints_labels"><code class="docutils literal notranslate"><span class="pre">EffectiveMass.kpoints_labels</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.effective_mass.EffectiveMass.get_band_extrema"><code class="docutils literal notranslate"><span class="pre">EffectiveMass.get_band_extrema()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.effective_mass.EffectiveMass._get_kpoint_distances"><code class="docutils literal notranslate"><span class="pre">EffectiveMass._get_kpoint_distances()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.effective_mass.EffectiveMass._get_fitting_data"><code class="docutils literal notranslate"><span class="pre">EffectiveMass._get_fitting_data()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.effective_mass.EffectiveMass.get_npoints"><code class="docutils literal notranslate"><span class="pre">EffectiveMass.get_npoints()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.effective_mass.EffectiveMass.get_effective_masses"><code class="docutils literal notranslate"><span class="pre">EffectiveMass.get_effective_masses()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.effective_mass.EffectiveMass._get_effective_masses"><code class="docutils literal notranslate"><span class="pre">EffectiveMass._get_effective_masses()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.effective_mass.locate_kpoint_segment"><code class="docutils literal notranslate"><span class="pre">locate_kpoint_segment()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="module-easyunfold.effective_mass">
+<span id="easyunfold-effective-mass"></span><h1><a class="reference internal" href="#module-easyunfold.effective_mass" title="easyunfold.effective_mass"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.effective_mass</span></code></a><a class="headerlink" href="#module-easyunfold.effective_mass" title="Permalink to this heading">#</a></h1>
+<p>Module for obtaining effective mass</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">#</a></h3>
+<table class="autosummary longtable table table-left">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#easyunfold.effective_mass.EffectiveMass" title="easyunfold.effective_mass.EffectiveMass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EffectiveMass</span></code></a></p></td>
+<td><p>Calculate effective mass from unfolding data</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">#</a></h3>
+<table class="autosummary longtable table table-left">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#easyunfold.effective_mass.fit_effective_mass" title="easyunfold.effective_mass.fit_effective_mass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_effective_mass</span></code></a></p></td>
+<td><p>Fit the effective masses using either a parabolic or nonparabolic fit.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#easyunfold.effective_mass.fitted_band" title="easyunfold.effective_mass.fitted_band"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fitted_band</span></code></a></p></td>
+<td><p>Return fitted effective mass curve</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#easyunfold.effective_mass.points_with_tol" title="easyunfold.effective_mass.points_with_tol"><code class="xref py py-obj docutils literal notranslate"><span class="pre">points_with_tol</span></code></a></p></td>
+<td><p>Return the indices and values of points in an array close to the value with a tolerance</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#easyunfold.effective_mass.locate_kpoint_segment" title="easyunfold.effective_mass.locate_kpoint_segment"><code class="xref py py-obj docutils literal notranslate"><span class="pre">locate_kpoint_segment</span></code></a></p></td>
+<td><p>Locate the labels and indices of the kpoints defining a segment</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="data">
+<h3>Data<a class="headerlink" href="#data" title="Permalink to this heading">#</a></h3>
+<table class="autosummary longtable table table-left">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#easyunfold.effective_mass.eV_to_hartree" title="easyunfold.effective_mass.eV_to_hartree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eV_to_hartree</span></code></a></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#easyunfold.effective_mass.bohr_to_m" title="easyunfold.effective_mass.bohr_to_m"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bohr_to_m</span></code></a></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#easyunfold.effective_mass.angstrom_to_bohr" title="easyunfold.effective_mass.angstrom_to_bohr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">angstrom_to_bohr</span></code></a></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#easyunfold.effective_mass.TMP_DATA" title="easyunfold.effective_mass.TMP_DATA"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TMP_DATA</span></code></a></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="api">
+<h3>API<a class="headerlink" href="#api" title="Permalink to this heading">#</a></h3>
+<dl class="py data">
+<dt class="sig sig-object py" id="easyunfold.effective_mass.eV_to_hartree">
+<span class="sig-prename descclassname"><span class="pre">easyunfold.effective_mass.</span></span><span class="sig-name descname"><span class="pre">eV_to_hartree</span></span><a class="headerlink" href="#easyunfold.effective_mass.eV_to_hartree" title="Permalink to this definition">#</a></dt>
+<dd><p>None</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="easyunfold.effective_mass.bohr_to_m">
+<span class="sig-prename descclassname"><span class="pre">easyunfold.effective_mass.</span></span><span class="sig-name descname"><span class="pre">bohr_to_m</span></span><a class="headerlink" href="#easyunfold.effective_mass.bohr_to_m" title="Permalink to this definition">#</a></dt>
+<dd><p>None</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="easyunfold.effective_mass.angstrom_to_bohr">
+<span class="sig-prename descclassname"><span class="pre">easyunfold.effective_mass.</span></span><span class="sig-name descname"><span class="pre">angstrom_to_bohr</span></span><a class="headerlink" href="#easyunfold.effective_mass.angstrom_to_bohr" title="Permalink to this definition">#</a></dt>
+<dd><p>None</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="easyunfold.effective_mass.TMP_DATA">
+<span class="sig-prename descclassname"><span class="pre">easyunfold.effective_mass.</span></span><span class="sig-name descname"><span class="pre">TMP_DATA</span></span><a class="headerlink" href="#easyunfold.effective_mass.TMP_DATA" title="Permalink to this definition">#</a></dt>
+<dd><p>None</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="easyunfold.effective_mass.fit_effective_mass">
+<span class="sig-prename descclassname"><span class="pre">easyunfold.effective_mass.</span></span><span class="sig-name descname"><span class="pre">fit_effective_mass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">distances</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energies</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parabolic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.effective_mass.fit_effective_mass" title="Permalink to this definition">#</a></dt>
+<dd><p>Fit the effective masses using either a parabolic or nonparabolic fit.</p>
+<p>Adapted from <code class="docutils literal notranslate"><span class="pre">sumo</span></code>.</p>
+<p>Args:
+distances (:obj:<code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>): The x-distances between k-points in
+reciprocal Angstroms, normalised to the band extrema.
+energies (:obj:<code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>): The band eigenvalues normalised to the
+eigenvalue of the band extrema.
+parabolic (:obj:<code class="docutils literal notranslate"><span class="pre">bool</span></code>, optional): Use a parabolic fit of the band
+edges. If <code class="docutils literal notranslate"><span class="pre">False</span></code> then nonparabolic fitting will be attempted.
+Defaults to <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
+<p>Returns:
+float: The effective mass in units of electron rest mass, :math:<code class="docutils literal notranslate"><span class="pre">m_0</span></code>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="easyunfold.effective_mass.fitted_band">
+<span class="sig-prename descclassname"><span class="pre">easyunfold.effective_mass.</span></span><span class="sig-name descname"><span class="pre">fitted_band</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eff_mass</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="headerlink" href="#easyunfold.effective_mass.fitted_band" title="Permalink to this definition">#</a></dt>
+<dd><p>Return fitted effective mass curve</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="easyunfold.effective_mass.points_with_tol">
+<span class="sig-prename descclassname"><span class="pre">easyunfold.effective_mass.</span></span><span class="sig-name descname"><span class="pre">points_with_tol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.effective_mass.points_with_tol" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the indices and values of points in an array close to the value with a tolerance</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="easyunfold.effective_mass.EffectiveMass">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">easyunfold.effective_mass.</span></span><span class="sig-name descname"><span class="pre">EffectiveMass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">unfold</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="easyunfold.unfold.html#easyunfold.unfold.UnfoldKSet" title="easyunfold.unfold.UnfoldKSet"><span class="pre">easyunfold.unfold.UnfoldKSet</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">intensity_tol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extrema_tol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degeneracy_tol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parabolic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">npoints</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.effective_mass.EffectiveMass" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculate effective mass from unfolding data</p>
+<p class="rubric">Initialization</p>
+<p>Instantiate the object</p>
+<p>Args:
+unfold (UnfoldKSet): The <code class="docutils literal notranslate"><span class="pre">UnfoldKSet</span></code> object that holes unfolding data.
+intensity_tol (float): Intensity tolerance for detecting band edges.
+parabolic (bool): Perform parabolic fit or not. Defaults to True as non-parabolic fit is not working at the moment…</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="easyunfold.effective_mass.EffectiveMass.set_nocc">
+<span class="sig-name descname"><span class="pre">set_nocc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nocc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.effective_mass.EffectiveMass.set_nocc" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="easyunfold.effective_mass.EffectiveMass.kpoints">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">kpoints</span></span><a class="headerlink" href="#easyunfold.effective_mass.EffectiveMass.kpoints" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="easyunfold.effective_mass.EffectiveMass.kpoints_labels">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">kpoints_labels</span></span><a class="headerlink" href="#easyunfold.effective_mass.EffectiveMass.kpoints_labels" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="easyunfold.effective_mass.EffectiveMass.get_band_extrema">
+<span class="sig-name descname"><span class="pre">get_band_extrema</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'cbm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extrema_tol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">degeneracy_tol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ispin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.effective_mass.EffectiveMass.get_band_extrema" title="Permalink to this definition">#</a></dt>
+<dd><p>Obtain the kpoint idx of band maximum, sub indices in th set and the band indices.</p>
+<p>The search takes two steps, first the kpoints at the band extrema is located by comparing the
+band energies with that recorded in supplied <em>cbm</em> and <em>vbm</em>, based on the <code class="docutils literal notranslate"><span class="pre">exgtrema_tol</span></code>.
+Afterwards, the band indices are selected at the these kpoints using <code class="docutils literal notranslate"><span class="pre">degeneracy_tol</span></code>.</p>
+<p>Returns:
+A tuple of extrema locations including a list of kpoint indices, sub-indices within
+the set and the band indices at each kpoint that is within the <code class="docutils literal notranslate"><span class="pre">tol</span></code> set.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="easyunfold.effective_mass.EffectiveMass._get_kpoint_distances">
+<span class="sig-name descname"><span class="pre">_get_kpoint_distances</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.effective_mass.EffectiveMass._get_kpoint_distances" title="Permalink to this definition">#</a></dt>
+<dd><p>Distances between the kpoints along the path in the reciprocal space.
+This does not take account of the breaking of the path
+NOTE: the reciprocal lattice vectors includes the 2pi factor, e.g. np.linalg.inv(L).T * 2 * np.pi</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="easyunfold.effective_mass.EffectiveMass._get_fitting_data">
+<span class="sig-name descname"><span class="pre">_get_fitting_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kidx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iband</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ispin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">npoints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.effective_mass.EffectiveMass._get_fitting_data" title="Permalink to this definition">#</a></dt>
+<dd><p>Get fitting data for a specific combination of kpoint and band index</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="easyunfold.effective_mass.EffectiveMass.get_npoints">
+<span class="sig-name descname"><span class="pre">get_npoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">override</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.effective_mass.EffectiveMass.get_npoints" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the number of points used for fitting</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="easyunfold.effective_mass.EffectiveMass.get_effective_masses">
+<span class="sig-name descname"><span class="pre">get_effective_masses</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">npoints</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ispin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.effective_mass.EffectiveMass.get_effective_masses" title="Permalink to this definition">#</a></dt>
+<dd><p>Workout the effective masses based on the unfolded band structure</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="easyunfold.effective_mass.EffectiveMass._get_effective_masses">
+<span class="sig-name descname"><span class="pre">_get_effective_masses</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'cbm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ispin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">npoints</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.effective_mass.EffectiveMass._get_effective_masses" title="Permalink to this definition">#</a></dt>
+<dd><p>Workout the effective masses based on the unfolded band structure for CBM or VBM</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="easyunfold.effective_mass.locate_kpoint_segment">
+<span class="sig-prename descclassname"><span class="pre">easyunfold.effective_mass.</span></span><span class="sig-name descname"><span class="pre">locate_kpoint_segment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">idxk</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_idx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_names</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.effective_mass.locate_kpoint_segment" title="Permalink to this definition">#</a></dt>
+<dd><p>Locate the labels and indices of the kpoints defining a segment</p>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+                <footer class="bd-footer-article">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="easyunfold.plotting.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.plotting</span></code></p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="easyunfold.procar.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.procar</span></code></p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">Module Contents</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#classes">Classes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#functions">Functions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data">Data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api">API</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.effective_mass.eV_to_hartree"><code class="docutils literal notranslate"><span class="pre">eV_to_hartree</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.effective_mass.bohr_to_m"><code class="docutils literal notranslate"><span class="pre">bohr_to_m</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.effective_mass.angstrom_to_bohr"><code class="docutils literal notranslate"><span class="pre">angstrom_to_bohr</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.effective_mass.TMP_DATA"><code class="docutils literal notranslate"><span class="pre">TMP_DATA</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.effective_mass.fit_effective_mass"><code class="docutils literal notranslate"><span class="pre">fit_effective_mass()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.effective_mass.fitted_band"><code class="docutils literal notranslate"><span class="pre">fitted_band()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.effective_mass.points_with_tol"><code class="docutils literal notranslate"><span class="pre">points_with_tol()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.effective_mass.EffectiveMass"><code class="docutils literal notranslate"><span class="pre">EffectiveMass</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.effective_mass.EffectiveMass.set_nocc"><code class="docutils literal notranslate"><span class="pre">EffectiveMass.set_nocc()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.effective_mass.EffectiveMass.kpoints"><code class="docutils literal notranslate"><span class="pre">EffectiveMass.kpoints</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.effective_mass.EffectiveMass.kpoints_labels"><code class="docutils literal notranslate"><span class="pre">EffectiveMass.kpoints_labels</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.effective_mass.EffectiveMass.get_band_extrema"><code class="docutils literal notranslate"><span class="pre">EffectiveMass.get_band_extrema()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.effective_mass.EffectiveMass._get_kpoint_distances"><code class="docutils literal notranslate"><span class="pre">EffectiveMass._get_kpoint_distances()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.effective_mass.EffectiveMass._get_fitting_data"><code class="docutils literal notranslate"><span class="pre">EffectiveMass._get_fitting_data()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.effective_mass.EffectiveMass.get_npoints"><code class="docutils literal notranslate"><span class="pre">EffectiveMass.get_npoints()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.effective_mass.EffectiveMass.get_effective_masses"><code class="docutils literal notranslate"><span class="pre">EffectiveMass.get_effective_masses()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.effective_mass.EffectiveMass._get_effective_masses"><code class="docutils literal notranslate"><span class="pre">EffectiveMass._get_effective_masses()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.effective_mass.locate_kpoint_segment"><code class="docutils literal notranslate"><span class="pre">locate_kpoint_segment()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            <div class="bd-footer-content__inner">
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Bonan ZHu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2023, Bonan ZHu.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div></div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=12da95d707ffb74b382d"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=12da95d707ffb74b382d"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
