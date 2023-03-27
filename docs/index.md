@@ -42,14 +42,43 @@ We'll add papers that use `easyunfold` to this list as they come out!
 ## Contributors
 
 Code Contributors:
-  [Bonan Zhu](https://github.com/zhubonan)
-  [Seán Kavanagh](https://github.com/kavanase)
-  [Adair Nicolson](https://github.com/adair-nicolson)
+  [Bonan Zhu](https://github.com/zhubonan)  
+  [Seán Kavanagh](https://github.com/kavanase)  
+  [Adair Nicolson](https://github.com/adair-nicolson)  
 
 And those who helped in the development:
 
-  [Joe Willis](https://github.com/joebesity)
-  [David O. Scanlon](http://davidscanlon.com/?page_id=5)
+  [Joe Willis](https://github.com/joebesity)  
+  [David O. Scanlon](http://davidscanlon.com/?page_id=5)  
+
+## Contributing
+
+
+## Bugs reports and feature requests
+
+
+Bug reports and feature requests are well come.
+If you found any bug or missing features please report it on the [Issue Tracker](https://github.com/SMTG-UCL/easyunfold/issues).
+Poor or incorrect documentation is considered a bug, but please be as specific as
+possible when asking for improvements.
+
+## Code contributions
+
+We welcome your help in improving and extending the package with your
+own contributions. This is managed through Github pull requests;
+for external contributions, we prefer the
+[fork and pull](https://guides.github.com/activities/forking/)
+workflow while core developers use branches in the main repository:
+
+1. First open an Issue to discuss the proposed contribution. This
+  discussion might include how the changes fit easyunfold's scope and a
+  general technical approach.
+2. Make your own project fork and implement the changes
+  there. Please keep your code style compliant and use the pre-commit hooks.
+3. Open a pull request to merge the changes into the main
+  project. A more detailed discussion can take place there before
+  the changes are accepted.
+
 
 # Table of contents
 
