@@ -28,7 +28,7 @@ author = 'Bonan ZHu'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.autodoc', "myst_parser", "sphinx_click", "autodoc2"
+    'sphinx.ext.autodoc', "myst_parser", "sphinx_click", "autodoc2", 'sphinx_copybutton'
 ]
 
 autodoc2_packages = [
@@ -70,8 +70,28 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 #
 html_theme = 'sphinx_book_theme'
 html_theme_options = {
-  'navigation_depth': 2
+  'navigation_depth': 2,
+  'repository_url': 'https://github.com/SMTG-UCL/easyunfold',
+  'use_repository_button': True,
+  "show_navbar_depth": 2,
+  'home_page_in_toc': True,
+  "icon_links": [
+        {
+            "name": "GitHub",
+            "url": "https://github.com/SMTG-UCL/easyunfold",  # required
+            "icon": "fa-brands fa-github",
+        },
+        {
+            "name": "PyPI",
+            "url": "https://pypi.org/project/easyunfold/",
+            "icon": "https://img.shields.io/pypi/v/easyunfold",
+            "type": "url",
+        }
+    ]
 }
+
+html_logo = 'img/logo.svg'
+html_title = "Easyunfold"
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,

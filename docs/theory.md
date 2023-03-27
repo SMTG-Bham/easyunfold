@@ -1,4 +1,4 @@
-## Theory of unfolding
+# Theory of unfolding
 
 
 Notation: $\vec{k}$ is the kpoint of the supercell and $\vec{k}$ is that of the primitive cell. 
