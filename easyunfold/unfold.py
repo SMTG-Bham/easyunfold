@@ -466,7 +466,7 @@ class UnfoldKSet(MSONable):
 
     def get_band_weight_sets(self,
                              atoms_idx: List[int],
-                             orbitals: List[List[str], str],
+                             orbitals: List[Union[List[str], str]],
                              procars: Union[None, List[str], str] = None) -> list:
         """
         Get weights array sets for bands
