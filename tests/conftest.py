@@ -39,6 +39,8 @@ def si_project_dir(datapath, tmp_path):
             url = DATA_REPO[relpath]
             print(f'Downloading {relpath}')
             urllib.request.urlretrieve(url, tmp_path / 'Si-project' / relpath)
+            # Copy the downloaded WAVECAR to the repository for future use
+            shutil.copy(tmp_path / 'Si-project' / relpath, datapath('Si-project') / f'Si_super_deformed{tag}/WAVECAR')
         return tmp_path / 'Si-project'
 
     return _inner

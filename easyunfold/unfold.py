@@ -21,6 +21,7 @@ import spglib
 from easyunfold import __version__
 from .wavecar import Wavecar
 from .procar import Procar
+from .wavefun import VaspWaveFunction
 
 ############################################################
 
@@ -799,7 +800,14 @@ class Unfold():
     :::
     """
 
-    def __init__(self, M=None, wavecar: str = 'WAVECAR', gamma: bool = False, lsorbit: bool = False, gamma_half: str = 'x', verbose=False):
+    def __init__(self,
+                 M=None,
+                 fname: str = 'WAVECAR',
+                 gamma: bool = False,
+                 lsorbit: bool = False,
+                 gamma_half: str = 'x',
+                 verbose=False,
+                 code='vasp'):
         """
         Initialization.
 
@@ -832,12 +840,14 @@ class Unfold():
 
         self.M = np.array(M, dtype=float)
         assert self.M.shape == (3, 3), 'Shape of the tranformation matrix must be (3,3)'
-
-        self.wfc = Wavecar(wavecar, lsorbit=self._lsoc, lgamma=self._lgam, gamma_half=gamma_half)
+        if code == 'vasp':
+            self.wfc = VaspWaveFunction(Wavecar(fname, lsorbit=self._lsoc, lgamma=self._lgam, gamma_half=gamma_half))
+        else:
+            raise NotImplementedError(f'Code {code} has not being implemented!')
         # all the K-point vectors
-        self.kvecs = self.wfc._kvecs
+        self.kvecs = self.wfc.kpoints
         # all the KS energies in shape (ns, nk, nb)
-        self.bands = self.wfc._bands
+        self.bands = self.wfc.bands
 
         # spectral weight for all the kpoints
         self.SW = None
@@ -846,7 +856,7 @@ class Unfold():
 
     def get_vbm_cbm(self, thresh: float = 1e-8) -> Tuple[float, float]:
         """Locate the VBM from the WAVECAR"""
-        occ = self.wfc._occs
+        occ = self.wfc.occupancies
 
         occupied = np.abs(occ) > thresh
         vbm = float(self.bands[occupied].max())
@@ -860,10 +870,10 @@ class Unfold():
         primitive cell.
         """
 
-        assert 1 <= ikpt <= self.wfc._nkpts, 'Invalid K-point index!'
+        assert 1 <= ikpt <= self.wfc.nkpts, 'Invalid K-point index!'
 
         # Reciprocal space vectors of the supercell in fractional unit
-        Gvecs = self.wfc.get_gvectors(ikpt=ikpt)
+        Gvecs = self.wfc.get_gvectors(ik=ikpt)
 
         if self._lgam:
             nplw = Gvecs.shape[0]
@@ -890,8 +900,8 @@ class Unfold():
         Find the index of a point `K0`.
         """
 
-        for ii in range(self.wfc._nkpts):
-            if np.alltrue(np.abs(self.wfc._kvecs[ii] - K0) < 1E-5):
+        for ii in range(self.wfc.nkpts):
+            if np.alltrue(np.abs(self.wfc.kpoints[ii] - K0) < 1E-5):
                 return ii + 1
         raise ValueError('Cannot find the corresponding K-points in WAVECAR!')
 
@@ -932,24 +942,24 @@ class Unfold():
         Goffset = Gvalid + G0[np.newaxis, :]
 
         # Index of the Gvalid in 3D grid
-        GallIndex = Gall % self.wfc._ngrid[np.newaxis, :]
-        GoffsetIndex = Goffset % self.wfc._ngrid[np.newaxis, :]
+        GallIndex = Gall % self.wfc.mesh_size[np.newaxis, :]
+        GoffsetIndex = Goffset % self.wfc.mesh_size[np.newaxis, :]
 
         # 3d grid for planewave coefficients
-        wfc_k_3D = np.zeros(self.wfc._ngrid, dtype=np.complex128)
+        wfc_k_3D = np.zeros(self.wfc.mesh_size, dtype=np.complex128)
 
         # the weights and corresponding energies
-        P_Km = np.zeros(self.wfc._nbands, dtype=float)
-        E_Km = np.zeros(self.wfc._nbands, dtype=float)
+        P_Km = np.zeros(self.wfc.nbands, dtype=float)
+        E_Km = np.zeros(self.wfc.nbands, dtype=float)
 
-        for nb in range(self.wfc._nbands):
+        for nb in range(self.wfc.nbands):
             # initialize the array to zero, which is unnecessary since the
             # GallIndex is the same for the same K-point
             # wfc_k_3D[:,:,:] = 0.0
 
             if self._lsoc:
                 # pad the coefficients to 3D grid
-                band_coeff = self.wfc.read_band_coeffs(ispin=whichspin, ikpt=ikpt, iband=nb + 1, norm=True)
+                band_coeff = self.wfc.get_band_coeffs(ispin=whichspin, ik=ikpt, ib=nb + 1, norm=True)
                 nplw = band_coeff.shape[0] // 2
                 band_spinor_coeff = [band_coeff[:nplw], band_coeff[nplw:]]
 
@@ -964,7 +974,7 @@ class Unfold():
                     P_Km[nb] += np.linalg.norm(wfc_k_3D[GoffsetIndex[:, 0], GoffsetIndex[:, 1], GoffsetIndex[:, 2]])**2
             else:
                 # pad the coefficients to 3D grid
-                band_coeff = self.wfc.read_band_coeffs(ispin=whichspin, ikpt=ikpt, iband=nb + 1, norm=True)
+                band_coeff = self.wfc.get_band_coeffs(ispin=whichspin, ik=ikpt, ib=nb + 1, norm=True)
                 if self._lgam:
                     nplw = band_coeff.size
                     tmp = np.zeros((nplw * 2 - 1), dtype=band_coeff.dtype)
@@ -991,8 +1001,8 @@ class Unfold():
         NKPTS = len(kpoints)
 
         sw = []
-        for ispin in range(self.wfc._nspin):
-            if self.wfc._nspin == 2:
+        for ispin in range(self.wfc.nspins):
+            if self.wfc.nspins == 2:
                 if self.verbose:
                     print('#' * 60)
                     print(f'Spin component: {ispin}')
@@ -1017,7 +1027,7 @@ class Unfold():
 
         assert self.SW is not None, 'Spectral weight must be calculated first!'
 
-        NS = self.wfc._nspin
+        NS = self.wfc.nspins
         # Number of kpoints
         nk = self.SW.shape[1]
         # spectral function
@@ -1044,9 +1054,9 @@ def spectral_weight_multiple_source(kpoints: list, unfold_objs: List[Unfold], tr
     """
 
     nk = len(kpoints)
-    ns = unfold_objs[0].wfc._nspin
+    ns = unfold_objs[0].wfc.nspins
     for obj in unfold_objs[1:]:
-        assert ns == obj.wfc._nspin
+        assert ns == obj.wfc.nspins
 
     # When reading from multiple WAVECAR, it is possible that each of them may have differnt number of bands
     # if so, we take only the first N bands, where N is the minimum values of bands
