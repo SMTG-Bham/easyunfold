@@ -21,7 +21,7 @@ import spglib
 from easyunfold import __version__
 from .wavecar import Wavecar
 from .procar import Procar
-from .wavefun import VaspWaveFunction
+from .wavefun import VaspWaveFunction, CastepWaveFunction
 
 ############################################################
 
@@ -131,7 +131,8 @@ class UnfoldKSet(MSONable):
                  metadata: Union[None, dict] = None,
                  expansion_results: Union[None, dict] = None,
                  calculated_quantities: Union[None, dict] = None,
-                 kpoint_labels: Union[None, list] = None):
+                 kpoint_labels: Union[None, list] = None,
+                 dft_code='vasp'):
         """
         Instantiate an `UnfoldKSet` object.
 
@@ -156,6 +157,7 @@ class UnfoldKSet(MSONable):
         self.time_reversal = time_reversal
         self.calculated_quantities = {} if not calculated_quantities else calculated_quantities
         self.kpoint_labels = kpoint_labels
+        self.dft_code = dft_code
         if metadata is None:
             metadata = {}
         self.metadata = metadata
@@ -340,7 +342,7 @@ class UnfoldKSet(MSONable):
         if not isinstance(wavecar, (list, tuple)):
             wavecar = [wavecar]
         # Load the WAVECAR unfold objects
-        unfold_objs = [Unfold(self.M, name, gamma=gamma, lsorbit=ncl, gamma_half=gamma_half) for name in wavecar]
+        unfold_objs = [Unfold(self.M, name, gamma=gamma, lsorbit=ncl, gamma_half=gamma_half, dft_code=self.dft_code) for name in wavecar]
         # Record the VBM and the CBM values
         varray = np.array([obj.get_vbm_cbm() for obj in unfold_objs])
         self.calculated_quantities['vbm'] = float(varray[:, 0].max())
@@ -807,7 +809,7 @@ class Unfold():
                  lsorbit: bool = False,
                  gamma_half: str = 'x',
                  verbose=False,
-                 code='vasp'):
+                 dft_code='vasp'):
         """
         Initialization.
 
@@ -840,10 +842,12 @@ class Unfold():
 
         self.M = np.array(M, dtype=float)
         assert self.M.shape == (3, 3), 'Shape of the tranformation matrix must be (3,3)'
-        if code == 'vasp':
+        if dft_code == 'vasp':
             self.wfc = VaspWaveFunction(Wavecar(fname, lsorbit=self._lsoc, lgamma=self._lgam, gamma_half=gamma_half))
+        elif dft_code == 'castep':
+            self.wfc = CastepWaveFunction.from_file(fname)
         else:
-            raise NotImplementedError(f'Code {code} has not being implemented!')
+            raise NotImplementedError(f'Code {dft_code} has not being implemented!')
         # all the K-point vectors
         self.kvecs = self.wfc.kpoints
         # all the KS energies in shape (ns, nk, nb)
