@@ -8,7 +8,7 @@ from pathlib import Path
 from monty.serialization import loadfn
 from click.testing import CliRunner
 from easyunfold.cli import easyunfold
-from easyunfold.unfold import read_kpoints
+from easyunfold.utils import read_kpoints
 
 
 def test_generate(si_project_dir):

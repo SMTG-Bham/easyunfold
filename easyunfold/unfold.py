@@ -7,7 +7,6 @@ The main module for unfolding workflow and algorithm
 ############################################################
 import re
 from typing import Union, List, Tuple
-from pathlib import Path
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -22,6 +21,7 @@ from easyunfold import __version__
 from .wavecar import Wavecar
 from .procar import Procar
 from .wavefun import VaspWaveFunction, CastepWaveFunction
+from .utils import write_kpoints
 
 ############################################################
 
@@ -145,6 +145,7 @@ class UnfoldKSet(MSONable):
         :param expansion_results: Using existing results of symmetry expansion
         :param calculated_quantities: Existing calculated quantities
         :param kpoint_labels: Labels of the kpoints as passed in `pc_latt` as a list of tuples `(<idx>, <label>)`
+        :param dft_code: Name of the DFT code to be used.
         """
         # Basic properties - needed to recreate the object
         self.kpts_pc = kpts_pc
@@ -313,13 +314,17 @@ class UnfoldKSet(MSONable):
                 # Prepend with SCF kpoints
                 kpoints, weights = concatenate_scf_kpoints(scf_kpoints_and_weights[0], scf_kpoints_and_weights[1], kpoints)
 
-            write_kpoints(kpoints, file, comment='supercell kpoints', weights=weights)
+            write_kpoints(kpoints, file, comment='supercell kpoints', weights=weights, code=self.dft_code)
         else:
             splits = [kpoints[i:i + nk_per_split] for i in range(0, kpoints.shape[0], nk_per_split)]
             for i_spilt, kpt in enumerate(splits):
                 if scf_kpoints_and_weights:
                     kpt, weights = concatenate_scf_kpoints(scf_kpoints_and_weights[0], scf_kpoints_and_weights[1], kpt)
-                write_kpoints(kpt, f'{file}_{i_spilt + 1:03d}', f'supercell kpoints split {i_spilt + 1}', weights)
+                write_kpoints(kpt,
+                              f'{file}_{i_spilt + 1:03d}',
+                              f'supercell kpoints split {i_spilt + 1}',
+                              code=self.dft_code,
+                              weights=weights)
 
     def write_pc_kpoints(self, file: str, expanded: bool = False):
         """Write the primitive cell kpoints"""
@@ -327,9 +332,9 @@ class UnfoldKSet(MSONable):
             all_pc = []
             for tmp in self.expansion_results['kpoints']:
                 all_pc.extend(tmp)
-            write_kpoints(all_pc, file, comment='expanded primitive cell kpoints')
+            write_kpoints(all_pc, file, comment='expanded primitive cell kpoints', code=self.dft_code)
         else:
-            write_kpoints(self.kpts_pc, file, comment='primitive cell kpoints')
+            write_kpoints(self.kpts_pc, file, comment='primitive cell kpoints', code=self.dft_code)
 
     def _read_weights(self, wavecar: Union[str, List[str]], gamma: bool, ncl: bool, gamma_half: str):
         """
@@ -619,101 +624,6 @@ def remote_duplicated_kpoints(kpoints: list, return_map=False, decimals=6):
     if return_map:
         return reducedK, inv_kid
     return reducedK
-
-
-def write_kpoints(kpoints: Union[np.ndarray, list], outpath: str = 'KPOINTS', comment: str = '', weights: Union[None, List[float]] = None):
-    """
-    Write kpoints to VASP KPOINTS file
-
-    :param kpoints: A list of kpoints to be written
-    :param outpath: Path to the output file
-    :param comments: Comments to be put into the `KPOINTS` file
-    :param weights: If given, the weighting of the kpoints, otherwise all kpoints are equal weighted.
-    """
-    kpoints = np.asarray(kpoints)
-    nkpts = kpoints.shape[0]
-
-    with open(outpath, 'w', encoding='utf-8') as vaspkpt:
-        vaspkpt.write(comment + '\n')
-        vaspkpt.write(f'{nkpts}\n')
-        vaspkpt.write('Rec\n')
-        for ik in range(nkpts):
-            if weights is not None:
-                line = f'  {kpoints[ik, 0]:12.8f} {kpoints[ik, 1]:12.8f} {kpoints[ik,2]:12.8f}  {weights[ik]:12.8f}\n'
-            else:
-                line = f'  {kpoints[ik, 0]:12.8f} {kpoints[ik, 1]:12.8f} {kpoints[ik,2]:12.8f}  1.0\n'
-            vaspkpt.write(line)
-
-
-def read_kpoints(path='KPOINTS'):
-    """
-    Read kpoints from a KPOINTS file containing reciprocal space coordinates (fractional)
-
-    :returns: The kpoints, the comment, the labels, and the weights at each kpoint.
-    """
-    content = Path(path).read_text(encoding='utf-8').split('\n')
-    comment = content[0]
-    nkpts = int(content[1])
-    if content[2].lower().startswith('lin'):
-        return read_kpoints_line(content)
-    assert content[2].lower().startswith('rec'), 'Only Reciprocal space KPOINT file is supported'
-    kpts = []
-    labels = []
-    weights = []
-    ik = 0
-    for line in content[3:]:
-        tokens = line.split()
-        this_kpt = [float(value) for value in tokens[:3]]
-        weights.append(float(tokens[3]))
-
-        if len(tokens) >= 5:
-            labels.append([ik, tokens[4]])
-
-        kpts.append(this_kpt)
-        ik += 1
-        if ik == nkpts:
-            break
-    return kpts, comment, labels, weights
-
-
-def read_kpoints_line(content, density=20):
-    """
-    Read kpoints in the VASP KPOINTS file line mode
-
-    Resolve to explicit kpoints
-
-    :returns: The kpoints, the comment, the labels, and the weights at each kpoint
-    """
-    comment = content[0]
-    density = int(content[1]) if content[1] else density
-
-    assert content[2].lower().startswith('lin'), 'Only Line mode KPOINT file is supported'
-    assert content[3].lower().startswith('rec'), 'Only Reciprocal coorindates are supported!'
-
-    segs = []
-    labels = []
-    for line in content[4:]:
-        tokens = line.split()
-        if not tokens:
-            continue
-        point = [float(x) for x in tokens[:3]]
-        labels.append(tokens[-1])
-        segs.append(point)
-    # Process the segments
-    kpoints = []
-    labels_loc = []
-    for i in range(int(len(segs) / 2)):
-        k1 = segs[i * 2]
-        k2 = segs[i * 2 + 1]
-        # Check for duplicate end point
-        if kpoints and kpoints[-1] == k1:
-            kpoints.pop()
-            labels_loc.pop()
-        this_seg = np.linspace(k1, k2, density)
-        labels_loc.append((len(kpoints), labels[i]))
-        kpoints.extend(this_seg.tolist())
-        labels_loc.append((len(kpoints) - 1, labels[i + 1]))
-    return kpoints, comment, labels_loc, None
 
 
 def make_kpath(kbound: List[float], nseg=40):

@@ -5,6 +5,7 @@ import numpy as np
 from ase.io import read
 import pytest
 import easyunfold.unfold as unfold
+from easyunfold.utils import read_kpoints
 from matplotlib.colors import hex2color
 
 
@@ -52,8 +53,8 @@ def silicon_unfold(explicit_kpoints_minimal, si_atoms, si222_atoms):
 
 
 def test_read_kpoints_line(datapath):
-
-    kpoints, comment, labels, _ = unfold.read_kpoints(datapath('KPOINTS_LINE'))
+    """Test reading kpoints in the line mode"""
+    kpoints, comment, labels, _ = read_kpoints(datapath('KPOINTS_LINE'))
     assert len(kpoints) == 91
     assert len(labels) == 4
     assert labels[0][0] == 0
@@ -122,7 +123,7 @@ def test_unfold(si_project_dir, tag, nspin, ncl):
 
     atoms_primitive = read(si_project_dir / 'Si/POSCAR')
     atoms_supercell = read(si_project_dir / f'{folder_name}/POSCAR')
-    kpoints, _, labels, _ = unfold.read_kpoints(si_project_dir / 'KPOINTS_band_low')
+    kpoints, _, labels, _ = read_kpoints(si_project_dir / 'KPOINTS_band_low')
 
     unfolder: unfold.UnfoldKSet = unfold.UnfoldKSet.from_atoms(np.diag([2, 2, 2]), kpoints, atoms_primitive, atoms_supercell)
     unfolder.kpoint_labels = labels
@@ -131,20 +132,20 @@ def test_unfold(si_project_dir, tag, nspin, ncl):
     unfolder.write_sc_kpoints(si_project_dir / 'KPOINTS_sc', nk_per_split=3)
     assert (si_project_dir / 'KPOINTS_sc_001').is_file()
     assert (si_project_dir / 'KPOINTS_sc_002').is_file()
-    ktmp1 = unfold.read_kpoints(si_project_dir / 'KPOINTS_sc_001')[0]
+    ktmp1 = read_kpoints(si_project_dir / 'KPOINTS_sc_001')[0]
     assert len(ktmp1) == 3
 
     # Split with SCF kpoints
     unfolder.write_sc_kpoints(si_project_dir / 'KPOINTS_sc',
                               nk_per_split=3,
                               scf_kpoints_and_weights=([[0., 0., 0.], [0.1, 0.1, 0.1]], [1, 2]))
-    ktmp1 = unfold.read_kpoints(si_project_dir / 'KPOINTS_sc_001')[0]
+    ktmp1 = read_kpoints(si_project_dir / 'KPOINTS_sc_001')[0]
     assert len(ktmp1) == 5
     np.testing.assert_allclose(ktmp1[1], [0.1, 0.1, 0.1])
 
     # Test kpoints generation
-    kpoints_sc = unfold.read_kpoints(si_project_dir / 'KPOINTS_sc')[0]
-    kpoints_sc_ref = unfold.read_kpoints(si_project_dir / f'{folder_name}/KPOINTS_easyunfold')[0]
+    kpoints_sc = read_kpoints(si_project_dir / 'KPOINTS_sc')[0]
+    kpoints_sc_ref = read_kpoints(si_project_dir / f'{folder_name}/KPOINTS_easyunfold')[0]
     np.testing.assert_allclose(kpoints_sc, kpoints_sc_ref)
 
     # Test unfold
@@ -176,7 +177,7 @@ def test_unfold_no_expand(si_project_dir, tag, nspin, ncl):
 
     atoms_primitive = read(si_project_dir / 'Si/POSCAR')
     atoms_supercell = read(si_project_dir / f'{folder_name}/POSCAR')
-    kpoints, _, labels, _ = unfold.read_kpoints(si_project_dir / 'KPOINTS_band_low')
+    kpoints, _, labels, _ = read_kpoints(si_project_dir / 'KPOINTS_band_low')
 
     unfolder: unfold.UnfoldKSet = unfold.UnfoldKSet.from_atoms(np.diag([2, 2, 2]), kpoints, atoms_primitive, atoms_supercell, expand=False)
     unfolder.kpoint_labels = labels
@@ -184,8 +185,8 @@ def test_unfold_no_expand(si_project_dir, tag, nspin, ncl):
     unfolder.write_sc_kpoints(si_project_dir / 'KPOINTS_sc')
 
     # Test kpoints generation
-    kpoints_sc = unfold.read_kpoints(si_project_dir / 'KPOINTS_sc')[0]
-    kpoints_sc_ref = unfold.read_kpoints(si_project_dir / f'{folder_name}/KPOINTS_easyunfold')[0]
+    kpoints_sc = read_kpoints(si_project_dir / 'KPOINTS_sc')[0]
+    kpoints_sc_ref = read_kpoints(si_project_dir / f'{folder_name}/KPOINTS_easyunfold')[0]
     # The kpoints should be a subset of the SC kpoints
     for kpt in kpoints_sc:
         found = False

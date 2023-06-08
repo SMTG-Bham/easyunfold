@@ -57,7 +57,8 @@ def generate(pc_file, sc_file, matrix, kpoints, time_reversal, out_file, no_expa
     time provide the ``--scf-kpoints``. This will generate a serial of kpoints files containing
     the SCF kpoints followed by the actual kpoints needed for unfolding with zero weights.
     """
-    from easyunfold.unfold import UnfoldKSet, read_kpoints
+    from easyunfold.unfold import UnfoldKSet
+    from easyunfold.utils import read_kpoints
 
     primitive = read(pc_file)
     supercell = read(sc_file)
