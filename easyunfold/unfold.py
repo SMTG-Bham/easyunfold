@@ -37,7 +37,8 @@ def find_K_from_k(k: np.ndarray, M: np.ndarray):
 
         k = K + G
 
-    where G is a reciprocal space vector of supercell
+    where G is a reciprocal space vector of supercell.
+    NOTE: M is the transformation matrix for the cell matrix consistent of row vectors!
     """
 
     M = np.array(M)
@@ -246,10 +247,10 @@ class UnfoldKSet(MSONable):
             all_sc.extend(this_k)
         # We now have bunch of supercell kpoints for each set of expanded kpoints
         # Try to find duplicated SC kpoints
-        reduced_sckpts, sc_kpts_map = removeDuplicateKpoints(all_sc, return_map=True)
+        reduced_sckpts, sc_kpts_map = remove_duplicated_kpoints(all_sc, return_map=True)
         sc_kpts_map = list(sc_kpts_map)
 
-        # Mapping between the pckpts to the redcued sckpts
+        # Mapping between the pckpts to the reduced sckpts
         reduced_sc_map = []
         for sc_set in expended_sc:
             map_indx = []
@@ -526,7 +527,7 @@ def GaussianSmearing(x, x0, sigma=0.02):
     return 1. / (np.sqrt(2 * np.pi) * sigma) * np.exp(-(x - x0)**2 / (2 * sigma**2))
 
 
-def removeDuplicateKpoints(kpoints, return_map=False, decimals=6):
+def remove_duplicated_kpoints(kpoints, return_map=False, decimals=6):
     """
     remove duplicate kpoints in the list.
     """
