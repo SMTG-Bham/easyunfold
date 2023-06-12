@@ -182,14 +182,17 @@ class UnfoldKSet(MSONable):
         return self.calculated_quantities.get('spectral_weights_is_averaged', False)
 
     @classmethod
-    def from_atoms(cls,
-                   M: np.ndarray,
-                   kpts_pc: list,
-                   pc: ase.Atoms,
-                   sc: ase.Atoms,
-                   time_reversal: bool = True,
-                   expand=True,
-                   symprec: float = 1e-5):
+    def from_atoms(
+        cls,
+        M: np.ndarray,
+        kpts_pc: list,
+        pc: ase.Atoms,
+        sc: ase.Atoms,
+        time_reversal: bool = True,
+        expand=True,
+        symprec: float = 1e-5,
+        dft_code='vasp',
+    ):
         """
         Initialise from primitive cell and supercell atoms
 
@@ -216,6 +219,7 @@ class UnfoldKSet(MSONable):
                 'symmetry_dataset_pc': pc_symm_data,
                 'symmetry_dataset_sc': sc_symm_data,
             },
+            dft_code=dft_code,
         )
 
     @classmethod
@@ -297,7 +301,11 @@ class UnfoldKSet(MSONable):
         self.expansion_results['reduced_sckpts_map'] = reduced_sc_map
         # A nested list that stores the indices of the sc kpts in the reduced_sckpts list
 
-    def write_sc_kpoints(self, file: str, nk_per_split: Union[None, list] = None, scf_kpoints_and_weights: Union[None, list] = None):
+    def write_sc_kpoints(self,
+                         file: str,
+                         nk_per_split: Union[None, list] = None,
+                         scf_kpoints_and_weights: Union[None, list] = None,
+                         **kwargs):
         """
         Write the supercell kpoints to a file.
 
@@ -314,7 +322,7 @@ class UnfoldKSet(MSONable):
                 # Prepend with SCF kpoints
                 kpoints, weights = concatenate_scf_kpoints(scf_kpoints_and_weights[0], scf_kpoints_and_weights[1], kpoints)
 
-            write_kpoints(kpoints, file, comment='supercell kpoints', weights=weights, code=self.dft_code)
+            write_kpoints(kpoints, file, comment='supercell kpoints', weights=weights, code=self.dft_code, **kwargs)
         else:
             splits = [kpoints[i:i + nk_per_split] for i in range(0, kpoints.shape[0], nk_per_split)]
             for i_spilt, kpt in enumerate(splits):
@@ -324,17 +332,18 @@ class UnfoldKSet(MSONable):
                               f'{file}_{i_spilt + 1:03d}',
                               f'supercell kpoints split {i_spilt + 1}',
                               code=self.dft_code,
-                              weights=weights)
+                              weights=weights,
+                              **kwargs)
 
-    def write_pc_kpoints(self, file: str, expanded: bool = False):
+    def write_pc_kpoints(self, file: str, expanded: bool = False, **kwargs):
         """Write the primitive cell kpoints"""
         if expanded:
             all_pc = []
             for tmp in self.expansion_results['kpoints']:
                 all_pc.extend(tmp)
-            write_kpoints(all_pc, file, comment='expanded primitive cell kpoints', code=self.dft_code)
         else:
-            write_kpoints(self.kpts_pc, file, comment='primitive cell kpoints', code=self.dft_code)
+            all_pc = self.kpts_pc
+        write_kpoints(all_pc, file, comment='expanded primitive cell kpoints', code=self.dft_code, **kwargs)
 
     def _read_weights(self, wavecar: Union[str, List[str]], gamma: bool, ncl: bool, gamma_half: str):
         """
@@ -564,7 +573,7 @@ class UnfoldKSet(MSONable):
         output = {'@module': self.__class__.__module__, '@class': self.__class__.__name__, '@version': __version__}
         for key in [
                 'M', 'kpts_pc', 'pc_latt', 'pc_opts', 'sc_opts', 'expansion_results', 'time_reversal', 'calculated_quantities',
-                'kpoint_labels', 'expand', 'metadata'
+                'kpoint_labels', 'expand', 'metadata', 'dft_code'
         ]:
             output[key] = getattr(self, key)
         return output

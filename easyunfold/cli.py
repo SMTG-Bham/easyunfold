@@ -11,6 +11,8 @@ from easyunfold.unfold import process_projection_options
 
 # pylint:disable=import-outside-toplevel,too-many-locals
 
+SUPPORTED_DFT_CODES = ('vasp', 'castep')
+
 DEFAULT_CMAPS = [
     'Purples', 'Greens', 'Oranges', 'Reds', 'Blue', 'YlOrBr', 'YlOrRd', 'OrRd', 'PuRd', 'RdPu', 'BuPu', 'GnBu', 'PuBu', 'YlGnBu', 'PuBuGn',
     'BuGn', 'YlGn'
@@ -30,6 +32,14 @@ def easyunfold():
 @click.argument('pc-file')
 @click.argument('sc-file')
 @click.argument('kpoints')
+@click.option(
+    '--code',
+    '-c',
+    help='Name of the DFT code that the kpoints should be formatted to.',
+    default='vasp',
+    type=click.Choice(SUPPORTED_DFT_CODES),
+    show_default=True,
+)
 @click.option('--matrix', '-m', help='Transformation matrix')
 @click.option('--symprec', help='Transformation matrix', type=float, default=1e-5, show_default=True)
 @click.option('--out-file', default='easyunfold.json', help='Name of the output file')
@@ -38,7 +48,8 @@ def easyunfold():
 @click.option('--scf-kpoints',
               help='File (IBZKPT) to provide SCF kpoints for self-consistent calculations. Needed for hybrid functional calculations.',
               type=click.Path(exists=True, dir_okay=False))
-def generate(pc_file, sc_file, matrix, kpoints, time_reversal, out_file, no_expand, symprec, nk_per_split, scf_kpoints):
+@click.option('--yes', is_flag=True, default=False, help='Skip and confirmation.')
+def generate(pc_file, code, sc_file, matrix, kpoints, time_reversal, out_file, no_expand, symprec, nk_per_split, scf_kpoints, yes):
     """
     Generate the kpoints for performing supercell calculations.
 
@@ -77,7 +88,7 @@ def generate(pc_file, sc_file, matrix, kpoints, time_reversal, out_file, no_expa
 
         click.echo(f'(Guessed) Transform matrix:\n{transform_matrix.tolist()}')
 
-    kpoints, _, labels, _ = read_kpoints(kpoints)
+    kpoints, _, labels, _ = read_kpoints(kpoints, code=code)
     click.echo(f'{len(kpoints)} kpoints specified along the path')
 
     unfoldset = UnfoldKSet.from_atoms(transform_matrix,
@@ -86,6 +97,7 @@ def generate(pc_file, sc_file, matrix, kpoints, time_reversal, out_file, no_expa
                                       supercell,
                                       time_reversal=time_reversal,
                                       expand=not no_expand,
+                                      dft_code=code,
                                       symprec=symprec)
     unfoldset.kpoint_labels = labels
     try:
@@ -94,14 +106,35 @@ def generate(pc_file, sc_file, matrix, kpoints, time_reversal, out_file, no_expa
         pass
 
     out_file = Path(out_file)
-    if scf_kpoints is not None:
-        scf_kpt, _, _, scf_weights = read_kpoints(scf_kpoints)
-        unfoldset.write_sc_kpoints(f'KPOINTS_{out_file.stem}', nk_per_split=nk_per_split, scf_kpoints_and_weights=(scf_kpt, scf_weights))
+    if code == 'vasp':
+        out_kpt_name = f'KPOINTS_{out_file.stem}'
+    elif code == 'castep':
+        out_kpt_name = f'{out_file.stem}_sc_kpoints.cell'
     else:
-        unfoldset.write_sc_kpoints(f'KPOINTS_{out_file.stem}', nk_per_split=nk_per_split)
-    click.echo('Supercell kpoints written to KPOITNS_' + out_file.stem)
+        raise RuntimeError(f'Unknown code: {code}')
+
+    if scf_kpoints is not None:
+        scf_kpt, _, _, scf_weights = read_kpoints(scf_kpoints, code=code)
+        scf_kpoints_and_weights = (scf_kpt, scf_weights)
+    else:
+        scf_kpoints_and_weights = None
+
+    if Path(out_kpt_name).is_file() and not yes:
+        click.confirm(f'Output file {out_kpt_name} already exists, continue?', abort=True)
+
+    unfoldset.write_sc_kpoints(
+        out_kpt_name,
+        nk_per_split=nk_per_split,
+        scf_kpoints_and_weights=scf_kpoints_and_weights,
+        source=sc_file,
+    )
+
+    click.echo(f'Supercell kpoints written to {out_kpt_name}')
 
     # Serialize the data
+    if Path(out_file).is_file() and not yes:
+        click.confirm(f'Output file {out_file} already exists, continue?', abort=True)
+
     Path(out_file).write_text(unfoldset.to_json(), encoding='utf-8')
 
     click.echo('Unfolding settings written to ' + str(out_file))
@@ -148,22 +181,23 @@ def unfold_status(ctx):
 
 @unfold.command('calculate')
 @click.pass_context
-@click.argument('wavecar', type=click.Path(exists=True, dir_okay=False), nargs=-1)
+@click.argument('wavefunc', type=click.Path(exists=True, dir_okay=False), nargs=-1)
 @click.option('--save-as')
 @click.option('--gamma', is_flag=True, help='If the calculation is $\\Gamma$-only')
 @click.option('--ncl', is_flag=True, help='If the calculation has non-collinear spins.')
-def unfold_calculate(ctx, wavecar, save_as, gamma, ncl):
+def unfold_calculate(ctx, wavefunc, save_as, gamma, ncl):
     """
     Perform the unfolding
 
-    Multiple WAVECAR files can be supplied for split-path calculations.
+    Multiple wave function (e.g. the WAVECAR file if using VASP) files can be supplied for
+    split-path calculations.
     Once the calculation is done, ther WAVECARs are not longer needed as the
     spectral weights will be stored in the outputs ``json`` file.
     """
     from easyunfold.unfold import UnfoldKSet
 
     unfoldset: UnfoldKSet = ctx.obj['obj']
-    unfoldset.get_spectral_weights(wavecar, gamma, ncl=ncl)
+    unfoldset.get_spectral_weights(wavefunc, gamma, ncl=ncl)
 
     out_path = save_as if save_as else ctx.obj['fname']
     Path(out_path).write_text(unfoldset.to_json(), encoding='utf-8')

@@ -1,10 +1,13 @@
 """
 Utility functions
 """
+import re
 from pathlib import Path
 from typing import Union, List
 import numpy as np
 from castepinput import CellInput, Block
+
+RE_COMMENT = re.compile(r'[!#]')
 
 
 def write_kpoints(kpoints: Union[np.ndarray, list], outpath, *args, code='vasp', **kwargs):
@@ -20,24 +23,25 @@ def write_kpoints(kpoints: Union[np.ndarray, list], outpath, *args, code='vasp',
     if code == 'vasp':
         return write_kpoints_vasp(kpoints, outpath, *args, **kwargs)
     if code == 'castep':
-        return write_kpoints_castep(kpoints, outpath, *args, source=kwargs.get('source', None), **kwargs)
+        return write_kpoints_castep(kpoints, outpath, *args, **kwargs)
     raise NotImplementedError(f'DFT code: {code} is not implemented')
 
 
-def write_kpoints_castep(kpoints: Union[np.ndarray, list], dest, source=None, tag='spectral', weights=None):
+def write_kpoints_castep(kpoints: Union[np.ndarray, list], dest, source=None, tag='spectral', weights=None, **kwargs):
     """
     Write kpoints to a CASTEP input file.
     Optically can use an existing file as the template and update it.
     """
-
+    _ = kwargs
     if source is not None:
         cell = CellInput.from_file(source)
     else:
         cell = CellInput()
 
     if weights is None:
-        weights = [1 / len(kpoints) for _ in range(len(kpoints))]
-    cell[f'{tag}_kpoints_list'.upper()] = Block([f'{k[0]:.10f} {k[1]:.10f} {k[2]:.10f} {w:.10f}' for k, w in zip(kpoints, weights)])
+        cell[f'{tag}_kpoints_list'.upper()] = Block([f'{k[0]:.10f} {k[1]:.10f} {k[2]:.10f}' for k in kpoints])
+    else:
+        cell[f'{tag}_kpoints_list'.upper()] = Block([f'{k[0]:.10f} {k[1]:.10f} {k[2]:.10f} {w:.10f}' for k, w in zip(kpoints, weights)])
 
     cell.save(dest)
 
@@ -45,7 +49,8 @@ def write_kpoints_castep(kpoints: Union[np.ndarray, list], dest, source=None, ta
 def write_kpoints_vasp(kpoints: Union[np.ndarray, list],
                        outpath: str = 'KPOINTS',
                        comment: str = '',
-                       weights: Union[None, List[float]] = None):
+                       weights: Union[None, List[float]] = None,
+                       **kwargs):
     """
     Write kpoints to VASP KPOINTS file
 
@@ -54,6 +59,7 @@ def write_kpoints_vasp(kpoints: Union[np.ndarray, list],
     :param comments: Comments to be put into the `KPOINTS` file
     :param weights: If given, the weighting of the kpoints, otherwise all kpoints are equal weighted.
     """
+    _ = kwargs
     kpoints = np.asarray(kpoints)
     nkpts = kpoints.shape[0]
 
@@ -184,8 +190,15 @@ def read_kpoints_castep(path, tag='spectral'):
         if capture:
             tokens = line.strip().split()
             kpts.append(list(float(tmp) for tmp in tokens[:3]))
-            weights.append(tokens[3])
-            if len(tokens) >= 6:
+            if len(tokens) > 3:
+                # Check if the weights are included
+                if not RE_COMMENT.match(tokens[3]):
+                    weights.append(float(tokens[3]))
+            sub_lines = RE_COMMENT.split(line)
+            if len(sub_lines) > 1:
                 # Handle case like: 0 0 0 0.1 # \Gamma
-                labels.append([len(kpts) - 1, tokens[5]])
+                # Record the label and the index of the kpoint
+                labels.append([len(kpts) - 1, sub_lines[1].split()[0]])
+    if not weights:
+        weights = None
     return kpts, '', labels, weights
