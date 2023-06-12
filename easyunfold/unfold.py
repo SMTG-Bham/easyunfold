@@ -273,7 +273,7 @@ class UnfoldKSet(MSONable):
         Results are stored into `self.expansion_results`.
         """
 
-        assert bool(self.expansion_results)
+        assert self.expansion_results
         expended_sc = []
         all_sc = []
         # Find the SC kpoint for each PC kpoint
@@ -286,7 +286,8 @@ class UnfoldKSet(MSONable):
             all_sc.extend(this_k)
         # We now have bunch of supercell kpoints for each set of expanded kpoints
         # Try to find duplicated SC kpoints
-        reduced_sckpts, sc_kpts_map = remote_duplicated_kpoints(all_sc, return_map=True)
+        # TODO: We can further reduce this by time-reversal symmetry here
+        reduced_sckpts, sc_kpts_map = remove_duplicated_kpoints(all_sc, return_map=True)
         sc_kpts_map = list(sc_kpts_map)
 
         # Mapping between the pckpts to the redcued sckpts
@@ -617,9 +618,11 @@ def GaussianSmearing(x, x0, sigma=0.02):
     return 1. / (np.sqrt(2 * np.pi) * sigma) * np.exp(-(x - x0)**2 / (2 * sigma**2))
 
 
-def remote_duplicated_kpoints(kpoints: list, return_map=False, decimals=6):
+def remove_duplicated_kpoints(kpoints: list, return_map=False, decimals=6):
     """
     remove duplicate kpoints in the list.
+
+    TODO: improve this implementation by clipping the range of the fractional coorindates
     """
     kpoints = np.asarray(kpoints)
     _, kid, inv_kid = np.unique(
