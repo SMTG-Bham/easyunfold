@@ -113,8 +113,8 @@ def test_serialization(silicon_unfold, tmp_path):
     assert 'kpoints' in new_obj.expansion_results
 
 
-@pytest.mark.parametrize('tag,nspin,ncl', [('', 1, False), ('_spin', 2, False), ('_soc', 1, True)])
-def test_unfold(si_project_dir, tag, nspin, ncl):
+@pytest.mark.parametrize('tag,nspin,ncl, nbands_expected', [('', 1, False, 14), ('_spin', 2, False, 14), ('_soc', 1, True, 20)])
+def test_unfold(si_project_dir, tag, nspin, ncl, nbands_expected):
     """
     Test unfolding on the real data
     """
@@ -125,7 +125,7 @@ def test_unfold(si_project_dir, tag, nspin, ncl):
     atoms_supercell = read(si_project_dir / f'{folder_name}/POSCAR')
     kpoints, _, labels, _ = read_kpoints(si_project_dir / 'KPOINTS_band_low')
 
-    unfolder: unfold.UnfoldKSet = unfold.UnfoldKSet.from_atoms(np.diag([2, 2, 2]), kpoints, atoms_primitive, atoms_supercell)
+    unfolder: unfold.UnfoldKSet = unfold.UnfoldKSet.from_atoms(np.diag([2, 1, 1]), kpoints, atoms_primitive, atoms_supercell)
     unfolder.kpoint_labels = labels
     unfolder.write_sc_kpoints(si_project_dir / 'KPOINTS_sc')
     # Test split
@@ -152,7 +152,7 @@ def test_unfold(si_project_dir, tag, nspin, ncl):
     sws = unfolder.get_spectral_weights(si_project_dir / f'{folder_name}/WAVECAR', ncl=ncl)
     assert sws[0].shape[0] == nspin
     assert len(sws) == len(kpoints)
-    assert sws[0].shape[2] == 81
+    assert sws[0].shape[2] == nbands_expected
     assert sws[0].shape[3] == 2
 
     assert unfolder.is_calculated
@@ -165,10 +165,40 @@ def test_unfold(si_project_dir, tag, nspin, ncl):
     assert unfolder.to_json()
 
 
-@pytest.mark.parametrize('tag,nspin,ncl', [
-    ('', 1, False),
+@pytest.mark.parametrize('tag,nspin,ncl, nbands_expected', [('', 1, False, 14)])
+def test_unfold_projection(si_project_dir, tag, nspin, ncl, nbands_expected):
+    """
+    Test unfolding on the real data
+    """
+    si_project_dir = si_project_dir(tag)
+    folder_name = f'Si_super_deformed{tag}'
+
+    atoms_primitive = read(si_project_dir / 'Si/POSCAR')
+    atoms_supercell = read(si_project_dir / f'{folder_name}/POSCAR')
+    kpoints, _, labels, _ = read_kpoints(si_project_dir / 'KPOINTS_band_low')
+
+    unfolder: unfold.UnfoldKSet = unfold.UnfoldKSet.from_atoms(np.diag([2, 1, 1]), kpoints, atoms_primitive, atoms_supercell)
+    unfolder.kpoint_labels = labels
+    unfolder.write_sc_kpoints(si_project_dir / 'KPOINTS_sc')
+
+    # Test unfold
+    sws = unfolder.get_spectral_weights(si_project_dir / f'{folder_name}/WAVECAR', ncl=ncl)
+    assert sws[0].shape[0] == nspin
+    assert len(sws) == len(kpoints)
+    assert sws[0].shape[2] == nbands_expected
+    assert sws[0].shape[3] == 2
+
+    assert unfolder.is_calculated
+
+    unfolder.load_procar(si_project_dir / f'{folder_name}/PROCAR')
+    assert 'procars' in unfolder.transient_quantities
+    assert 'procars_kmap' in unfolder.transient_quantities
+
+
+@pytest.mark.parametrize('tag,nspin,ncl,nbands_expected', [
+    ('', 1, False, 14),
 ])
-def test_unfold_no_expand(si_project_dir, tag, nspin, ncl):
+def test_unfold_no_expand(si_project_dir, tag, nspin, ncl, nbands_expected):
     """
     Test unfolding on the real data without symmetry expansion in the first place
     """
@@ -179,7 +209,7 @@ def test_unfold_no_expand(si_project_dir, tag, nspin, ncl):
     atoms_supercell = read(si_project_dir / f'{folder_name}/POSCAR')
     kpoints, _, labels, _ = read_kpoints(si_project_dir / 'KPOINTS_band_low')
 
-    unfolder: unfold.UnfoldKSet = unfold.UnfoldKSet.from_atoms(np.diag([2, 2, 2]), kpoints, atoms_primitive, atoms_supercell, expand=False)
+    unfolder: unfold.UnfoldKSet = unfold.UnfoldKSet.from_atoms(np.diag([2, 1, 1]), kpoints, atoms_primitive, atoms_supercell, expand=False)
     unfolder.kpoint_labels = labels
     assert unfolder.nkpts_expand == unfolder.nkpts_orig
     unfolder.write_sc_kpoints(si_project_dir / 'KPOINTS_sc')
@@ -201,7 +231,7 @@ def test_unfold_no_expand(si_project_dir, tag, nspin, ncl):
     assert sws[0].shape[0] == nspin
     assert all(x.shape[1] == 1 for x in sws)
     assert len(sws) == len(kpoints)
-    assert sws[0].shape[2] == 81
+    assert sws[0].shape[2] == nbands_expected
     assert sws[0].shape[3] == 2
 
     assert unfolder.is_calculated

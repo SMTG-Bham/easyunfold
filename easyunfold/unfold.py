@@ -390,6 +390,7 @@ class UnfoldKSet(MSONable):
             procar = [procar]
 
         # Load the procars
+        # Note that this method should be generalised for non-VASP as well.
         self.transient_quantities['procars'] = [Procar(path) for path in procar]
         # Construct mapping from the primitive cell kpoints to those in the PROCAR
         self.transient_quantities['procars_kmap'] = self._construct_procar_kmap()

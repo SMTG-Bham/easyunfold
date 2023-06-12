@@ -48,7 +48,7 @@ def easyunfold():
 @click.option('--scf-kpoints',
               help='File (IBZKPT) to provide SCF kpoints for self-consistent calculations. Needed for hybrid functional calculations.',
               type=click.Path(exists=True, dir_okay=False))
-@click.option('--yes', is_flag=True, default=False, help='Skip and confirmation.')
+@click.option('--yes', '-y', is_flag=True, default=False, help='Skip and confirmation.')
 def generate(pc_file, code, sc_file, matrix, kpoints, time_reversal, out_file, no_expand, symprec, nk_per_split, scf_kpoints, yes):
     """
     Generate the kpoints for performing supercell calculations.

@@ -30,7 +30,7 @@ def silicon_unfolded(si_project_dir) -> UnfoldKSet:
     atoms_supercell = read(si_project_dir / f'{folder_name}/POSCAR')
     kpoints, _, labels, _ = read_kpoints(si_project_dir / 'KPOINTS_band_low')
 
-    unfolder: UnfoldKSet = UnfoldKSet.from_atoms(np.diag([2, 2, 2]), kpoints, atoms_primitive, atoms_supercell)
+    unfolder: UnfoldKSet = UnfoldKSet.from_atoms(np.diag([2, 1, 1]), kpoints, atoms_primitive, atoms_supercell)
     unfolder.kpoint_labels = labels
     # Test unfold
     unfolder.get_spectral_weights(si_project_dir / f'{folder_name}/WAVECAR', ncl=ncl)
