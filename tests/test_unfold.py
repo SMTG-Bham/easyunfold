@@ -165,6 +165,48 @@ def test_unfold(si_project_dir, tag, nspin, ncl, nbands_expected):
     assert unfolder.to_json()
 
 
+@pytest.mark.parametrize('tag,nspin,ncl, nbands_expected', [('_castep', 1, False, 14)])
+def test_unfold_castep(si_project_dir, tag, nspin, ncl, nbands_expected):
+    """
+    Test unfolding on the real data
+    """
+    si_project_dir = si_project_dir(tag)
+    folder_name = f'Si_super_deformed{tag}'
+
+    atoms_primitive = read(si_project_dir / f'{folder_name}/Si_prim.cell')
+    atoms_supercell = read(si_project_dir / f'{folder_name}/Si_211.cell')
+    kpoints, _, labels, _ = read_kpoints(si_project_dir / f'{folder_name}/band.cell', code='castep')
+
+    unfolder: unfold.UnfoldKSet = unfold.UnfoldKSet.from_atoms(np.diag([2, 1, 1]),
+                                                               kpoints,
+                                                               atoms_primitive,
+                                                               atoms_supercell,
+                                                               dft_code='castep')
+    unfolder.kpoint_labels = labels
+    unfolder.write_sc_kpoints(si_project_dir / 'easyunfold_sc_kpoints.cell')
+
+    # Test kpoints generation
+    kpoints_sc = read_kpoints(si_project_dir / 'easyunfold_sc_kpoints.cell', code='castep')[0]
+    kpoints_sc_ref = read_kpoints(si_project_dir / f'{folder_name}/easyunfold_sc_kpoints.cell', code='castep')[0]
+    np.testing.assert_allclose(kpoints_sc, kpoints_sc_ref)
+
+    # Test unfold
+    sws = unfolder.get_spectral_weights(si_project_dir / f'{folder_name}/Si_211_unfold/easyunfold_sc_kpoints.orbitals', ncl=ncl)
+    assert sws[0].shape[0] == nspin
+    assert len(sws) == len(kpoints)
+    assert sws[0].shape[2] == nbands_expected
+    assert sws[0].shape[3] == 2
+
+    assert unfolder.is_calculated
+
+    # Spectral weights
+    e0, spectral_function = unfolder.get_spectral_function(npoints=500, ncl=ncl)
+    assert len(e0) == 500
+    assert spectral_function.shape == (nspin, 500, len(kpoints))
+
+    assert unfolder.to_json()
+
+
 @pytest.mark.parametrize('tag,nspin,ncl, nbands_expected', [('', 1, False, 14)])
 def test_unfold_projection(si_project_dir, tag, nspin, ncl, nbands_expected):
     """
