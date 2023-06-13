@@ -1,6 +1,8 @@
 # Si supercell with a displaced atom
 
-## Generate project file and kpoints for supercell calculation
+Below is a step-by-step guide for unfolding a 2x2x2 supercell of Si which 
+contains a displaced atom.
+## Generate the project file and kpoints for supercell calculation
 
 :::{note} 
 The files needed as provided in expamples/Si222. This guide assumes the current

@@ -351,20 +351,20 @@ class UnfoldKSet(MSONable):
             all_pc = self.kpts_pc
         write_kpoints(all_pc, file, comment='expanded primitive cell kpoints', code=self.dft_code, **kwargs)
 
-    def _read_weights(self, wavecar: Union[str, List[str]], gamma: bool, ncl: bool, gamma_half: str):
+    def _read_weights(self, wavefunction: Union[str, List[str]], gamma: bool, ncl: bool, gamma_half: str):
         """
-        Read the weights from the wavecar for all kpoints
+        Read the weights from the wave function files for all kpoints
 
         Returns the averaged weights and the original weights per set of kpoints
         """
         weights_per_set = []
         averaged_weights = []
-        if not isinstance(wavecar, (list, tuple)):
-            wavecar = [wavecar]
-        # Load the WAVECAR unfold objects
+        if not isinstance(wavefunction, (list, tuple)):
+            wavefunction = [wavefunction]
+        # Load the unfold objects
         unfold_objs = [
             Unfold(self.M, name, gamma=gamma, lsorbit=ncl, gamma_half=gamma_half, dft_code=self.dft_code, time_reversal=self.time_reversal)
-            for name in wavecar
+            for name in wavefunction
         ]
         # Record the VBM and the CBM values
         varray = np.array([obj.get_vbm_cbm() for obj in unfold_objs])
@@ -437,7 +437,7 @@ class UnfoldKSet(MSONable):
         return self.transient_quantities.get('procars_kmap')
 
     def _get_spectral_weights(self,
-                              wavecar,
+                              wavefunction,
                               npoints=2000,
                               sigma=0.01,
                               emin=None,
@@ -456,12 +456,12 @@ class UnfoldKSet(MSONable):
 
             atomic_projects (tuple): A tuple of atoms and orbitals whose projected weights should be used.
         """
-        # If WAVECAR is given - reload from the data
-        if wavecar:
-            self._read_weights(wavecar, gamma=gamma, ncl=ncl, gamma_half=gamma_half)
+        # If wave function is given - reload from the data
+        if wavefunction:
+            self._read_weights(wavefunction, gamma=gamma, ncl=ncl, gamma_half=gamma_half)
         else:
             if not self.is_calculated:
-                raise RuntimeWarning('The spectral weights need to be calculated first - please pass the WAVECAR file(s).')
+                raise RuntimeWarning('The spectral weights need to be calculated first - please pass the wave function file(s).')
 
         # Use existing results
         if symm_average:
@@ -525,7 +525,7 @@ class UnfoldKSet(MSONable):
         return band_weight_sets
 
     def get_spectral_function(self,
-                              wavecar: Union[None, Wavecar] = None,
+                              wavefunction: Union[None, List[str]] = None,
                               npoints: int = 2000,
                               sigma: float = 0.1,
                               gamma: bool = False,
@@ -537,7 +537,7 @@ class UnfoldKSet(MSONable):
         """
         Compute and return the spectral function
 
-        :param wavecar: The WAVECAR files to be used
+        :param wavecar: The wavefunction files to be used
         :param npoints: Number of points for the energy axis
         :param sigma: Smearing width for the Gaussian smearing
         :param gamma: Need to be set to `True` for Gamma-only calculation
@@ -549,7 +549,7 @@ class UnfoldKSet(MSONable):
 
         :returns: A tuple of the energies and the spectral functioin.
         """
-        _, e0, spectral_function = self._get_spectral_weights(wavecar,
+        _, e0, spectral_function = self._get_spectral_weights(wavefunction,
                                                               npoints=npoints,
                                                               sigma=sigma,
                                                               gamma=gamma,
@@ -561,17 +561,22 @@ class UnfoldKSet(MSONable):
                                                               symm_average=symm_average)
         return e0, spectral_function
 
-    def get_spectral_weights(self, wavecar=None, gamma: bool = False, ncl: bool = False, gamma_half: str = 'x', symm_average: bool = True):
+    def get_spectral_weights(self,
+                             wavefunction=None,
+                             gamma: bool = False,
+                             ncl: bool = False,
+                             gamma_half: str = 'x',
+                             symm_average: bool = True):
         """
         Return the spectral weights calculated
 
-        :param wavecar: The WAVECAR file(s) for calculation. Not need if the weights has been calculated.
-        :param gamma: Whether the WAVECAR files are from $\\Gamma$-only calculation.
+        :param wavefunction: The wavefunction file(s) for calculation. Not need if the weights has been calculated.
+        :param gamma: Whether the wavefunction files are from $\\Gamma$-only calculation.
 
         :returns: An array storing the spectral weights.
 
         """
-        return self._get_spectral_weights(wavecar=wavecar,
+        return self._get_spectral_weights(wavefunction=wavefunction,
                                           gamma=gamma,
                                           ncl=ncl,
                                           gamma_half=gamma_half,
@@ -766,8 +771,9 @@ class Unfold:
         """
 
         # Whether the WAVECAR is a gamma-only version
-        self._lgam = gamma
-        self._lsoc = lsorbit
+        self._lgam = gamma  # Applicable only for VASP
+        self._lsoc = lsorbit  # Applicable only for VASP
+
         self.time_reversal = time_reversal
 
         self.M = np.array(M, dtype=float)
@@ -789,7 +795,7 @@ class Unfold:
         self.verbose = verbose
 
     def get_vbm_cbm(self, thresh: float = 1e-8) -> Tuple[float, float]:
-        """Locate the VBM from the WAVECAR"""
+        """Locate the VBM from the wave function data"""
         occ = self.wfc.occupancies
 
         occupied = np.abs(occ) > thresh
@@ -988,7 +994,7 @@ class Unfold:
 def spectral_weight_multiple_source(kpoints: list, unfold_objs: List[Unfold], transform_matrix: np.ndarray):
     """
     Calculate the spectral weight for a list of kpoints in the primitive BZ
-    from a list of `WAVECARs`.
+    from a list of wave function files.
     """
 
     nk = len(kpoints)
@@ -996,8 +1002,9 @@ def spectral_weight_multiple_source(kpoints: list, unfold_objs: List[Unfold], tr
     for obj in unfold_objs[1:]:
         assert ns == obj.wfc.nspins
 
-    # When reading from multiple WAVECAR, it is possible that each of them may have differnt number of bands
-    # if so, we take only the first N bands, where N is the minimum values of bands
+    # When reading from multiple wave function files (e.g. WAVECAR for VASP),
+    # it is possible that each of them may have differnt number of bands.
+    # Ff so, we take only the first N bands, where N is the minimum values of bands
     nb = []
     for source in unfold_objs:
         nb.append(source.bands.shape[2])

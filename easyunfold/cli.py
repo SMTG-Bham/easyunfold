@@ -191,7 +191,7 @@ def unfold_calculate(ctx, wavefunc, save_as, gamma, ncl):
 
     Multiple wave function (e.g. the WAVECAR file if using VASP) files can be supplied for
     split-path calculations.
-    Once the calculation is done, ther WAVECARs are not longer needed as the
+    Once the calculation is done, the wave function data are not longer needed as the
     spectral weights will be stored in the outputs ``json`` file.
     """
     from easyunfold.unfold import UnfoldKSet
