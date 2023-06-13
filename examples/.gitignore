@@ -1,7 +1,10 @@
-apidocs/*
-_*
 
 *.png
 *.castep_bin
 *.log
 KPOINTS_*
+*.dat
+*.pdf
+*.xml
+*.cif
+*.orbitals
