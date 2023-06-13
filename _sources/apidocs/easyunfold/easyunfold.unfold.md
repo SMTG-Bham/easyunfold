@@ -55,20 +55,8 @@
   - ```{autodoc2-docstring} easyunfold.unfold.GaussianSmearing
     :summary:
     ```
-* - {py:obj}`remote_duplicated_kpoints <easyunfold.unfold.remote_duplicated_kpoints>`
-  - ```{autodoc2-docstring} easyunfold.unfold.remote_duplicated_kpoints
-    :summary:
-    ```
-* - {py:obj}`write_kpoints <easyunfold.unfold.write_kpoints>`
-  - ```{autodoc2-docstring} easyunfold.unfold.write_kpoints
-    :summary:
-    ```
-* - {py:obj}`read_kpoints <easyunfold.unfold.read_kpoints>`
-  - ```{autodoc2-docstring} easyunfold.unfold.read_kpoints
-    :summary:
-    ```
-* - {py:obj}`read_kpoints_line <easyunfold.unfold.read_kpoints_line>`
-  - ```{autodoc2-docstring} easyunfold.unfold.read_kpoints_line
+* - {py:obj}`remove_duplicated_kpoints <easyunfold.unfold.remove_duplicated_kpoints>`
+  - ```{autodoc2-docstring} easyunfold.unfold.remove_duplicated_kpoints
     :summary:
     ```
 * - {py:obj}`make_kpath <easyunfold.unfold.make_kpath>`
@@ -139,7 +127,7 @@
 ```
 ````
 
-`````{py:class} UnfoldKSet(M: numpy.ndarray, kpts_pc: list, pc_latt: numpy.ndarray, pc_opts: numpy.ndarray, sc_opts: numpy.ndarray, time_reversal: bool = True, expand: bool = True, metadata: typing.Union[None, dict] = None, expansion_results: typing.Union[None, dict] = None, calculated_quantities: typing.Union[None, dict] = None, kpoint_labels: typing.Union[None, list] = None)
+`````{py:class} UnfoldKSet(M: numpy.ndarray, kpts_pc: list, pc_latt: numpy.ndarray, pc_opts: numpy.ndarray, sc_opts: numpy.ndarray, time_reversal: bool = True, expand: bool = True, metadata: typing.Union[None, dict] = None, expansion_results: typing.Union[None, dict] = None, calculated_quantities: typing.Union[None, dict] = None, kpoint_labels: typing.Union[None, list] = None, dft_code='vasp')
 :canonical: easyunfold.unfold.UnfoldKSet
 
 Bases: {py:obj}`monty.json.MSONable`
@@ -181,7 +169,7 @@ Bases: {py:obj}`monty.json.MSONable`
 
 ````
 
-````{py:method} from_atoms(M: numpy.ndarray, kpts_pc: list, pc: ase.Atoms, sc: ase.Atoms, time_reversal: bool = True, expand=True, symprec: float = 1e-05)
+````{py:method} from_atoms(M: numpy.ndarray, kpts_pc: list, pc: ase.Atoms, sc: ase.Atoms, time_reversal: bool = True, expand=True, symprec: float = 1e-05, dft_code='vasp')
 :canonical: easyunfold.unfold.UnfoldKSet.from_atoms
 :classmethod:
 
@@ -256,7 +244,7 @@ Bases: {py:obj}`monty.json.MSONable`
 
 ````
 
-````{py:method} write_sc_kpoints(file: str, nk_per_split: typing.Union[None, list] = None, scf_kpoints_and_weights: typing.Union[None, list] = None)
+````{py:method} write_sc_kpoints(file: str, nk_per_split: typing.Union[None, list] = None, scf_kpoints_and_weights: typing.Union[None, list] = None, **kwargs)
 :canonical: easyunfold.unfold.UnfoldKSet.write_sc_kpoints
 
 ```{autodoc2-docstring} easyunfold.unfold.UnfoldKSet.write_sc_kpoints
@@ -264,7 +252,7 @@ Bases: {py:obj}`monty.json.MSONable`
 
 ````
 
-````{py:method} write_pc_kpoints(file: str, expanded: bool = False)
+````{py:method} write_pc_kpoints(file: str, expanded: bool = False, **kwargs)
 :canonical: easyunfold.unfold.UnfoldKSet.write_pc_kpoints
 
 ```{autodoc2-docstring} easyunfold.unfold.UnfoldKSet.write_pc_kpoints
@@ -272,7 +260,7 @@ Bases: {py:obj}`monty.json.MSONable`
 
 ````
 
-````{py:method} _read_weights(wavecar: typing.Union[str, typing.List[str]], gamma: bool, ncl: bool, gamma_half: str)
+````{py:method} _read_weights(wavefunction: typing.Union[str, typing.List[str]], gamma: bool, ncl: bool, gamma_half: str)
 :canonical: easyunfold.unfold.UnfoldKSet._read_weights
 
 ```{autodoc2-docstring} easyunfold.unfold.UnfoldKSet._read_weights
@@ -313,7 +301,7 @@ Bases: {py:obj}`monty.json.MSONable`
 
 ````
 
-````{py:method} _get_spectral_weights(wavecar, npoints=2000, sigma=0.01, emin=None, emax=None, gamma=False, ncl=False, gamma_half='x', also_spectral_function=False, atoms_idx=None, orbitals=None, symm_average=True)
+````{py:method} _get_spectral_weights(wavefunction, npoints=2000, sigma=0.01, emin=None, emax=None, gamma=False, ncl=False, gamma_half='x', also_spectral_function=False, atoms_idx=None, orbitals=None, symm_average=True)
 :canonical: easyunfold.unfold.UnfoldKSet._get_spectral_weights
 
 ```{autodoc2-docstring} easyunfold.unfold.UnfoldKSet._get_spectral_weights
@@ -329,7 +317,7 @@ Bases: {py:obj}`monty.json.MSONable`
 
 ````
 
-````{py:method} get_spectral_function(wavecar: typing.Union[None, easyunfold.wavecar.Wavecar] = None, npoints: int = 2000, sigma: float = 0.1, gamma: bool = False, ncl: bool = False, gamma_half: str = 'x', symm_average: bool = True, atoms_idx: typing.Union[None, typing.List[int]] = None, orbitals: typing.Union[None, str, typing.List[str]] = None)
+````{py:method} get_spectral_function(wavefunction: typing.Union[None, typing.List[str]] = None, npoints: int = 2000, sigma: float = 0.1, gamma: bool = False, ncl: bool = False, gamma_half: str = 'x', symm_average: bool = True, atoms_idx: typing.Union[None, typing.List[int]] = None, orbitals: typing.Union[None, str, typing.List[str]] = None)
 :canonical: easyunfold.unfold.UnfoldKSet.get_spectral_function
 
 ```{autodoc2-docstring} easyunfold.unfold.UnfoldKSet.get_spectral_function
@@ -337,7 +325,7 @@ Bases: {py:obj}`monty.json.MSONable`
 
 ````
 
-````{py:method} get_spectral_weights(wavecar=None, gamma: bool = False, ncl: bool = False, gamma_half: str = 'x', symm_average: bool = True)
+````{py:method} get_spectral_weights(wavefunction=None, gamma: bool = False, ncl: bool = False, gamma_half: str = 'x', symm_average: bool = True)
 :canonical: easyunfold.unfold.UnfoldKSet.get_spectral_weights
 
 ```{autodoc2-docstring} easyunfold.unfold.UnfoldKSet.get_spectral_weights
@@ -377,31 +365,10 @@ Bases: {py:obj}`monty.json.MSONable`
 ```
 ````
 
-````{py:function} remote_duplicated_kpoints(kpoints: list, return_map=False, decimals=6)
-:canonical: easyunfold.unfold.remote_duplicated_kpoints
+````{py:function} remove_duplicated_kpoints(kpoints: list, return_map=False, decimals=6)
+:canonical: easyunfold.unfold.remove_duplicated_kpoints
 
-```{autodoc2-docstring} easyunfold.unfold.remote_duplicated_kpoints
-```
-````
-
-````{py:function} write_kpoints(kpoints: typing.Union[numpy.ndarray, list], outpath: str = 'KPOINTS', comment: str = '', weights: typing.Union[None, typing.List[float]] = None)
-:canonical: easyunfold.unfold.write_kpoints
-
-```{autodoc2-docstring} easyunfold.unfold.write_kpoints
-```
-````
-
-````{py:function} read_kpoints(path='KPOINTS')
-:canonical: easyunfold.unfold.read_kpoints
-
-```{autodoc2-docstring} easyunfold.unfold.read_kpoints
-```
-````
-
-````{py:function} read_kpoints_line(content, density=20)
-:canonical: easyunfold.unfold.read_kpoints_line
-
-```{autodoc2-docstring} easyunfold.unfold.read_kpoints_line
+```{autodoc2-docstring} easyunfold.unfold.remove_duplicated_kpoints
 ```
 ````
 
@@ -426,7 +393,7 @@ Bases: {py:obj}`monty.json.MSONable`
 ```
 ````
 
-`````{py:class} Unfold(M=None, wavecar: str = 'WAVECAR', gamma: bool = False, lsorbit: bool = False, gamma_half: str = 'x', verbose=False)
+`````{py:class} Unfold(M=None, fname: str = 'WAVECAR', gamma: bool = False, lsorbit: bool = False, gamma_half: str = 'x', verbose=False, time_reversal=False, dft_code='vasp')
 :canonical: easyunfold.unfold.Unfold
 
 ```{autodoc2-docstring} easyunfold.unfold.Unfold

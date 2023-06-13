@@ -71,6 +71,10 @@
 :class: autosummary longtable
 :align: left
 
+* - {py:obj}`SUPPORTED_DFT_CODES <easyunfold.cli.SUPPORTED_DFT_CODES>`
+  - ```{autodoc2-docstring} easyunfold.cli.SUPPORTED_DFT_CODES
+    :summary:
+    ```
 * - {py:obj}`DEFAULT_CMAPS <easyunfold.cli.DEFAULT_CMAPS>`
   - ```{autodoc2-docstring} easyunfold.cli.DEFAULT_CMAPS
     :summary:
@@ -78,6 +82,16 @@
 ````
 
 ### API
+
+````{py:data} SUPPORTED_DFT_CODES
+:canonical: easyunfold.cli.SUPPORTED_DFT_CODES
+:value: >
+   ('vasp', 'castep')
+
+```{autodoc2-docstring} easyunfold.cli.SUPPORTED_DFT_CODES
+```
+
+````
 
 ````{py:data} DEFAULT_CMAPS
 :canonical: easyunfold.cli.DEFAULT_CMAPS
@@ -96,7 +110,7 @@
 ```
 ````
 
-````{py:function} generate(pc_file, sc_file, matrix, kpoints, time_reversal, out_file, no_expand, symprec, nk_per_split, scf_kpoints)
+````{py:function} generate(pc_file, code, sc_file, matrix, kpoints, time_reversal, out_file, no_expand, symprec, nk_per_split, scf_kpoints, yes)
 :canonical: easyunfold.cli.generate
 
 ```{autodoc2-docstring} easyunfold.cli.generate
@@ -117,7 +131,7 @@
 ```
 ````
 
-````{py:function} unfold_calculate(ctx, wavecar, save_as, gamma, ncl)
+````{py:function} unfold_calculate(ctx, wavefunc, save_as, gamma, ncl)
 :canonical: easyunfold.cli.unfold_calculate
 
 ```{autodoc2-docstring} easyunfold.cli.unfold_calculate
