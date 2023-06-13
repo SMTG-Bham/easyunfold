@@ -18,8 +18,8 @@
 # -- Project information -----------------------------------------------------
 
 project = 'easyunfold'
-copyright = '2023, Bonan ZHu'
-author = 'Bonan ZHu'
+copyright = '2023, Bonan Zhu'
+author = 'Bonan Zhu'
 
 
 # -- General configuration ---------------------------------------------------

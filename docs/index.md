@@ -39,6 +39,23 @@ We'll add papers that use `easyunfold` to this list as they come out!
 - A. T. J. Nicolson et al. [_ChemRxiv_](https://chemrxiv.org/engage/chemrxiv/article-details/63a5d1ffa53ea69e935559e2) 2023
 - Y. Wang & S. R. Kavanagh et al. [_Nature Photonics_](https://www.nature.com/articles/s41566-021-00950-4) 2022 (early version)
 
+## DFT code support
+
+At the moment, easyunfold supports VASP and CASTEP, but most of the routines are abstracted from the code specific details.
+In principle, support for other plane wave DFT code can be added by:
+
+- Implementing a subclass of `WaveFunction` that handles reading the wave function output.
+- Implementing functions for reading/writing kpoints.
+- Adding branches for dispatching based on the `dft_code` attribute of the `UnfoldKSet` object in various places.
+
+The Atomic Simulation Environment ([ASE](https://wiki.fysik.dtu.dk/ase/)) is used by this package for reading in structures, so there is usually need to implement specialised parser for structure file.
+
+
+## Known limitations
+
+- Atomic projection is available for VASP calculation only for now.
+- CASTEP gamma-only and non-collinear spin calculations are not supported. 
+
 ## Contributors
 
 Code Contributors:

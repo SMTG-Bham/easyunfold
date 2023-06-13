@@ -1,2 +1,7 @@
 apidocs/*
 _*
+
+*.png
+*.castep_bin
+*.log
+KPOINTS_*

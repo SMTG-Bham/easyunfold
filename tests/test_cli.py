@@ -8,7 +8,7 @@ from pathlib import Path
 from monty.serialization import loadfn
 from click.testing import CliRunner
 from easyunfold.cli import easyunfold
-from easyunfold.unfold import read_kpoints
+from easyunfold.utils import read_kpoints
 
 
 def test_generate(si_project_dir):
@@ -20,15 +20,18 @@ def test_generate(si_project_dir):
     tmp_dir = si_project_dir(None)
     os.chdir(tmp_dir)
 
-    output = runner.invoke(easyunfold, ['generate', 'Si/POSCAR', 'Si_super_deformed/POSCAR', 'KPOINTS_band_low', '--out-file', 'test'])
+    output = runner.invoke(easyunfold,
+                           ['generate', 'Si/POSCAR', 'Si_super_deformed/POSCAR', 'KPOINTS_band_low', '--out-file', 'test', '-y'])
     assert output.exit_code == 0
 
     output = runner.invoke(
-        easyunfold, ['generate', 'Si/POSCAR', 'Si_super_deformed/POSCAR', 'KPOINTS_band_low', '--out-file', 'test', '--nk-per-split', '3'])
+        easyunfold,
+        ['generate', 'Si/POSCAR', 'Si_super_deformed/POSCAR', 'KPOINTS_band_low', '--out-file', 'test', '--nk-per-split', '3', '-y'])
     assert output.exit_code == 0
 
     kpts = read_kpoints('KPOINTS_test')[0]
-    assert len(kpts) == 11
+    kpts_expected = 25
+    assert len(kpts) == kpts_expected
     kpts = read_kpoints('KPOINTS_test_002')[0]
     assert len(kpts) == 3
 
@@ -36,13 +39,14 @@ def test_generate(si_project_dir):
 
     output = runner.invoke(easyunfold, [
         'generate', 'Si/POSCAR', 'Si_super_deformed/POSCAR', 'KPOINTS_band_low', '--out-file', 'test', '--scf-kpoints',
-        'Si_super_deformed_soc/IBZKPT'
+        'Si_super_deformed_soc/IBZKPT', '-y'
     ])
     assert output.exit_code == 0
     kpts, _, _, weights = read_kpoints('KPOINTS_test')
-    assert weights[0] == 12
+    assert weights[0] == 1.0
     assert weights[-1] == 0
-    assert len(kpts) == 88 + 11
+    # IBZKPT  96 band 28
+    assert len(kpts) == 96 + kpts_expected
 
 
 @pytest.mark.parametrize('tag', ['', '_spin', '_soc'])
@@ -84,7 +88,7 @@ def test_unfold(si_project_dir, tag):
     if tag == '':
         output = runner.invoke(easyunfold, ['unfold', '--data-file', 'test.json', 'effective-mass'])
         assert 'Hole effective masses' in output.stdout
-        assert r'm_e             -1.38922            32  [0.0, 0.0, 0.0] (\Gamma)  [0.5, 0.5, 0.5] (L)' in output.stdout
+        assert r'     0  m_e            -0.938459             8  [0.5, 0.0, 0.5] (X)  [0.5, 0.25, 0.75] (W)' in output.stdout
         # Plot effective mass
         output = runner.invoke(easyunfold, ['unfold', '--data-file', 'test.json', 'effective-mass', '--plot'])
         assert Path('unfold-effective-mass.png').is_file()

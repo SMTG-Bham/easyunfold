@@ -220,7 +220,7 @@ class EffectiveMass:
 
     def _get_effective_masses(self, mode: str = 'cbm', ispin: int = 0, npoints: Union[None, int] = None):
         """
-        Workout the effective masses based on the unfolded band structure for CBM or VBM
+        Work out the effective masses based on the unfolded band structure for CBM or VBM
         """
         iks, _, iband = self.get_band_extrema(mode=mode)
         # Override occupations
