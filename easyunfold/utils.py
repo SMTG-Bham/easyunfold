@@ -202,3 +202,77 @@ def read_kpoints_castep(path, tag='spectral'):
     if not weights:
         weights = None
     return kpts, '', labels, weights
+
+
+def wrap_kpoints(kpoints: Union[list, np.ndarray]):
+    """Wrap the kpoints to range [-0.5, 0.5)"""
+    kpoints = np.array(kpoints) + 0.5
+    kpoints -= np.floor(kpoints)
+    kpoints -= 0.5
+    return kpoints
+
+
+def find_unique(seq: np.ndarray, func=None):
+    """
+    Find unique slices along the first dimension of an np.array.
+    This is function is not optimised for high performance and has a O(N^2) scaling.
+
+    :return: A tuple of (unique, unique_idx, inv_mapping)
+    """
+    if func is None:
+        # Use equality condition
+        def _func(x, y):
+            """Check elements of x and y are all the same"""
+            return np.all(x == y)
+
+        func = _func
+
+    mapping_inv = np.zeros(len(seq), dtype=int) - 1
+    unique_idx = []
+    nobj = len(seq)
+    for i in range(nobj):
+        # Have this object been mapped?
+        if mapping_inv[i] >= 0:
+            continue
+        # This object has not been mapped to any unique obj identified
+        unique_idx.append(i)
+        mapping_inv[i] = len(unique_idx) - 1
+        # Forward search for any object that is identical with this object
+        for j in range(i + 1, nobj):
+            if func(seq[i], seq[j]):
+                # j is the same as i
+                mapping_inv[j] = len(unique_idx) - 1
+
+    unique_idx = np.array(unique_idx)
+    return seq[unique_idx], unique_idx, mapping_inv
+
+
+def reduce_kpoints(kpoints: Union[list, np.ndarray], time_reversal=True, rounding_digits=10):
+    """
+    Reduce the kpoint set by finding duplicated kpoints
+    """
+    kpoints = np.asarray(kpoints)
+    kpoints_rounded = np.round(wrap_kpoints(kpoints), rounding_digits)
+
+    if not time_reversal:
+        # No time-reversal - use np.unique for speed
+        _, unique_id, inv_mapping = np.unique(kpoints_rounded, axis=0, return_inverse=True, return_index=True)
+    else:
+
+        def equality_time_reversal(x, y):
+            """Check if x == y or x == -y"""
+            return np.all(x == y) | np.all(x == -y)
+
+        _, unique_id, inv_mapping = find_unique(kpoints_rounded, equality_time_reversal)
+
+    unique_k = kpoints[unique_id]
+    return unique_k, unique_id, inv_mapping
+
+
+def kpoints_equal(k1, k2, time_reversal=False, atol=1e-5):
+    """Return two if two kpoints are equivalent to each other"""
+    if np.allclose(wrap_kpoints(k1), wrap_kpoints(k2), atol=atol):
+        return True
+    if time_reversal and np.allclose(wrap_kpoints(k1), -wrap_kpoints(k2), atol=atol):
+        return True
+    return False

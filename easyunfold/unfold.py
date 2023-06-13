@@ -21,7 +21,7 @@ from easyunfold import __version__
 from .wavecar import Wavecar
 from .procar import Procar
 from .wavefun import VaspWaveFunction, CastepWaveFunction
-from .utils import write_kpoints
+from .utils import write_kpoints, reduce_kpoints, wrap_kpoints, kpoints_equal
 
 ############################################################
 
@@ -47,7 +47,8 @@ def find_K_from_k(k: np.ndarray, M: np.ndarray):
     M = np.array(M)
     Kc = np.dot(k, M.T)
     G = np.array(np.round(Kc), dtype=int)
-    KG = Kc - np.round(Kc)
+    # Wrap to -0.5, 0.5
+    KG = wrap_kpoints(Kc)
 
     return KG, G
 
@@ -283,14 +284,18 @@ class UnfoldKSet(MSONable):
                 sc_k, _ = find_K_from_k(kpt, self.M)
                 this_k.append(sc_k)
             expended_sc.append(this_k)
+            # A flat list containing all SC
             all_sc.extend(this_k)
+
         # We now have bunch of supercell kpoints for each set of expanded kpoints
         # Try to find duplicated SC kpoints
         # TODO: We can further reduce this by time-reversal symmetry here
-        reduced_sckpts, sc_kpts_map = remove_duplicated_kpoints(all_sc, return_map=True)
+        all_sc = np.array(all_sc)
+        reduced_sckpts, _, sc_kpts_map = reduce_kpoints(all_sc, time_reversal=self.time_reversal)
         sc_kpts_map = list(sc_kpts_map)
 
-        # Mapping between the pckpts to the redcued sckpts
+        # Mapping between the pckpts to the reduced sckpts
+        # Collect from form nested list containing the mappings to the reduce sc kpoints
         reduced_sc_map = []
         for sc_set in expended_sc:
             map_indx = []
@@ -357,7 +362,10 @@ class UnfoldKSet(MSONable):
         if not isinstance(wavecar, (list, tuple)):
             wavecar = [wavecar]
         # Load the WAVECAR unfold objects
-        unfold_objs = [Unfold(self.M, name, gamma=gamma, lsorbit=ncl, gamma_half=gamma_half, dft_code=self.dft_code) for name in wavecar]
+        unfold_objs = [
+            Unfold(self.M, name, gamma=gamma, lsorbit=ncl, gamma_half=gamma_half, dft_code=self.dft_code, time_reversal=self.time_reversal)
+            for name in wavecar
+        ]
         # Record the VBM and the CBM values
         varray = np.array([obj.get_vbm_cbm() for obj in unfold_objs])
         self.calculated_quantities['vbm'] = float(varray[:, 0].max())
@@ -408,7 +416,7 @@ class UnfoldKSet(MSONable):
                 found = False
                 for iprocar, procar in enumerate(self.procars):
                     for ikpt, kprocar in enumerate(procar.kvecs[0]):
-                        if np.allclose(K_super, kprocar):
+                        if kpoints_equal(K_super, kprocar, time_reversal=self.time_reversal):
                             kidx_procar_sets[-1].append([iprocar, ikpt])
                             found = True
                             break
@@ -713,9 +721,9 @@ def spectral_function_from_weight_sets(spectral_weight_sets: np.ndarray,
 ############################################################
 
 
-class Unfold():
+class Unfold:
     """
-    Low lever interface for performing unfolding related calculations.
+    Low level interface for performing unfolding related calculations.
     obtain the effective band structure (EBS).
 
     :::{admonition} Reference
@@ -732,6 +740,7 @@ class Unfold():
                  lsorbit: bool = False,
                  gamma_half: str = 'x',
                  verbose=False,
+                 time_reversal=False,
                  dft_code='vasp'):
         """
         Initialization.
@@ -754,14 +763,12 @@ class Unfold():
         ```python
         b = np.dot(M.T, B);    B = np.dot(np.linalg.inv(M).T, b)
         ```
-
-        wavecar is the location of VASP WAVECAR file that contains the
-        wavefunction information of a supercell calculation.
         """
 
         # Whether the WAVECAR is a gamma-only version
         self._lgam = gamma
         self._lsoc = lsorbit
+        self.time_reversal = time_reversal
 
         self.M = np.array(M, dtype=float)
         assert self.M.shape == (3, 3), 'Shape of the tranformation matrix must be (3,3)'
@@ -824,11 +831,15 @@ class Unfold():
 
     def find_K_index(self, K0: np.ndarray) -> int:
         """
-        Find the index of a point `K0`.
+        Find the (one-based) index of a point `K0`.
         """
-
+        kpts_wrapped = wrap_kpoints(self.wfc.kpoints)
+        K0_wrapped = wrap_kpoints(K0)
         for ii in range(self.wfc.nkpts):
-            if np.alltrue(np.abs(self.wfc.kpoints[ii] - K0) < 1E-5):
+            if np.alltrue(np.abs(kpts_wrapped[ii] - K0_wrapped) < 1E-5):
+                return ii + 1
+            # Check for kpoint related with time-reversal symmetry
+            if self.time_reversal and np.alltrue(np.abs(kpts_wrapped[ii] + K0_wrapped) < 1E-5):
                 return ii + 1
         raise ValueError('Cannot find the corresponding K-points in WAVECAR!')
 
@@ -1010,7 +1021,7 @@ def spectral_weight_multiple_source(kpoints: list, unfold_objs: List[Unfold], tr
                 break
 
             if not ok:
-                raise ValueError(f'This kpoint {this_k} this not found in the WAVECAR(s) provided')
+                raise ValueError(f'This kpoint {this_k_supercell} (PC:{this_k}) this not found in the wave function data provided')
 
         spectral_weights.append(sw_this_spin)
 

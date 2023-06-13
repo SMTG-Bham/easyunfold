@@ -30,7 +30,8 @@ def test_generate(si_project_dir):
     assert output.exit_code == 0
 
     kpts = read_kpoints('KPOINTS_test')[0]
-    assert len(kpts) == 28
+    kpts_expected = 25
+    assert len(kpts) == kpts_expected
     kpts = read_kpoints('KPOINTS_test_002')[0]
     assert len(kpts) == 3
 
@@ -45,7 +46,7 @@ def test_generate(si_project_dir):
     assert weights[0] == 1.0
     assert weights[-1] == 0
     # IBZKPT  96 band 28
-    assert len(kpts) == 96 + 28
+    assert len(kpts) == 96 + kpts_expected
 
 
 @pytest.mark.parametrize('tag', ['', '_spin', '_soc'])

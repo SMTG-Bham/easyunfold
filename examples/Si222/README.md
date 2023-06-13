@@ -1,1 +1,1 @@
-../../docs/example_si222.md
+../../docs/examples/example_si222.md
