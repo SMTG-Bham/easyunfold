@@ -41,7 +41,7 @@ We'll add papers that use `easyunfold` to this list as they come out!
 
 ## DFT code support
 
-At the moment, easyunfold supports VASP and CASTEP, but most of the routines are abstracted from the code specific details.
+At the moment, easyunfold supports [VASP](https://www.vasp.at) and [CASTEP](http://www.castep.org), but most of the routines are abstracted from the code specific details.
 In principle, support for other plane wave DFT code can be added by:
 
 - Implementing a subclass of `WaveFunction` that handles reading the wave function output.
@@ -106,6 +106,8 @@ installation.md
 guide.md
 examples.md
 theory.md
+references.md
+publications.md
 cli.rst
 apidocs/index
 ```
