@@ -1,0 +1,16 @@
+/home/bonan/miniconda3/envs/aiida-2.0-dev/bin/sumo-kgen -p Si_prim.cell -c castep --kpoints 0 0 0, 0.5 0 0 --labels \Gamma,X --density 20
+Structure information:
+	Space group number: 227
+	International symbol: Fd-3m
+	Lattice type: cubic
+
+k-point path:
+	\Gamma -> X
+
+k-points:
+	\Gamma: 0.0 0.0 0.0
+	X: 0.5 0.0 0.0
+
+k-point label indices:
+	\Gamma: 1
+	X: 21

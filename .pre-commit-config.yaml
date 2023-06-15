@@ -1,23 +1,23 @@
-exclude: '^(doc)|(cookiecutters)|(aiida_vasp/test_data)'
+exclude: '^(doc)|(cookiecutters)'
 repos:
 - repo: https://github.com/pre-commit/pre-commit-hooks
   rev: v2.5.0
   hooks:
   - id: trailing-whitespace
-    exclude: (easyunfold/pyvaspwfc|example)
+    exclude: (example)
   - id: end-of-file-fixer
-    exclude: (easyunfold/pyvaspwfc|example)
+    exclude: (example)
   - id: check-yaml
-    exclude: (easyunfold/pyvaspwfc|example)
+    exclude: (example)
     args: ['--unsafe']
   - id: check-json
-    exclude: (easyunfold/pyvaspwfc|example)
+    exclude: (example)
   - id: check-added-large-files
-    exclude: (easyunfold/pyvaspwfc|example)
+    exclude: (example|tests/test_data/PROCAR.mgo)
   - id: double-quote-string-fixer
-    exclude: (easyunfold/pyvaspwfc|example)
+    exclude: (example)
   - id: forbid-new-submodules
-    exclude: (easyunfold/pyvaspwfc|example)
+    exclude: (example)
 
 - repo: https://github.com/pre-commit/mirrors-yapf
   rev: v0.30.0
@@ -26,7 +26,7 @@ repos:
     name: yapf
     types: [python]
     args: ['-i']
-    exclude: (easyunfold/pyvaspwfc|example)
+    exclude: (example)
 
 
 - repo: local
@@ -40,6 +40,5 @@ repos:
       (?x)(
       ^tutorials/|
       ^examples/|
-      ^easyunfold/pyvaspwfc|
       ^tests
       )

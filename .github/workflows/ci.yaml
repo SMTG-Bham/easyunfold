@@ -23,15 +23,49 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
+        pip install git+https://github.com/zhubonan/castepxbin.git@pr-checkfile
         pip install ".[test]"
     - name: Test with pytest
       run: |
         pytest tests/
     - name: Run coverage from coverage-python by running pytest yet again
-      if: ${{ matrix.python-version }} == '3.9'
+      if: ${{ matrix.python-version == '3.9' }}
       run: pytest --cov-report=xml --cov-append --cov=easyunfold
     - name: Upload coverage to Codecov
-      if: ${{ matrix.python-version }} == '3.9'
+      if: ${{ matrix.python-version == '3.9' }}
       uses: codecov/codecov-action@v3
       with:
         name: easyunfold
+        token: ${{ secrets.CODECOV_TOKEN }}
+
+
+  publish-pypi:
+
+    needs: [build]
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags') && (github.repository == 'SMTG-UCL/easyunfold')
+    name: Build and publish Python 🐍 distributions 📦 to PyPI and TestPyPI
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Build
+        run: |
+          python3 -m pip install --upgrade build
+          python3 -m build
+
+      - name: Publish distribution 📦 to Test PyPI
+        uses: pypa/gh-action-pypi-publish@master
+        with:
+          user: __token__
+          password: ${{ secrets.TEST_PYPI_API_TOKEN }}
+          repository_url: https://test.pypi.org/legacy/
+
+      - name: Publish distribution 📦 to PyPI
+        uses: pypa/gh-action-pypi-publish@master
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}

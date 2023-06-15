@@ -1,0 +1,42 @@
+# CELL file written 22:49:28 (GMT+1.0) 8th June 2023 from run Si_prim_band
+
+%BLOCK lattice_cart
+   ANG
+       0.00000000000000        2.73436400000000        2.73436400000000    
+       2.73436400000000        0.00000000000000        2.73436400000000    
+       2.73436400000000        2.73436400000000        0.00000000000000    
+%ENDBLOCK lattice_cart
+
+%BLOCK positions_frac
+   Si             0.750000000000000       0.750000000000000      -0.250000000000000
+   Si            -0.500000000000000       0.500000000000000       0.500000000000000
+%ENDBLOCK positions_frac
+
+FIX_COM : true
+
+%BLOCK species_pot
+   Si      3|1.8|5|6|7|30:31:32
+%ENDBLOCK species_pot
+
+SYMMETRY_TOL :     0.001000
+
+%BLOCK symmetry_ops
+# Symm. op. 1       E
+          1.000000000000000       0.000000000000000       0.000000000000000
+          0.000000000000000       1.000000000000000       0.000000000000000
+          0.000000000000000       0.000000000000000       1.000000000000000
+          0.000000000000000       0.000000000000000       0.000000000000000
+%ENDBLOCK symmetry_ops
+
+kpoint_mp_grid :    4   4   4
+
+bs_kpoint_mp_grid :    4   4   4
+
+optics_kpoint_mp_grid :    4   4   4
+
+elnes_kpoint_mp_grid :    4   4   4
+
+magres_kpoint_mp_grid :    4   4   4
+
+phonon_kpoint_mp_grid :    4   4   4
+

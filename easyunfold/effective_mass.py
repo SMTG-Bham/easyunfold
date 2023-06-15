@@ -1,6 +1,8 @@
 """
 Module for obtaining effective mass
 """
+from typing import Union
+
 import numpy as np
 from scipy.constants import physical_constants
 from scipy.optimize import curve_fit
@@ -55,6 +57,13 @@ def fit_effective_mass(distances, energies, parabolic=True):
     return eff_mass
 
 
+def fitted_band(x: np.ndarray, eff_mass: float) -> np.ndarray:
+    """Return fitted effective mass curve"""
+    c = (angstrom_to_bohr**2 / eV_to_hartree) / eff_mass
+    x0 = x - x[0]
+    return x0 + x[0], c / 2 * x0**2
+
+
 def points_with_tol(array, value, tol=1e-4):
     """
     Return the indices and values of points in an array close to the value with a tolerance
@@ -66,7 +75,15 @@ def points_with_tol(array, value, tol=1e-4):
 class EffectiveMass:
     """Calculate effective mass from unfolding data"""
 
-    def __init__(self, unfold: UnfoldKSet, intensity_tol=1e-1, extrema_tol=1e-3, degeneracy_tol=1e-2, parabolic=True):
+    def __init__(
+        self,
+        unfold: UnfoldKSet,
+        intensity_tol: float = 1e-1,
+        extrema_tol: float = 1e-3,
+        degeneracy_tol: float = 1e-2,
+        parabolic: bool = True,
+        npoints: float = 3,
+    ):
         """
         Instantiate the object
 
@@ -81,6 +98,10 @@ class EffectiveMass:
         self.degeneracy_tol = degeneracy_tol
         self.parabolic = parabolic
         self.nocc = None  # Number of occupied bands
+        if npoints < 3:
+            raise ValueError('At least three points are needed for fitting the effective mass!')
+
+        self.npoints = npoints
 
     def set_nocc(self, nocc):
         self.nocc = nocc
@@ -157,7 +178,7 @@ class EffectiveMass:
         dists = np.append([0], dists)
         return dists
 
-    def _get_fitting_data(self, kidx: int, iband: int, direction=1, ispin=0, npoints=3):
+    def _get_fitting_data(self, kidx: int, iband: int, direction=1, ispin=0, npoints=None):
         """
         Get fitting data for a specific combination of kpoint and band index
         """
@@ -166,6 +187,8 @@ class EffectiveMass:
         dists = self._get_kpoint_distances()
         kdists = []
         engs_effective = []
+
+        npoints = self.get_npoints(npoints)
         for i in range(npoints):
             idx = istart + i * direction
             kdists.append(dists[idx])
@@ -179,7 +202,13 @@ class EffectiveMass:
             engs_effective.append(eng_effective)
         return kdists, engs_effective
 
-    def get_effective_masses(self, npoints=3, ispin=0):
+    def get_npoints(self, override: Union[float, None] = None):
+        """Get the number of points used for fitting"""
+        if override is None:
+            return self.npoints
+        return override
+
+    def get_effective_masses(self, npoints: Union[float, None] = None, ispin=0):
         """
         Workout the effective masses based on the unfolded band structure
         """
@@ -189,15 +218,16 @@ class EffectiveMass:
             outputs[name] = self._get_effective_masses(mode, npoints=npoints, ispin=ispin)
         return outputs
 
-    def _get_effective_masses(self, mode='cbm', ispin=0, npoints=3):
+    def _get_effective_masses(self, mode: str = 'cbm', ispin: int = 0, npoints: Union[None, int] = None):
         """
-        Workout the effective masses based on the unfolded band structure for CBM or VBM
+        Work out the effective masses based on the unfolded band structure for CBM or VBM
         """
         iks, _, iband = self.get_band_extrema(mode=mode)
         # Override occupations
         if self.nocc:
             iband = [self.nocc for _ in iband]
 
+        npoints = self.get_npoints(npoints)
         results = []
         label_idx = [x[0] for x in self.kpoints_labels]
         label_names = [x[1] for x in self.kpoints_labels]
@@ -218,13 +248,7 @@ class EffectiveMass:
 
                     # If the identified edge is not in the list of high symmetry point, ignore it
                     # This mitigate the problem where the CBM can be duplicated....
-                    if idxk not in label_idx:
-                        continue
-
-                    ilabel = label_idx.index(idxk)
-                    label_from = label_names[ilabel]
-                    label_to = label_names[ilabel + direction]
-
+                    ilabel, label_from, label_to = locate_kpoint_segment(idxk, label_idx, label_names, direction)
                     # Record the results
                     results.append({
                         'kpoint_index': idxk,
@@ -244,3 +268,21 @@ class EffectiveMass:
         results.sort(key=lambda x: abs(abs(x['effective_mass'])))
         results.sort(key=lambda x: abs(x['kpoint_index']))
         return results
+
+
+def locate_kpoint_segment(idxk: int, label_idx: list, label_names: list, direction: int):
+    """Locate the labels and indices of the kpoints defining a segment"""
+    if idxk not in label_idx:
+        pairs = list(zip(label_idx, label_names))
+        i = 0
+        for i, (ikto, _) in enumerate(pairs):
+            if ikto > idxk:
+                break
+        label_to = label_names[i]
+        label_from = 'N/A'
+        ilabel = label_idx.index(label_idx[i - 1])
+    else:
+        ilabel = label_idx.index(idxk)
+        label_from = label_names[ilabel]
+        label_to = label_names[ilabel + direction]
+    return ilabel, label_from, label_to

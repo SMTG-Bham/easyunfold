@@ -1,0 +1,7 @@
+xc_functional : pbe
+cut_off_energy : 300 eV
+write_bib : false
+write_otfg: false
+opt_strategy : speed
+task : spectral
+spectral_task : bandstructure

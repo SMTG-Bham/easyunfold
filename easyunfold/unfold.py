@@ -7,24 +7,26 @@ The main module for unfolding workflow and algorithm
 ############################################################
 import re
 from typing import Union, List, Tuple
-from pathlib import Path
 
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib as mpl
 from matplotlib.colors import ListedColormap, hex2color
 from monty.json import MSONable
+from monty.serialization import loadfn
 from tqdm import tqdm
+import ase
 import spglib
 
 from easyunfold import __version__
 from .wavecar import Wavecar
 from .procar import Procar
+from .wavefun import VaspWaveFunction, CastepWaveFunction
+from .utils import write_kpoints, reduce_kpoints, wrap_kpoints, kpoints_equal
 
 ############################################################
 
 
-def get_symmetry_dataset(atoms, symprec=1e-5):
+def get_symmetry_dataset(atoms: ase.Atoms, symprec: float = 1e-5):
     """Get the symmetry dataset using spglib"""
     return spglib.get_symmetry_dataset((atoms.get_cell(), atoms.get_scaled_positions(), atoms.get_atomic_numbers()), symprec=symprec)
 
@@ -35,7 +37,9 @@ def find_K_from_k(k: np.ndarray, M: np.ndarray):
     cell folds. The unfolding vector G, which satisfy the following equation,
     is also returned.
 
-        k = K + G
+    $$
+        \\vec{k} = \\vec{K} + \\vec{G}
+    $$
 
     where G is a reciprocal space vector of supercell.
     NOTE: M is the transformation matrix for the cell matrix consistent of row vectors!
@@ -44,7 +48,8 @@ def find_K_from_k(k: np.ndarray, M: np.ndarray):
     M = np.array(M)
     Kc = np.dot(k, M.T)
     G = np.array(np.round(Kc), dtype=int)
-    KG = Kc - np.round(Kc)
+    # Wrap to -0.5, 0.5
+    KG = wrap_kpoints(Kc)
 
     return KG, G
 
@@ -59,9 +64,11 @@ def rotate_kpt(k: np.ndarray, opt: np.ndarray):
     return rot - np.rint(rot)
 
 
-def expand_K_by_symmetry(kpt, opts_pc, opts_sc, time_reversal=True):
+def expand_K_by_symmetry(kpt: Union[list, np.ndarray], opts_pc: np.ndarray, opts_sc: np.ndarray, time_reversal: bool = True):
     """
-    Expend the sampling of the PC kpoints due to symmetry breaking of the SC
+    Expend the sampling of the PC kpoints due to symmetry breaking of the supercell cell.
+
+    :returns: Expanded kpoints and corresponding weights for each primitive cell kpoint.
     """
     kpt_orig = np.asarray(kpt)
 
@@ -109,29 +116,38 @@ def expand_K_by_symmetry(kpt, opts_pc, opts_sc, time_reversal=True):
 
 
 class UnfoldKSet(MSONable):
-    """Stores the information of the kpoints in the primitive cell, and what they unfolds to in the supercell"""
+    """
+    High-level interface for unfolding and serialization.
+    """
 
     _VERSION = '0.1.0'
 
     def __init__(self,
-                 M,
-                 kpts_pc,
-                 pc_latt,
-                 pc_opts,
-                 sc_opts,
-                 time_reversal=True,
-                 expand=True,
-                 metadata=None,
-                 expansion_results=None,
-                 calculated_quantities=None,
-                 kpoint_labels=None):
+                 M: np.ndarray,
+                 kpts_pc: list,
+                 pc_latt: np.ndarray,
+                 pc_opts: np.ndarray,
+                 sc_opts: np.ndarray,
+                 time_reversal: bool = True,
+                 expand: bool = True,
+                 metadata: Union[None, dict] = None,
+                 expansion_results: Union[None, dict] = None,
+                 calculated_quantities: Union[None, dict] = None,
+                 kpoint_labels: Union[None, list] = None,
+                 dft_code='vasp'):
         """
-        Args:
-            kpts_pc: A list of kpoints in the PC
-            pc_lattice: A 3x3 matrix of row lattice vectors of the primitive cell
-            pc_opts: Symmetry operations of the primitive cell
-            sc_opts: Symmetry operations of the supercell
-            expand: Expand the kpoint to take account of broken symmetry or not
+        Instantiate an `UnfoldKSet` object.
+
+        :param M: The supercell transformation matrix
+        :param kpts_pc: A list of kpoints in the PC
+        :param pc_latt: A 3x3 matrix of row lattice vectors of the primitive cell
+        :param pc_opts: Symmetry operations of the primitive cell
+        :param sc_opts: Symmetry operations of the supercell
+        :param expand: Whether to expand the kpoint to take account of broken symmetry or not
+        :param expansion_results: Using existing results of symmetry expansion
+        :param calculated_quantities: Existing calculated quantities
+        :param kpoint_labels: Labels of the kpoints as passed in `pc_latt` as a list of tuples `(<idx>, <label>)`
+        :param dft_code: Name of the DFT code to be used.
         """
         # Basic properties - needed to recreate the object
         self.kpts_pc = kpts_pc
@@ -144,6 +160,7 @@ class UnfoldKSet(MSONable):
         self.time_reversal = time_reversal
         self.calculated_quantities = {} if not calculated_quantities else calculated_quantities
         self.kpoint_labels = kpoint_labels
+        self.dft_code = dft_code
         if metadata is None:
             metadata = {}
         self.metadata = metadata
@@ -157,18 +174,39 @@ class UnfoldKSet(MSONable):
             self.expand_pc_kpoints()
 
     @property
-    def is_calculated(self):
+    def is_calculated(self) -> bool:
         """Show the status of the work"""
         return bool(self.calculated_quantities)
 
     @property
-    def has_averaged_spectral_weights(self):
+    def has_averaged_spectral_weights(self) -> bool:
         """Return True if the spectral weights stored is averaged"""
         return self.calculated_quantities.get('spectral_weights_is_averaged', False)
 
     @classmethod
-    def from_atoms(cls, M, kpts_pc, pc, sc, time_reversal=True, expand=True, symprec=1e-5):
-        """Initialise from primitive cell and supercell atoms"""
+    def from_atoms(
+        cls,
+        M: np.ndarray,
+        kpts_pc: list,
+        pc: ase.Atoms,
+        sc: ase.Atoms,
+        time_reversal: bool = True,
+        expand=True,
+        symprec: float = 1e-5,
+        dft_code='vasp',
+    ):
+        """
+        Initialise from primitive cell and supercell atoms
+
+        :param M: The supercell transformation matrix
+        :param kpts_pc: A list of kpoints in the PC
+        :param pc: Primitive cell structure
+        :param sc: Supercell structure
+        :param time_reversal: Assumes time-reversal symmetry
+        :param expand: Whether to expand the kpoint to take account of broken symmetry or not
+        :param symprec: Symmetry detection precision
+
+        """
         pc_symm_data = get_symmetry_dataset(pc, symprec=symprec)
         sc_symm_data = get_symmetry_dataset(sc, symprec=symprec)
         return cls(
@@ -183,10 +221,16 @@ class UnfoldKSet(MSONable):
                 'symmetry_dataset_pc': pc_symm_data,
                 'symmetry_dataset_sc': sc_symm_data,
             },
+            dft_code=dft_code,
         )
 
-    def expand_pc_kpoints(self):
-        """Comptue the pc kpoints to be unfolded into"""
+    @classmethod
+    def from_file(cls, fname: str):
+        """Load from a file"""
+        return loadfn(fname)
+
+    def expand_pc_kpoints(self) -> None:
+        """Compute the pc kpoints to be unfolded into"""
         expended_k = []
         expended_weights = []
         for kpt in self.kpts_pc:
@@ -206,35 +250,32 @@ class UnfoldKSet(MSONable):
         return f'<UnfoldKSet with {self.nkpts_expand}/{self.nkpts_orig} kpoints based on {self.nsymm_expand}/{self.nsymm_orig} symm ops'
 
     @property
-    def nsymm_orig(self):
+    def nsymm_orig(self) -> int:
         """Number of symmetry operation in the original cell"""
         return self.pc_opts.shape[0]
 
     @property
-    def nsymm_expand(self):
+    def nsymm_expand(self) -> int:
         """Number of symmetry operation in the original cell"""
         return self.sc_opts.shape[0]
 
     @property
-    def nkpts_orig(self):
+    def nkpts_orig(self) -> int:
         """Total number of unexpanded kpoints"""
         return len(self.expansion_results['kpoints'])
 
     @property
-    def nkpts_expand(self):
+    def nkpts_expand(self) -> int:
         """Total number of expanded kpoints"""
         return sum(map(len, self.expansion_results['kpoints']))
 
-    def generate_sc_kpoints(self):
+    def generate_sc_kpoints(self) -> None:
         """
-        Generate the supercell kpoints to be calculated
-
-        Returns:
-            A flat list of supercell kpoints in fractional coordinates
-            An indexing nested list to map expanded kpoints set to the supercell kpoints generated
+        Generate the supercell kpoints to be calculated.
+        Results are stored into `self.expansion_results`.
         """
 
-        assert bool(self.expansion_results)
+        assert self.expansion_results
         expended_sc = []
         all_sc = []
         # Find the SC kpoint for each PC kpoint
@@ -244,13 +285,18 @@ class UnfoldKSet(MSONable):
                 sc_k, _ = find_K_from_k(kpt, self.M)
                 this_k.append(sc_k)
             expended_sc.append(this_k)
+            # A flat list containing all SC
             all_sc.extend(this_k)
+
         # We now have bunch of supercell kpoints for each set of expanded kpoints
         # Try to find duplicated SC kpoints
-        reduced_sckpts, sc_kpts_map = remove_duplicated_kpoints(all_sc, return_map=True)
+        # TODO: We can further reduce this by time-reversal symmetry here
+        all_sc = np.array(all_sc)
+        reduced_sckpts, _, sc_kpts_map = reduce_kpoints(all_sc, time_reversal=self.time_reversal)
         sc_kpts_map = list(sc_kpts_map)
 
         # Mapping between the pckpts to the reduced sckpts
+        # Collect from form nested list containing the mappings to the reduce sc kpoints
         reduced_sc_map = []
         for sc_set in expended_sc:
             map_indx = []
@@ -262,8 +308,18 @@ class UnfoldKSet(MSONable):
         self.expansion_results['reduced_sckpts_map'] = reduced_sc_map
         # A nested list that stores the indices of the sc kpts in the reduced_sckpts list
 
-    def write_sc_kpoints(self, file, nk_per_split=None, scf_kpoints_and_weights=None):
-        """Write the supercell kpoints"""
+    def write_sc_kpoints(self,
+                         file: str,
+                         nk_per_split: Union[None, list] = None,
+                         scf_kpoints_and_weights: Union[None, list] = None,
+                         **kwargs):
+        """
+        Write the supercell kpoints to a file.
+
+        :param file: Name of the file
+        :param nk_per_split: Number of kpoints per split along the path
+        :param scf_kpoints_and_weights: SCF kpoint and their weights needed for split-path calculations
+        """
         if self.expansion_results.get('reduced_sckpts') is None:
             self.generate_sc_kpoints()
         kpoints = np.asarray(self.expansion_results['reduced_sckpts'])
@@ -273,36 +329,44 @@ class UnfoldKSet(MSONable):
                 # Prepend with SCF kpoints
                 kpoints, weights = concatenate_scf_kpoints(scf_kpoints_and_weights[0], scf_kpoints_and_weights[1], kpoints)
 
-            write_kpoints(kpoints, file, comment='supercell kpoints', weights=weights)
+            write_kpoints(kpoints, file, comment='supercell kpoints', weights=weights, code=self.dft_code, **kwargs)
         else:
             splits = [kpoints[i:i + nk_per_split] for i in range(0, kpoints.shape[0], nk_per_split)]
             for i_spilt, kpt in enumerate(splits):
                 if scf_kpoints_and_weights:
                     kpt, weights = concatenate_scf_kpoints(scf_kpoints_and_weights[0], scf_kpoints_and_weights[1], kpt)
-                write_kpoints(kpt, f'{file}_{i_spilt + 1:03d}', f'supercell kpoints split {i_spilt + 1}', weights)
+                write_kpoints(kpt,
+                              f'{file}_{i_spilt + 1:03d}',
+                              f'supercell kpoints split {i_spilt + 1}',
+                              code=self.dft_code,
+                              weights=weights,
+                              **kwargs)
 
-    def write_pc_kpoints(self, file, expanded=False):
+    def write_pc_kpoints(self, file: str, expanded: bool = False, **kwargs):
         """Write the primitive cell kpoints"""
         if expanded:
             all_pc = []
             for tmp in self.expansion_results['kpoints']:
                 all_pc.extend(tmp)
-            write_kpoints(all_pc, file, comment='expanded primitive cell kpoints')
         else:
-            write_kpoints(self.kpts_pc, file, comment='primitive cell kpoints')
+            all_pc = self.kpts_pc
+        write_kpoints(all_pc, file, comment='expanded primitive cell kpoints', code=self.dft_code, **kwargs)
 
-    def _read_weights(self, wavecar: Union[str, List[str]], gamma: bool, ncl: bool, gamma_half: str):
+    def _read_weights(self, wavefunction: Union[str, List[str]], gamma: bool, ncl: bool, gamma_half: str):
         """
-        Read the weights from the wavecar for all kpoints
+        Read the weights from the wave function files for all kpoints
 
         Returns the averaged weights and the original weights per set of kpoints
         """
         weights_per_set = []
         averaged_weights = []
-        if not isinstance(wavecar, (list, tuple)):
-            wavecar = [wavecar]
-        # Load the WAVECAR unfold objects
-        unfold_objs = [Unfold(self.M, name, gamma=gamma, lsorbit=ncl, gamma_half=gamma_half) for name in wavecar]
+        if not isinstance(wavefunction, (list, tuple)):
+            wavefunction = [wavefunction]
+        # Load the unfold objects
+        unfold_objs = [
+            Unfold(self.M, name, gamma=gamma, lsorbit=ncl, gamma_half=gamma_half, dft_code=self.dft_code, time_reversal=self.time_reversal)
+            for name in wavefunction
+        ]
         # Record the VBM and the CBM values
         varray = np.array([obj.get_vbm_cbm() for obj in unfold_objs])
         self.calculated_quantities['vbm'] = float(varray[:, 0].max())
@@ -326,7 +390,7 @@ class UnfoldKSet(MSONable):
 
         return averaged_weights, weights_per_set
 
-    def load_procar(self, procar: Union[str, List[str]], force=False):
+    def load_procar(self, procar: Union[str, List[str]], force: bool = False):
         """Read in PROCAR for band-based projection"""
         if self.procars and not force:
             pass
@@ -335,11 +399,12 @@ class UnfoldKSet(MSONable):
             procar = [procar]
 
         # Load the procars
+        # Note that this method should be generalised for non-VASP as well.
         self.transient_quantities['procars'] = [Procar(path) for path in procar]
         # Construct mapping from the primitive cell kpoints to those in the PROCAR
         self.transient_quantities['procars_kmap'] = self._construct_procar_kmap()
 
-    def _construct_procar_kmap(self):
+    def _construct_procar_kmap(self) -> list:
         """Construct mapping from the set of kpoints to that in the PROCAR"""
         ksets = self.expansion_results['kpoints']
         kidx_procar_sets = []
@@ -352,7 +417,7 @@ class UnfoldKSet(MSONable):
                 found = False
                 for iprocar, procar in enumerate(self.procars):
                     for ikpt, kprocar in enumerate(procar.kvecs[0]):
-                        if np.allclose(K_super, kprocar):
+                        if kpoints_equal(K_super, kprocar, time_reversal=self.time_reversal):
                             kidx_procar_sets[-1].append([iprocar, ikpt])
                             found = True
                             break
@@ -363,17 +428,17 @@ class UnfoldKSet(MSONable):
         return kidx_procar_sets
 
     @property
-    def procars(self):
+    def procars(self) -> Union[None, Procar]:
         """Loaded PROCARS"""
         return self.transient_quantities.get('procars')
 
     @property
     def procar_kmaps(self):
-        """Loaded PROCARS"""
+        """Loaded PROCAR kpoint mapping"""
         return self.transient_quantities.get('procars_kmap')
 
     def _get_spectral_weights(self,
-                              wavecar,
+                              wavefunction,
                               npoints=2000,
                               sigma=0.01,
                               emin=None,
@@ -392,12 +457,12 @@ class UnfoldKSet(MSONable):
 
             atomic_projects (tuple): A tuple of atoms and orbitals whose projected weights should be used.
         """
-        # If WAVECAR is given - reload from the data
-        if wavecar:
-            self._read_weights(wavecar, gamma=gamma, ncl=ncl, gamma_half=gamma_half)
+        # If wave function is given - reload from the data
+        if wavefunction:
+            self._read_weights(wavefunction, gamma=gamma, ncl=ncl, gamma_half=gamma_half)
         else:
             if not self.is_calculated:
-                raise RuntimeWarning('The spectral weights need to be calculated first - please pass the WAVECAR file(s).')
+                raise RuntimeWarning('The spectral weights need to be calculated first - please pass the wave function file(s).')
 
         # Use existing results
         if symm_average:
@@ -427,12 +492,22 @@ class UnfoldKSet(MSONable):
             return sws, e0, spectral_function
         return sws
 
-    def get_band_weight_sets(self, atoms_idx, orbitals, procars=None):
+    def get_band_weight_sets(self,
+                             atoms_idx: List[int],
+                             orbitals: List[Union[List[str], str]],
+                             procars: Union[None, List[str], str] = None) -> list:
         """
         Get weights array sets for bands
+
         Construct the weights of each band in same format of the kpoint set.
         Each item is an numpy array of (nspins, nbands), containing the summed weights over
         the passed atom indices and orbitals.
+
+        :param atoms_idx: Indicies of the atoms to be selected
+        :param orbitals: Orbitals to be selected for each atom
+        :param procars: Names of the PROCAR files to be loaded
+
+        :returns: A list of weights for each band at each expanded kpoint
         """
         if procars:
             self.load_procar(procars)
@@ -451,17 +526,31 @@ class UnfoldKSet(MSONable):
         return band_weight_sets
 
     def get_spectral_function(self,
-                              wavecar=None,
-                              npoints=2000,
-                              sigma=0.1,
-                              gamma=False,
-                              ncl=False,
-                              gamma_half='x',
-                              symm_average=True,
-                              atoms_idx=None,
-                              orbitals=None):
-        """Get the spectral function"""
-        _, e0, spectral_function = self._get_spectral_weights(wavecar,
+                              wavefunction: Union[None, List[str]] = None,
+                              npoints: int = 2000,
+                              sigma: float = 0.1,
+                              gamma: bool = False,
+                              ncl: bool = False,
+                              gamma_half: str = 'x',
+                              symm_average: bool = True,
+                              atoms_idx: Union[None, List[int]] = None,
+                              orbitals: Union[None, str, List[str]] = None):
+        """
+        Compute and return the spectral function
+
+        :param wavecar: The wavefunction files to be used
+        :param npoints: Number of points for the energy axis
+        :param sigma: Smearing width for the Gaussian smearing
+        :param gamma: Need to be set to `True` for Gamma-only calculation
+        :param ncl: Need to be set to `True` for non-collinear magnetism calculation
+        :param gamma_half: Flag used for reading WAVECAR
+        :param symm_average: Whether to perform symmetry averaging
+        :param atoms_idx: Indices for the atoms for projection
+        :param orbitals: Indices for the atoms for projection
+
+        :returns: A tuple of the energies and the spectral functioin.
+        """
+        _, e0, spectral_function = self._get_spectral_weights(wavefunction,
                                                               npoints=npoints,
                                                               sigma=sigma,
                                                               gamma=gamma,
@@ -473,21 +562,34 @@ class UnfoldKSet(MSONable):
                                                               symm_average=symm_average)
         return e0, spectral_function
 
-    def get_spectral_weights(self, wavecar=None, gamma=False, ncl=False, gamma_half='x', symm_average=True):
-        """Get the spectral function"""
-        return self._get_spectral_weights(wavecar=wavecar,
+    def get_spectral_weights(self,
+                             wavefunction=None,
+                             gamma: bool = False,
+                             ncl: bool = False,
+                             gamma_half: str = 'x',
+                             symm_average: bool = True):
+        """
+        Return the spectral weights calculated
+
+        :param wavefunction: The wavefunction file(s) for calculation. Not need if the weights has been calculated.
+        :param gamma: Whether the wavefunction files are from $\\Gamma$-only calculation.
+
+        :returns: An array storing the spectral weights.
+
+        """
+        return self._get_spectral_weights(wavefunction=wavefunction,
                                           gamma=gamma,
                                           ncl=ncl,
                                           gamma_half=gamma_half,
                                           also_spectral_function=False,
                                           symm_average=symm_average)
 
-    def as_dict(self):
-        """To a dictionary representation"""
+    def as_dict(self) -> dict:
+        """Convert the object into a dictionary representation"""
         output = {'@module': self.__class__.__module__, '@class': self.__class__.__name__, '@version': __version__}
         for key in [
                 'M', 'kpts_pc', 'pc_latt', 'pc_opts', 'sc_opts', 'expansion_results', 'time_reversal', 'calculated_quantities',
-                'kpoint_labels', 'expand', 'metadata'
+                'kpoint_labels', 'expand', 'metadata', 'dft_code'
         ]:
             output[key] = getattr(self, key)
         return output
@@ -496,7 +598,9 @@ class UnfoldKSet(MSONable):
         """
         Distances between the kpoints along the path in the reciprocal space.
         This does not take account of the breaking of the path.
-        NOTE: the reciprocal lattice vectors includes the 2pi factor, e.g. np.linalg.inv(L).T * 2 * np.pi
+        :::{note}
+        The reciprocal lattice vectors includes the $2\\pi$ factor, e.g. `np.linalg.inv(L).T * 2 * np.pi`.
+        :::
         """
         kpts = self.kpts_pc
         pc_latt = self.pc_latt
@@ -510,8 +614,9 @@ class UnfoldKSet(MSONable):
 def LorentzSmearing(x, x0, sigma=0.02):
     r"""
     Simulate the Delta function by a Lorentzian shape function
-
+    $$
         \Delta(x) = \lim_{\sigma\to 0}  Lorentzian
+    $$
     """
 
     return 1. / np.pi * sigma**2 / ((x - x0)**2 + sigma**2)
@@ -520,16 +625,19 @@ def LorentzSmearing(x, x0, sigma=0.02):
 def GaussianSmearing(x, x0, sigma=0.02):
     r"""
     Simulate the Delta function by a Lorentzian shape function
-
+    $$
         \Delta(x) = \lim_{\sigma\to 0} Gaussian
+    $$
     """
 
     return 1. / (np.sqrt(2 * np.pi) * sigma) * np.exp(-(x - x0)**2 / (2 * sigma**2))
 
 
-def remove_duplicated_kpoints(kpoints, return_map=False, decimals=6):
+def remove_duplicated_kpoints(kpoints: list, return_map=False, decimals=6):
     """
     remove duplicate kpoints in the list.
+
+    TODO: improve this implementation by clipping the range of the fractional coorindates
     """
     kpoints = np.asarray(kpoints)
     _, kid, inv_kid = np.unique(
@@ -545,95 +653,7 @@ def remove_duplicated_kpoints(kpoints, return_map=False, decimals=6):
     return reducedK
 
 
-def write_kpoints(kpoints: Union[np.ndarray, list], outpath='KPOINTS', comment='', weights=None):
-    """
-    save to VASP KPOINTS file
-    """
-    kpoints = np.asarray(kpoints)
-    nkpts = kpoints.shape[0]
-
-    with open(outpath, 'w', encoding='utf-8') as vaspkpt:
-        vaspkpt.write(comment + '\n')
-        vaspkpt.write(f'{nkpts}\n')
-        vaspkpt.write('Rec\n')
-        for ik in range(nkpts):
-            if weights is not None:
-                line = f'  {kpoints[ik, 0]:12.8f} {kpoints[ik, 1]:12.8f} {kpoints[ik,2]:12.8f}  {weights[ik]:12.8f}\n'
-            else:
-                line = f'  {kpoints[ik, 0]:12.8f} {kpoints[ik, 1]:12.8f} {kpoints[ik,2]:12.8f}  1.0\n'
-            vaspkpt.write(line)
-
-
-def read_kpoints(path='KPOINTS'):
-    """
-    Read kpoints from a KPOINTS file containing reciprocal space coordinates (fractional)
-
-    Returns the kpoints, the comment and the labels at each kpoint
-    """
-    content = Path(path).read_text(encoding='utf-8').split('\n')
-    comment = content[0]
-    nkpts = int(content[1])
-    if content[2].lower().startswith('lin'):
-        return read_kpoints_line(content)
-    assert content[2].lower().startswith('rec'), 'Only Reciprocal space KPOINT file is supported'
-    kpts = []
-    labels = []
-    weights = []
-    ik = 0
-    for line in content[3:]:
-        tokens = line.split()
-        this_kpt = [float(value) for value in tokens[:3]]
-        weights.append(float(tokens[3]))
-
-        if len(tokens) >= 5:
-            labels.append([ik, tokens[4]])
-
-        kpts.append(this_kpt)
-        ik += 1
-        if ik == nkpts:
-            break
-    return kpts, comment, labels, weights
-
-
-def read_kpoints_line(content, density=20):
-    """
-    Read kpoints in the line mode
-
-    Resolve to explicit kpoints
-    """
-    comment = content[0]
-    density = int(content[1]) if content[1] else density
-
-    assert content[2].lower().startswith('lin'), 'Only Line mode KPOINT file is supported'
-    assert content[3].lower().startswith('rec'), 'Only Reciprocal coorindates are supported!'
-
-    segs = []
-    labels = []
-    for line in content[4:]:
-        tokens = line.split()
-        if not tokens:
-            continue
-        point = [float(x) for x in tokens[:3]]
-        labels.append(tokens[-1])
-        segs.append(point)
-    # Process the segments
-    kpoints = []
-    labels_loc = []
-    for i in range(int(len(segs) / 2)):
-        k1 = segs[i * 2]
-        k2 = segs[i * 2 + 1]
-        # Check for duplicate end point
-        if kpoints and kpoints[-1] == k1:
-            kpoints.pop()
-            labels_loc.pop()
-        this_seg = np.linspace(k1, k2, density)
-        labels_loc.append((len(kpoints), labels[i]))
-        kpoints.extend(this_seg.tolist())
-        labels_loc.append((len(kpoints) - 1, labels[i + 1]))
-    return kpoints, comment, labels_loc, None
-
-
-def make_kpath(kbound, nseg=40):
+def make_kpath(kbound: List[float], nseg=40):
     """
     Return a list of kpoints defining the path between the given kpoints.
     """
@@ -645,224 +665,12 @@ def make_kpath(kbound, nseg=40):
     return kpath
 
 
-def EBS_scatter(kpts,
-                cell,
-                spectral_weight,
-                atomic_weights=None,
-                atomic_colors=None,
-                eref=0.0,
-                nseg=None,
-                save='ebs_s.png',
-                kpath_label=None,
-                factor=20,
-                figsize=(3.0, 4.0),
-                ylim=(-3, 3),
-                show=True,
-                ax=None,
-                color='b'):
+def clean_latex_string(label: str):
     """
-    plot the effective band structure with scatter, the size of the scatter
-    indicates the spectral weight.
-    The plotting function utilizes Matplotlib package.
+    Clean up latex labels and convert if necessary
 
-    inputs:
-        kpts: the kpoints vectors in fractional coordinates.
-        cell: the primitive cell basis
-        spectral_weight: self-explanatory
+    :returns: Cleaned tag string
     """
-
-    atomic_colors = [] if atomic_colors is None else atomic_colors
-    kpath_label = [] if kpath_label is None else kpath_label
-
-    nspin = spectral_weight.shape[0]
-    kpt_c = np.dot(kpts, np.linalg.inv(cell).T)
-    kdist = np.r_[0, np.cumsum(np.linalg.norm(np.diff(kpt_c, axis=0), axis=1))]
-    nb = spectral_weight.shape[2]
-    x0 = np.tile(kdist, (nb, 1)).T
-
-    if atomic_weights is not None:
-        atomic_weights = np.asarray(atomic_weights)
-        assert atomic_weights.shape[1:] == spectral_weight.shape[:-1]
-
-        if not atomic_colors:
-            atomic_colors = mpl.rcParams['axes.prop_cycle'].by_key()['color']
-
-    if ax is None:
-        fig = plt.figure()
-        if nspin == 1:
-            axes = [plt.subplot(111)]
-            fig.set_size_inches(figsize)
-        else:
-            axes = [plt.subplot(121), plt.subplot(122)]
-            fig.set_size_inches((figsize[0] * 2, figsize[1]))
-    else:
-        if not isinstance(ax, list):
-            axes = [ax]
-        else:
-            axes = ax
-        fig = axes[0].figure
-
-    for ispin in range(nspin):
-        ax = axes[ispin]
-        if atomic_weights is not None:
-            for iatom in range(atomic_weights.shape[0]):
-                ax.scatter(x0,
-                           spectral_weight[ispin, :, :, 0] - eref,
-                           s=spectral_weight[ispin, :, :, 1] * factor * atomic_weights[iatom][ispin, :, :],
-                           lw=0.0,
-                           color=atomic_colors[iatom])
-        else:
-            ax.scatter(x0, spectral_weight[ispin, :, :, 0] - eref, s=spectral_weight[ispin, :, :, 1] * factor, lw=0.0, color=color)
-
-        ax.set_xlim(0, kdist.max())
-        ax.set_ylim(*ylim)
-        ax.set_ylabel('Energy [eV]', labelpad=5)
-
-        if nseg:
-            for kb in kdist[::nseg]:
-                ax.axvline(x=kb, lw=0.5, color='k', ls=':', alpha=0.8)
-
-            if kpath_label:
-                ax.set_xticks(kdist[::nseg])
-                kname = [x.upper() for x in kpath_label]
-                for ii, _ in enumerate(kname):
-                    if kname[ii] == 'G':
-                        kname[ii] = r'$\mathrm{\mathsf{\Gamma}}$'
-                    else:
-                        kname[ii] = r'$\mathrm{{\mathsf{' + f'{kname[ii]}' + r'}}$'
-                ax.set_xticklabels(kname)
-
-    fig.tight_layout(pad=0.2)
-    fig.savefig(save, dpi=360)
-    if show:
-        fig.show()
-
-
-def EBS_cmaps(kpts,
-              cell,
-              E0,
-              spectral_function,
-              eref=0.0,
-              nseg=None,
-              kpath_label=None,
-              explicit_labels=None,
-              save=None,
-              figsize=(3.0, 4.0),
-              ylim=(-3, 3),
-              show=True,
-              contour_plot=False,
-              ax=None,
-              vscale=1.0,
-              title=None,
-              vmax=None,
-              vmin=None,
-              alpha=1.0,
-              cmap='jet'):
-    """
-    plot the effective band structure with colormaps.  The plotting function
-    utilizes Matplotlib package.
-
-    Args:
-        kpts: the kpoints vectors in fractional coordinates.
-        cell: the primitive cell basis
-        E0: The energies corresponds to each element of the spectral function
-        spectral_function: The spectral function array in the shape of (nspin, nk, neng)
-        eref: Refernce point for zero energy
-        kpath_label: Label of the high symmetry kpoints along the pathway
-        nseg: Number of points in each segment of the kpoint pathway
-        explicit_labels: A list of tuplies containing tuples of `(index, label)` to explicitly set kpoint labels.
-        save: Name of the file the plot to be saved to.
-        figsize: Size of hte figure
-        ylim: Limit for the y axis. The limit is applied *after* substracting the refence energy.
-        show: To show the plot interactively or not.
-        contour_plot: Plot in the contour mode
-        ax: Existing axis(axes) to plot onto
-        cmap: Colour mapping for the density/contour plot
-        title: Title to be used
-        vscale: Scale factor for color coding
-    """
-
-    kpath_label = [] if not kpath_label else kpath_label
-    nspin = spectral_function.shape[0]
-    kpt_c = np.dot(kpts, np.linalg.inv(cell).T)
-    kdist = np.r_[0., np.cumsum(np.linalg.norm(np.diff(kpt_c, axis=0), axis=1))]
-    xmin, xmax = kdist.min(), kdist.max()
-
-    if ax is None:
-        fig = plt.figure()
-        if nspin == 1:
-            axes = [plt.subplot(111)]
-            fig.set_size_inches(figsize)
-        else:
-            axes = [plt.subplot(121), plt.subplot(122)]
-            fig.set_size_inches((figsize[0] * 2, figsize[1]))
-    else:
-        if not isinstance(ax, list):
-            axes = [ax]
-        else:
-            axes = ax
-        fig = axes[0].figure
-
-    X, Y = np.meshgrid(kdist, E0 - eref)
-
-    # Calculate the min and max values within the field of view, scaled by the factor
-    mask = (E0 < (ylim[1] + eref)) & (E0 > (ylim[0] + eref))
-    vmin = spectral_function[:, mask, :].min() if vmin is None else vmin
-    if vmax is None:
-        vmax = spectral_function[:, mask, :].max()
-        vmax = (vmax - vmin) * vscale + vmin
-
-    for ispin in range(nspin):
-        ax = axes[ispin]
-        if contour_plot:
-            ax.contourf(X, Y, spectral_function[ispin], cmap=cmap, vmax=vmax, vmin=vmin, alpha=alpha)
-        else:
-            ax.pcolormesh(X, Y, spectral_function[ispin], cmap=cmap, shading='auto', vmax=vmax, vmin=vmin, alpha=alpha)
-
-        ax.set_xlim(xmin, xmax)
-        ax.set_ylim(*ylim)
-        ax.set_ylabel('Energy (eV)', labelpad=5)
-
-        if nseg:
-            # labels given for each segment
-            for kb in kdist[::nseg]:
-                ax.axvline(x=kb, lw=0.5, color='k', ls=':', alpha=0.8)
-
-            if kpath_label:
-                tick_pos = list(kdist[::nseg])
-                ax.set_xticks(tick_pos)
-                kname = [x.upper() for x in kpath_label]
-                for ii, _ in enumerate(kname):
-                    kname[ii] = clean_latex_string(kname[ii])
-                ax.set_xticklabels(kname)
-        elif explicit_labels:
-            # Explicit label indices
-            tick_locs = []
-            tick_labels = []
-            for index, label in explicit_labels:
-                ax.axvline(x=kdist[index], lw=0.5, color='k', ls=':', alpha=0.8)
-                tick_locs.append(kdist[index])
-                tick_labels.append(label)
-            ticks = []
-            tick_labels = []
-            for index, label in explicit_labels:
-                ticks.append(kdist[index])
-                tick_labels.append(clean_latex_string(label))
-            ax.set_xticks(tick_locs)
-            ax.set_xticklabels(tick_labels)
-        if title:
-            ax.set_title(title)
-
-    fig.tight_layout(pad=0.2)
-    if save:
-        fig.savefig(save, dpi=300)
-    if show:
-        fig.show()
-    return fig
-
-
-def clean_latex_string(label):
-    """Clean up latex labels and convert if necessary"""
     if label == 'G':
         label = r'$\mathrm{\mathsf{\Gamma}}$'
     elif label.startswith('\\'):  ## This is a latex formatted label already
@@ -872,23 +680,24 @@ def clean_latex_string(label):
     return label
 
 
-def spectral_function_from_weight_sets(spectral_weight_sets,
-                                       kweight_sets,
-                                       nedos=4000,
-                                       sigma=0.02,
+def spectral_function_from_weight_sets(spectral_weight_sets: np.ndarray,
+                                       kweight_sets: list,
+                                       nedos: int = 4000,
+                                       sigma: float = 0.02,
                                        emin=None,
                                        emax=None,
                                        band_weight_sets=None):
     r"""
     Generate the spectral function
 
+    $$
         A(k_i, E) = \sum_m P_{Km}(k_i)\Delta(E - Em)
+    $$
 
     Where the \Delta function can be approximated by Lorentzian or Gaussian
     function.
 
-    Args:
-        band_weight_sets (np.ndarray): Additional weighting for each band, used for generating
+    :param band_weight_sets: Additional weighting for each band, used for generating
           projection onto atomic orbitals.
     """
 
@@ -918,76 +727,94 @@ def spectral_function_from_weight_sets(spectral_weight_sets,
 ############################################################
 
 
-class Unfold():
+class Unfold:
     """
-    Low lever interface for performing unfolding related calculations.
+    Low level interface for performing unfolding related calculations.
     obtain the effective band structure (EBS).
 
-    REF:
+    :::{admonition} Reference
     "Extracting E versus k effective band structure from supercell
      calculations on alloys and impurities"
     Phys. Rev. B 85, 085201 (2012)
+    :::
     """
 
-    def __init__(self, M=None, wavecar='WAVECAR', gamma=False, lsorbit=False, gamma_half='x', verbose=False):
+    def __init__(self,
+                 M=None,
+                 fname: str = 'WAVECAR',
+                 gamma: bool = False,
+                 lsorbit: bool = False,
+                 gamma_half: str = 'x',
+                 verbose=False,
+                 time_reversal=False,
+                 dft_code='vasp'):
         """
         Initialization.
 
         M is the transformation matrix between supercell and primitive cell:
 
-            M = np.dot(A, np.linalg.inv(a))
+        ```python
+        M = np.dot(A, np.linalg.inv(a))
+        ```
 
         In real space, the basis vectors of Supercell (A) and those of the
         primitive cell (a) satisfy:
 
-            A = np.dot(M, a);      a = np.dot(np.linalg.inv(M), A)
+        ```python
+        A = np.dot(M, a);      a = np.dot(np.linalg.inv(M), A)
+        ```
 
         Whereas in reciprocal space
 
-            b = np.dot(M.T, B);    B = np.dot(np.linalg.inv(M).T, b)
-
-        wavecar is the location of VASP WAVECAR file that contains the
-        wavefunction information of a supercell calculation.
+        ```python
+        b = np.dot(M.T, B);    B = np.dot(np.linalg.inv(M).T, b)
+        ```
         """
 
         # Whether the WAVECAR is a gamma-only version
-        self._lgam = gamma
-        self._lsoc = lsorbit
+        self._lgam = gamma  # Applicable only for VASP
+        self._lsoc = lsorbit  # Applicable only for VASP
+
+        self.time_reversal = time_reversal
 
         self.M = np.array(M, dtype=float)
         assert self.M.shape == (3, 3), 'Shape of the tranformation matrix must be (3,3)'
-
-        self.wfc = Wavecar(wavecar, lsorbit=self._lsoc, lgamma=self._lgam, gamma_half=gamma_half)
+        if dft_code == 'vasp':
+            self.wfc = VaspWaveFunction(Wavecar(fname, lsorbit=self._lsoc, lgamma=self._lgam, gamma_half=gamma_half))
+        elif dft_code == 'castep':
+            self.wfc = CastepWaveFunction.from_file(fname)
+        else:
+            raise NotImplementedError(f'Code {dft_code} has not being implemented!')
         # all the K-point vectors
-        self.kvecs = self.wfc._kvecs
+        self.kvecs = self.wfc.kpoints
         # all the KS energies in shape (ns, nk, nb)
-        self.bands = self.wfc._bands
+        self.bands = self.wfc.bands
 
         # spectral weight for all the kpoints
         self.SW = None
 
         self.verbose = verbose
 
-    def get_vbm_cbm(self, thresh=1e-8) -> Tuple[float, float]:
-        """Locate the VBM from the WAVECAR"""
-        occ = self.wfc._occs
+    def get_vbm_cbm(self, thresh: float = 1e-8) -> Tuple[float, float]:
+        """Locate the VBM from the wave function data"""
+        occ = self.wfc.occupancies
 
         occupied = np.abs(occ) > thresh
         vbm = float(self.bands[occupied].max())
         cbm = float(self.bands[~occupied].min())
         return vbm, cbm
 
-    def get_ovlap_G(self, ikpt=1, epsilon=1E-5):
+    def get_ovlap_G(self, ikpt: int = 1, epsilon: float = 1E-5) -> Tuple[np.ndarray, np.ndarray]:
         """
         Get subset of the reciprocal space vectors of the supercell,
         specifically the ones that match the reciprocal space vectors of the
         primitive cell.
         """
 
-        assert 1 <= ikpt <= self.wfc._nkpts, 'Invalid K-point index!'
+        assert 1 <= ikpt <= self.wfc.nkpts, 'Invalid K-point index!'
 
         # Reciprocal space vectors of the supercell in fractional unit
-        Gvecs = self.wfc.gvectors(ikpt=ikpt)
+        Gvecs = self.wfc.get_gvectors(ik=ikpt)
 
         if self._lgam:
             nplw = Gvecs.shape[0]
@@ -1009,34 +836,41 @@ class Unfold():
 
         return Gvecs[match], Gvecs
 
-    def find_K_index(self, K0):
+    def find_K_index(self, K0: np.ndarray) -> int:
         """
-        Find the index of K0.
+        Find the (one-based) index of a point `K0`.
         """
-
-        for ii in range(self.wfc._nkpts):
-            if np.alltrue(np.abs(self.wfc._kvecs[ii] - K0) < 1E-5):
+        kpts_wrapped = wrap_kpoints(self.wfc.kpoints)
+        K0_wrapped = wrap_kpoints(K0)
+        for ii in range(self.wfc.nkpts):
+            if np.alltrue(np.abs(kpts_wrapped[ii] - K0_wrapped) < 1E-5):
+                return ii + 1
+            # Check for kpoint related with time-reversal symmetry
+            if self.time_reversal and np.alltrue(np.abs(kpts_wrapped[ii] + K0_wrapped) < 1E-5):
                 return ii + 1
         raise ValueError('Cannot find the corresponding K-points in WAVECAR!')
 
-    def k2K_map(self, kpath):
+    def k2K_map(self, kpath) -> List[int]:
         """
-        Find the map from primitive-cell k-points to supercell k-points.
+        Return the map from primitive-cell k-points to supercell k-points.
         """
 
         return [self.find_K_index(find_K_from_k(k, self.M)[0]) - 1 for k in kpath]
 
     def spectral_weight_k(self, k0, whichspin=1):
         r"""
-        Spectral weight for a given k:
+        Spectral weight for a given $k$:
 
+        $$
             P_{Km}(k) = \sum_n |<Km | kn>|^2
+        $$
 
         which is equivalent to
-
+        $$
             P_{Km}(k) = \sum_{G} |C_{Km}(G + k - K)|^2
+        $$
 
-        where {G} is a subset of the reciprocal space vectors of the supercell.
+        where $G$ is a subset of the reciprocal space vectors of the supercell.
         """
         if self.verbose:
             print(f'Processing k-point {k0[0]:8.4f} {k0[1]:8.4f} {k0[2]:8.4f}')
@@ -1053,24 +887,24 @@ class Unfold():
         Goffset = Gvalid + G0[np.newaxis, :]
 
         # Index of the Gvalid in 3D grid
-        GallIndex = Gall % self.wfc._ngrid[np.newaxis, :]
-        GoffsetIndex = Goffset % self.wfc._ngrid[np.newaxis, :]
+        GallIndex = Gall % self.wfc.mesh_size[np.newaxis, :]
+        GoffsetIndex = Goffset % self.wfc.mesh_size[np.newaxis, :]
 
         # 3d grid for planewave coefficients
-        wfc_k_3D = np.zeros(self.wfc._ngrid, dtype=np.complex128)
+        wfc_k_3D = np.zeros(self.wfc.mesh_size, dtype=np.complex128)
 
         # the weights and corresponding energies
-        P_Km = np.zeros(self.wfc._nbands, dtype=float)
-        E_Km = np.zeros(self.wfc._nbands, dtype=float)
+        P_Km = np.zeros(self.wfc.nbands, dtype=float)
+        E_Km = np.zeros(self.wfc.nbands, dtype=float)
 
-        for nb in range(self.wfc._nbands):
+        for nb in range(self.wfc.nbands):
             # initialize the array to zero, which is unnecessary since the
             # GallIndex is the same for the same K-point
             # wfc_k_3D[:,:,:] = 0.0
 
             if self._lsoc:
                 # pad the coefficients to 3D grid
-                band_coeff = self.wfc.readBandCoeff(ispin=whichspin, ikpt=ikpt, iband=nb + 1, norm=True)
+                band_coeff = self.wfc.get_band_coeffs(ispin=whichspin, ik=ikpt, ib=nb + 1, norm=True)
                 nplw = band_coeff.shape[0] // 2
                 band_spinor_coeff = [band_coeff[:nplw], band_coeff[nplw:]]
 
@@ -1085,7 +919,7 @@ class Unfold():
                     P_Km[nb] += np.linalg.norm(wfc_k_3D[GoffsetIndex[:, 0], GoffsetIndex[:, 1], GoffsetIndex[:, 2]])**2
             else:
                 # pad the coefficients to 3D grid
-                band_coeff = self.wfc.readBandCoeff(ispin=whichspin, ikpt=ikpt, iband=nb + 1, norm=True)
+                band_coeff = self.wfc.get_band_coeffs(ispin=whichspin, ik=ikpt, ib=nb + 1, norm=True)
                 if self._lgam:
                     nplw = band_coeff.size
                     tmp = np.zeros((nplw * 2 - 1), dtype=band_coeff.dtype)
@@ -1104,7 +938,7 @@ class Unfold():
 
         return np.array((E_Km, P_Km), dtype=float).T
 
-    def spectral_weight(self, kpoints):
+    def spectral_weight(self, kpoints: List):
         """
         Calculate the spectral weight for a list of kpoints in the primitive BZ.
         """
@@ -1112,8 +946,8 @@ class Unfold():
         NKPTS = len(kpoints)
 
         sw = []
-        for ispin in range(self.wfc._nspin):
-            if self.wfc._nspin == 2:
+        for ispin in range(self.wfc.nspins):
+            if self.wfc.nspins == 2:
                 if self.verbose:
                     print('#' * 60)
                     print(f'Spin component: {ispin}')
@@ -1124,19 +958,21 @@ class Unfold():
 
         return self.SW
 
-    def spectral_function(self, nedos=4000, sigma=0.02):
+    def spectral_function(self, nedos: int = 4000, sigma: float = 0.02):
         r"""
         Generate the spectral function
 
+        $$
             A(k_i, E) = \sum_m P_{Km}(k_i)\Delta(E - Em)
+        $$
 
-        Where the \Delta function can be approximated by Lorentzian or Gaussian
+        Where the $\Delta$ function can be approximated by Lorentzian or Gaussian
         function.
         """
 
         assert self.SW is not None, 'Spectral weight must be calculated first!'
 
-        NS = self.wfc._nspin
+        NS = self.wfc.nspins
         # Number of kpoints
         nk = self.SW.shape[1]
         # spectral function
@@ -1156,19 +992,20 @@ class Unfold():
         return e0, SF
 
 
-def spectral_weight_multiple_source(kpoints, unfold_objs, transform_matrix):
+def spectral_weight_multiple_source(kpoints: list, unfold_objs: List[Unfold], transform_matrix: np.ndarray):
     """
     Calculate the spectral weight for a list of kpoints in the primitive BZ
-    from a list of WAVECARs.
+    from a list of wave function files.
     """
 
     nk = len(kpoints)
-    ns = unfold_objs[0].wfc._nspin
+    ns = unfold_objs[0].wfc.nspins
     for obj in unfold_objs[1:]:
-        assert ns == obj.wfc._nspin
+        assert ns == obj.wfc.nspins
 
-    # When reading from multiple WAVECAR, it is possible that each of them may have differnt number of bands
-    # if so, we take only the first N bands, where N is the minimum values of bands
+    # When reading from multiple wave function files (e.g. WAVECAR for VASP),
+    # it is possible that each of them may have differnt number of bands.
+    # Ff so, we take only the first N bands, where N is the minimum values of bands
     nb = []
     for source in unfold_objs:
         nb.append(source.bands.shape[2])
@@ -1192,15 +1029,17 @@ def spectral_weight_multiple_source(kpoints, unfold_objs, transform_matrix):
                 break
 
             if not ok:
-                raise ValueError(f'This kpoint {this_k} this not found in the WAVECAR(s) provided')
+                raise ValueError(f'This kpoint {this_k_supercell} (PC:{this_k}) this not found in the wave function data provided')
 
         spectral_weights.append(sw_this_spin)
 
     return np.array(spectral_weights)
 
 
-def concatenate_scf_kpoints(scf_kpts, scf_weights, kpoints):
-    """Concatenate SCF kpoints (from IBZKPT) with zero-weighted kpoints"""
+def concatenate_scf_kpoints(scf_kpts: list, scf_weights: list, kpoints: list):
+    """
+    Concatenate SCF kpoints (from IBZKPT) with zero-weighted kpoints
+    """
     scf_kpts = np.asarray(scf_kpts)
     kpoints = np.concatenate([scf_kpts, kpoints], axis=0)
     weights = np.zeros(kpoints.shape[0])
@@ -1239,13 +1078,17 @@ def create_white_colormap_from_existing(name: str) -> ListedColormap:
     return create_white_colormap(rgba)
 
 
-def parse_atoms_idx(atoms_idx):
+def parse_atoms_idx(atoms_idx: str) -> List[int]:
     """
     Expanding syntex like `1-2` (inclusive)
 
     For example, `1,2,3,4-6` will be expanded as `1,2,3,4,5,6`.
+
+    :param atoms_idx: A string encode atom indices
+
+    :returns: A list of atom indices
     """
-    items = atoms_idx.split(',')
+    items = re.split(', *', atoms_idx)
     out = []
     for item in items:
         match = re.match(r'(\d+)-(\d+)', item)
@@ -1256,3 +1099,17 @@ def parse_atoms_idx(atoms_idx):
     # Expect passing 1-based indexing
     out = [x - 1 for x in out]
     return out
+
+
+def process_projection_options(atoms_idx: str, orbitals: str) -> Tuple[list, list]:
+    """
+    Process commandline-style specifications for project
+
+    :returns: A tuple of atom indices and the orbitals selected for projection.
+    """
+    indices = parse_atoms_idx(atoms_idx)
+    if orbitals and orbitals != 'all':
+        orbitals = [token.strip() for token in orbitals.split(',')]
+    else:
+        orbitals = 'all'
+    return indices, orbitals

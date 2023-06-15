@@ -34,3 +34,15 @@ WAVECAR
 XDATCAR
 vasprun.xml
 coverage.xml
+*.vasp
+IBZKPT
+KPOINTS
+POTCAR
+*.cell
+*.bands
+*.castep
+*.check
+*.cst_esp
+KPOINTS
+PROCAR
+*.json

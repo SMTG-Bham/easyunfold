@@ -1,4 +1,4 @@
-
+# Guide
 Main goal of this tool is to make the unfolding process easier.
 To generate a unfolded band structure, one typically needs to perform the following step:
 
@@ -12,12 +12,11 @@ The supercell usually contains certain defects, or a special quasi random struct
 In both cases, its symmetry is lowered when compared to the perfect primitive cell.
 Hence, for a given kpoint path in the primitive cell, additional kpoints may need to be sampled, and the extracted spectral weights need to be averaged in the end to obtained the effective band structure (EBS).
 
-## Step-by-step instructions
 
 At the moment, only VASP calculations are supported, although in principle other PW code can be supported easily if the wavefunction can be read in.
 Use of VASP is assumed for the guide below.
 
-### Step 1 - Generate the kpoints path of the primitive cell
+## Step 1 - Generate the kpoints path of the primitive cell
 
 This can be done by well established packages such as [seekpath](https://www.materialscloud.org/work/tools/seekpath).
 Be careful that the "standardised" primitive cell may be different from input structure,
@@ -28,11 +27,22 @@ We recommand using [sumo](https://github.com/SMTG-UCL/sumo) for generating the k
 sumo-kgen -p POSCAR
 ```
 
+
+
 Care should be taken if one uses the initial structure for further supercell generation, do verify that the lattice parameters are identical between the two.
 A `POSCAR_prim` file will be written out if `sumo` think the primitive cell is different from the input structure.
 The kpoints along the path is written to `KPOINTS_band`.
 
-### Step 2 - Generate the kpoints to be used for the supercell calculation
+:::{tip}
+`sumo` can be installed with `pip`:
+
+```bash
+pip install sumo
+```
+
+:::
+
+## Step 2 - Generate the kpoints to be used for the supercell calculation
 
 At this point, you should have your relaxed supercell structure (which may have a lower symmetry).
 The set of kpoints for the supercell band structure can be generated with:
@@ -71,9 +81,21 @@ This will generate files named as `KPOINTS_easyunfold_001`, `KPOINTS_easyunfold_
 If a `IBZKPT` file is the provided, its kpoints will be included with their original weights,  and all of the kpoints included by easyunfold will be zero-weighted.
 This is necessary for hybrid functional calculations where the electronic minimisation must be conducted self-consistently (e.g. `ICHARG<10`).
 
-### Step 3 - Perform the unfolding
+:::{tip}
 
-At this point, a supercell calculation should be completed with a `WAVECAR` written containing all of the kpoints in the `KPOINTS_easyunfold` file generated.
+Input files for CASTEP can be generated with option `--code castep`. 
+In this case, the `<seed>.cell` file should be passed containing the primitive cell kpoints that are
+stored under the `spectral_kpoints_list` block.
+The `cell` file of the supercell structure will be used as a template for generating a single `cell` file containing the 
+supercell kpoints stored under the `spectral_kpoints_list` block.
+The choice of the DFT code is stored in the data file (`easyunfold.json`) and will be used automatically the later steps.
+
+:::
+
+
+## Step 3 - Perform the unfolding
+
+At this point, a supercell calculation should be completed with a `WAVECAR` (containing the plane wave coefficients) written containing all of the kpoints in the `KPOINTS_easyunfold` file generated.
 This is typically a non self-consistent calculation with `ICHARG=11` for standard DFT, or a self-consistent calculation with zero-weighted kpoints if hybrid functional is used.
 
 To compute the spectral weights, run the following command:
@@ -85,7 +107,21 @@ easyunfold unfold calculate WAVECAR
 This command compute the spectral weight and save them into the  `easyunfold.json` file.
 You can load the `easyunfold.json` file to read the spectral weights manually, or proceed with the command line interface to generate a plot.
 
-If the kpoints has been split into multiple calculations (for example, for those involving hybrid functional), all of the `WAVECAR` files need to be passed:
+:::{tip}
+
+Wave functions (plane wave coefficients) in a CASTEP spectral calculation is stored in the `<seed>.orbitals` file,
+and the `<seed>.check` file only contains the wave function for the self-consistent field calculation.
+Note that the former is not written by default, and needs to be turned on by setting:
+
+```
+write_orbitals : true
+```
+
+in the `<seed>.param` file.
+
+:::
+
+If the kpoints has been split into multiple calculations (for example, for those involving hybrid functional), all of the wave function (e.g. `WAVECAR` for VASP) files need to be passed:
 
 ```
 easyunfold unfold calculate calc1/WAVECAR calc2/WAVECAR
@@ -93,7 +129,7 @@ easyunfold unfold calculate calc1/WAVECAR calc2/WAVECAR
 
 For large `WAVECAR`, it may take some time to parse and compute the weights.
 
-### Step 4 - Plot the results
+## Step 4 - Plot the results
 
 Simply do:
 

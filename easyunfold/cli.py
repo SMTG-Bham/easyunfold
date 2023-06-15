@@ -7,9 +7,11 @@ import numpy as np
 import click
 from ase.io import read
 
-from easyunfold.unfold import parse_atoms_idx
+from easyunfold.unfold import process_projection_options
 
 # pylint:disable=import-outside-toplevel,too-many-locals
+
+SUPPORTED_DFT_CODES = ('vasp', 'castep')
 
 DEFAULT_CMAPS = [
     'Purples', 'Greens', 'Oranges', 'Reds', 'Blue', 'YlOrBr', 'YlOrRd', 'OrRd', 'PuRd', 'RdPu', 'BuPu', 'GnBu', 'PuBu', 'YlGnBu', 'PuBuGn',
@@ -30,19 +32,44 @@ def easyunfold():
 @click.argument('pc-file')
 @click.argument('sc-file')
 @click.argument('kpoints')
+@click.option(
+    '--code',
+    '-c',
+    help='Name of the DFT code that the kpoints should be formatted to.',
+    default='vasp',
+    type=click.Choice(SUPPORTED_DFT_CODES),
+    show_default=True,
+)
 @click.option('--matrix', '-m', help='Transformation matrix')
-@click.option('--symprec', help='Transformation matrix', type=float, default=1e-5)
+@click.option('--symprec', help='Transformation matrix', type=float, default=1e-5, show_default=True)
 @click.option('--out-file', default='easyunfold.json', help='Name of the output file')
 @click.option('--no-expand', help='Do not expand the kpoints by symmetry', default=False, is_flag=True)
 @click.option('--nk-per-split', help='Number of band structure kpoints per split.', type=int)
 @click.option('--scf-kpoints',
               help='File (IBZKPT) to provide SCF kpoints for self-consistent calculations. Needed for hybrid functional calculations.',
               type=click.Path(exists=True, dir_okay=False))
-def generate(pc_file, sc_file, matrix, kpoints, time_reversal, out_file, no_expand, symprec, nk_per_split, scf_kpoints):
+@click.option('--yes', '-y', is_flag=True, default=False, help='Skip and confirmation.')
+def generate(pc_file, code, sc_file, matrix, kpoints, time_reversal, out_file, no_expand, symprec, nk_per_split, scf_kpoints, yes):
     """
-    Generate the kpoints for sampling the supercell
+    Generate the kpoints for performing supercell calculations.
+
+    There are two modes of running supercell calculations:
+
+    1. Use the generated kpoints for unfolding for non-SCF calculations, e.g. with a fixed
+       charged density from the SCF calculation.
+    2. Include the generated kpoints in SCF calculation but set their weights to zeros.
+
+    In both cases, the kpoints can be split into multiple calculations.
+
+    This command defaults to go down the first route where the kpoints generated are only
+    those needed for the unfolding, all kpoints and written into the same file, but the user
+    is free to manually split them into multiple calculations.
+    The second approach can be activated with the ``--nk-per-split`` option and in the same
+    time provide the ``--scf-kpoints``. This will generate a serial of kpoints files containing
+    the SCF kpoints followed by the actual kpoints needed for unfolding with zero weights.
     """
-    from easyunfold.unfold import UnfoldKSet, read_kpoints
+    from easyunfold.unfold import UnfoldKSet
+    from easyunfold.utils import read_kpoints
 
     primitive = read(pc_file)
     supercell = read(sc_file)
@@ -61,7 +88,7 @@ def generate(pc_file, sc_file, matrix, kpoints, time_reversal, out_file, no_expa
 
         click.echo(f'(Guessed) Transform matrix:\n{transform_matrix.tolist()}')
 
-    kpoints, _, labels, _ = read_kpoints(kpoints)
+    kpoints, _, labels, _ = read_kpoints(kpoints, code=code)
     click.echo(f'{len(kpoints)} kpoints specified along the path')
 
     unfoldset = UnfoldKSet.from_atoms(transform_matrix,
@@ -70,6 +97,7 @@ def generate(pc_file, sc_file, matrix, kpoints, time_reversal, out_file, no_expa
                                       supercell,
                                       time_reversal=time_reversal,
                                       expand=not no_expand,
+                                      dft_code=code,
                                       symprec=symprec)
     unfoldset.kpoint_labels = labels
     try:
@@ -78,24 +106,49 @@ def generate(pc_file, sc_file, matrix, kpoints, time_reversal, out_file, no_expa
         pass
 
     out_file = Path(out_file)
-    if scf_kpoints is not None:
-        scf_kpt, _, _, scf_weights = read_kpoints(scf_kpoints)
-        unfoldset.write_sc_kpoints(f'KPOINTS_{out_file.stem}', nk_per_split=nk_per_split, scf_kpoints_and_weights=(scf_kpt, scf_weights))
+    if code == 'vasp':
+        out_kpt_name = f'KPOINTS_{out_file.stem}'
+    elif code == 'castep':
+        out_kpt_name = f'{out_file.stem}_sc_kpoints.cell'
     else:
-        unfoldset.write_sc_kpoints(f'KPOINTS_{out_file.stem}', nk_per_split=nk_per_split)
-    click.echo('Supercell kpoints written to KPOITNS_' + out_file.stem)
+        raise RuntimeError(f'Unknown code: {code}')
+
+    if scf_kpoints is not None:
+        scf_kpt, _, _, scf_weights = read_kpoints(scf_kpoints, code=code)
+        scf_kpoints_and_weights = (scf_kpt, scf_weights)
+    else:
+        scf_kpoints_and_weights = None
+
+    if Path(out_kpt_name).is_file() and not yes:
+        click.confirm(f'Output file {out_kpt_name} already exists, continue?', abort=True)
+
+    unfoldset.write_sc_kpoints(
+        out_kpt_name,
+        nk_per_split=nk_per_split,
+        scf_kpoints_and_weights=scf_kpoints_and_weights,
+        source=sc_file,
+    )
+
+    click.echo(f'Supercell kpoints written to {out_kpt_name}')
 
     # Serialize the data
+    if Path(out_file).is_file() and not yes:
+        click.confirm(f'Output file {out_file} already exists, continue?', abort=True)
+
     Path(out_file).write_text(unfoldset.to_json(), encoding='utf-8')
 
     click.echo('Unfolding settings written to ' + str(out_file))
 
 
 @easyunfold.group('unfold')
-@click.option('--data-file', default='easyunfold.json', type=click.Path(exists=True, file_okay=True, dir_okay=False))
+@click.option('--data-file', default='easyunfold.json', type=click.Path(exists=True, file_okay=True, dir_okay=False), show_default=True)
 @click.pass_context
 def unfold(ctx, data_file):
-    """Perform unfolding and plotting"""
+    """
+    Perform unfolding and plotting
+
+    There are multiple sub-command available under this command group.
+    """
 
     unfoldset = loadfn(data_file)
     click.echo(f'Loaded data from {data_file}')
@@ -128,20 +181,23 @@ def unfold_status(ctx):
 
 @unfold.command('calculate')
 @click.pass_context
-@click.argument('wavecar', type=click.Path(exists=True, dir_okay=False), nargs=-1)
+@click.argument('wavefunc', type=click.Path(exists=True, dir_okay=False), nargs=-1)
 @click.option('--save-as')
-@click.option('--gamma', is_flag=True)
-@click.option('--ncl', is_flag=True)
-def unfold_calculate(ctx, wavecar, save_as, gamma, ncl):
+@click.option('--gamma', is_flag=True, help='If the calculation is $\\Gamma$-only')
+@click.option('--ncl', is_flag=True, help='If the calculation has non-collinear spins.')
+def unfold_calculate(ctx, wavefunc, save_as, gamma, ncl):
     """
     Perform the unfolding
 
-    Multiple WAVECAR files can be supplied for split-path calculations.
+    Multiple wave function (e.g. the WAVECAR file if using VASP) files can be supplied for
+    split-path calculations.
+    Once the calculation is done, the wave function data are not longer needed as the
+    spectral weights will be stored in the outputs ``json`` file.
     """
     from easyunfold.unfold import UnfoldKSet
 
     unfoldset: UnfoldKSet = ctx.obj['obj']
-    unfoldset.get_spectral_weights(wavecar, gamma, ncl=ncl)
+    unfoldset.get_spectral_weights(wavefunc, gamma, ncl=ncl)
 
     out_path = save_as if save_as else ctx.obj['fname']
     Path(out_path).write_text(unfoldset.to_json(), encoding='utf-8')
@@ -157,8 +213,8 @@ def add_plot_options(func):
     click.option('--eref', type=float, help='Reference energy in eV.')(func)
     click.option('--emin', type=float, default=-5., help='Minimum energy in eV relative to the ' 'reference.', show_default=True)(func)
     click.option('--emax', type=float, default=5., help='Maximum energy in eV relative to the ' 'reference.', show_default=True)(func)
-    click.option('--vscale', type=float, help='A scaling factor for the colour mapping.', default=1.0)(func)
-    click.option('--out-file', default='unfold.png', help='Name of the output file.')(func)
+    click.option('--vscale', type=float, help='A scaling factor for the colour mapping.', default=1.0, show_default=True)(func)
+    click.option('--out-file', default='unfold.png', help='Name of the output file.', show_default=True)(func)
     click.option('--cmap',
                  default='PuRd',
                  help='Name of the colour map(s) to use. Passing a list separated by "|" for the '
@@ -172,7 +228,10 @@ def add_plot_options(func):
                  'related kpoints for '
                  'averaging.',
                  show_default=True)(func)
-    click.option('--procar', multiple=True, help='PROCAR files used for atomic weighting')(func)
+    click.option('--procar',
+                 multiple=True,
+                 help=('PROCAR files used for atomic weighting, '
+                       'can be passed multiple times if more than one PROCAR should be used.'))(func)
     click.option('--atoms-idx', help='Indices of the atoms to be used for weighting (1-indexed).')(func)
     click.option('--orbitals', help='Orbitals of to be used for weighting.')(func)
     click.option('--title', help='Title to be used')(func)
@@ -181,26 +240,37 @@ def add_plot_options(func):
 
 @unfold.command('effective-mass')
 @click.pass_context
-@click.option('--intensity-tol', type=float, default=0.1)
-@click.option('--spin', type=int, default=0)
-@click.option('--npoints', type=int, default=3)
-@click.option('--extrema-detect-tol', type=float, default=0.01)
-@click.option('--degeneracy-detect-tol', type=float, default=0.01)
-@click.option('--nocc', type=int)
+@click.option('--intensity-threshold', type=float, default=0.1, help='Intensity threshold for detecting valid bands.', show_default=True)
+@click.option('--spin', type=int, default=0, help='Index of the spin channel.', show_default=True)
+@click.option('--npoints', type=int, default=3, help='Number of kpoints used for fitting from the extrema.', show_default=True)
+@click.option('--extrema-detect-tol', type=float, default=0.01, help='Tolerance for band extrema detection.', show_default=True)
+@click.option('--degeneracy-detect-tol',
+              type=float,
+              default=0.01,
+              help='Tolerance for band degeneracy detection at extrema.',
+              show_default=True)
+@click.option('--nocc', type=int, help='DEV: Use this band as the extrema at all kpoints.')
 @click.option('--plot', is_flag=True, default=False)
-@click.option('--out-file', default='unfold-effective-mass.png', help='Name of the output file.')
-def unfold_effective_mass(ctx, intensity_tol, spin, npoints, extrema_detect_tol, degeneracy_detect_tol, nocc, plot, out_file):
+@click.option('--plot-fit', is_flag=True, default=False, help='Generate plots of the band edge and parabolic fits.')
+@click.option('--fit-label', help='Which branch to use for plot fitting. e.g. electrons:0', default='electrons:0', show_default=True)
+@click.option('--band-filter', default=None, type=int, help='Only displace information for this band.')
+@click.option('--out-file', default='unfold-effective-mass.png', help='Name of the output file.', show_default=True)
+def unfold_effective_mass(ctx, intensity_threshold, spin, band_filter, npoints, extrema_detect_tol, degeneracy_detect_tol, nocc, plot,
+                          plot_fit, fit_label, out_file):
     """
     Compute and print effective masses by tracing the unfolded weights.
 
     Note that this functionality only works for simple unfolded band structures,
     and it is likely to fail for complex cases.
+
+    Use the ``--plot-fit`` flag to generate the detected band edge verses the parabolic fit
+    for visual confirmation if unsure.
     """
     from easyunfold.effective_mass import EffectiveMass
     from easyunfold.unfold import UnfoldKSet
     from tabulate import tabulate
     unfoldset: UnfoldKSet = ctx.obj['obj']
-    efm = EffectiveMass(unfoldset, intensity_tol=intensity_tol, extrema_tol=extrema_detect_tol, degeneracy_tol=degeneracy_detect_tol)
+    efm = EffectiveMass(unfoldset, intensity_tol=intensity_threshold, extrema_tol=extrema_detect_tol, degeneracy_tol=degeneracy_detect_tol)
 
     click.echo('Band extrema data:')
     table = []
@@ -215,11 +285,16 @@ def unfold_effective_mass(ctx, intensity_tol, spin, npoints, extrema_detect_tol,
         efm.set_nocc(nocc)
     output = efm.get_effective_masses(ispin=spin, npoints=npoints)
 
+    # Filter by band if requested
+    if band_filter is not None:
+        for carrier in ['electrons', 'holes']:
+            output[carrier] = [entry for entry in output[carrier] if entry['band_index'] == band_filter]
+
     ## Print data
     def print_data(entries, tag='me'):
         """Print the effective mass data"""
         table = []
-        for entry in entries:
+        for i, entry in enumerate(entries):
             me = entry['effective_mass']
 
             kf = entry['kpoint_from']
@@ -229,10 +304,9 @@ def unfold_effective_mass(ctx, intensity_tol, spin, npoints, extrema_detect_tol,
             kt = [round(x, 5) for x in entry['kpoint_to']]
             lt = entry['kpoint_label_to']
             kto = f'{kt} ({lt})'
-            band_idx = entry['band_index']
-            #click.echo(f'   {tag} (@band {band_idx}): {me:>8.3f} {kf} ({lf}) -> {kt} ({lt})')
-            table.append([tag, me, band_idx, kfrom, kto])
-        click.echo(tabulate(table, headers=['Kind', 'Effective mass', 'Band index', 'from', 'to']))
+            bidx = entry['band_index']
+            table.append([i, tag, me, bidx, kfrom, kto])
+        click.echo(tabulate(table, headers=['index', 'Kind', 'Effective mass', 'Band index', 'from', 'to']))
 
     click.echo('Electron effective masses:')
     print_data(output['electrons'], 'm_e')
@@ -249,6 +323,20 @@ def unfold_effective_mass(ctx, intensity_tol, spin, npoints, extrema_detect_tol,
         engs, sf = unfoldset.get_spectral_function()
         plotter.plot_effective_mass(efm, engs, sf, effective_mass_data=output, save=out_file)
 
+    elif plot_fit:
+        from easyunfold.plotting import UnfoldPlotter
+        plotter = UnfoldPlotter(unfoldset)
+        carrier, idx = fit_label.split(':')
+        fname = Path(out_file).stem
+        ext = Path(out_file).suffix
+        for carrier in ['electrons', 'holes']:
+            for idx, _ in enumerate(output[carrier]):
+                plotter.plot_effective_mass_fit(efm=efm,
+                                                npoints=npoints,
+                                                carrier=carrier,
+                                                idx=int(idx),
+                                                save=fname + f'_fit_{carrier}_{idx}' + ext)
+
 
 @unfold.command('plot')
 @click.pass_context
@@ -258,7 +346,7 @@ def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cm
     """
     Plot the spectral function
 
-    This command uses the stored unfolding data to plot the effective bands structure (EBS).
+    This command uses the stored unfolding data to plot the effective bands structure (EBS) using the spectral function.
     """
     _unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, procar, atoms_idx,
                  orbitals, title)
@@ -273,7 +361,7 @@ def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cm
 def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, procar,
                             atoms_idx, orbitals, title, combined, intensity, colors):
     """
-    Plot with subplots with multiple atomic projections
+    Plot the effective band structure with atomic projections.
     """
     from easyunfold.unfold import UnfoldKSet
     from easyunfold.plotting import UnfoldPlotter
@@ -327,9 +415,7 @@ def _unfold_plot(ctx,
                  title,
                  ax=None):
     """
-    Plot the spectral function
-
-    This command uses the stored unfolding data to plot the effective bands structure (EBS).
+    Routine for plotting the spectral function.
     """
     from easyunfold.unfold import UnfoldKSet
     from easyunfold.plotting import UnfoldPlotter
@@ -412,13 +498,3 @@ def matrix_from_string(string):
     else:
         transform_matrix = np.array(elems).reshape((3, 3))
     return transform_matrix
-
-
-def process_projection_options(atoms_idx, orbitals):
-    """Process commandline type specifications"""
-    indices = parse_atoms_idx(atoms_idx)
-    if orbitals and orbitals != 'all':
-        orbitals = [token.strip() for token in orbitals.split(',')]
-    else:
-        orbitals = 'all'
-    return indices, orbitals
