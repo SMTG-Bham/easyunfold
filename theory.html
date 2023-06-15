@@ -48,7 +48,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'theory';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="CLI Reference" href="cli.html" />
+    <link rel="next" title="References" href="references.html" />
     <link rel="prev" title="Unfolding a Si 2x1x1 supercell using CASTEP" href="examples/example_si211_castep.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -177,18 +177,20 @@
 </ul>
 </li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Theory of unfolding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="publications.html">Publications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cli.html">CLI Reference</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/index.html">API Reference</a><input checked class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="apidocs/easyunfold/easyunfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.plotting.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.plotting</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.cli.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.cli</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.procar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.procar</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.effective_mass.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.effective_mass</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.utils</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.vasp_constant.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.vasp_constant</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.wavecar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavecar</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.unfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.unfold</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.wavefun.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavefun</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.procar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.procar</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.cli.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.cli</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.plotting.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.plotting</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.vasp_constant.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.vasp_constant</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.unfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.unfold</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.utils</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.effective_mass.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.effective_mass</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -368,8 +370,10 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="theory-of-unfolding">
 <h1>Theory of unfolding<a class="headerlink" href="#theory-of-unfolding" title="Permalink to this heading">#</a></h1>
-<p>Notation: <span class="math notranslate nohighlight">\(\vec{k}\)</span> is the kpoint of the supercell and <span class="math notranslate nohighlight">\(\vec{k}\)</span> is that of the primitive cell.
-Reference: <a class="reference external" href="https://link.aps.org/doi/10.1103/PhysRevB.85.085201">https://link.aps.org/doi/10.1103/PhysRevB.85.085201</a></p>
+<p>Theoretical background of the methodology used in this package is available in the literature<a class="footnote-reference brackets" href="#id3" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a><a class="footnote-reference brackets" href="#id4" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>.
+Here, only a brief summary is given for brevity.</p>
+<p>Notation: <span class="math notranslate nohighlight">\(\vec{k}\)</span> is the kpoint of the supercell and <span class="math notranslate nohighlight">\(\vec{k}\)</span> is that of the primitive cell.</p>
+<p>Reference: <a class="reference external" href="https://link.aps.org/doi/10.1103/PhysRevB.85.085201">https://link.aps.org/doi/10.1103/PhysRevB.85.085201</a></p>
 <p>Each <span class="math notranslate nohighlight">\(k\)</span> in the primitive cell can be mapped to that in the supercell where:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -379,7 +383,7 @@ Reference: <a class="reference external" href="https://link.aps.org/doi/10.1103/
 Naturally, each <span class="math notranslate nohighlight">\(\vec{K}\)</span> in the supercell can be unfolded into a set of <span class="math notranslate nohighlight">\(\vec{k}_i\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[
-\vec{k_i} = \vec{K} + \vec{G}_i, i=1,...,N_\vec{K}.
+\vec{k_i} = \vec{K} + \vec{G}_i  i=1,...,N_{\vec{K}}
 \]</div>
 <p>The key implication is that for a given <span class="math notranslate nohighlight">\(\vec{k}\)</span>, there is a unique <span class="math notranslate nohighlight">\(\vec{K}\)</span> that it folds to.</p>
 <p>The goal of the band folding procedure is to obtain the <span class="math notranslate nohighlight">\(E(\vec{k})\)</span> from the complicated <span class="math notranslate nohighlight">\(E(\vec{K})\)</span>, where E is the energy of the Kohn-Sham states.
@@ -388,8 +392,8 @@ This can be achieved by projecting <span class="math notranslate nohighlight">\(
 \[
 P_{\vec{K}m}(\vec{k}_i) = \sum_n |\braket{\vec{K}m |\vec{k}_i n}|^2.
 \]</div>
-<p>where <span class="math notranslate nohighlight">\(P\)</span> represents the probability of finding a set of primitive cell stats <span class="math notranslate nohighlight">\(\ket{\vec{k}_in}\)</span> contributing to the supercell state <span class="math notranslate nohighlight">\(\ket{\vec{K}m}\)</span>, or the amount of Bloch character <span class="math notranslate nohighlight">\(\vec{k}_i\)</span> preserved in <span class="math notranslate nohighlight">\(\ket{\vec{K}m}\)</span> at the same energy.
-Based on this, one can further dervice the spectral function of <span class="math notranslate nohighlight">\(E\)</span>:</p>
+<p>where <span class="math notranslate nohighlight">\(P\)</span> represents the probability of finding a set of primitive cell stats <span class="math notranslate nohighlight">\(\ket{\vec{k}_in}\)</span> contributing to the supercell state <span class="math notranslate nohighlight">\(\ket{\vec{K}m}\)</span>, or the amount of Bloch character <span class="math notranslate nohighlight">\(\vec{k}_i\)</span> preserved in <span class="math notranslate nohighlight">\(\ket{\vec{K}m}\)</span> at the same energy.</p>
+<p>Based on this, one can further derive the spectral function of <span class="math notranslate nohighlight">\(E\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[
 A(\vec{k}_i, E) = \sum_m P_{\vec{K}m}(\vec{k}_i)\delta(E_m - E).
@@ -401,16 +405,30 @@ For plane-wave basis, it can shown that (equation 15 in Popescu et al.):</p>
 \[
 P_{\vec{K}m}(\vec{k}_j) = \sum_{\vec{g}} |C_{\vec{Km}}(\vec{g} + \vec{G_j})|^2,
 \]</div>
-<p>where <span class="math notranslate nohighlight">\(C_{\vec{Km}}(\vec{g} + \vec{G_j})\)</span> the plane wave coefficients of the supercell.</p>
+<p>where <span class="math notranslate nohighlight">\(C_{\vec{Km}}(\vec{g} + \vec{G_j})\)</span> are the plane wave coefficients of the supercell.
+Because the supercell is commensurate with the primitive cell, the vectors <span class="math notranslate nohighlight">\(\vec{g}\)</span> are included in the basis set of the supercell calculations.
+Since <span class="math notranslate nohighlight">\(\vec{G_{j}}\)</span> is the reciprocal lattice vector that wraps <span class="math notranslate nohighlight">\(\vec{k}\)</span> to <span class="math notranslate nohighlight">\(\vec{K}\)</span>,
+all plane wave coefficients that are needed to obtain <span class="math notranslate nohighlight">\(P_{\vec{K}_m}(\vec{k}_j)\)</span> are present in the wave function output of the supercell calculation.</p>
 <section id="symmetry-considerations">
 <h2>Symmetry considerations<a class="headerlink" href="#symmetry-considerations" title="Permalink to this heading">#</a></h2>
-<p>In practice, the set of primitive cell kpoints <span class="math notranslate nohighlight">\(\vec{k}_i\)</span> is taken from a given path in the Brouline zone going through multiple high symmetry points.
-This selection of the path depends on the space group of the primitive cell.
-Only a limited set of paths are needed because of the presence of point group symmetry, as symmetrically equivalent kpoints contains the same eigenstates.</p>
-<p>However, the supercell to be unfolded often contains reduced point group symmetry compared to that of the primitive cell due to imperfections (presence of defects, strain, distorations e.t.c).
-This broken symmetry means that previously equivalent kpoints are no longer equivalent.</p>
-<p>We account of this by including images of the primitive kpoints that are no longer equivalent under the point group of that of the supercell.
-Weighted contributions of these extra kpoints are added to the spectral function.</p>
+<p>The set of primitive cell kpoints <span class="math notranslate nohighlight">\(\vec{k}_i\)</span> are located on a given path in the Brillouin zone, going through multiple high symmetry points.
+The selection of the path is not unique, but often depends on the space group of the primitive cell.
+Only a limited set of paths are needed because of the presence of point group symmetry, as symmetrically equivalent <span class="math notranslate nohighlight">\(\vec{k}\)</span> contains the same eigenstates.</p>
+<p>However, the supercell to be unfolded does not necessarily contain the same point group symmetry due to imperfections (presence of defects, strain, distortions).
+The broken symmetry means that previously equivalent <span class="math notranslate nohighlight">\(\vec{k}\)</span> are no longer equivalent.</p>
+<p>We address this by first expanding each <span class="math notranslate nohighlight">\(\vec{k}\)</span> based on the symmetry operations of the primitive cell, followed by a reduction using the symmetry of the supercell.
+The spectral weight at each <span class="math notranslate nohighlight">\(\vec{k}\)</span> is then a weighted combination of that from a set of <span class="math notranslate nohighlight">\(\vec{k_s^\prime}\)</span> points that are inequivalent under the symmetry of the supercell.</p>
+<hr class="footnotes docutils" />
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id3" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Popescu, V.; Zunger, A. Effective Band Structure of Random Alloys. Phys. Rev. Lett. 2010, 104 (23), 236403. <a class="reference external" href="https://doi.org/10.1103/PhysRevLett.104.236403">https://doi.org/10.1103/PhysRevLett.104.236403</a>.</p>
+</aside>
+<aside class="footnote brackets" id="id4" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
+<p>Popescu, V.; Zunger, A. Extracting <span class="math notranslate nohighlight">\(E\)</span> versus <span class="math notranslate nohighlight">\(\vec{k}\)</span> Effective Band Structure from Supercell Calculations on Alloys and Impurities. Phys. Rev. B 2012, 85 (8), 085201. <a class="reference external" href="https://doi.org/10.1103/PhysRevB.85.085201">https://doi.org/10.1103/PhysRevB.85.085201</a>.</p>
+</aside>
+</aside>
 </section>
 </section>
 
@@ -436,11 +454,11 @@ Weighted contributions of these extra kpoints are added to the spectral function
       </div>
     </a>
     <a class="right-next"
-       href="cli.html"
+       href="references.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">CLI Reference</p>
+        <p class="prev-next-title">References</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
