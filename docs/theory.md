@@ -14,7 +14,7 @@ with $\vec{G}_0$ being an reciprocal lattice vector.
 Naturally, each $\vec{K}$ in the supercell can be unfolded into a set of $\vec{k}_i$:
 
 $$
-\vec{k_i} = \vec{K} + \vec{G}_i, i=1,...,N_\vec{K}.
+\vec{k_i} = \vec{K} + \vec{G}_i  i=1,...,N_{\vec{K}}
 $$
 
 The key implication is that for a given $\vec{k}$, there is a unique $\vec{K}$ that it folds to.
@@ -27,7 +27,8 @@ P_{\vec{K}m}(\vec{k}_i) = \sum_n |\braket{\vec{K}m |\vec{k}_i n}|^2.
 $$
 
 where $P$ represents the probability of finding a set of primitive cell stats $\ket{\vec{k}_in}$ contributing to the supercell state $\ket{\vec{K}m}$, or the amount of Bloch character $\vec{k}_i$ preserved in $\ket{\vec{K}m}$ at the same energy. 
-Based on this, one can further dervice the spectral function of $E$:
+
+Based on this, one can further derive the spectral function of $E$:
 
 $$
 A(\vec{k}_i, E) = \sum_m P_{\vec{K}m}(\vec{k}_i)\delta(E_m - E).
@@ -42,17 +43,20 @@ $$
 P_{\vec{K}m}(\vec{k}_j) = \sum_{\vec{g}} |C_{\vec{Km}}(\vec{g} + \vec{G_j})|^2,
 $$
 
-where $C_{\vec{Km}}(\vec{g} + \vec{G_j})$ the plane wave coefficients of the supercell. 
+where $C_{\vec{Km}}(\vec{g} + \vec{G_j})$ are the plane wave coefficients of the supercell.
+Because the supercell is commensurate with the primitive cell, the vectors $\vec{g}$ are included in the basis set of the supercell calculations. 
+Since $\vec{G_{j}}$ is the reciprocal lattice vector that wraps $\vec{k}$ to $\vec{K}$,
+all plane wave coefficients that are needed to obtain $P_{\vec{K}_m}(\vec{k}_j)$ are present in the wave function output of the supercell calculation. 
 
 
 ## Symmetry considerations
 
-In practice, the set of primitive cell kpoints $\vec{k}_i$ is taken from a given path in the Brouline zone going through multiple high symmetry points. 
-This selection of the path depends on the space group of the primitive cell.
-Only a limited set of paths are needed because of the presence of point group symmetry, as symmetrically equivalent kpoints contains the same eigenstates. 
+The set of primitive cell kpoints $\vec{k}_i$ are located on a given path in the Brillouin zone, going through multiple high symmetry points. 
+The selection of the path is not unique, but often depends on the space group of the primitive cell.
+Only a limited set of paths are needed because of the presence of point group symmetry, as symmetrically equivalent $\vec{k}$ contains the same eigenstates. 
 
-However, the supercell to be unfolded often contains reduced point group symmetry compared to that of the primitive cell due to imperfections (presence of defects, strain, distorations e.t.c).
-This broken symmetry means that previously equivalent kpoints are no longer equivalent. 
+However, the supercell to be unfolded does not necessarily contain the same point group symmetry due to imperfections (presence of defects, strain, distortions).
+The broken symmetry means that previously equivalent $\vec{k}$ are no longer equivalent. 
 
-We account of this by including images of the primitive kpoints that are no longer equivalent under the point group of that of the supercell. 
-Weighted contributions of these extra kpoints are added to the spectral function. 
+We address this by first expanding each $\vec{k}$ based on the symmetry operations of the primitive cell, followed by a reduction using the symmetry of the supercell.
+The spectral weight at each $\vec{k}$ is then a weighted combination of that from a set of $\vec{k_s^\prime}$ points that are inequivalent under the symmetry of the supercell.
