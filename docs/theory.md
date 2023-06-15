@@ -1,7 +1,10 @@
 # Theory of unfolding
 
+Theoretical background of the methodology used in this package is available in the literature[^1][^2].
+Here, only a brief summary is given for brevity.
 
 Notation: $\vec{k}$ is the kpoint of the supercell and $\vec{k}$ is that of the primitive cell. 
+
 Reference: [https://link.aps.org/doi/10.1103/PhysRevB.85.085201](https://link.aps.org/doi/10.1103/PhysRevB.85.085201)  
 
 Each $k$ in the primitive cell can be mapped to that in the supercell where:
@@ -60,3 +63,6 @@ The broken symmetry means that previously equivalent $\vec{k}$ are no longer equ
 
 We address this by first expanding each $\vec{k}$ based on the symmetry operations of the primitive cell, followed by a reduction using the symmetry of the supercell.
 The spectral weight at each $\vec{k}$ is then a weighted combination of that from a set of $\vec{k_s^\prime}$ points that are inequivalent under the symmetry of the supercell.
+
+[^1]: Popescu, V.; Zunger, A. Effective Band Structure of Random Alloys. Phys. Rev. Lett. 2010, 104 (23), 236403. https://doi.org/10.1103/PhysRevLett.104.236403.
+[^2]: Popescu, V.; Zunger, A. Extracting $E$ versus $\vec{k}$ Effective Band Structure from Supercell Calculations on Alloys and Impurities. Phys. Rev. B 2012, 85 (8), 085201. https://doi.org/10.1103/PhysRevB.85.085201.

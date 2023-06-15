@@ -59,7 +59,7 @@ A key feature of `easyunfold` is to provide data serialization complying the FAI
 Both the input settings and calculated spectral weights are stored as a single JSON file.
 This enables the unfolded band structure to be re-plotted and further analysed without reprocessing the wave function data.
 In addition, multi-file wave function support allows DFT calculations to be performed in a flexible way,
-which is essential for improving parallel efficiency using resource-hungry hybrid functionals.
+which is essential for improving parallel efficiency using resource-hungry hybrid functional.
 
 We chose Python as the programming language due to its low entry-barrier, flexibility and popularity in the materials modelling field.
 An object-oriented approach is used when designing the package to allow abstractions when reading and process wave function data.

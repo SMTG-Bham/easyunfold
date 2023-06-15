@@ -1,4 +1,5 @@
 # Guide
+
 Main goal of this tool is to make the unfolding process easier.
 To generate a unfolded band structure, one typically needs to perform the following step:
 
@@ -13,8 +14,9 @@ In both cases, its symmetry is lowered when compared to the perfect primitive ce
 Hence, for a given kpoint path in the primitive cell, additional kpoints may need to be sampled, and the extracted spectral weights need to be averaged in the end to obtained the effective band structure (EBS).
 
 
-At the moment, only VASP calculations are supported, although in principle other PW code can be supported easily if the wavefunction can be read in.
-Use of VASP is assumed for the guide below.
+At the moment, two plane wave DFT codes, VASP[^vasp] and CASTEP[^castep], are supported. In principle, other PW code can be supported easily if the wavefunction can be read in.
+
+Below is a guide for performing unfolding when using VASP.
 
 ## Step 1 - Generate the kpoints path of the primitive cell
 
@@ -139,3 +141,7 @@ easyunfold unfold plot
 
 to generate a plot of the spectral function.
 It is possible to further customise the plot though command line arguments - see the help with `easyunfold unfold plot --help`.
+
+
+[^vasp]: https://www.vasp.at
+[^castep]: http://www.castep.org
