@@ -9,7 +9,7 @@ from ase.io import read
 
 from easyunfold.unfold import process_projection_options
 
-# pylint:disable=import-outside-toplevel,too-many-locals
+# pylint:disable=import-outside-toplevel,too-many-locals,too-many-arguments
 
 SUPPORTED_DFT_CODES = ('vasp', 'castep')
 
@@ -206,8 +206,8 @@ def unfold_calculate(ctx, wavefunc, save_as, gamma, ncl):
 
 def add_plot_options(func):
     """Added common plotting options to a function"""
-    click.option('--gamma', is_flag=True, help='Is the calculation a gamma only one?')(func)
-    click.option('--ncl', is_flag=True, help='Is the calculation with non-colinear spin?')(func)
+    click.option('--gamma', is_flag=True, help='Is the calculation a gamma only one?', show_default=True)(func)
+    click.option('--ncl', is_flag=True, help='Is the calculation with non-colinear spin?', show_default=True)(func)
     click.option('--npoints', type=int, default=2000, help='Number of bins for the energy.', show_default=True)(func)
     click.option('--sigma', type=float, default=0.02, help='Smearing width for the energy in ' 'eV.', show_default=True)(func)
     click.option('--eref', type=float, help='Reference energy in eV.')(func)
@@ -235,6 +235,8 @@ def add_plot_options(func):
     click.option('--atoms-idx', help='Indices of the atoms to be used for weighting (1-indexed).')(func)
     click.option('--orbitals', help='Orbitals of to be used for weighting.')(func)
     click.option('--title', help='Title to be used')(func)
+    click.option('--width', help='Width of the figure', type=float, default=4., show_default=True)(func)
+    click.option('--height', help='Height of the figure', type=float, default=3., show_default=True)(func)
     return func
 
 
@@ -342,14 +344,14 @@ def unfold_effective_mass(ctx, intensity_threshold, spin, band_filter, npoints, 
 @click.pass_context
 @add_plot_options
 def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, procar, atoms_idx,
-                orbitals, title):
+                orbitals, title, width, height):
     """
     Plot the spectral function
 
     This command uses the stored unfolding data to plot the effective bands structure (EBS) using the spectral function.
     """
     _unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, procar, atoms_idx,
-                 orbitals, title)
+                 orbitals, title, width, height)
 
 
 @unfold.command('plot-projections')
@@ -359,7 +361,7 @@ def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cm
 @click.option('--intensity', default=1.0, help='Color intensity for combined plot', type=float, show_default=True)
 @click.option('--colors', help='Colors to be used for combined plot, comma separated')
 def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, procar,
-                            atoms_idx, orbitals, title, combined, intensity, colors):
+                            atoms_idx, orbitals, title, combined, intensity, colors, width, height):
     """
     Plot the effective band structure with atomic projections.
     """
@@ -386,6 +388,7 @@ def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, em
                                  vscale=vscale,
                                  use_subplot=not combined,
                                  intensity=intensity,
+                                 figsize=(width, height),
                                  colors=colors.split(',') if colors is not None else None)
 
     if out_file:
@@ -413,6 +416,8 @@ def _unfold_plot(ctx,
                  atoms_idx,
                  orbitals,
                  title,
+                 width,
+                 height,
                  ax=None):
     """
     Routine for plotting the spectral function.
@@ -457,6 +462,7 @@ def _unfold_plot(ctx,
     fig = plotter.plot_spectral_function(eng,
                                          spectral_function,
                                          eref=eref,
+                                         figsize=(width, height),
                                          save=out_file,
                                          show=False,
                                          ylim=(emin, emax),
