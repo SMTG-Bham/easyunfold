@@ -193,7 +193,13 @@ class UnfoldPlotter:
         sf[:, :, :, 3] = alpha
 
         for ispin, ax_ in zip(range(nspin), axes):
-            ax_.imshow(sf[ispin], extent=[0, sf.shape[2], max(engs) - eref, min(engs) - eref], aspect='auto')
+            # plt.imshow's pixel coordinates are not at the center of the pixel
+            # Hence, the `extent`` need to update so teh center of the pixel is aligned with the coordinates.
+            extent = np.array([0, sf.shape[2], max(engs) - eref, min(engs) - eref])
+            ebin = (max(engs) - min(engs)) / sf.shape[1]
+            extent[:2] -= 0.5
+            extent[2:] -= ebin * 0.5
+            ax_.imshow(sf[ispin], extent=extent, aspect='auto', origin='upper')
             ax_.set_ylim(ylim)
             ax_.set_ylabel('Energy (eV)', labelpad=5)
             ax_.set_title(title)

@@ -25,8 +25,9 @@ The only difference is that we turn on the calculation of orbital projections wi
 When plotting the unfolded band, the `plot-projections` subcommand is used:
 
 ```bash
-easyunfold unfold plot-projections  --procar MgO_super/PROCAR \ 
---atoms-idx="1-4|5-8" --out-file unfold_project.png --combined --cmap="Greens|Reds"
+easyunfold unfold plot-projections  --procar MgO_super/PROCAR \
+--atoms-idx="1-4|5-8" --out-file unfold_project.png --combined --cmap="Greens|Reds" \
+--emin=-15 --emax=15
 ```
 
 Note that the path of the `PROCAR` is passed along with the group of atoms.
@@ -55,8 +56,8 @@ Unfolded MgO band structure with projections. Green for Mg atoms and red for O a
 In some cases, especially if there are many projection to be plotted at the same time, it can be clearer to create separated plots for each.
 
 ```bash
-easyunfold unfold plot-projections  --procar MgO_super/PROCAR --atoms-idx="1-4|5-8" \ 
---out-file unfold_project_sep.png
+easyunfold unfold plot-projections  --procar MgO_super/PROCAR --atoms-idx="1-4|5-8" \
+--out-file unfold_project_sep.png --emax=22 --emin=-18
 ```
 
 ```{figure} ../../examples/MgO/unfold_project_sep.png
@@ -65,9 +66,3 @@ easyunfold unfold plot-projections  --procar MgO_super/PROCAR --atoms-idx="1-4|5
 
 Unfolded MgO band structure with projections plotted separately
 ```
-
-
-
-
-
-
