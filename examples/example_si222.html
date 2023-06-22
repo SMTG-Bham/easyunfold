@@ -180,14 +180,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../cli.html">CLI Reference</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../apidocs/index.html">API Reference</a><input checked class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.wavecar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavecar</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.wavefun.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavefun</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.procar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.procar</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.cli.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.cli</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.plotting.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.plotting</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.vasp_constant.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.vasp_constant</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.wavecar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavecar</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.unfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.unfold</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.procar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.procar</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.wavefun.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavefun</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.utils</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.vasp_constant.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.vasp_constant</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.effective_mass.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.effective_mass</span></code></a></li>
 </ul>
 </li>
@@ -435,6 +435,7 @@ cp<span class="w"> </span>KPOINTS_easyunfold<span class="w"> </span>KPOINTS
 mpirun<span class="w"> </span>-np<span class="w"> </span><span class="m">4</span><span class="w"> </span>vasp_std<span class="w"> </span>
 </pre></div>
 </div>
+<p>Alternatively, there is a <code class="docutils literal notranslate"><span class="pre">run.sh</span></code> script can be used to perform the operations above.</p>
 </section>
 <section id="perform-unfolding">
 <h2>Perform unfolding<a class="headerlink" href="#perform-unfolding" title="Permalink to this heading">#</a></h2>
@@ -446,8 +447,7 @@ mpirun<span class="w"> </span>-np<span class="w"> </span><span class="m">4</span
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>If you don’t wnat to run the VASP calculation by yourself, the calculated <code class="docutils literal notranslate"><span class="pre">WAVECAR</span></code> and <code class="docutils literal notranslate"><span class="pre">vasprun.xml</span></code> for this example with:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>wget -o Si_super_deformed/WAVECAR https://www.dropbox.com/s/3cmn2epw7d290jd/WAVECAR?dl=1
-wget -o Si_super_deformed/vasprun.xml https://www.dropbox.com/s/ota78qqdvxsehmi/vasprun.xml?dl=1
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>wget -O Si_super_deformed/WAVECAR https://www.dropbox.com/s/3cmn2epw7d290jd/WAVECAR?dl=1
 </pre></div>
 </div>
 </div>
@@ -482,7 +482,7 @@ wget -o Si_super_deformed/vasprun.xml https://www.dropbox.com/s/ota78qqdvxsehmi/
 <span class="nb">cd</span><span class="w"> </span>Si_super_deformed
 mpirun<span class="w"> </span>-np<span class="w"> </span><span class="m">4</span><span class="w"> </span>vasp_std
 <span class="nb">cd</span><span class="w"> </span>../
-easyunfold<span class="w"> </span>--help<span class="w"> </span>no-expand.json<span class="w"> </span>calculate<span class="w"> </span>Si_super_deformed/WAVECAR
+easyunfold<span class="w"> </span>unfold<span class="w"> </span>--data-file<span class="w">  </span>no-expand.json<span class="w"> </span>calculate<span class="w"> </span>Si_super_deformed/WAVECAR
 easyunfold<span class="w"> </span>unfold<span class="w"> </span>--data-file<span class="w">  </span>no-expand.json<span class="w">  </span>plot<span class="w"> </span>--out-file<span class="w"> </span>unfold_no-expand.png
 </pre></div>
 </div>

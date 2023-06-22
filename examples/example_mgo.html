@@ -180,14 +180,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../cli.html">CLI Reference</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../apidocs/index.html">API Reference</a><input checked class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.wavecar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavecar</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.wavefun.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavefun</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.procar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.procar</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.cli.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.cli</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.plotting.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.plotting</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.vasp_constant.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.vasp_constant</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.wavecar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavecar</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.unfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.unfold</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.procar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.procar</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.wavefun.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavefun</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.utils</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.vasp_constant.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.vasp_constant</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.effective_mass.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.effective_mass</span></code></a></li>
 </ul>
 </li>
@@ -375,8 +375,9 @@ This can be done for unfolded bands as well.</p>
 <p>In this example, we unfold the bands from a MgO 2x1x2 supercell with the first Mg atom displaced. The procedure is essentially the same as the Si supercell example.</p>
 <p>The only difference is that we turn on the calculation of orbital projections with <code class="docutils literal notranslate"><span class="pre">LORBIT=11</span></code> in the <code class="docutils literal notranslate"><span class="pre">INCAR</span></code> file.</p>
 <p>When plotting the unfolded band, the <code class="docutils literal notranslate"><span class="pre">plot-projections</span></code> subcommand is used:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot-projections<span class="w">  </span>--procar<span class="w"> </span>MgO_super/PROCAR<span class="w"> </span><span class="se">\ </span>
---atoms-idx<span class="o">=</span><span class="s2">&quot;1-4|5-8&quot;</span><span class="w"> </span>--out-file<span class="w"> </span>unfold_project.png<span class="w"> </span>--combined<span class="w"> </span>--cmap<span class="o">=</span><span class="s2">&quot;Greens|Reds&quot;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot-projections<span class="w">  </span>--procar<span class="w"> </span>MgO_super/PROCAR<span class="w"> </span><span class="se">\</span>
+--atoms-idx<span class="o">=</span><span class="s2">&quot;1-4|5-8&quot;</span><span class="w"> </span>--out-file<span class="w"> </span>unfold_project.png<span class="w"> </span>--combined<span class="w"> </span>--cmap<span class="o">=</span><span class="s2">&quot;Greens|Reds&quot;</span><span class="w"> </span><span class="se">\</span>
+--emin<span class="o">=</span>-15<span class="w"> </span>--emax<span class="o">=</span><span class="m">15</span>
 </pre></div>
 </div>
 <p>Note that the path of the <code class="docutils literal notranslate"><span class="pre">PROCAR</span></code> is passed along with the group of atoms.
@@ -398,8 +399,8 @@ projections into a single plot.</p>
 </figcaption>
 </figure>
 <p>In some cases, especially if there are many projection to be plotted at the same time, it can be clearer to create separated plots for each.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot-projections<span class="w">  </span>--procar<span class="w"> </span>MgO_super/PROCAR<span class="w"> </span>--atoms-idx<span class="o">=</span><span class="s2">&quot;1-4|5-8&quot;</span><span class="w"> </span><span class="se">\ </span>
---out-file<span class="w"> </span>unfold_project_sep.png
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot-projections<span class="w">  </span>--procar<span class="w"> </span>MgO_super/PROCAR<span class="w"> </span>--atoms-idx<span class="o">=</span><span class="s2">&quot;1-4|5-8&quot;</span><span class="w"> </span><span class="se">\</span>
+--out-file<span class="w"> </span>unfold_project_sep.png<span class="w"> </span>--emax<span class="o">=</span><span class="m">22</span><span class="w"> </span>--emin<span class="o">=</span>-18
 </pre></div>
 </div>
 <figure class="align-default" id="id3">

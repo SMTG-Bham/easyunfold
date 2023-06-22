@@ -180,14 +180,14 @@
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">CLI Reference</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/index.html">API Reference</a><input checked class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="apidocs/easyunfold/easyunfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.wavecar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavecar</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.wavefun.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavefun</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.procar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.procar</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.cli.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.cli</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.plotting.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.plotting</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.vasp_constant.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.vasp_constant</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.wavecar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavecar</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.unfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.unfold</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.procar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.procar</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.wavefun.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavefun</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.utils</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.vasp_constant.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.vasp_constant</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.effective_mass.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.effective_mass</span></code></a></li>
 </ul>
 </li>
@@ -667,6 +667,28 @@ for visual confirmation if unsure.</p>
 </div>
 <p class="rubric">Options</p>
 <dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-height">
+<span class="sig-name descname"><span class="pre">--height</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;height&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-height" title="Permalink to this definition">#</a></dt>
+<dd><p>Height of the figure</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">3.0</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-width">
+<span class="sig-name descname"><span class="pre">--width</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;width&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-width" title="Permalink to this definition">#</a></dt>
+<dd><p>Width of the figure</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">4.0</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
 <dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-title">
 <span class="sig-name descname"><span class="pre">--title</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;title&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-title" title="Permalink to this definition">#</a></dt>
 <dd><p>Title to be used</p>
@@ -794,12 +816,22 @@ for visual confirmation if unsure.</p>
 <dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-ncl">
 <span class="sig-name descname"><span class="pre">--ncl</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-ncl" title="Permalink to this definition">#</a></dt>
 <dd><p>Is the calculation with non-colinear spin?</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="std option">
 <dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-gamma">
 <span class="sig-name descname"><span class="pre">--gamma</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-gamma" title="Permalink to this definition">#</a></dt>
 <dd><p>Is the calculation a gamma only one?</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -810,6 +842,28 @@ for visual confirmation if unsure.</p>
 </pre></div>
 </div>
 <p class="rubric">Options</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-projections-height">
+<span class="sig-name descname"><span class="pre">--height</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;height&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-projections-height" title="Permalink to this definition">#</a></dt>
+<dd><p>Height of the figure</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">3.0</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-projections-width">
+<span class="sig-name descname"><span class="pre">--width</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;width&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-projections-width" title="Permalink to this definition">#</a></dt>
+<dd><p>Width of the figure</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">4.0</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="std option">
 <dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-projections-title">
 <span class="sig-name descname"><span class="pre">--title</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;title&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-projections-title" title="Permalink to this definition">#</a></dt>
@@ -938,12 +992,22 @@ for visual confirmation if unsure.</p>
 <dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-projections-ncl">
 <span class="sig-name descname"><span class="pre">--ncl</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-projections-ncl" title="Permalink to this definition">#</a></dt>
 <dd><p>Is the calculation with non-colinear spin?</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="std option">
 <dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-projections-gamma">
 <span class="sig-name descname"><span class="pre">--gamma</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-projections-gamma" title="Permalink to this definition">#</a></dt>
 <dd><p>Is the calculation a gamma only one?</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="std option">

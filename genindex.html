@@ -177,14 +177,14 @@
 <li class="toctree-l1"><a class="reference internal" href="cli.html">CLI Reference</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/index.html">API Reference</a><input checked class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="apidocs/easyunfold/easyunfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.wavecar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavecar</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.wavefun.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavefun</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.procar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.procar</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.cli.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.cli</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.plotting.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.plotting</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.vasp_constant.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.vasp_constant</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.wavecar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavecar</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.unfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.unfold</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.procar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.procar</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.wavefun.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavefun</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.utils</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.vasp_constant.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.vasp_constant</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.effective_mass.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.effective_mass</span></code></a></li>
 </ul>
 </li>
@@ -450,6 +450,15 @@ document.write(`
 </li>
       </ul></li>
       <li>
+    --height
+
+      <ul>
+        <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-height">easyunfold-unfold-plot command line option</a>
+</li>
+        <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-projections-height">easyunfold-unfold-plot-projections command line option</a>
+</li>
+      </ul></li>
+      <li>
     --intensity
 
       <ul>
@@ -652,6 +661,15 @@ document.write(`
         <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-vscale">easyunfold-unfold-plot command line option</a>
 </li>
         <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-projections-vscale">easyunfold-unfold-plot-projections command line option</a>
+</li>
+      </ul></li>
+      <li>
+    --width
+
+      <ul>
+        <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-width">easyunfold-unfold-plot command line option</a>
+</li>
+        <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-projections-width">easyunfold-unfold-plot-projections command line option</a>
 </li>
       </ul></li>
       <li>
@@ -917,6 +935,8 @@ document.write(`
 </li>
         <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-gamma">--gamma</a>
 </li>
+        <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-height">--height</a>
+</li>
         <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-ncl">--ncl</a>
 </li>
         <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-no-symm-average">--no-symm-average</a>
@@ -936,6 +956,8 @@ document.write(`
         <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-title">--title</a>
 </li>
         <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-vscale">--vscale</a>
+</li>
+        <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-width">--width</a>
 </li>
       </ul></li>
   </ul></td>
@@ -960,6 +982,8 @@ document.write(`
 </li>
         <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-projections-gamma">--gamma</a>
 </li>
+        <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-projections-height">--height</a>
+</li>
         <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-projections-intensity">--intensity</a>
 </li>
         <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-projections-ncl">--ncl</a>
@@ -983,6 +1007,8 @@ document.write(`
         <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-projections-title">--title</a>
 </li>
         <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-projections-vscale">--vscale</a>
+</li>
+        <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-projections-width">--width</a>
 </li>
       </ul></li>
       <li>

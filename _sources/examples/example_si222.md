@@ -75,6 +75,8 @@ cp KPOINTS_easyunfold KPOINTS
 mpirun -np 4 vasp_std 
 ```
 
+Alternatively, there is a `run.sh` script can be used to perform the operations above.
+
 ## Perform unfolding
 
 Calculate the weights and record the VBM:
@@ -88,8 +90,7 @@ easyunfold unfold calculate Si_super_deformed/WAVECAR
 If you don't wnat to run the VASP calculation by yourself, the calculated `WAVECAR` and `vasprun.xml` for this example with:
 
 ```
-wget -o Si_super_deformed/WAVECAR https://www.dropbox.com/s/3cmn2epw7d290jd/WAVECAR?dl=1
-wget -o Si_super_deformed/vasprun.xml https://www.dropbox.com/s/ota78qqdvxsehmi/vasprun.xml?dl=1
+wget -O Si_super_deformed/WAVECAR https://www.dropbox.com/s/3cmn2epw7d290jd/WAVECAR?dl=1
 ```
 :::
 
@@ -137,7 +138,7 @@ cp KPOINTS_no-expand Si_super_deformed/KPOINTS
 cd Si_super_deformed
 mpirun -np 4 vasp_std
 cd ../
-easyunfold --help no-expand.json calculate Si_super_deformed/WAVECAR
+easyunfold unfold --data-file  no-expand.json calculate Si_super_deformed/WAVECAR
 easyunfold unfold --data-file  no-expand.json  plot --out-file unfold_no-expand.png
 ```
 
