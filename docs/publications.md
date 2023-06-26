@@ -1,5 +1,7 @@
 # Publications
 
+We'll add papers that use `easyunfold` to this list as they come out!
+
 * Nicolson, A.; Breternitz, J.; Kavanagh, S. R.; Tomm, Y.; Morita, K.; Squires, A. G.; Tovar, M.; Walsh,
   A.; Schorr, S.; Scanlon, D. O. Interplay of Static and Dynamic Disorder in the Mixed-Metal 
   Chalcohalide Sn$_2$SbS$_2$I$_3$. _J. Am. Chem. Soc._ **2023**. https://doi.org/10.1021/jacs.2c13336.

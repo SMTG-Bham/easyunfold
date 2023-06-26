@@ -52,7 +52,7 @@ Please see the [documentation](https://smtg-ucl.github.io/easyunfold/) for guide
 
 ## Installation
 
-### Install from pip
+### Install from `pip`
 
 `easyunfold` can be installed from `pip`:
 
