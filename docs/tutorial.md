@@ -22,7 +22,8 @@ slab.
 In all cases, the supercell symmetry is lowered compared to the pristine primitive cell.
 Hence, for a given _k_-point path in the primitive cell Brillouin Zone, additional _k_-points are 
 required to be sampled for the supercell, and the extracted spectral weights need to be appropriately 
-averaged to obtain the correct effective band structure (EBS).
+averaged to obtain the correct effective band structure (EBS). See the docs 
+[Theory](https://smtg-ucl.github.io/easyunfold/theory.html) page for more details.
 
 At the moment, two plane-wave DFT codes, VASP[^vasp] and CASTEP[^castep], are supported. In principle, 
 support can be easily added for other plane-wave codes if the wavefunction can be read in.
@@ -186,7 +187,7 @@ It is possible to further customise the plot though command line arguments - see
 
 BuPu `cmap`        |                     viridis `cmap`                      |  atom-projected
 :-------------------------:|:-------------------------------------------------------:|:-------------------------:
-![](../examples/NaBiS2/NaBiS2_unfold-plot_BuPu.png)  | ![](../examples/NaBiS2/NaBiS2_unfold-plot_viridis.png)  |  ![](../examples/NaBiS2/NaBiS2_unfold-plot_proj.png)
+![](../examples/NaBiS2/NaBiS2_unfold-plot_BuPu.png)  | ![](../examples/NaBiS2/NaBiS2_unfold-plot_viridis.png)  |  <img src="../examples/NaBiS2/NaBiS2_unfold-plot_proj.png" alt="atom-projected NaBiS2 band structure" width="1200"/>
 
 
 [^vasp]: https://www.vasp.at

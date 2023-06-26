@@ -43,7 +43,8 @@ slab.
 In all cases, the supercell symmetry is lowered compared to the pristine primitive cell.
 Hence, for a given _k_-point path in the primitive cell Brillouin Zone, additional _k_-points are 
 required to be sampled for the supercell, and the extracted spectral weights need to be appropriately 
-averaged to obtain the correct effective band structure (EBS).
+averaged to obtain the correct effective band structure (EBS). See the docs 
+[Theory](https://smtg-ucl.github.io/easyunfold/theory.html) page for more details.
 <!-- when JOSS submitted, add link to paper (discussion of theory) here! -->
 <!--- When JOSS submitted, add 'License and Citation' section here, and `CITATION.cff` file --->
 
