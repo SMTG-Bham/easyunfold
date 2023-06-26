@@ -7,8 +7,16 @@ Note that the `PROCAR.gz` file will need to be decompressed with `gzip -d PROCAR
 and reproducing these example plots.
 :::
 
-In this example, we unfold the bands from a 80-atom special-quasirandom (SQS) supercell of NaBiS<sub>2</sub>, where the Na and 
-Bi cations are quasi-randomly distributed, in order to simulate randomised cation disorder in the material.
+In this example, we unfold the bands from a 80-atom special-quasirandom (SQS) supercell of 
+NaBiS<sub>2</sub>, where the Na and Bi cations are quasi-randomly distributed, in order to simulate 
+randomised cation disorder in the material. 
+
+:::{tip}
+SQS supercells can be generated using tools like 
+[icet](https://icet.materialsmodeling.org/moduleref_icet/tools.html#module-icet.tools.structure_generation)
+or [ATAT](https://www.brown.edu/Departments/Engineering/Labs/avdw/atat/).
+:::
+
 These results were published in Y. T. Huang & S. R. Kavanagh et al. 2022 [^1], and an early version of 
 `easyunfold` was used for the similar AgBiS$_2$ in Y. Wang & S. R. Kavanagh et al. 2022 [^2], 
 with these plots demonstrating the key 
