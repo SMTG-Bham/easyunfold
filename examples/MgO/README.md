@@ -1,0 +1,1 @@
+../../docs/examples/example_mgo.md
