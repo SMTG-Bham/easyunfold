@@ -19,7 +19,9 @@ DEFAULT_CMAPS = [
 ]
 
 
-@click.group('easyunfold')
+CONTEXT_SETTINGS = dict(help_option_names=["-h", "--help"])
+
+@click.group('easyunfold', context_settings=CONTEXT_SETTINGS)
 def easyunfold():
     """
     Tool for performing band unfolding
