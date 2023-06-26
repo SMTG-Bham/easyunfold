@@ -1,4 +1,4 @@
-# Cation-Disordered NaBiS<sub>2</sub> with and without Atomic Projections
+# Cation-Disordered NaBiS<sub>2</sub> with atomic projections
 
 :::{note}
 Relevant files can be found in the [examples/NaBiS2](https://github.com/SMTG-UCL/easyunfold/tree/main/examples/NaBiS2) folder. 

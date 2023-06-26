@@ -221,8 +221,7 @@ def add_plot_options(func):
     click.option('--out-file', default='unfold.png', help='Name of the output file.', show_default=True)(func)
     click.option('--cmap',
                  default='PuRd',
-                 help='Name of the colour map(s) to use. Passing a list separated by "|" for the '
-                 'combined plot.',
+                 help='Name of the colour map to use.',
                  show_default=True)(func)
     click.option('--show', is_flag=True, default=False, help='Show the plot interactively.')(func)
     click.option('--no-symm-average',
@@ -363,7 +362,7 @@ def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cm
 @add_plot_options
 @click.option('--combined/--no-combined', is_flag=True, default=False, help='Plot all projections in a combined graph.')
 @click.option('--intensity', default=1.0, help='Color intensity for combined plot', type=float, show_default=True)
-@click.option('--colors', help='Colors to be used for combined plot, comma separated')
+@click.option('--colors', help='Colors to be used for combined plot, comma separated.', default="r,g,b,purple", show_default=True)
 def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, procar,
                             atoms_idx, orbitals, title, combined, intensity, colors, width, height):
     """
