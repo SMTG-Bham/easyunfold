@@ -18,8 +18,8 @@ DEFAULT_CMAPS = [
     'BuGn', 'YlGn'
 ]
 
-
 CONTEXT_SETTINGS = dict(help_option_names=["-h", "--help"])
+
 
 @click.group('easyunfold', context_settings=CONTEXT_SETTINGS)
 def easyunfold():
@@ -211,10 +211,13 @@ def add_plot_options(func):
     click.option('--gamma', is_flag=True, help='Is the calculation a gamma only one?', show_default=True)(func)
     click.option('--ncl', is_flag=True, help='Is the calculation with non-colinear spin?', show_default=True)(func)
     click.option('--npoints', type=int, default=2000, help='Number of bins for the energy.', show_default=True)(func)
-    click.option('--sigma', type=float, default=0.02, help='Smearing width for the energy in ' 'eV.', show_default=True)(func)
+    click.option('--sigma', type=float, default=0.02, help='Smearing width for the energy in '
+                 'eV.', show_default=True)(func)
     click.option('--eref', type=float, help='Reference energy in eV.')(func)
-    click.option('--emin', type=float, default=-5., help='Minimum energy in eV relative to the ' 'reference.', show_default=True)(func)
-    click.option('--emax', type=float, default=5., help='Maximum energy in eV relative to the ' 'reference.', show_default=True)(func)
+    click.option('--emin', type=float, default=-5., help='Minimum energy in eV relative to the '
+                 'reference.', show_default=True)(func)
+    click.option('--emax', type=float, default=5., help='Maximum energy in eV relative to the '
+                 'reference.', show_default=True)(func)
     click.option('--vscale', type=float, help='A scaling factor for the colour mapping.', default=1.0, show_default=True)(func)
     click.option('--out-file', default='unfold.png', help='Name of the output file.', show_default=True)(func)
     click.option('--cmap',
