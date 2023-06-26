@@ -108,7 +108,7 @@ workflow while core developers use branches in the main repository:
   :maxdepth: 2
 
 installation.md
-guide.md
+tutorial.md
 examples.md
 theory.md
 references.md

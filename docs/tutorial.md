@@ -1,4 +1,4 @@
-# Guide
+# Tutorial
 
 The main goal of `easyunfold` is to make the band structure unfolding workflow easier to implement and 
 less error-prone. To generate an unfolded band structure, one typically needs to perform the following 
@@ -27,7 +27,7 @@ averaged to obtain the correct effective band structure (EBS).
 At the moment, two plane-wave DFT codes, VASP[^vasp] and CASTEP[^castep], are supported. In principle, 
 support can be easily added for other plane-wave codes if the wavefunction can be read in.
 
-Below is a guide for performing unfolding when using VASP.
+Below is a guide for performing band structure unfolding when using VASP.
 
 ## Step 1 - Generate the _k_-point path for the primitive cell
 

@@ -45,7 +45,7 @@ Hence, for a given _k_-point path in the primitive cell Brillouin Zone, addition
 required to be sampled for the supercell, and the extracted spectral weights need to be appropriately 
 averaged to obtain the correct effective band structure (EBS).
 <!-- when JOSS submitted, add link to paper (discussion of theory) here! -->
-<!--- When JOSS submitted, add 'License and Citation' section here --->
+<!--- When JOSS submitted, add 'License and Citation' section here, and `CITATION.cff` file --->
 
 Please see the [documentation](https://smtg-ucl.github.io/easyunfold/) for guides and examples.
 
