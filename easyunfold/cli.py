@@ -18,7 +18,7 @@ DEFAULT_CMAPS = [
     'BuGn', 'YlGn'
 ]
 
-CONTEXT_SETTINGS = dict(help_option_names=["-h", "--help"])
+CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
 
 @click.group('easyunfold', context_settings=CONTEXT_SETTINGS)
@@ -166,7 +166,7 @@ def unfold_status(ctx):
     nkpts_sc = len(unfoldset.expansion_results['reduced_sckpts'])
     click.echo()
     click.echo(f'No. of k points in the primitive cell           : {unfoldset.nkpts_orig}')
-    click.echo(f'No. of (non-symmetry-reduced) supercell kpoints : {nkpts_sc} ({unfoldset.nkpts_expand})')
+    click.echo(f'No. of supercell k points                       : {nkpts_sc}')
     click.echo(f'No. of primitive cell symmetry operations       : {unfoldset.pc_opts.shape[0]}')
     click.echo(f'No. of supercell symmetry operations            : {unfoldset.sc_opts.shape[0]}')
     click.echo()
@@ -210,19 +210,13 @@ def add_plot_options(func):
     click.option('--gamma', is_flag=True, help='Is the calculation a gamma only one?', show_default=True)(func)
     click.option('--ncl', is_flag=True, help='Is the calculation with non-colinear spin?', show_default=True)(func)
     click.option('--npoints', type=int, default=2000, help='Number of bins for the energy.', show_default=True)(func)
-    click.option('--sigma', type=float, default=0.02, help='Smearing width for the energy in '
-                 'eV.', show_default=True)(func)
+    click.option('--sigma', type=float, default=0.02, help='Smearing width for the energy in ' 'eV.', show_default=True)(func)
     click.option('--eref', type=float, help='Reference energy in eV.')(func)
-    click.option('--emin', type=float, default=-5., help='Minimum energy in eV relative to the '
-                 'reference.', show_default=True)(func)
-    click.option('--emax', type=float, default=5., help='Maximum energy in eV relative to the '
-                 'reference.', show_default=True)(func)
+    click.option('--emin', type=float, default=-5., help='Minimum energy in eV relative to the ' 'reference.', show_default=True)(func)
+    click.option('--emax', type=float, default=5., help='Maximum energy in eV relative to the ' 'reference.', show_default=True)(func)
     click.option('--vscale', type=float, help='A scaling factor for the colour mapping.', default=1.0, show_default=True)(func)
     click.option('--out-file', default='unfold.png', help='Name of the output file.', show_default=True)(func)
-    click.option('--cmap',
-                 default='PuRd',
-                 help='Name of the colour map to use.',
-                 show_default=True)(func)
+    click.option('--cmap', default='PuRd', help='Name of the colour map to use.', show_default=True)(func)
     click.option('--show', is_flag=True, default=False, help='Show the plot interactively.')(func)
     click.option('--no-symm-average',
                  is_flag=True,
@@ -362,7 +356,7 @@ def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cm
 @add_plot_options
 @click.option('--combined/--no-combined', is_flag=True, default=False, help='Plot all projections in a combined graph.')
 @click.option('--intensity', default=1.0, help='Color intensity for combined plot', type=float, show_default=True)
-@click.option('--colors', help='Colors to be used for combined plot, comma separated.', default="r,g,b,purple", show_default=True)
+@click.option('--colors', help='Colors to be used for combined plot, comma separated.', default='r,g,b,purple', show_default=True)
 def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, procar,
                             atoms_idx, orbitals, title, combined, intensity, colors, width, height):
     """
