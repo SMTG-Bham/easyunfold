@@ -122,7 +122,7 @@ class UnfoldPlotter:
 
         fig.tight_layout(pad=0.2)
         if save:
-            fig.savefig(save, dpi=300)
+            fig.savefig(save, dpi=dpi)
         if show:
             fig.show()
         return fig
@@ -207,7 +207,7 @@ class UnfoldPlotter:
 
         fig.tight_layout(pad=0.2)
         if save:
-            fig.savefig(save, dpi=300)
+            fig.savefig(save, dpi=dpi)
         if show:
             fig.show()
         return fig
@@ -395,7 +395,7 @@ class UnfoldPlotter:
         fig.tight_layout(pad=0.2)
 
         if save:
-            fig.savefig(save, dpi=300)
+            fig.savefig(save, dpi=dpi)
         if show:
             fig.show()
         return fig
