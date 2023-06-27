@@ -18,8 +18,10 @@ DEFAULT_CMAPS = [
     'BuGn', 'YlGn'
 ]
 
+CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
 
-@click.group('easyunfold')
+
+@click.group('easyunfold', context_settings=CONTEXT_SETTINGS)
 def easyunfold():
     """
     Tool for performing band unfolding
@@ -55,8 +57,7 @@ def generate(pc_file, code, sc_file, matrix, kpoints, time_reversal, out_file, n
 
     There are two modes of running supercell calculations:
 
-    1. Use the generated kpoints for unfolding for non-SCF calculations, e.g. with a fixed
-       charged density from the SCF calculation.
+    1. Use the generated kpoints for unfolding for non-SCF calculations, e.g. with a fixed charged density from the SCF calculation.
     2. Include the generated kpoints in SCF calculation but set their weights to zeros.
 
     In both cases, the kpoints can be split into multiple calculations.
@@ -165,9 +166,9 @@ def unfold_status(ctx):
     nkpts_sc = len(unfoldset.expansion_results['reduced_sckpts'])
     click.echo()
     click.echo(f'No. of k points in the primitive cell           : {unfoldset.nkpts_orig}')
-    click.echo(f'No. of expanded kpoints to be calculated cell   : {nkpts_sc} ({unfoldset.nkpts_expand})')
-    click.echo(f'No. of rotations in the primitive cell          : {unfoldset.pc_opts.shape[0]}')
-    click.echo(f'No. of rotations in the super cell              : {unfoldset.sc_opts.shape[0]}')
+    click.echo(f'No. of supercell k points                       : {nkpts_sc}')
+    click.echo(f'No. of primitive cell symmetry operations       : {unfoldset.pc_opts.shape[0]}')
+    click.echo(f'No. of supercell symmetry operations            : {unfoldset.sc_opts.shape[0]}')
     click.echo()
     click.echo('Path in the primitive cell:')
     for index, label in unfoldset.kpoint_labels:
@@ -215,11 +216,7 @@ def add_plot_options(func):
     click.option('--emax', type=float, default=5., help='Maximum energy in eV relative to the ' 'reference.', show_default=True)(func)
     click.option('--vscale', type=float, help='A scaling factor for the colour mapping.', default=1.0, show_default=True)(func)
     click.option('--out-file', default='unfold.png', help='Name of the output file.', show_default=True)(func)
-    click.option('--cmap',
-                 default='PuRd',
-                 help='Name of the colour map(s) to use. Passing a list separated by "|" for the '
-                 'combined plot.',
-                 show_default=True)(func)
+    click.option('--cmap', default='PuRd', help='Name of the colour map to use.', show_default=True)(func)
     click.option('--show', is_flag=True, default=False, help='Show the plot interactively.')(func)
     click.option('--no-symm-average',
                  is_flag=True,
@@ -359,7 +356,7 @@ def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cm
 @add_plot_options
 @click.option('--combined/--no-combined', is_flag=True, default=False, help='Plot all projections in a combined graph.')
 @click.option('--intensity', default=1.0, help='Color intensity for combined plot', type=float, show_default=True)
-@click.option('--colors', help='Colors to be used for combined plot, comma separated')
+@click.option('--colors', help='Colors to be used for combined plot, comma separated.', default='r,g,b,purple', show_default=True)
 def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, procar,
                             atoms_idx, orbitals, title, combined, intensity, colors, width, height):
     """
@@ -485,13 +482,13 @@ def print_symmetry_data(kset):
     sc_spg = kset.metadata['symmetry_dataset_sc']
     click.echo('Supercell cell information:')
     click.echo(' ' * 8 + f'Space group number: {sc_spg["number"]}')
-    click.echo(' ' * 8 + f'Internation symbol: {sc_spg["international"]}')
+    click.echo(' ' * 8 + f'International symbol: {sc_spg["international"]}')
     click.echo(' ' * 8 + f'Point group: {sc_spg["pointgroup"]}')
 
     pc_spg = kset.metadata['symmetry_dataset_pc']
     click.echo('\nPrimitive cell information:')
     click.echo(' ' * 8 + f'Space group number: {pc_spg["number"]}')
-    click.echo(' ' * 8 + f'Internation symbol: {pc_spg["international"]}')
+    click.echo(' ' * 8 + f'International symbol: {pc_spg["international"]}')
     click.echo(' ' * 8 + f'Point group: {pc_spg["pointgroup"]}')
 
 

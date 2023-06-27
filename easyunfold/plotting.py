@@ -426,11 +426,11 @@ class UnfoldPlotter:
         orbitals=None,
         intensity=1.0,
         use_subplot=False,
-        colors=None,
+        colors=["r", "g", "b", "purple"],
         colorspace='lab',
     ):
         """
-        Plot projected sepctral function onto multiple subplots or a single plot with colormapping.
+        Plot projected spectral function onto multiple subplots or a single plot with color mapping.
 
         This simply computes the spectral function at each orbital/atoms sites and plot them onto
         multiple subplots. The columns are for each orbital and the rows are for each spin channel.
@@ -446,17 +446,17 @@ class UnfoldPlotter:
 
         atoms_idx_subplots = atoms_idx.split('|')
         if orbitals is not None:
-            orbitals_subsplots = orbitals.split('|')
+            orbitals_subplots = orbitals.split('|')
 
             # Special case: if only one set is passed, apply it to all atomic specifications
-            if len(orbitals_subsplots) == 1:
-                orbitals_subsplots = orbitals_subsplots * len(atoms_idx_subplots)
+            if len(orbitals_subplots) == 1:
+                orbitals_subplots = orbitals_subplots * len(atoms_idx_subplots)
 
-            if len(orbitals_subsplots) != len(atoms_idx_subplots):
+            if len(orbitals_subplots) != len(atoms_idx_subplots):
                 raise ValueError('The number of elected orbitals and atoms indices are not matched.')
         # If not set, use all for all subsets
         else:
-            orbitals_subsplots = ['all'] * len(atoms_idx_subplots)
+            orbitals_subplots = ['all'] * len(atoms_idx_subplots)
 
         # Load the data
 
@@ -469,7 +469,7 @@ class UnfoldPlotter:
             eref = unfoldset.calculated_quantities.get('vbm', 0.0)
 
         # Collect spectral functions and scale
-        for this_idx, this_orbitals in zip(atoms_idx_subplots, orbitals_subsplots):
+        for this_idx, this_orbitals in zip(atoms_idx_subplots, orbitals_subplots):
             # Setup the atoms_idx and orbitals
             this_idx, this_orbitals = process_projection_options(this_idx, this_orbitals)
             eng, spectral_function = unfoldset.get_spectral_function(gamma=gamma,
@@ -522,9 +522,7 @@ class UnfoldPlotter:
             stacked_sf = np.stack(all_sf, axis=-1).reshape(np.prod(sf_size), len(all_sf))
 
             # Construct the color basis
-            if colors is None:
-                default_colors = ['r', 'g', 'b', 'purple']
-                colors = default_colors[0:len(all_sf)]
+            colors = colors[0:len(all_sf)]
             # Compute spectral weight data with RGB reshape it back into the shape (nengs, nk, 3)
             sf_rgb = interpolate_colors(colors, stacked_sf, colorspace, normalize=True).reshape(sf_size + (3,))
             sf_sum = np.sum(all_sf, axis=0)[:, :, :, None]
