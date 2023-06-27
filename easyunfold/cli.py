@@ -210,11 +210,13 @@ def add_plot_options(func):
     click.option('--gamma', is_flag=True, help='Is the calculation a gamma only one?', show_default=True)(func)
     click.option('--ncl', is_flag=True, help='Is the calculation with non-colinear spin?', show_default=True)(func)
     click.option('--npoints', type=int, default=2000, help='Number of bins for the energy.', show_default=True)(func)
-    click.option('--sigma', type=float, default=0.02, help='Smearing width for the energy in ' 'eV.', show_default=True)(func)
+    click.option('--sigma', type=float, default=0.02, help='Smearing width for the energy in eV.', show_default=True)(func)
     click.option('--eref', type=float, help='Reference energy in eV.')(func)
-    click.option('--emin', type=float, default=-5., help='Minimum energy in eV relative to the ' 'reference.', show_default=True)(func)
-    click.option('--emax', type=float, default=5., help='Maximum energy in eV relative to the ' 'reference.', show_default=True)(func)
-    click.option('--vscale', type=float, help='A scaling factor for the colour mapping.', default=1.0, show_default=True)(func)
+    click.option('--emin', type=float, default=-5., help='Minimum energy in eV relative to the reference.', show_default=True)(func)
+    click.option('--emax', type=float, default=5., help='Maximum energy in eV relative to the reference.', show_default=True)(func)
+    click.option('--colour-norm', type=float, help='A normalisation/scaling factor for the colour mapping. Smaller values will increase colour intensity.',
+                 default=1.0,
+                 show_default=True)(func)
     click.option('--out-file', default='unfold.png', help='Name of the output file.', show_default=True)(func)
     click.option('--cmap', default='PuRd', help='Name of the colour map to use.', show_default=True)(func)
     click.option('--show', is_flag=True, default=False, help='Show the plot interactively.')(func)
@@ -340,14 +342,14 @@ def unfold_effective_mass(ctx, intensity_threshold, spin, band_filter, npoints, 
 @unfold.command('plot')
 @click.pass_context
 @add_plot_options
-def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, procar, atoms_idx,
+def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, colour_norm, procar, atoms_idx,
                 orbitals, title, width, height):
     """
     Plot the spectral function
 
     This command uses the stored unfolding data to plot the effective bands structure (EBS) using the spectral function.
     """
-    _unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, procar, atoms_idx,
+    _unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, colour_norm, procar, atoms_idx,
                  orbitals, title, width, height)
 
 
@@ -357,7 +359,7 @@ def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cm
 @click.option('--combined/--no-combined', is_flag=True, default=False, help='Plot all projections in a combined graph.')
 @click.option('--intensity', default=1.0, help='Color intensity for combined plot', type=float, show_default=True)
 @click.option('--colors', help='Colors to be used for combined plot, comma separated.', default='r,g,b,purple', show_default=True)
-def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, procar,
+def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, colour_norm, procar,
                             atoms_idx, orbitals, title, combined, intensity, colors, width, height):
     """
     Plot the effective band structure with atomic projections.
@@ -382,7 +384,7 @@ def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, em
                                  atoms_idx=atoms_idx,
                                  orbitals=orbitals,
                                  title=title,
-                                 vscale=vscale,
+                                 colour_norm=colour_norm,
                                  use_subplot=not combined,
                                  intensity=intensity,
                                  figsize=(width, height),
@@ -408,7 +410,7 @@ def _unfold_plot(ctx,
                  cmap,
                  ncl,
                  no_symm_average,
-                 vscale,
+                 colour_norm,
                  procar,
                  atoms_idx,
                  orbitals,
@@ -463,7 +465,7 @@ def _unfold_plot(ctx,
                                          save=out_file,
                                          show=False,
                                          ylim=(emin, emax),
-                                         vscale=vscale,
+                                         colour_norm=colour_norm,
                                          cmap=cmap,
                                          title=title,
                                          ax=ax)

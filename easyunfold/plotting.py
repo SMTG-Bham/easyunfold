@@ -41,7 +41,7 @@ class UnfoldPlotter:
         figsize=(4, 3),
         ylim=(-3, 3),
         dpi=150,
-        vscale=1.0,
+        colour_norm=1.0,
         contour_plot=False,
         alpha=1.0,
         save=False,
@@ -61,7 +61,7 @@ class UnfoldPlotter:
         :param figsize: Size of the figure.
         :param ylim: Plotting limit for the y-axis, with respect to `eref`.
         :param dpi: DPI of the generated graph.
-        :param vscale: A scaling factor for the colour map.
+        :param colour_norm: A normalisation/scaling factor for the colour map. Smaller values will increase the colour intensity.
         :param contour_plot): Whether to use contour plot instead of normal meshed color map.
         :param alphathe color map.
         :param savethe file where the generated figure is saved.
@@ -103,7 +103,7 @@ class UnfoldPlotter:
 
         if vmax is None:
             vmax = sf[:, mask, :].max()
-            vmax = (vmax - vmin) * vscale + vmin
+            vmax = (vmax - vmin) * colour_norm + vmin
 
         for ispin, ax_ in zip(range(nspin), axes):
             if contour_plot:
@@ -412,7 +412,7 @@ class UnfoldPlotter:
         figsize=(4, 3),
         ylim=(-3, 3),
         dpi=150,
-        vscale=1.0,
+        colour_norm=1.0,
         contour_plot=False,
         alpha=1.0,
         save=False,
@@ -486,7 +486,7 @@ class UnfoldPlotter:
             mask = (eng < (emax + eref)) & (eng > (emin + eref))
             vmin = spectral_function[:, mask, :].min()
             vmax = spectral_function[:, mask, :].max()
-            vmax = (vmax - vmin) * vscale + vmin
+            vmax = (vmax - vmin) * colour_norm + vmin
             vmaxs.append(vmax)
 
         # Workout the vmax and vmin
@@ -503,7 +503,7 @@ class UnfoldPlotter:
                     spectral_function,
                     eref=eref,
                     save=save,
-                    vscale=vscale,
+                    colour_norm=colour_norm,
                     vmax=vmax,
                     vmin=vmin,
                     cmap=cmap,

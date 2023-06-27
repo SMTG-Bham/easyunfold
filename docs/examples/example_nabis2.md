@@ -32,13 +32,13 @@ Unfolded band structure of $\ce{NaBiS2}$
 ```
 
 This is nice, but we can make the plot a little clearer by adjusting some of the parameters like the intensity scaling
-(via `--vscale`) and the colour map (via `--cmap`). Below we set `--vscale 0.4` to increase the colourmap intensity, 
+(via `--colour-norm`) and the colour map (via `--cmap`). Below we set `--colour-norm 0.4` to increase the colourmap intensity, 
 and try `BuPu`, `viridis` and `bone_r` from left to right below: 
 
 ```bash
-easyunfold unfold plot --vscale 0.4 --cmap "BuPu"
-easyunfold unfold plot --vscale 0.4 --cmap "viridis"
-easyunfold unfold plot --vscale 0.4 --cmap "bone_r"
+easyunfold unfold plot --colour-norm 0.4 --cmap "BuPu"
+easyunfold unfold plot --colour-norm 0.4 --cmap "viridis"
+easyunfold unfold plot --colour-norm 0.4 --cmap "bone_r"
 ```
 
 BuPu             |  viridis        |  bone_r
@@ -85,7 +85,7 @@ band more faint and less apparent.
 So, we can create separated plots for each atom type to make their individual contributions more clear:
 
 ```bash
-easyunfold unfold plot-projections --atoms-idx="1-20|21-40|41-80" --procar PROCAR  --cmap="bone_r" --vscale 0.4
+easyunfold unfold plot-projections --atoms-idx="1-20|21-40|41-80" --procar PROCAR  --cmap="bone_r" --colour-norm 0.4
 ```
 
 ```{figure} ../../examples/NaBiS2/NaBiS2_unfold-plot_proj_sep.png
