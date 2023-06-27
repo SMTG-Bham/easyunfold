@@ -426,11 +426,11 @@ class UnfoldPlotter:
         orbitals=None,
         intensity=1.0,
         use_subplot=False,
-        colors=None,
+        colors=["r", "g", "b", "purple"],
         colorspace='lab',
     ):
         """
-        Plot projected sepctral function onto multiple subplots or a single plot with colormapping.
+        Plot projected spectral function onto multiple subplots or a single plot with color mapping.
 
         This simply computes the spectral function at each orbital/atoms sites and plot them onto
         multiple subplots. The columns are for each orbital and the rows are for each spin channel.
