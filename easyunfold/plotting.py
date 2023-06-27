@@ -607,7 +607,7 @@ def interpolate_colors(colors: Sequence, weights: list, colorspace='lab', normal
         'xyz': XYZColor,
     }
 
-    if colorspace not in list(colorspace_mapping.keys()):
+    if colorspace not in colorspace_mapping:
         raise ValueError(f'colorspace must be one of {colorspace_mapping.keys()}')
 
     colorspace = colorspace_mapping[colorspace]
