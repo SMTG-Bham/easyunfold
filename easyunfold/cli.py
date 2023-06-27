@@ -363,10 +363,9 @@ def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cm
 @click.pass_context
 @add_plot_options
 @click.option('--combined/--no-combined', is_flag=True, default=False, help='Plot all projections in a combined graph.')
-@click.option('--intensity', default=1.0, help='Color intensity for combined plot', type=float, show_default=True)
 @click.option('--colors', help='Colors to be used for combined plot, comma separated.', default='r,g,b,purple', show_default=True)
 def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, colour_norm, procar,
-                            atoms, atoms_idx, orbitals, title, combined, intensity, colors, width, height):
+                            atoms, atoms_idx, orbitals, title, combined, colors, width, height):
     """
     Plot the effective band structure with atomic projections.
     """
@@ -393,7 +392,6 @@ def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, em
                                  title=title,
                                  colour_norm=colour_norm,
                                  use_subplot=not combined,
-                                 intensity=intensity,
                                  figsize=(width, height),
                                  colors=colors.split(',') if colors is not None else None)
 

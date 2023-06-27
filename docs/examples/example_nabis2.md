@@ -54,7 +54,7 @@ When plotting the unfolded band, the `plot-projections` subcommand is used with 
 `--atoms-idx <atoms-idx>` options:
 
 ```bash
-easyunfold unfold plot-projections --atoms-idx="1-20|21-40|41-80" --procar PROCAR  --intensity=2  --combined
+easyunfold unfold plot-projections --atoms-idx="1-20|21-40|41-80" --colour_norm=0.5 --combined
 ```
 
 ```{figure} ../../examples/NaBiS2/NaBiS2_unfold-plot_proj.png
@@ -85,7 +85,7 @@ band more faint and less apparent.
 So, we can create separated plots for each atom type to make their individual contributions more clear:
 
 ```bash
-easyunfold unfold plot-projections --atoms-idx="1-20|21-40|41-80" --procar PROCAR  --cmap="bone_r" --colour-norm 0.4
+easyunfold unfold plot-projections --atoms-idx="Na,Bi,S" --cmap="bone_r" --colour-norm 0.4
 ```
 
 ```{figure} ../../examples/NaBiS2/NaBiS2_unfold-plot_proj_sep.png
@@ -99,7 +99,7 @@ Unfolded band structure of NaBiS<sub>2</sub> with atomic contributions plotted s
 An alternative option here is also to just plot only the contributions of Na (`1-20`) and Bi (`21-40`) 
 cations, with no S projections:
 ```bash
-easyunfold unfold plot-projections --atoms-idx="1-20|21-40" --procar PROCAR  --intensity=2  --combined --colors="r,g"
+easyunfold unfold plot-projections --atoms="Na,Bi" --colour_norm=0.5  --combined
 ```
 
 ```{figure} ../../examples/NaBiS2/NaBiS2_unfold-plot_proj_noS.png

@@ -136,7 +136,7 @@ class UnfoldPlotter:
         figsize=(4, 3),
         ylim=(-3, 3),
         dpi: float = 150,
-        intensity: float = 1.0,
+        colour_norm: float = 1.0,
         save: bool = False,
         ax: Union[None, plt.Axes] = None,
         show: bool = False,
@@ -157,7 +157,7 @@ class UnfoldPlotter:
         :param ax: An existing plotting axis to be be used.
         :param vmin: Lower bound for constructing the alpha channel.
         :param vmax: Upper bound for constructing the alpha channel.
-        :param intensity: Scaling factor for the alpha channel.
+        :param colour_norm: Scaling factor for the alpha channel.
         :param title: Title for the plot.
 
         :returns: the figure generated containing the spectral function.
@@ -189,7 +189,7 @@ class UnfoldPlotter:
 
         # Clip the alpha range
         alpha = sf[:, :, :, 3]
-        alpha = (alpha - vmin) / (vmax - vmin) * intensity
+        alpha = (alpha - vmin) / (vmax - vmin) * (1/colour_norm)
         alpha = np.clip(alpha, 0, 1)
         sf[:, :, :, 3] = alpha
 
@@ -426,7 +426,6 @@ class UnfoldPlotter:
         atoms=None,
         atoms_idx=None,
         orbitals=None,
-        intensity=1.0,
         use_subplot=False,
         colors=["r", "g", "b", "purple"],
         colorspace='lab',
@@ -554,7 +553,7 @@ class UnfoldPlotter:
                 eref=eref,
                 save=save,
                 title=title,
-                intensity=intensity,
+                colour_norm=colour_norm,
                 ax=axs,
                 figsize=figsize,
                 show=show,
