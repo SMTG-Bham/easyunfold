@@ -15,8 +15,9 @@ from colormath.color_objects import (
     sRGBColor,
 )
 from matplotlib.colors import to_rgb
+from matplotlib.patches import Patch
 
-from .unfold import UnfoldKSet, clean_latex_string, process_projection_options
+from .unfold import UnfoldKSet, clean_latex_string, process_projection_options, parse_atoms
 from .effective_mass import EffectiveMass, fitted_band
 
 # pylint: disable=too-many-locals, too-many-arguments
@@ -422,6 +423,7 @@ class UnfoldPlotter:
         cmap='PuRd',
         show=False,
         title=None,
+        atoms=None,
         atoms_idx=None,
         orbitals=None,
         intensity=1.0,
@@ -444,7 +446,13 @@ class UnfoldPlotter:
         unfoldset.load_procar(procar)
         nspins = unfoldset.calculated_quantities['spectral_weights_per_set'][0].shape[0]
 
-        atoms_idx_subplots = atoms_idx.split('|')
+        if atoms_idx is not None:
+            atoms_idx_subplots = atoms_idx.split('|')  # list of strings
+
+        else:  # parse atoms
+            atoms, atoms_idx_subplots, _ = parse_atoms(atoms, orbitals)
+            # atoms as a list, atoms_idx_subplots as a list of lists
+
         if orbitals is not None:
             orbitals_subplots = orbitals.split('|')
 
@@ -469,9 +477,14 @@ class UnfoldPlotter:
             eref = unfoldset.calculated_quantities.get('vbm', 0.0)
 
         # Collect spectral functions and scale
-        for this_idx, this_orbitals in zip(atoms_idx_subplots, orbitals_subplots):
+        for i, this_idx, this_orbitals in zip(range(len(atoms_idx_subplots)), atoms_idx_subplots, orbitals_subplots):
             # Setup the atoms_idx and orbitals
-            this_idx, this_orbitals = process_projection_options(this_idx, this_orbitals)
+            if isinstance(this_idx, str):
+                this_idx, this_orbitals = process_projection_options(this_idx, this_orbitals)
+            else:  # list of integers; pre-processed by specifying atoms
+                if this_orbitals != "all":
+                    this_orbitals = [token.strip() for token in this_orbitals[1].split(',')]
+
             eng, spectral_function = unfoldset.get_spectral_function(gamma=gamma,
                                                                      npoints=npoints,
                                                                      sigma=sigma,
@@ -497,6 +510,10 @@ class UnfoldPlotter:
             fig, axs = plt.subplots(nspins, len(atoms_idx_subplots), sharex=True, sharey=True, squeeze=False, figsize=(3.0 * nsub, 4.0))
             # Plot the spectral function with constant colour scales
             for spectral_function, i in zip(all_sf, range(len(atoms_idx_subplots))):
+                if (title is None or any(atom == title for atom in atoms)) and atoms is not None:
+                    # use atoms as titles (checks if atom == title from previous subplot)
+                    title = atoms[i]
+
                 plotter = UnfoldPlotter(unfoldset)
                 plotter.plot_spectral_function(
                     eng,
@@ -544,6 +561,13 @@ class UnfoldPlotter:
                 dpi=dpi,
                 ylim=ylim,
             )
+
+            if atoms is not None:  # add figure legend with atoms and colors
+                legend_elements = []
+                for i, atom in enumerate(atoms):
+                    legend_elements.append(Patch(facecolor=colors[i], label=atom, alpha=0.7))
+                axs.legend(handles=legend_elements, bbox_to_anchor=(1.01, 1))
+                fig.subplots_adjust(right=0.8)  # ensure legend is not cut off
 
         return fig
 

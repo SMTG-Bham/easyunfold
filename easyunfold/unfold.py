@@ -6,6 +6,7 @@ The main module for unfolding workflow and algorithm
 
 ############################################################
 import re
+import warnings
 from typing import Union, List, Tuple
 
 import numpy as np
@@ -15,6 +16,7 @@ from monty.json import MSONable
 from monty.serialization import loadfn
 from tqdm import tqdm
 import ase
+from ase.io.vasp import read_vasp, get_atomtypes
 import spglib
 
 from easyunfold import __version__
@@ -499,10 +501,10 @@ class UnfoldKSet(MSONable):
         Get weights array sets for bands
 
         Construct the weights of each band in same format of the kpoint set.
-        Each item is an numpy array of (nspins, nbands), containing the summed weights over
+        Each item is a numpy array of (nspins, nbands), containing the summed weights over
         the passed atom indices and orbitals.
 
-        :param atoms_idx: Indicies of the atoms to be selected
+        :param atoms_idx: Indices of the atoms to be selected
         :param orbitals: Orbitals to be selected for each atom
         :param procars: Names of the PROCAR files to be loaded
 
@@ -636,7 +638,7 @@ def remove_duplicated_kpoints(kpoints: list, return_map=False, decimals=6):
     """
     remove duplicate kpoints in the list.
 
-    TODO: improve this implementation by clipping the range of the fractional coorindates
+    TODO: improve this implementation by clipping the range of the fractional coordinates
     """
     kpoints = np.asarray(kpoints)
     _, kid, inv_kid = np.unique(
@@ -1112,3 +1114,36 @@ def process_projection_options(atoms_idx: str, orbitals: str) -> Tuple[list, lis
     else:
         orbitals = 'all'
     return indices, orbitals
+
+def read_poscar_contcar_if_present():
+    try:
+        return read_vasp("POSCAR")
+    except FileNotFoundError:
+        try:
+            return read_vasp("CONTCAR")
+        except FileNotFoundError:
+            raise FileNotFoundError("`POSCAR` or `CONTCAR` not found in current directory!")
+
+
+def parse_atoms(atoms_to_project: str, orbitals: str):
+    atoms_to_project = re.split(', *', atoms_to_project)
+    ase_atoms = read_poscar_contcar_if_present()
+    try:  # check POTCAR if possible, to check the POSCAR-POTCARs match
+        atom_types = get_atomtypes("POTCAR")
+
+        def _check_order(smaller_list, larger_list):
+            order_dict = {element: index for index, element in enumerate(smaller_list)}
+            return all(order_dict[a] <= order_dict[b] for a, b in zip(larger_list, larger_list[1:]))
+
+        if not _check_order(atom_types, ase_atoms.get_chemical_symbols()):
+            warnings.warn("The order of atoms in the POSCAR/CONTCAR and POTCAR do not match!")
+    except FileNotFoundError:
+        pass
+    atoms_idx = [[i for i, atom in enumerate(ase_atoms) if projected_atom_symbol in atom.symbol] for projected_atom_symbol in atoms_to_project]
+
+    if orbitals and orbitals != 'all':
+        orbitals = [token.strip() for token in orbitals.split(',')]
+    else:
+        orbitals = 'all'
+
+    return atoms_to_project, atoms_idx, orbitals

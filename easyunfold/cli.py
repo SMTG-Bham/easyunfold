@@ -7,7 +7,7 @@ import numpy as np
 import click
 from ase.io import read
 
-from easyunfold.unfold import process_projection_options
+from easyunfold.unfold import process_projection_options, parse_atoms
 
 # pylint:disable=import-outside-toplevel,too-many-locals,too-many-arguments
 
@@ -230,10 +230,13 @@ def add_plot_options(func):
     click.option('--procar',
                  multiple=True,
                  default=["PROCAR"],
-                 help=('PROCAR files used for atomic weighting, can be passed multiple times if more '
+                 help=('PROCAR file(s) for atomic weighting, can be passed multiple times if more '
                        'than one PROCAR should be used. Default is to read PROCAR in current directory'))(func)
+    click.option('--atoms', help='Atoms to be used for weighting, as a comma-separated list (e.g. "Na,'
+                                 'Bi,S"). The POSCAR or CONTCAR file must be present in the current '
+                                 'directory for this, otherwise use `--atoms-idx`.')(func)
     click.option('--atoms-idx', help='Indices of the atoms to be used for weighting (1-indexed).')(func)
-    click.option('--orbitals', help='Orbitals of to be used for weighting.')(func)
+    click.option('--orbitals', help='Orbitals to be used for weighting.')(func)
     click.option('--title', help='Title to be used')(func)
     click.option('--width', help='Width of the figure', type=float, default=4., show_default=True)(func)
     click.option('--height', help='Height of the figure', type=float, default=3., show_default=True)(func)
@@ -343,14 +346,16 @@ def unfold_effective_mass(ctx, intensity_threshold, spin, band_filter, npoints, 
 @unfold.command('plot')
 @click.pass_context
 @add_plot_options
-def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, colour_norm, procar, atoms_idx,
+def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl,
+                no_symm_average, colour_norm, procar, atoms, atoms_idx,
                 orbitals, title, width, height):
     """
     Plot the spectral function
 
     This command uses the stored unfolding data to plot the effective bands structure (EBS) using the spectral function.
     """
-    _unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, colour_norm, procar, atoms_idx,
+    _unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl,
+                 no_symm_average, colour_norm, procar, atoms, atoms_idx,
                  orbitals, title, width, height)
 
 
@@ -361,7 +366,7 @@ def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cm
 @click.option('--intensity', default=1.0, help='Color intensity for combined plot', type=float, show_default=True)
 @click.option('--colors', help='Colors to be used for combined plot, comma separated.', default='r,g,b,purple', show_default=True)
 def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, colour_norm, procar,
-                            atoms_idx, orbitals, title, combined, intensity, colors, width, height):
+                            atoms, atoms_idx, orbitals, title, combined, intensity, colors, width, height):
     """
     Plot the effective band structure with atomic projections.
     """
@@ -382,6 +387,7 @@ def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, em
                                  cmap=cmap,
                                  ncl=ncl,
                                  symm_average=not no_symm_average,
+                                 atoms=atoms,
                                  atoms_idx=atoms_idx,
                                  orbitals=orbitals,
                                  title=title,
@@ -413,6 +419,7 @@ def _unfold_plot(ctx,
                  no_symm_average,
                  colour_norm,
                  procar,
+                 atoms,
                  atoms_idx,
                  orbitals,
                  title,
@@ -435,7 +442,7 @@ def _unfold_plot(ctx,
     click.echo(f'Using a reference energy of {eref:.3f} eV')
 
     # Setup the atoms_idx and orbitals
-    if atoms_idx:
+    if atoms or atoms_idx:
         # Process the PROCAR
         click.echo(f'Loading projections from: {procar}')
         try:
@@ -443,7 +450,12 @@ def _unfold_plot(ctx,
         except FileNotFoundError:
             click.echo(f'Could not find and parse the --procar file: {procar} – needed for atomic projections!')
             raise click.Abort()
-        atoms_idx, orbitals = process_projection_options(atoms_idx, orbitals)
+        if atoms_idx:
+            atoms_idx, orbitals = process_projection_options(atoms_idx, orbitals)
+        else:  # parse atoms
+            atoms, atoms_idx, orbitals = parse_atoms(atoms, orbitals)
+            atoms_idx = [idx for sublist in atoms_idx for idx in sublist]  # flatten atoms_idx for non-projected plot
+
     else:
         atoms_idx = None
         orbitals = None
