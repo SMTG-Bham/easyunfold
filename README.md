@@ -78,6 +78,7 @@ Commands:
 ```
 
 ### Developer Installation (from source)
+
 A recent version of `pip` is needed to do this, due to the new style of the `pyproject.toml` configuration
 file.
 To upgrade your `pip`, do:
@@ -89,8 +90,11 @@ pip install -U pip
 Assuming the package is in the `easyunfold` folder, use the following command to install:
 
 ```
-pip install ./easyunfold
+pip install "./easyunfold[test,doc,pre-commit]"
 ```
+
+which also installs additional dependencies for building documentation (`doc`), running tests (`test`) and
+dependencies for using pre-commit hooks (`pre-commit`).
 
 ## Studies using `easyunfold`
 
