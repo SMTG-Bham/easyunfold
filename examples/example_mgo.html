@@ -46,7 +46,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'examples/example_mgo';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Cation-Disordered NaBiS2 with and without Atomic Projections" href="example_nabis2.html" />
+    <link rel="next" title="Cation-Disordered NaBiS2 with atomic projections" href="example_nabis2.html" />
     <link rel="prev" title="Si supercell with a displaced atom" href="example_si222.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -160,21 +160,21 @@
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
                 <a class="reference internal" href="../index.html">
-                    Easyunfold documentation
+                    Easyunfold Documentation
                 </a>
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../guide.html">Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../examples.html">Examples</a><input checked class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="example_si222.html">Si supercell with a displaced atom</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">MgO with atomic projections</a></li>
-<li class="toctree-l2"><a class="reference internal" href="example_nabis2.html">Cation-Disordered NaBiS<sub>2</sub> with and without Atomic Projections</a></li>
-<li class="toctree-l2"><a class="reference internal" href="example_si211_castep.html">Unfolding a Si 2x1x1 supercell using CASTEP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_nabis2.html">Cation-Disordered NaBiS<sub>2</sub> with atomic projections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_si211_castep.html">Si supercell using CASTEP</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../theory.html">Theory of unfolding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../theory.html">Band Unfolding Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cli.html">CLI Reference</a></li>
@@ -360,42 +360,51 @@ document.write(`
 <h1>MgO with atomic projections<a class="headerlink" href="#mgo-with-atomic-projections" title="Permalink to this heading">#</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Relevant files can be found in the <code class="docutils literal notranslate"><span class="pre">examples/MgO</span></code> folder.</p>
+<p>The files needed for this example are provided in the
+<a class="reference external" href="https://github.com/SMTG-UCL/easyunfold/tree/main/examples/MgO">examples/MgO</a> folder.</p>
 </div>
-<p>In some cases, it is useful to know the atomic contributions of the bands.
-This can be done for unfolded bands as well.</p>
-<p>For a normal band structure, the contributions can be inferred by colouring the band according to the elemental contributions.</p>
+<p>Often it is useful to know the various contributions of atoms in the structure to the electronic bands
+in the band structure, to analyse the chemistry and orbital interactions at play in the system. This
+can be computed for unfolded bands as well.</p>
+<p>For a normal band structure calculation, the contributions can be inferred by colouring the band
+according to the elemental contributions, which can be done using <a class="reference external" href="https://github.com/SMTG-UCL/sumo">sumo</a>.</p>
 <figure class="align-default" id="id1">
 <a class="reference internal image-reference" href="../_images/band.png"><img alt="Band structure of MgO primitive cell." src="../_images/band.png" style="width: 400px;" /></a>
 <figcaption>
 <p><span class="caption-text">Band structure of MgO with atomic contribution </figcaption></span><a class="headerlink" href="#id1" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
-<p>Similar plots can be generate for unfolded band structure. However, because the spectral function itself contains both the <em>location</em> of the band and its <em>intensity</em>, adding a third information regarding the projection can be tricky.</p>
-<p>In this example, we unfold the bands from a MgO 2x1x2 supercell with the first Mg atom displaced. The procedure is essentially the same as the Si supercell example.</p>
-<p>The only difference is that we turn on the calculation of orbital projections with <code class="docutils literal notranslate"><span class="pre">LORBIT=11</span></code> in the <code class="docutils literal notranslate"><span class="pre">INCAR</span></code> file.</p>
-<p>When plotting the unfolded band, the <code class="docutils literal notranslate"><span class="pre">plot-projections</span></code> subcommand is used:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot-projections<span class="w">  </span>--procar<span class="w"> </span>MgO_super/PROCAR<span class="w"> </span><span class="se">\</span>
---atoms-idx<span class="o">=</span><span class="s2">&quot;1-4|5-8&quot;</span><span class="w"> </span>--out-file<span class="w"> </span>unfold_project.png<span class="w"> </span>--combined<span class="w"> </span>--cmap<span class="o">=</span><span class="s2">&quot;Greens|Reds&quot;</span><span class="w"> </span><span class="se">\</span>
---emin<span class="o">=</span>-15<span class="w"> </span>--emax<span class="o">=</span><span class="m">15</span>
+<p>Similar plots can be generated for unfolded band structures. However, because the unfolded spectral
+function itself contains both the <em>location</em> of the band and its <em>intensity</em>, adding a third
+dimension of information (atomic projection) can be tricky to visualise.</p>
+<p>In this example, we unfold the bands from a MgO 2x1x2 supercell with a Mg atom displaced to break
+symmetry. The procedure is essentially the same as described in the
+<a class="reference external" href="https://smtg-ucl.github.io/easyunfold/examples/example_si222.html">Si supercell example</a>.</p>
+<p>The only difference here is that we turn on the calculation of orbital projections in <code class="docutils literal notranslate"><span class="pre">VASP</span></code> with
+<code class="docutils literal notranslate"><span class="pre">LORBIT</span> <span class="pre">=</span> <span class="pre">11</span></code> in the <code class="docutils literal notranslate"><span class="pre">INCAR</span></code> file, and then use the <code class="docutils literal notranslate"><span class="pre">plot-projections</span></code> subcommand when plotting the
+unfolded band structure:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot-projections<span class="w"> </span>--procar<span class="w"> </span>MgO_super/PROCAR<span class="w"> </span>--atoms-idx<span class="o">=</span><span class="s2">&quot;1-4|5-8&quot;</span><span class="w"> </span><span class="se">\ </span>
+--out-file<span class="w"> </span>unfold_project.png<span class="w"> </span>--combined<span class="w"> </span>--emin<span class="o">=</span>-15<span class="w"> </span>--emax<span class="o">=</span><span class="m">15</span>
 </pre></div>
 </div>
-<p>Note that the path of the <code class="docutils literal notranslate"><span class="pre">PROCAR</span></code> is passed along with the group of atoms.
-In this example, the first four atoms are <code class="docutils literal notranslate"><span class="pre">Mg</span></code> the last four are <code class="docutils literal notranslate"><span class="pre">O</span></code>, and we would
-like to show the contribution of the band based on the elements.
-Different groups are separated by <code class="docutils literal notranslate"><span class="pre">|</span></code>, and <code class="docutils literal notranslate"><span class="pre">-</span></code> can be used to define the range.
-Note that use of one-based indexing for atoms, although in python zero-based indexing is used internally.</p>
+<p>Note that the path of the <code class="docutils literal notranslate"><span class="pre">PROCAR</span></code> is passed along with the desired groupings of atoms (with
+<code class="docutils literal notranslate"><span class="pre">--atoms-idx</span></code>).
+In this example, the first four atoms are <code class="docutils literal notranslate"><span class="pre">Mg</span></code> (<code class="docutils literal notranslate"><span class="pre">1-4</span></code>) and the last four are <code class="docutils literal notranslate"><span class="pre">O</span></code> (<code class="docutils literal notranslate"><span class="pre">5-8</span></code>), and we would
+like to show the elemental contributions to the bands. Different groups are separated by <code class="docutils literal notranslate"><span class="pre">|</span></code>, and <code class="docutils literal notranslate"><span class="pre">-</span></code>
+can be used to define the range. Note that use of one-based indexing for atoms, although in python
+zero-based indexing is used internally.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The projections are not stored in the <code class="docutils literal notranslate"><span class="pre">easyunfold.json</span></code> data file. So the <code class="docutils literal notranslate"><span class="pre">PROCAR</span></code> should be kept for replotting in the future.</p>
+<p>The atomic projections are not stored in the <code class="docutils literal notranslate"><span class="pre">easyunfold.json</span></code> data file, so the <code class="docutils literal notranslate"><span class="pre">PROCAR</span></code> file should be
+kept for replotting in the future.</p>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">--combined</span></code> option creates a combined plot with each group colour with different colour maps.
+<p>The <code class="docutils literal notranslate"><span class="pre">--combined</span></code> option creates a combined plot with different colour maps for each atomic grouping.
 The spectral intensity is used to define the transparency (<code class="docutils literal notranslate"><span class="pre">alpha</span></code>) allowing the fusion of multiple
 projections into a single plot.</p>
 <figure class="align-center" id="id2">
 <a class="reference internal image-reference" href="../_images/unfold_project.png"><img alt="MgO unfolded band structure" src="../_images/unfold_project.png" style="width: 400px;" /></a>
 <figcaption>
-<p><span class="caption-text">Unfolded MgO band structure with projections. Green for Mg atoms and red for O atoms.</span><a class="headerlink" href="#id2" title="Permalink to this image">#</a></p>
+<p><span class="caption-text">Unfolded MgO band structure with atomic projections. Red for Mg and green for O atoms.</span><a class="headerlink" href="#id2" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <p>In some cases, especially if there are many projection to be plotted at the same time, it can be clearer to create separated plots for each.</p>
@@ -406,7 +415,7 @@ projections into a single plot.</p>
 <figure class="align-default" id="id3">
 <a class="reference internal image-reference" href="../_images/unfold_project_sep.png"><img alt="Projected MgO band structure" src="../_images/unfold_project_sep.png" style="width: 800px;" /></a>
 <figcaption>
-<p><span class="caption-text">Unfolded MgO band structure with projections plotted separately</span><a class="headerlink" href="#id3" title="Permalink to this image">#</a></p>
+<p><span class="caption-text">Unfolded MgO band structure with atomic projections plotted separately (Mg left and O right).</span><a class="headerlink" href="#id3" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
@@ -437,7 +446,7 @@ projections into a single plot.</p>
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Cation-Disordered NaBiS<sub>2</sub> with and without Atomic Projections</p>
+        <p class="prev-next-title">Cation-Disordered NaBiS<sub>2</sub> with atomic projections</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

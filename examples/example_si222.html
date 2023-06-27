@@ -43,6 +43,8 @@
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'examples/example_si222';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -160,21 +162,21 @@
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
                 <a class="reference internal" href="../index.html">
-                    Easyunfold documentation
+                    Easyunfold Documentation
                 </a>
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../guide.html">Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../examples.html">Examples</a><input checked class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Si supercell with a displaced atom</a></li>
 <li class="toctree-l2"><a class="reference internal" href="example_mgo.html">MgO with atomic projections</a></li>
-<li class="toctree-l2"><a class="reference internal" href="example_nabis2.html">Cation-Disordered NaBiS<sub>2</sub> with and without Atomic Projections</a></li>
-<li class="toctree-l2"><a class="reference internal" href="example_si211_castep.html">Unfolding a Si 2x1x1 supercell using CASTEP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_nabis2.html">Cation-Disordered NaBiS<sub>2</sub> with atomic projections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_si211_castep.html">Si supercell using CASTEP</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../theory.html">Theory of unfolding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../theory.html">Band Unfolding Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cli.html">CLI Reference</a></li>
@@ -354,10 +356,10 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-the-project-file-and-kpoints-for-supercell-calculation">Generate the project file and kpoints for supercell calculation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#performing-supercell-band-structure-calculation">Performing supercell band structure calculation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#perform-unfolding">Perform unfolding</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-happens-if-the-symmetry-is-not-taken-into-account">What happens if the symmetry is not taken into account?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-the-project-file-easyunfold-json-and-k-points-for-supercell-calculation">Generate the project file (<code class="docutils literal notranslate"><span class="pre">easyunfold.json</span></code>) and <em>k</em>-points for supercell calculation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#perform-the-supercell-band-structure-calculation">Perform the supercell band structure calculation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#perform-band-unfolding">Perform band unfolding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-happens-if-symmetry-is-not-properly-taken-into-account">What happens if symmetry is not properly taken into account?</a></li>
 </ul>
             </nav>
         </div>
@@ -371,42 +373,42 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="si-supercell-with-a-displaced-atom">
 <h1>Si supercell with a displaced atom<a class="headerlink" href="#si-supercell-with-a-displaced-atom" title="Permalink to this heading">#</a></h1>
-<p>Below is a step-by-step guide for unfolding a 2x2x2 supercell of Si which
-contains a displaced atom.</p>
-<section id="generate-the-project-file-and-kpoints-for-supercell-calculation">
-<h2>Generate the project file and kpoints for supercell calculation<a class="headerlink" href="#generate-the-project-file-and-kpoints-for-supercell-calculation" title="Permalink to this heading">#</a></h2>
+<p>Below is a step-by-step guide for unfolding the electronic structure of a <code class="docutils literal notranslate"><span class="pre">2x2x2</span></code> supercell of
+crystalline silicon (Si) which contains a displaced atom, breaking symmetry.</p>
+<section id="generate-the-project-file-easyunfold-json-and-k-points-for-supercell-calculation">
+<h2>Generate the project file (<code class="docutils literal notranslate"><span class="pre">easyunfold.json</span></code>) and <em>k</em>-points for supercell calculation<a class="headerlink" href="#generate-the-project-file-easyunfold-json-and-k-points-for-supercell-calculation" title="Permalink to this heading">#</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The files needed as provided in expamples/Si222. This guide assumes the current
-working directory is located at the root of that folder.</p>
+<p>The files needed for this example are provided in the
+<a class="reference external" href="https://github.com/SMTG-UCL/easyunfold/tree/main/examples/Si222">examples/Si222</a> folder. This
+guide assumes the current working directory is located at the root of that folder.</p>
 </div>
-<p>First, generate the supercell kpoints:</p>
+<p>First, generate the supercell <em>k</em>-points:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>generate<span class="w"> </span>Si/POSCAR<span class="w"> </span>Si_super_deformed/POSCAR<span class="w"> </span>Si/KPOINTS_band
 </pre></div>
 </div>
-<p>Copy the kpoints to the supercell calculation folder:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cp<span class="w"> </span>KPOINTS_easyunfold<span class="w"> </span>Si_supercell_deformed
-</pre></div>
-</div>
-<p>This generates an  <code class="docutils literal notranslate"><span class="pre">easyunfold.json</span></code> file in the current direction containing information about the unfolding.
-Name of this file can be modified with the <code class="docutils literal notranslate"><span class="pre">--out-file</span></code> commandline argument.</p>
-<p>Information stored in this file can be inspected with command:</p>
+<p>Here, <code class="docutils literal notranslate"><span class="pre">KPOINTS_band</span></code> is the <code class="docutils literal notranslate"><span class="pre">KPOINTS</span></code> file corresponding to the band structure path for the primitive
+unit cell, which in this case was generated using <code class="docutils literal notranslate"><span class="pre">sumo-kgen</span></code> (see <a class="reference external" href="https://smtg-ucl.github.io/easyunfold/guide.html#step-1-generate-the-kpoints-path-of-the-primitive-cell">Step 1</a>
+of the tutorial docs page).</p>
+<p>This generates an  <code class="docutils literal notranslate"><span class="pre">easyunfold.json</span></code> file in the current direction containing information about the
+unfolding. The output name of this file can be modified with the <code class="docutils literal notranslate"><span class="pre">--out-file</span></code> commandline argument.</p>
+<p>Information stored in this file can be inspected with the <code class="docutils literal notranslate"><span class="pre">easyunfold</span> <span class="pre">unfold</span> <span class="pre">status</span></code> command:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>status
 Loaded<span class="w"> </span>data<span class="w"> </span>from<span class="w"> </span>easyunfold.json
 Primitive<span class="w"> </span>cell<span class="w"> </span>information:
 <span class="w">        </span>Space<span class="w"> </span>group<span class="w"> </span>number:<span class="w"> </span><span class="m">160</span>
-<span class="w">        </span>Internation<span class="w"> </span>symbol:<span class="w"> </span>R3m
+<span class="w">        </span>International<span class="w"> </span>symbol:<span class="w"> </span>R3m
 <span class="w">        </span>Point<span class="w"> </span>group:<span class="w"> </span>3m
 
 Supercell<span class="w"> </span>cell<span class="w"> </span>information:
 <span class="w">        </span>Space<span class="w"> </span>group<span class="w"> </span>number:<span class="w"> </span><span class="m">227</span>
-<span class="w">        </span>Internation<span class="w"> </span>symbol:<span class="w"> </span>Fd-3m
+<span class="w">        </span>International<span class="w"> </span>symbol:<span class="w"> </span>Fd-3m
 <span class="w">        </span>Point<span class="w"> </span>group:<span class="w"> </span>m-3m
 
 No.<span class="w"> </span>of<span class="w"> </span>k<span class="w"> </span>points<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>primitive<span class="w"> </span>cell<span class="w">           </span>:<span class="w"> </span><span class="m">73</span>
-No.<span class="w"> </span>of<span class="w"> </span>expanded<span class="w"> </span>kpoints<span class="w"> </span>to<span class="w"> </span>be<span class="w"> </span>calculated<span class="w"> </span>cell<span class="w">   </span>:<span class="w"> </span><span class="m">132</span><span class="w"> </span><span class="o">(</span><span class="m">136</span><span class="o">)</span>
-No.<span class="w"> </span>of<span class="w"> </span>rotations<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>primitive<span class="w"> </span>cell<span class="w">          </span>:<span class="w"> </span><span class="m">48</span>
-No.<span class="w"> </span>of<span class="w"> </span>rotations<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>super<span class="w"> </span>cell<span class="w">              </span>:<span class="w"> </span><span class="m">6</span>
+No.<span class="w"> </span>of<span class="w"> </span><span class="o">(</span>non-symmetry-reduced<span class="o">)</span><span class="w"> </span>supercell<span class="w"> </span>kpoints<span class="w"> </span>:<span class="w"> </span><span class="m">132</span><span class="w"> </span><span class="o">(</span><span class="m">136</span><span class="o">)</span>
+No.<span class="w"> </span>of<span class="w"> </span>primitive<span class="w"> </span>cell<span class="w"> </span>symmetry<span class="w"> </span>operations<span class="w">       </span>:<span class="w"> </span><span class="m">48</span>
+No.<span class="w"> </span>of<span class="w"> </span>supercell<span class="w"> </span>symmetry<span class="w"> </span>operations<span class="w">            </span>:<span class="w"> </span><span class="m">6</span>
 
 Path<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>primitive<span class="w"> </span>cell:
 <span class="w">   </span><span class="se">\G</span>amma<span class="w">    </span>:<span class="w"> </span><span class="m">1</span><span class="w">    </span>
@@ -417,36 +419,48 @@ Path<span class="w"> </span><span class="k">in</span><span class="w"> </span>the
 Please<span class="w"> </span>run<span class="w"> </span>the<span class="w"> </span>supercell<span class="w"> </span>band<span class="w"> </span>structure<span class="w"> </span>calculation<span class="w"> </span>and<span class="w"> </span>run<span class="w"> </span><span class="sb">`</span>unfold<span class="w"> </span>calculate<span class="sb">`</span>.
 </pre></div>
 </div>
+<p>Copy the <em>k</em>-points to the supercell calculation folder:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cp<span class="w"> </span>KPOINTS_easyunfold<span class="w"> </span>Si_supercell_deformed
+</pre></div>
+</div>
 </section>
-<section id="performing-supercell-band-structure-calculation">
-<h2>Performing supercell band structure calculation<a class="headerlink" href="#performing-supercell-band-structure-calculation" title="Permalink to this heading">#</a></h2>
-<p>Band structure calculation in VASP normally involves two steps. First, a normal single point calculation is performed to obtain the charge density.
-Afterwards, a none self-consistent calculation is carried out to compute the eigenvalues of the kpoints along the band structure paths defined.</p>
-<p>First, ensure the kpoints for SCF is used and run the supercell calculation. The <code class="docutils literal notranslate"><span class="pre">ICHARG=11</span></code> must commented out in the INCAR for the single point calculation:</p>
+<section id="perform-the-supercell-band-structure-calculation">
+<h2>Perform the supercell band structure calculation<a class="headerlink" href="#perform-the-supercell-band-structure-calculation" title="Permalink to this heading">#</a></h2>
+<p>Semi-local (GGA) DFT band structure calculations in VASP normally involve two steps. First, a normal
+single point calculation is performed to obtain the self-consistent (SCF) charge density. Following
+this, a non-self-consistent calculation is carried out to compute the eigenvalues of the <em>k</em>-points
+along the defined band structure path.</p>
+<p>First, we run our single point SCF supercell calculation, ensuring to use the appropriate converged SCF
+<em>k</em>-point mesh for the supercell. The <code class="docutils literal notranslate"><span class="pre">ICHARG</span> <span class="pre">=</span> <span class="pre">11</span></code> tag must not be set or be commented out in the <code class="docutils literal notranslate"><span class="pre">INCAR</span></code>
+file for this single point calculation:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>Si_supercell_deformed
-cp<span class="w"> </span>KPOINTS_scf<span class="w"> </span>KPOINTS
-sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">&#39;s/^ICHARG = 11/!ICHARG = 11/g&#39;</span><span class="w"> </span>INCAR
-mpirun<span class="w"> </span>-np<span class="w"> </span><span class="m">4</span><span class="w"> </span>vasp_std<span class="w"> </span>
+cp<span class="w"> </span>KPOINTS_scf<span class="w"> </span>KPOINTS<span class="w">  </span><span class="c1"># SCF kpoint mesh</span>
+sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">&#39;s/^ICHARG = 11/!ICHARG = 11/g&#39;</span><span class="w"> </span>INCAR<span class="w">  </span><span class="c1"># comment out ICHARG = 11</span>
+mpirun<span class="w"> </span>-np<span class="w"> </span><span class="m">4</span><span class="w"> </span>vasp_std<span class="w">  </span><span class="c1"># run the calculation</span>
 </pre></div>
 </div>
-<p>Now run the band structure calculation with <code class="docutils literal notranslate"><span class="pre">ICHARG=11</span></code>, and the kpoints mapped to the supercell from the primitive cell path:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">&#39;s/.*ICHARG = 11/ICHARG = 11/g&#39;</span><span class="w"> </span>INCAR
-cp<span class="w"> </span>KPOINTS_easyunfold<span class="w"> </span>KPOINTS
-mpirun<span class="w"> </span>-np<span class="w"> </span><span class="m">4</span><span class="w"> </span>vasp_std<span class="w"> </span>
+<p>Now, with our converged SCF charge density, we run the GGA band structure calculation with <code class="docutils literal notranslate"><span class="pre">ICHARG</span> <span class="pre">=</span> <span class="pre">11</span></code>,
+and the <em>k</em>-points mapped to the supercell from the primitive cell path:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">&#39;s/.*ICHARG = 11/ICHARG = 11/g&#39;</span><span class="w"> </span>INCAR<span class="w">  </span><span class="c1"># set ICARG = 11</span>
+cp<span class="w"> </span>KPOINTS_easyunfold<span class="w"> </span>KPOINTS<span class="w">  </span><span class="c1"># supercell band structure kpoint path</span>
+mpirun<span class="w"> </span>-np<span class="w"> </span><span class="m">4</span><span class="w"> </span>vasp_std<span class="w">  </span><span class="c1"># run the calculation</span>
 </pre></div>
 </div>
-<p>Alternatively, there is a <code class="docutils literal notranslate"><span class="pre">run.sh</span></code> script can be used to perform the operations above.</p>
+<p>Alternatively, there is a <code class="docutils literal notranslate"><span class="pre">run.sh</span></code> script in the
+<a class="reference external" href="https://github.com/SMTG-UCL/easyunfold/tree/main/examples/Si222/Si_super_deformed">examples/Si222/Si_super_deformed</a>
+folder that can be used to perform these two steps above.</p>
 </section>
-<section id="perform-unfolding">
-<h2>Perform unfolding<a class="headerlink" href="#perform-unfolding" title="Permalink to this heading">#</a></h2>
-<p>Calculate the weights and record the VBM:</p>
+<section id="perform-band-unfolding">
+<h2>Perform band unfolding<a class="headerlink" href="#perform-band-unfolding" title="Permalink to this heading">#</a></h2>
+<p>Unfold the supercell wave function (<code class="docutils literal notranslate"><span class="pre">WAVECAR</span></code>) and calculate the spectral weights:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">../</span>
 <span class="n">easyunfold</span> <span class="n">unfold</span> <span class="n">calculate</span> <span class="n">Si_super_deformed</span><span class="o">/</span><span class="n">WAVECAR</span>
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>If you don’t wnat to run the VASP calculation by yourself, the calculated <code class="docutils literal notranslate"><span class="pre">WAVECAR</span></code> and <code class="docutils literal notranslate"><span class="pre">vasprun.xml</span></code> for this example with:</p>
+<p>If you don’t want to run the VASP calculation by yourself, the calculated <code class="docutils literal notranslate"><span class="pre">WAVECAR</span></code> and <code class="docutils literal notranslate"><span class="pre">vasprun.xml</span></code>
+for this example can be downloaded with:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>wget -O Si_super_deformed/WAVECAR https://www.dropbox.com/s/3cmn2epw7d290jd/WAVECAR?dl=1
 </pre></div>
 </div>
@@ -462,22 +476,22 @@ mpirun<span class="w"> </span>-np<span class="w"> </span><span class="m">4</span
 <p><span class="caption-text">Spectral function of the unfolded bands.</span><a class="headerlink" href="#id1" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
-<p>Band structure of the primitive cell:</p>
+<p>Note the appearance of extra branches compared to the band structure of the primitive cell (below), due
+to symmetry breaking from the displaced atom.</p>
 <figure class="align-default" id="id2">
 <a class="reference internal image-reference" href="../_images/band3.png"><img alt="Primitive cell band structure" src="../_images/band3.png" style="width: 400px;" /></a>
 <figcaption>
 <p><span class="caption-text">Primitive cell band structure of Si.</span><a class="headerlink" href="#id2" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
-<p>Note the appearance of extra branches due to symmetry breaking.</p>
 </section>
-<section id="what-happens-if-the-symmetry-is-not-taken-into-account">
-<h2>What happens if the symmetry is not taken into account?<a class="headerlink" href="#what-happens-if-the-symmetry-is-not-taken-into-account" title="Permalink to this heading">#</a></h2>
-<p>We can create a new unfolding project (data file) using the following command:</p>
+<section id="what-happens-if-symmetry-is-not-properly-taken-into-account">
+<h2>What happens if symmetry is not properly taken into account?<a class="headerlink" href="#what-happens-if-symmetry-is-not-properly-taken-into-account" title="Permalink to this heading">#</a></h2>
+<p>We can create a new unfolding project (<code class="docutils literal notranslate"><span class="pre">json</span></code> data file) using the following command:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>generate<span class="w"> </span>Si/POSCAR<span class="w"> </span>Si_super_deformed/POSCAR<span class="w"> </span>Si/KPOINTS_band<span class="w"> </span>--no-expand<span class="w"> </span>--out-file<span class="w"> </span>no-expand.json
 </pre></div>
 </div>
-<p>Swap the <code class="docutils literal notranslate"><span class="pre">KPOINTS</span></code> to the new file</p>
+<p>Swap the <code class="docutils literal notranslate"><span class="pre">KPOINTS</span></code> to the new file, non-expanded <code class="docutils literal notranslate"><span class="pre">KPOINTS</span></code> file:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cp<span class="w"> </span>KPOINTS_no-expand<span class="w"> </span>Si_super_deformed/KPOINTS
 <span class="nb">cd</span><span class="w"> </span>Si_super_deformed
 mpirun<span class="w"> </span>-np<span class="w"> </span><span class="m">4</span><span class="w"> </span>vasp_std
@@ -493,8 +507,9 @@ easyunfold<span class="w"> </span>unfold<span class="w"> </span>--data-file<span
 <p><span class="caption-text">Spectral function of the unfolded bands with out additional kpoints due to reduced symmetry.</span><a class="headerlink" href="#id3" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
-<p>Comparing with the one above, there are breaking of the bands and some branches are missing (near the gamma point).</p>
-<p>Nevertheless, by not expanding the kpoint paths, fewer supercell kpoints need to be calculated.</p>
+<p>Comparing this plot with the one above, we see that we get spurious band breaking (e.g. along <span class="math notranslate nohighlight">\(\Gamma - L\)</span>)
+and some branches are missing (near the <span class="math notranslate nohighlight">\(\Gamma\)</span> point).</p>
+<p>Nevertheless, by not expanding the <em>k</em>-point paths, fewer supercell <em>k</em>-points need to be calculated:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>--data-file<span class="w">  </span>no-expand.json<span class="w">  </span>plot<span class="w"> </span>--out-file<span class="w"> </span>unfold_no-expand.png
 
 Loaded<span class="w"> </span>data<span class="w"> </span>from<span class="w"> </span>no-expand.json
@@ -506,18 +521,18 @@ $<span class="w"> </span>easyunfold<span class="w"> </span>unfold<span class="w"
 Loaded<span class="w"> </span>data<span class="w"> </span>from<span class="w"> </span>no-expand.json
 Supercell<span class="w"> </span>cell<span class="w"> </span>information:
 <span class="w">        </span>Space<span class="w"> </span>group<span class="w"> </span>number:<span class="w"> </span><span class="m">160</span>
-<span class="w">        </span>Internation<span class="w"> </span>symbol:<span class="w"> </span>R3m
+<span class="w">        </span>International<span class="w"> </span>symbol:<span class="w"> </span>R3m
 <span class="w">        </span>Point<span class="w"> </span>group:<span class="w"> </span>3m
 
 Primitive<span class="w"> </span>cell<span class="w"> </span>information:
 <span class="w">        </span>Space<span class="w"> </span>group<span class="w"> </span>number:<span class="w"> </span><span class="m">227</span>
-<span class="w">        </span>Internation<span class="w"> </span>symbol:<span class="w"> </span>Fd-3m
+<span class="w">        </span>International<span class="w"> </span>symbol:<span class="w"> </span>Fd-3m
 <span class="w">        </span>Point<span class="w"> </span>group:<span class="w"> </span>m-3m
 
 No.<span class="w"> </span>of<span class="w"> </span>k<span class="w"> </span>points<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>primitive<span class="w"> </span>cell<span class="w">           </span>:<span class="w"> </span><span class="m">73</span>
-No.<span class="w"> </span>of<span class="w"> </span>expanded<span class="w"> </span>kpoints<span class="w"> </span>to<span class="w"> </span>be<span class="w"> </span>calculated<span class="w"> </span>cell<span class="w">   </span>:<span class="w"> </span><span class="m">70</span><span class="w"> </span><span class="o">(</span><span class="m">73</span><span class="o">)</span>
-No.<span class="w"> </span>of<span class="w"> </span>rotations<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>primitive<span class="w"> </span>cell<span class="w">          </span>:<span class="w"> </span><span class="m">48</span>
-No.<span class="w"> </span>of<span class="w"> </span>rotations<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>super<span class="w"> </span>cell<span class="w">              </span>:<span class="w"> </span><span class="m">6</span>
+No.<span class="w"> </span>of<span class="w"> </span><span class="o">(</span>non-symmetry-reduced<span class="o">)</span><span class="w"> </span>supercell<span class="w"> </span>kpoints<span class="w"> </span>:<span class="w"> </span><span class="m">70</span><span class="w"> </span><span class="o">(</span><span class="m">73</span><span class="o">)</span>
+No.<span class="w"> </span>of<span class="w"> </span>primitive<span class="w"> </span>cell<span class="w"> </span>symmetry<span class="w"> </span>operations<span class="w">       </span>:<span class="w"> </span><span class="m">48</span>
+No.<span class="w"> </span>of<span class="w"> </span>supercell<span class="w"> </span>symmetry<span class="w"> </span>operations<span class="w">            </span>:<span class="w"> </span><span class="m">6</span>
 
 Path<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>primitive<span class="w"> </span>cell:
 <span class="w">   </span><span class="se">\G</span>amma<span class="w">    </span>:<span class="w"> </span><span class="m">1</span><span class="w">    </span>
@@ -579,10 +594,10 @@ Unfolding<span class="w"> </span>had<span class="w"> </span>been<span class="w">
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-the-project-file-and-kpoints-for-supercell-calculation">Generate the project file and kpoints for supercell calculation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#performing-supercell-band-structure-calculation">Performing supercell band structure calculation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#perform-unfolding">Perform unfolding</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-happens-if-the-symmetry-is-not-taken-into-account">What happens if the symmetry is not taken into account?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-the-project-file-easyunfold-json-and-k-points-for-supercell-calculation">Generate the project file (<code class="docutils literal notranslate"><span class="pre">easyunfold.json</span></code>) and <em>k</em>-points for supercell calculation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#perform-the-supercell-band-structure-calculation">Perform the supercell band structure calculation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#perform-band-unfolding">Perform band unfolding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-happens-if-symmetry-is-not-properly-taken-into-account">What happens if symmetry is not properly taken into account?</a></li>
 </ul>
   </nav></div>
 

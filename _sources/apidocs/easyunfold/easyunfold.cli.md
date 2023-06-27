@@ -79,6 +79,10 @@
   - ```{autodoc2-docstring} easyunfold.cli.DEFAULT_CMAPS
     :summary:
     ```
+* - {py:obj}`CONTEXT_SETTINGS <easyunfold.cli.CONTEXT_SETTINGS>`
+  - ```{autodoc2-docstring} easyunfold.cli.CONTEXT_SETTINGS
+    :summary:
+    ```
 ````
 
 ### API
@@ -99,6 +103,16 @@
    ['Purples', 'Greens', 'Oranges', 'Reds', 'Blue', 'YlOrBr', 'YlOrRd', 'OrRd', 'PuRd', 'RdPu', 'BuPu',...
 
 ```{autodoc2-docstring} easyunfold.cli.DEFAULT_CMAPS
+```
+
+````
+
+````{py:data} CONTEXT_SETTINGS
+:canonical: easyunfold.cli.CONTEXT_SETTINGS
+:value: >
+   None
+
+```{autodoc2-docstring} easyunfold.cli.CONTEXT_SETTINGS
 ```
 
 ````

@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Easyunfold documentation &#8212; Easyunfold</title>
+    <title>Easyunfold Documentation &#8212; Easyunfold</title>
   
   
   
@@ -159,21 +159,21 @@
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1 current active">
                 <a class="reference internal" href="#">
-                    Easyunfold documentation
+                    Easyunfold Documentation
                 </a>
             </li>
         </ul>
         <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="guide.html">Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="examples.html">Examples</a><input checked class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="examples/example_si222.html">Si supercell with a displaced atom</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/example_mgo.html">MgO with atomic projections</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/example_nabis2.html">Cation-Disordered NaBiS<sub>2</sub> with and without Atomic Projections</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/example_si211_castep.html">Unfolding a Si 2x1x1 supercell using CASTEP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/example_nabis2.html">Cation-Disordered NaBiS<sub>2</sub> with atomic projections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/example_si211_castep.html">Si supercell using CASTEP</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory of unfolding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Band Unfolding Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
 <li class="toctree-l1"><a class="reference internal" href="publications.html">Publications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cli.html">CLI Reference</a></li>
@@ -343,7 +343,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Easyunfold documentation</h1>
+    <h1>Easyunfold Documentation</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -353,20 +353,17 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Easyunfold documentation</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#studies-using-easyunfold">Studies using <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dft-code-support">DFT code support</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#known-limitations">Known limitations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dft-code-support">DFT code support</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#code-compatibility-notes">Code Compatibility Notes</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contributors">Contributors</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contributing">Contributing</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bugs-reports-and-feature-requests">Bugs reports and feature requests</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-contributions">Code contributions</a></li>
 </ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of contents</a></li>
-</ul>
-
             </nav>
         </div>
     </div>
@@ -378,38 +375,55 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="easyunfold-documentation">
-<h1>Easyunfold documentation<a class="headerlink" href="#easyunfold-documentation" title="Permalink to this heading">#</a></h1>
+<h1><code class="docutils literal notranslate"><span class="pre">Easyunfold</span></code> Documentation<a class="headerlink" href="#easyunfold-documentation" title="Permalink to this heading">#</a></h1>
 <p><img alt="build" src="https://github.com/SMTG-UCL/easyunfold/actions/workflows/ci.yaml/badge.svg" />
 <a class="reference external" href="https://smtg-ucl.github.io/easyunfold/"><img alt="docs" src="https://github.com/SMTG-UCL/easyunfold/actions/workflows/docs.yaml/badge.svg" /></a>
-<a class="reference external" href="https://codecov.io/gh/SMTG-UCL/easyunfold"><img alt="codecov" src="https://codecov.io/gh/SMTG-UCL/easyunfold/branch/main/graph/badge.svg?token=XLLWWU5UM2" /></a></p>
-<p>This package is intended for obtaining the effective band structure of a supercell for a certain path of the primitive cell.
-It was originally based on <a class="reference external" href="https://github.com/QijingZheng/VaspBandUnfolding">PyVaspwfc</a> for reading wavefunction output of VASP, and contains some code of the latter.
-An notable improvement is that breaking symmetry is taken accounted of by sampling additional kpoints and taking average accordingly, which was previously missing.
-Our goal is to make the unfolding process easier to carry out and less likely to go wrong.</p>
-<p>For the methodology, see <a class="reference external" href="https://link.aps.org/doi/10.1103/PhysRevB.85.085201">here</a>.</p>
+<a class="reference external" href="https://codecov.io/gh/SMTG-UCL/easyunfold"><img alt="codecov" src="https://codecov.io/gh/SMTG-UCL/easyunfold/branch/main/graph/badge.svg?token=XLLWWU5UM2" /></a>
+<a class="reference external" href="https://pypi.org/project/easyunfold"><img alt="PyPI" src="https://img.shields.io/pypi/v/easyunfold" /></a>
+<a class="reference external" href="https://smtg-ucl.github.io/easyunfold/"><img alt="Downloads" src="https://img.shields.io/pypi/dm/easyunfold" /></a></p>
+<!--- When JOSS submitted, add this: [![JOSS](https://joss.theoj.org/papers/10.21105/joss.04817/status.
+svg)](https://doi.org/10.21105/joss.)--->
+<p>This package is intended for obtaining the effective band structure of a supercell for a certain <em>k</em>-point
+path of the primitive cell. It was originally based on
+<a class="reference external" href="https://github.com/QijingZheng/VaspBandUnfolding">PyVaspwfc</a> for reading VASP wavefunction outputs,
+with a notable improvement being that symmetry-breaking is properly accounted for by sampling necessary
+additional <em>k</em>-points and averaging accordingly.</p>
+<p>Our goal is to implement the band structure unfolding workflow in a robust and user-friendly software
+package.</p>
+<p>For the methodology of supercell band unfolding, see
+<a class="reference external" href="https://link.aps.org/doi/10.1103/PhysRevB.85.085201">here</a>.</p>
 <section id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this heading">#</a></h2>
-<p>Main goal of this tool is to make the unfolding process easier.
-To generate a unfolded band structure, one typically needs to perform the following step:</p>
+<p>To generate an unfolded band structure, one typically needs to perform the following steps:</p>
 <ol class="arabic simple">
-<li><p>Create a primitive cell, and generate a k point path for this primitive cell.</p></li>
-<li><p>Create a supercell, and obtain its optimised structure.</p></li>
-<li><p>Generate a series of kpoints in the supercell to be calculated.</p></li>
-<li><p>Perform a band structure calculation using the supercell, and save its wave function.</p></li>
-<li><p>Run post-processing to obtain the unfolded band structure.</p></li>
+<li><p>Create a primitive unit cell, and generate a band structure <em>k</em>-point path corresponding to this
+primitive cell.</p></li>
+<li><p>Create a supercell (e.g. disordered, defective, surface slab etc.), and obtain its optimised structure.</p></li>
+<li><p>Generate a series of <em>k</em>-points for the supercell to be calculated.</p></li>
+<li><p>Perform a band structure calculation with the supercell, and save its wavefunction output to file.</p></li>
+<li><p>Post-process the supercell wavefunction to obtain the unfolded band structure in the <em>k</em>-point path
+of the primitive unit cell.</p></li>
 </ol>
-<p>The supercell usually contains certain defects, or a special quasi random structure.
-In both cases, its symmetry is lowered when compared to the perfect primitive cell.
-Hence, for a given kpoint path in the primitive cell, additional kpoints may need to be sampled, and the extracted spectral weights need to be averaged in the end to obtained the effective band structure (EBS).</p>
-<p>At the moment, only VASP calculations are supported, although in principle other PW code can be supported easily if the wavefunction can be read in.</p>
-<p>Please see the documentation for guide and examples.</p>
+<p>These generation and analysis steps are automated in <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code>, with only the primitive unit cell and
+supercell structures required as inputs from the user.</p>
+<p>Typically, the supercell comprises some form of symmetry-breaking relative to the primitive cell, such
+as defects, disorder (e.g. special quasi-random structures (SQS) for site disorder – other forms of
+disorder such as magnetic, dynamic/vibrational, polar, elastic etc. also possible), or a surface/interface
+slab.
+In all cases, the supercell symmetry is lowered compared to the pristine primitive cell.
+Hence, for a given <em>k</em>-point path in the primitive cell Brillouin Zone, additional <em>k</em>-points are
+required to be sampled for the supercell, and the extracted spectral weights need to be appropriately
+averaged to obtain the correct effective band structure (EBS). See the docs
+<a class="reference external" href="https://smtg-ucl.github.io/easyunfold/theory.html">Theory</a> page for more details.</p>
+<!-- when JOSS submitted, add link to paper (discussion of theory) here! -->
+<!--- When JOSS submitted, add 'License and Citation' section here --->
 </section>
 <section id="studies-using-easyunfold">
 <h2>Studies using <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code><a class="headerlink" href="#studies-using-easyunfold" title="Permalink to this heading">#</a></h2>
 <p>We’ll add papers that use <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code> to this list as they come out!</p>
 <ul class="simple">
 <li><p>Y. T. Huang &amp; S. R. Kavanagh et al. <a class="reference external" href="https://www.nature.com/articles/s41467-022-32669-3"><em>Nature Communications</em></a> 2022</p></li>
-<li><p>A. T. J. Nicolson et al. <a class="reference external" href="https://chemrxiv.org/engage/chemrxiv/article-details/63a5d1ffa53ea69e935559e2"><em>ChemRxiv</em></a> 2023</p></li>
+<li><p>A. T. J. Nicolson et al. <a class="reference external" href="https://doi.org/10.1021/jacs.2c13336"><em>Journal of the Americal Chemical Society</em></a> 2023</p></li>
 <li><p>Y. Wang &amp; S. R. Kavanagh et al. <a class="reference external" href="https://www.nature.com/articles/s41566-021-00950-4"><em>Nature Photonics</em></a> 2022 (early version)</p></li>
 </ul>
 </section>
@@ -419,27 +433,32 @@ Hence, for a given kpoint path in the primitive cell, additional kpoints may nee
 In principle, support for other plane wave DFT code can be added by:</p>
 <ul class="simple">
 <li><p>Implementing a subclass of <code class="docutils literal notranslate"><span class="pre">WaveFunction</span></code> that handles reading the wave function output.</p></li>
-<li><p>Implementing functions for reading/writing kpoints.</p></li>
-<li><p>Adding branches for dispatching based on the <code class="docutils literal notranslate"><span class="pre">dft_code</span></code> attribute of the <code class="docutils literal notranslate"><span class="pre">UnfoldKSet</span></code> object in various places.</p></li>
+<li><p>Implementing functions for reading/writing <em>k</em>-points.</p></li>
+<li><p>Adding branches for dispatching based on the <code class="docutils literal notranslate"><span class="pre">dft_code</span></code> attribute of the <code class="docutils literal notranslate"><span class="pre">UnfoldKSet</span></code> object in
+various places within the code.</p></li>
 </ul>
-<p>The Atomic Simulation Environment (<a class="reference external" href="https://wiki.fysik.dtu.dk/ase/">ASE</a>) is used by this package for reading in structures, so there is usually need to implement specialised parser for structure file.</p>
-</section>
-<section id="known-limitations">
-<h2>Known limitations<a class="headerlink" href="#known-limitations" title="Permalink to this heading">#</a></h2>
+<p>The Atomic Simulation Environment (<a class="reference external" href="https://wiki.fysik.dtu.dk/ase/">ASE</a>) is used by <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code> for
+reading in structures, so structure file IO is natively supported for essentially all public DFT codes.</p>
+<section id="code-compatibility-notes">
+<h3>Code Compatibility Notes<a class="headerlink" href="#code-compatibility-notes" title="Permalink to this heading">#</a></h3>
 <ul class="simple">
-<li><p>Atomic projection is available for VASP calculation only for now.</p></li>
-<li><p>CASTEP gamma-only and non-collinear spin calculations are not supported.</p></li>
+<li><p>Atom-projected band structures are currently only supported for <code class="docutils literal notranslate"><span class="pre">VASP</span></code> calculation outputs.</p></li>
+<li><p>Gamma-only and non-collinear spin calculations are not supported for <code class="docutils literal notranslate"><span class="pre">CASTEP</span></code>.</p></li>
 </ul>
+</section>
 </section>
 <section id="contributors">
 <h2>Contributors<a class="headerlink" href="#contributors" title="Permalink to this heading">#</a></h2>
-<p>Code Contributors:
-<a class="reference external" href="https://github.com/zhubonan">Bonan Zhu</a><br />
-<a class="reference external" href="https://github.com/kavanase">Seán Kavanagh</a><br />
-<a class="reference external" href="https://github.com/adair-nicolson">Adair Nicolson</a></p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/zhubonan">Bonan Zhu</a></p></li>
+<li><p><a class="reference external" href="https://github.com/kavanase">Seán Kavanagh</a></p></li>
+<li><p><a class="reference external" href="https://github.com/adair-nicolson">Adair Nicolson</a></p></li>
+</ul>
 <p>And those who helped in the development:</p>
-<p><a class="reference external" href="https://github.com/joebesity">Joe Willis</a><br />
-<a class="reference external" href="http://davidscanlon.com/?page_id=5">David O. Scanlon</a></p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/joebesity">Joe Willis</a></p></li>
+<li><p><a class="reference external" href="http://davidscanlon.com/?page_id=5">David O. Scanlon</a></p></li>
+</ul>
 </section>
 <section id="contributing">
 <h2>Contributing<a class="headerlink" href="#contributing" title="Permalink to this heading">#</a></h2>
@@ -447,64 +466,29 @@ In principle, support for other plane wave DFT code can be added by:</p>
 <section id="bugs-reports-and-feature-requests">
 <h2>Bugs reports and feature requests<a class="headerlink" href="#bugs-reports-and-feature-requests" title="Permalink to this heading">#</a></h2>
 <p>Bug reports and feature requests are well come.
-If you found any bug or missing features please report it on the <a class="reference external" href="https://github.com/SMTG-UCL/easyunfold/issues">Issue Tracker</a>.
-Poor or incorrect documentation is considered a bug, but please be as specific as
-possible when asking for improvements.</p>
+If you found any bug or missing features please report it on the
+<a class="reference external" href="https://github.com/SMTG-UCL/easyunfold/issues">Issue Tracker</a>.</p>
 </section>
 <section id="code-contributions">
 <h2>Code contributions<a class="headerlink" href="#code-contributions" title="Permalink to this heading">#</a></h2>
 <p>We welcome your help in improving and extending the package with your
-own contributions. This is managed through Github pull requests;
+own contributions. This is managed through GitHub pull requests;
 for external contributions, we prefer the
 <a class="reference external" href="https://guides.github.com/activities/forking/">fork and pull</a>
 workflow while core developers use branches in the main repository:</p>
 <ol class="arabic simple">
-<li><p>First open an Issue to discuss the proposed contribution. This
-discussion might include how the changes fit easyunfold’s scope and a
+<li><p>First open an <a class="reference external" href="https://github.com/SMTG-UCL/easyunfold/issues">Issue</a> to discuss the proposed
+contribution. This discussion might include how the changes fit <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code>’s scope and a
 general technical approach.</p></li>
 <li><p>Make your own project fork and implement the changes
-there. Please keep your code style compliant and use the pre-commit hooks.</p></li>
+there. Please keep your code style compliant and use the <code class="docutils literal notranslate"><span class="pre">pre-commit</span></code> hooks.</p></li>
 <li><p>Open a pull request to merge the changes into the main
 project. A more detailed discussion can take place there before
 the changes are accepted.</p></li>
 </ol>
-</section>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="table-of-contents">
-<h1>Table of contents<a class="headerlink" href="#table-of-contents" title="Permalink to this heading">#</a></h1>
 <div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="guide.html">Guide</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="guide.html#step-1-generate-the-kpoints-path-of-the-primitive-cell">Step 1 - Generate the kpoints path of the primitive cell</a></li>
-<li class="toctree-l2"><a class="reference internal" href="guide.html#step-2-generate-the-kpoints-to-be-used-for-the-supercell-calculation">Step 2 - Generate the kpoints to be used for the supercell calculation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="guide.html#step-3-perform-the-unfolding">Step 3 - Perform the unfolding</a></li>
-<li class="toctree-l2"><a class="reference internal" href="guide.html#step-4-plot-the-results">Step 4 - Plot the results</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="examples/example_si222.html">Si supercell with a displaced atom</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/example_mgo.html">MgO with atomic projections</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/example_nabis2.html">Cation-Disordered NaBiS<sub>2</sub> with and without Atomic Projections</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/example_si211_castep.html">Unfolding a Si 2x1x1 supercell using CASTEP</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory of unfolding</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="theory.html#symmetry-considerations">Symmetry considerations</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
-<li class="toctree-l1"><a class="reference internal" href="publications.html">Publications</a></li>
-<li class="toctree-l1"><a class="reference internal" href="cli.html">CLI Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="cli.html#easyunfold">easyunfold</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="apidocs/index.html">API Reference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="apidocs/easyunfold/easyunfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold</span></code></a></li>
-</ul>
-</li>
-</ul>
 </div>
+</section>
 </section>
 
 
@@ -546,20 +530,17 @@ the changes are accepted.</p></li>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Easyunfold documentation</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#studies-using-easyunfold">Studies using <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dft-code-support">DFT code support</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#known-limitations">Known limitations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dft-code-support">DFT code support</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#code-compatibility-notes">Code Compatibility Notes</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contributors">Contributors</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contributing">Contributing</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bugs-reports-and-feature-requests">Bugs reports and feature requests</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-contributions">Code contributions</a></li>
 </ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#table-of-contents">Table of contents</a></li>
-</ul>
-
   </nav></div>
 
 </div></div>

@@ -43,6 +43,8 @@
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
     <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'publications';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -160,21 +162,21 @@
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
                 <a class="reference internal" href="index.html">
-                    Easyunfold documentation
+                    Easyunfold Documentation
                 </a>
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="guide.html">Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="examples.html">Examples</a><input checked class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="examples/example_si222.html">Si supercell with a displaced atom</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/example_mgo.html">MgO with atomic projections</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/example_nabis2.html">Cation-Disordered NaBiS<sub>2</sub> with and without Atomic Projections</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/example_si211_castep.html">Unfolding a Si 2x1x1 supercell using CASTEP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/example_nabis2.html">Cation-Disordered NaBiS<sub>2</sub> with atomic projections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/example_si211_castep.html">Si supercell using CASTEP</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory of unfolding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Band Unfolding Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Publications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cli.html">CLI Reference</a></li>
@@ -358,10 +360,21 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="publications">
 <h1>Publications<a class="headerlink" href="#publications" title="Permalink to this heading">#</a></h1>
+<p>We’ll add papers that use <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code> to this list as they come out!</p>
 <ul class="simple">
-<li><p>Nicolson, A.; Breternitz, J.; Kavanagh, S. R.; Tomm, Y.; Morita, K.; Squires, A. G.; Tovar, M.; Walsh, A.; Schorr, S.; Scanlon, D. O. Interplay of Static and Dynamic Disorder in the Mixed-Metal Chalcohalide Sn2SbS2I3. J. Am. Chem. Soc. 2023. <a class="reference external" href="https://doi.org/10.1021/jacs.2c13336">https://doi.org/10.1021/jacs.2c13336</a>.</p></li>
-<li><p>Huang, Y.-T.; Kavanagh, S. R.; Righetto, M.; Rusu, M.; Levine, I.; Unold, T.; Zelewski, S. J.; Sneyd, A. J.; Zhang, K.; Dai, L.; Britton, A. J.; Ye, J.; Julin, J.; Napari, M.; Zhang, Z.; Xiao, J.; Laitinen, M.; Torrente-Murciano, L.; Stranks, S. D.; Rao, A.; Herz, L. M.; Scanlon, D. O.; Walsh, A.; Hoye, R. L. Z. Strong Absorption and Ultrafast Localisation in NaBiS2 Nanocrystals with Slow Charge-Carrier Recombination. Nat Commun 2022, 13 (1), 4960. <a class="reference external" href="https://doi.org/10.1038/s41467-022-32669-3">https://doi.org/10.1038/s41467-022-32669-3</a>.</p></li>
-<li><p>Wang, Y.; Kavanagh, S. R.; Burgués-Ceballos, I.; Walsh, A.; Scanlon, D. O.; Konstantatos, G. Cation Disorder Engineering Yields AgBiS2 Nanocrystals with Enhanced Optical Absorption for Efficient Ultrathin Solar Cells. Nat. Photon. 2022, 16 (3), 235–241. <a class="reference external" href="https://doi.org/10.1038/s41566-021-00950-4">https://doi.org/10.1038/s41566-021-00950-4</a>.</p></li>
+<li><p>Nicolson, A.; Breternitz, J.; Kavanagh, S. R.; Tomm, Y.; Morita, K.; Squires, A. G.; Tovar, M.; Walsh,
+A.; Schorr, S.; Scanlon, D. O. Interplay of Static and Dynamic Disorder in the Mixed-Metal
+Chalcohalide Sn<span class="math notranslate nohighlight">\(_2\)</span>SbS<span class="math notranslate nohighlight">\(_2\)</span>I<span class="math notranslate nohighlight">\(_3\)</span>. <em>J. Am. Chem. Soc.</em> <strong>2023</strong>. <a class="reference external" href="https://doi.org/10.1021/jacs.2c13336">https://doi.org/10.1021/jacs.2c13336</a>.</p></li>
+<li><p>Huang, Y.-T.; Kavanagh, S. R.; Righetto, M.; Rusu, M.; Levine, I.; Unold, T.; Zelewski, S. J.; Sneyd,
+A. J.; Zhang, K.; Dai, L.; Britton, A. J.; Ye, J.; Julin, J.; Napari, M.; Zhang, Z.; Xiao, J.;
+Laitinen, M.; Torrente-Murciano, L.; Stranks, S. D.; Rao, A.; Herz, L. M.; Scanlon, D. O.; Walsh, A.;
+Hoye, R. L. Z. Strong Absorption and Ultrafast Localisation in NaBiS<span class="math notranslate nohighlight">\(_2\)</span> Nanocrystals with Slow
+Charge-Carrier Recombination. <em>Nat Commun</em> <strong>2022</strong>, 13 (1), 4960.</p></li>
+<li><p><a class="reference external" href="https://doi.org/10.1038/s41467-022-32669-3">https://doi.org/10.1038/s41467-022-32669-3</a>.</p></li>
+<li><p>Wang, Y.; Kavanagh, S. R.; Burgués-Ceballos, I.; Walsh, A.; Scanlon, D. O.; Konstantatos, G. Cation
+Disorder Engineering Yields AgBiS<span class="math notranslate nohighlight">\(_2\)</span> Nanocrystals with Enhanced Optical Absorption for Efficient
+Ultrathin Solar Cells. <em>Nat. Photon.</em> <strong>2022</strong>, 16 (3), 235–241.
+<a class="reference external" href="https://doi.org/10.1038/s41566-021-00950-4">https://doi.org/10.1038/s41566-021-00950-4</a>.</p></li>
 </ul>
 </section>
 

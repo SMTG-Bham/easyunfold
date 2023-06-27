@@ -87,7 +87,7 @@
 
 ````
 
-````{py:method} plot_projected(procar: typing.Union[str, list], eref=None, gamma=False, npoints=2000, sigma=0.2, ncl=False, symm_average=True, figsize=(4, 3), ylim=(-3, 3), dpi=150, vscale=1.0, contour_plot=False, alpha=1.0, save=False, ax=None, vmin=None, vmax=None, cmap='PuRd', show=False, title=None, atoms_idx=None, orbitals=None, intensity=1.0, use_subplot=False, colors=None, colorspace='lab')
+````{py:method} plot_projected(procar: typing.Union[str, list], eref=None, gamma=False, npoints=2000, sigma=0.2, ncl=False, symm_average=True, figsize=(4, 3), ylim=(-3, 3), dpi=150, vscale=1.0, contour_plot=False, alpha=1.0, save=False, ax=None, vmin=None, vmax=None, cmap='PuRd', show=False, title=None, atoms_idx=None, orbitals=None, intensity=1.0, use_subplot=False, colors=['r', 'g', 'b', 'purple'], colorspace='lab')
 :canonical: easyunfold.plotting.UnfoldPlotter.plot_projected
 
 ```{autodoc2-docstring} easyunfold.plotting.UnfoldPlotter.plot_projected

@@ -1,7 +1,8 @@
 # Examples
 
-Worked examples show-casing the capability of the package.
-Input files can be found [here](https://github.com/SMTG-UCL/easyunfold/tree/main/examples).
+Worked examples showcasing the capability of the `Easyunfold`.
+Input files for these examples can be found 
+[here](https://github.com/SMTG-UCL/easyunfold/tree/main/examples).
 
 ```{toctree}
 :maxdepth: 1

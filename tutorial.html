@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Guide &#8212; Easyunfold</title>
+    <title>Tutorial &#8212; Easyunfold</title>
   
   
   
@@ -43,7 +43,9 @@
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
     <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'guide';</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'tutorial';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Examples" href="examples.html" />
@@ -160,21 +162,21 @@
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
                 <a class="reference internal" href="index.html">
-                    Easyunfold documentation
+                    Easyunfold Documentation
                 </a>
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Guide</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Tutorial</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="examples.html">Examples</a><input checked class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="examples/example_si222.html">Si supercell with a displaced atom</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/example_mgo.html">MgO with atomic projections</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/example_nabis2.html">Cation-Disordered NaBiS<sub>2</sub> with and without Atomic Projections</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/example_si211_castep.html">Unfolding a Si 2x1x1 supercell using CASTEP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/example_nabis2.html">Cation-Disordered NaBiS<sub>2</sub> with atomic projections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/example_si211_castep.html">Si supercell using CASTEP</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="theory.html">Theory of unfolding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Band Unfolding Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
 <li class="toctree-l1"><a class="reference internal" href="publications.html">Publications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cli.html">CLI Reference</a></li>
@@ -262,7 +264,7 @@
       
       
       
-      <li><a href="_sources/guide.md" target="_blank"
+      <li><a href="_sources/tutorial.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -344,7 +346,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Guide</h1>
+    <h1>Tutorial</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -354,8 +356,8 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-generate-the-kpoints-path-of-the-primitive-cell">Step 1 - Generate the kpoints path of the primitive cell</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-generate-the-kpoints-to-be-used-for-the-supercell-calculation">Step 2 - Generate the kpoints to be used for the supercell calculation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-generate-the-k-point-path-for-the-primitive-cell">Step 1 - Generate the <em>k</em>-point path for the primitive cell</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-generate-the-k-point-path-for-the-supercell-calculation">Step 2 - Generate the <em>k</em>-point path for the supercell calculation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-perform-the-unfolding">Step 3 - Perform the unfolding</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-plot-the-results">Step 4 - Plot the results</a></li>
 </ul>
@@ -369,34 +371,53 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="guide">
-<h1>Guide<a class="headerlink" href="#guide" title="Permalink to this heading">#</a></h1>
-<p>Main goal of this tool is to make the unfolding process easier.
-To generate a unfolded band structure, one typically needs to perform the following step:</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="tutorial">
+<h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this heading">#</a></h1>
+<p>The main goal of <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code> is to make the band structure unfolding workflow easier to implement and
+less error-prone. To generate an unfolded band structure, one typically needs to perform the following
+steps:</p>
 <ol class="arabic simple">
-<li><p>Create a primitive cell, and generate a k point path for this primitive cell.</p></li>
-<li><p>Create a supercell, and obtain its optimised structure.</p></li>
-<li><p>Generate a series of kpoints in the supercell to be calculated.</p></li>
-<li><p>Perform a band structure calculation using the supercell, and save its wave function.</p></li>
-<li><p>Run post-processing to obtain the unfolded band structure.</p></li>
+<li><p>Create a primitive unit cell, and generate a band structure <em>k</em>-point path corresponding to this
+primitive cell.</p></li>
+<li><p>Create a supercell (e.g. disordered, defective, surface slab etc.), and obtain its optimised structure.</p></li>
+<li><p>Generate a series of <em>k</em>-points for the supercell to be calculated.</p></li>
+<li><p>Perform a band structure calculation with the supercell, and save its wavefunction output to file.</p></li>
+<li><p>Post-process the supercell wavefunction to obtain the unfolded band structure in the <em>k</em>-point path
+of the primitive unit cell.</p></li>
 </ol>
-<p>The supercell usually contains certain defects, or a special quasi random structure.
-In both cases, its symmetry is lowered when compared to the perfect primitive cell.
-Hence, for a given kpoint path in the primitive cell, additional kpoints may need to be sampled, and the extracted spectral weights need to be averaged in the end to obtained the effective band structure (EBS).</p>
-<p>At the moment, two plane wave DFT codes, VASP<a class="footnote-reference brackets" href="#vasp" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> and CASTEP<a class="footnote-reference brackets" href="#castep" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>, are supported. In principle, other PW code can be supported easily if the wavefunction can be read in.</p>
-<p>Below is a guide for performing unfolding when using VASP.</p>
-<section id="step-1-generate-the-kpoints-path-of-the-primitive-cell">
-<h2>Step 1 - Generate the kpoints path of the primitive cell<a class="headerlink" href="#step-1-generate-the-kpoints-path-of-the-primitive-cell" title="Permalink to this heading">#</a></h2>
-<p>This can be done by well established packages such as <a class="reference external" href="https://www.materialscloud.org/work/tools/seekpath">seekpath</a>.
-Be careful that the “standardised” primitive cell may be different from input structure,
+<p>These generation and analysis steps are automated in <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code>, with only the primitive unit cell and
+supercell structures required as inputs from the user.</p>
+<p>Typically, the supercell comprises some form of symmetry-breaking relative to the primitive cell, such
+as defects, disorder (e.g. special quasi-random structures (SQS) for site disorder – other forms of
+disorder such as magnetic, dynamic/vibrational, polar, elastic etc. also possible), or a surface/interface
+slab.
+In all cases, the supercell symmetry is lowered compared to the pristine primitive cell.
+Hence, for a given <em>k</em>-point path in the primitive cell Brillouin Zone, additional <em>k</em>-points are
+required to be sampled for the supercell, and the extracted spectral weights need to be appropriately
+averaged to obtain the correct effective band structure (EBS). See the docs
+<a class="reference external" href="https://smtg-ucl.github.io/easyunfold/theory.html">Theory</a> page for more details.</p>
+<p>At the moment, two plane-wave DFT codes, VASP<a class="footnote-reference brackets" href="#vasp" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> and CASTEP<a class="footnote-reference brackets" href="#castep" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>, are supported. In principle,
+support can be easily added for other plane-wave codes if the wavefunction can be read in.</p>
+<p>Below is a guide for performing band structure unfolding when using VASP.</p>
+<section id="step-1-generate-the-k-point-path-for-the-primitive-cell">
+<h2>Step 1 - Generate the <em>k</em>-point path for the primitive cell<a class="headerlink" href="#step-1-generate-the-k-point-path-for-the-primitive-cell" title="Permalink to this heading">#</a></h2>
+<p>This can be done by well-established packages such as
+<a class="reference external" href="https://www.materialscloud.org/work/tools/seekpath">seekpath</a> or
+<a class="reference external" href="https://github.com/SMTG-UCL/sumo">sumo</a>.
+Note that the “standardised” primitive cell may be different from your input structure,
 and the generated path is correct for the standard primitive cell only.
-We recommand using <a class="reference external" href="https://github.com/SMTG-UCL/sumo">sumo</a> for generating the kpoints, which provides a nice command line interface:</p>
+We recommend using <a class="reference external" href="https://github.com/SMTG-UCL/sumo">sumo</a> for generating the <em>k</em>-points, which provides
+a nice command line interface, and automatically informs you if your input structure is not the required
+‘standardised’ primitive cell:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sumo</span><span class="o">-</span><span class="n">kgen</span> <span class="o">-</span><span class="n">p</span> <span class="n">POSCAR</span>
 </pre></div>
 </div>
-<p>Care should be taken if one uses the initial structure for further supercell generation, do verify that the lattice parameters are identical between the two.
-A <code class="docutils literal notranslate"><span class="pre">POSCAR_prim</span></code> file will be written out if <code class="docutils literal notranslate"><span class="pre">sumo</span></code> think the primitive cell is different from the input structure.
-The kpoints along the path is written to <code class="docutils literal notranslate"><span class="pre">KPOINTS_band</span></code>.</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">POSCAR_prim</span></code> file will be written out if <code class="docutils literal notranslate"><span class="pre">sumo</span></code> detects that the input structure is not the required
+‘standardised’ primitive cell. If this is the case, the <code class="docutils literal notranslate"><span class="pre">POSCAR_prim</span></code> file should be used for further
+supercell generation (or at least ensure that the supercell and the standardised primitive cell are
+commensurate, with matching lattice parameters between <code class="docutils literal notranslate"><span class="pre">POSCAR_prim</span></code> and that used for supercell
+generation).</p>
+<p>The <em>k</em>-point path is written to <code class="docutils literal notranslate"><span class="pre">KPOINTS_band</span></code>.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p><code class="docutils literal notranslate"><span class="pre">sumo</span></code> can be installed with <code class="docutils literal notranslate"><span class="pre">pip</span></code>:</p>
@@ -405,68 +426,83 @@ The kpoints along the path is written to <code class="docutils literal notransla
 </div>
 </div>
 </section>
-<section id="step-2-generate-the-kpoints-to-be-used-for-the-supercell-calculation">
-<h2>Step 2 - Generate the kpoints to be used for the supercell calculation<a class="headerlink" href="#step-2-generate-the-kpoints-to-be-used-for-the-supercell-calculation" title="Permalink to this heading">#</a></h2>
-<p>At this point, you should have your relaxed supercell structure (which may have a lower symmetry).
-The set of kpoints for the supercell band structure can be generated with:</p>
+<section id="step-2-generate-the-k-point-path-for-the-supercell-calculation">
+<h2>Step 2 - Generate the <em>k</em>-point path for the supercell calculation<a class="headerlink" href="#step-2-generate-the-k-point-path-for-the-supercell-calculation" title="Permalink to this heading">#</a></h2>
+<p>At this point, you should have your relaxed supercell structure (which likely has a lower symmetry than
+the pristine primitive unit cell).
+The set of <em>k</em>-points for the supercell band structure can be generated with:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">easyunfold</span> <span class="n">generate</span> <span class="n">primitive</span><span class="o">/</span><span class="n">POSCAR</span> <span class="n">supercell</span><span class="o">/</span><span class="n">POSCAR</span> <span class="n">primitive</span><span class="o">/</span><span class="n">KPOINTS_band</span> <span class="o">--</span><span class="n">matrix</span> <span class="s2">&quot;2 2 2&quot;</span>
 </pre></div>
 </div>
-<p>for hybrid functional calculations, it an be useful to split the kpoints into multiple calculations for reduced costs or memory consumptions.</p>
-<p>Note that the <code class="docutils literal notranslate"><span class="pre">--matrix</span></code> input is for setting the transformation matrix such that</p>
+<p>If an <code class="docutils literal notranslate"><span class="pre">IBZKPT</span></code> file is provided, its <em>k</em>-points will be included with their original weights, and all
+<em>k</em>-points included by <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code> will be zero-weighted. This is necessary for hybrid functional
+calculations where the electronic minimisation must be conducted self-consistently (e.g. <code class="docutils literal notranslate"><span class="pre">ICHARG&lt;10</span></code>),
+as discussed on the
+<a class="reference external" href="https://www.vasp.at/wiki/index.php/Band-structure_calculation_using_hybrid_functionals">VASPwiki</a></p>
+<p>For hybrid DFT calculations, it can be useful to split the <em>k</em>-points into multiple calculations to
+reduce the computational overhead and/or memory consumption, and this can be done with the
+<code class="docutils literal notranslate"><span class="pre">--nk-per-split</span></code> option, e.g.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">easyunfold</span> <span class="n">generate</span> <span class="n">primitive</span><span class="o">/</span><span class="n">POSCAR</span> <span class="n">supercell</span><span class="o">/</span><span class="n">POSCAR</span> <span class="n">primitive</span><span class="o">/</span><span class="n">KPOINTS_band</span> <span class="o">--</span><span class="n">matrix</span> <span class="s2">&quot;2 2 2&quot;</span> <span class="o">--</span><span class="n">nk</span><span class="o">-</span><span class="n">per</span><span class="o">-</span><span class="n">split</span> <span class="mi">60</span>
+</pre></div>
+</div>
+<p>This will generate files named as <code class="docutils literal notranslate"><span class="pre">KPOINTS_easyunfold_001</span></code>, <code class="docutils literal notranslate"><span class="pre">KPOINTS_easyunfold_002</span></code>, each containing
+60 <em>k</em>-points.</p>
+<p>See the help message with <code class="docutils literal notranslate"><span class="pre">easyunfold</span> <span class="pre">generate</span> <span class="pre">-h</span></code> for more details.
+Note that the <code class="docutils literal notranslate"><span class="pre">--matrix</span></code> input is for setting the transformation matrix such that</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cell_super</span> <span class="o">=</span> <span class="n">M</span> <span class="o">@</span> <span class="n">cell_primitive</span>
 </pre></div>
 </div>
-<p>where <code class="docutils literal notranslate"><span class="pre">cell_super</span></code> and <code class="docutils literal notranslate"><span class="pre">cell_primitive</span></code> are (3,3) matrix made of <strong>row vectors</strong>.
+<p>where <code class="docutils literal notranslate"><span class="pre">cell_super</span></code> and <code class="docutils literal notranslate"><span class="pre">cell_primitive</span></code> are (3,3) matrices made of <strong>row vectors</strong>.
 If <code class="docutils literal notranslate"><span class="pre">M</span></code> is non-diagonal, all nine elements must be passed in a row-major order.</p>
-<p>It is possible to omit `–matrix`` if the supercell is perfectly commensurate with the primitive cell.
-This can be the case if the supercell calculation did not undergo cell relaxation.</p>
-<p>If cell relaxation did take place, it is important to note that the unfolded band structure is not for exact  original primitive cell, but for a primitive cell deformed in a similar way as the supercell.</p>
-<p>A <code class="docutils literal notranslate"><span class="pre">easyunfold.json</span></code> file will be written which contains the information of the unfolding.
-The kpoints needed to be calculated for the supercell is written to a file named <code class="docutils literal notranslate"><span class="pre">KPOINTS_easyunfold</span></code>.
-It is possible to change the name <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code> by passing a explicit tag with the command line <code class="docutils literal notranslate"><span class="pre">--out-file</span></code>.</p>
-<p>For hybrid functional calculations, you may want to split the kpoints into multiple calculations:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">easyunfold</span> <span class="n">generate</span> <span class="n">primitive</span><span class="o">/</span><span class="n">POSCAR</span> <span class="n">supercell</span><span class="o">/</span><span class="n">POSCAR</span> <span class="n">primitive</span><span class="o">/</span><span class="n">KPOINTS_band</span> <span class="o">--</span><span class="n">matrix</span> <span class="s2">&quot;2 2 2&quot;</span> <span class="o">--</span><span class="n">scf</span><span class="o">-</span><span class="n">kpoints</span> <span class="n">IBZKPT</span> <span class="o">--</span><span class="n">nk</span><span class="o">-</span><span class="n">per</span><span class="o">-</span><span class="n">split</span> <span class="mi">60</span>
-</pre></div>
-</div>
-<p>This will generate files named as <code class="docutils literal notranslate"><span class="pre">KPOINTS_easyunfold_001</span></code>, <code class="docutils literal notranslate"><span class="pre">KPOINTS_easyunfold_002</span></code>, each containing 60 kpoints.
-If a <code class="docutils literal notranslate"><span class="pre">IBZKPT</span></code> file is the provided, its kpoints will be included with their original weights,  and all of the kpoints included by easyunfold will be zero-weighted.
-This is necessary for hybrid functional calculations where the electronic minimisation must be conducted self-consistently (e.g. <code class="docutils literal notranslate"><span class="pre">ICHARG&lt;10</span></code>).</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">--matrix</span></code> argument may be omitted (and automatically detected by <code class="docutils literal notranslate"><span class="pre">easyunfol</span></code>) if the supercell is
+perfectly commensurate with the primitive cell, which is the case if the supercell calculation did not
+undergo cell relaxation (typically the case for defect calculations).</p>
+<p>If cell relaxation did take place, it is important to note that the unfolded band structure does not
+correspond exactly to the Brillouin Zone of the original primitive cell, but to that of a primitive cell
+deformed in a similar way to the supercell relaxation.</p>
+<p>An <code class="docutils literal notranslate"><span class="pre">easyunfold.json</span></code> file will be written which contains the information of the <em>k</em>-point unfolding
+calculation. The supercell <em>k</em>-points to be calculated are written to a file named <code class="docutils literal notranslate"><span class="pre">KPOINTS_easyunfold</span></code>.
+It is possible to change the name <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code> by passing an explicit tag with the <code class="docutils literal notranslate"><span class="pre">--out-file</span></code> option.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>Input files for CASTEP can be generated with option <code class="docutils literal notranslate"><span class="pre">--code</span> <span class="pre">castep</span></code>.
-In this case, the <code class="docutils literal notranslate"><span class="pre">&lt;seed&gt;.cell</span></code> file should be passed containing the primitive cell kpoints that are
+In this case, the <code class="docutils literal notranslate"><span class="pre">&lt;seed&gt;.cell</span></code> file should be passed containing the primitive cell <em>k</em>-points that are
 stored under the <code class="docutils literal notranslate"><span class="pre">spectral_kpoints_list</span></code> block.
-The <code class="docutils literal notranslate"><span class="pre">cell</span></code> file of the supercell structure will be used as a template for generating a single <code class="docutils literal notranslate"><span class="pre">cell</span></code> file containing the
-supercell kpoints stored under the <code class="docutils literal notranslate"><span class="pre">spectral_kpoints_list</span></code> block.
-The choice of the DFT code is stored in the data file (<code class="docutils literal notranslate"><span class="pre">easyunfold.json</span></code>) and will be used automatically the later steps.</p>
+The <code class="docutils literal notranslate"><span class="pre">cell</span></code> file of the supercell structure will be used as a template for generating a single <code class="docutils literal notranslate"><span class="pre">cell</span></code>
+file containing the supercell <em>k</em>-points stored under the <code class="docutils literal notranslate"><span class="pre">spectral_kpoints_list</span></code> block.
+The choice of the DFT code is stored in the data file (<code class="docutils literal notranslate"><span class="pre">easyunfold.json</span></code>) and will be used
+automatically in later steps.</p>
 </div>
 </section>
 <section id="step-3-perform-the-unfolding">
 <h2>Step 3 - Perform the unfolding<a class="headerlink" href="#step-3-perform-the-unfolding" title="Permalink to this heading">#</a></h2>
-<p>At this point, a supercell calculation should be completed with a <code class="docutils literal notranslate"><span class="pre">WAVECAR</span></code> (containing the plane wave coefficients) written containing all of the kpoints in the <code class="docutils literal notranslate"><span class="pre">KPOINTS_easyunfold</span></code> file generated.
-This is typically a non self-consistent calculation with <code class="docutils literal notranslate"><span class="pre">ICHARG=11</span></code> for standard DFT, or a self-consistent calculation with zero-weighted kpoints if hybrid functional is used.</p>
-<p>To compute the spectral weights, run the following command:</p>
+<p>At this point, a supercell calculation should be completed with a <code class="docutils literal notranslate"><span class="pre">WAVECAR</span></code> (containing the plane wave
+coefficients) written, containing all the <em>k</em>-points in the generated <code class="docutils literal notranslate"><span class="pre">KPOINTS_easyunfold</span></code> file.
+This is typically a non-self-consistent calculation with <code class="docutils literal notranslate"><span class="pre">ICHARG=11</span></code> for standard (LDA/GGA) DFT, or a
+self-consistent calculation with zero-weighted <em>k</em>-points if hybrid functionals are used (see
+<a class="reference external" href="https://www.vasp.at/wiki/index.php/Band-structure_calculation_using_hybrid_functionals">VASPwiki</a>).</p>
+<p>To compute the spectral weights, we run the following command:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">easyunfold</span> <span class="n">unfold</span> <span class="n">calculate</span> <span class="n">WAVECAR</span>
 </pre></div>
 </div>
-<p>This command compute the spectral weight and save them into the  <code class="docutils literal notranslate"><span class="pre">easyunfold.json</span></code> file.
-You can load the <code class="docutils literal notranslate"><span class="pre">easyunfold.json</span></code> file to read the spectral weights manually, or proceed with the command line interface to generate a plot.</p>
+<p>This command computes the spectral weights and save them to the <code class="docutils literal notranslate"><span class="pre">easyunfold.json</span></code> file.
+You can load the <code class="docutils literal notranslate"><span class="pre">easyunfold.json</span></code> file to read the spectral weights manually, or proceed with the
+command line interface to generate a plot.</p>
+<p>If the <em>k</em>-points have been split into multiple calculations (for example, for those involving hybrid
+functionals), all wave function files (e.g. <code class="docutils literal notranslate"><span class="pre">WAVECAR</span></code> for VASP) need to be passed:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">easyunfold</span> <span class="n">unfold</span> <span class="n">calculate</span> <span class="n">calc1</span><span class="o">/</span><span class="n">WAVECAR</span> <span class="n">calc2</span><span class="o">/</span><span class="n">WAVECAR</span>
+</pre></div>
+</div>
+<p>For large <code class="docutils literal notranslate"><span class="pre">WAVECAR</span></code>s, it may take some time to parse and compute the weights.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>Wave functions (plane wave coefficients) in a CASTEP spectral calculation is stored in the <code class="docutils literal notranslate"><span class="pre">&lt;seed&gt;.orbitals</span></code> file,
-and the <code class="docutils literal notranslate"><span class="pre">&lt;seed&gt;.check</span></code> file only contains the wave function for the self-consistent field calculation.
-Note that the former is not written by default, and needs to be turned on by setting:</p>
+<p>Wave functions (plane wave coefficients) in a CASTEP spectral calculation are stored in the <code class="docutils literal notranslate"><span class="pre">&lt;seed&gt;.</span> <span class="pre">orbitals</span></code> file, and the <code class="docutils literal notranslate"><span class="pre">&lt;seed&gt;.check</span></code> file only contains the wave function for the self-consistent field
+calculation. Note that the former is not written by default, and needs to be turned on by setting:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">write_orbitals</span> <span class="p">:</span> <span class="n">true</span>
 </pre></div>
 </div>
 <p>in the <code class="docutils literal notranslate"><span class="pre">&lt;seed&gt;.param</span></code> file.</p>
 </div>
-<p>If the kpoints has been split into multiple calculations (for example, for those involving hybrid functional), all of the wave function (e.g. <code class="docutils literal notranslate"><span class="pre">WAVECAR</span></code> for VASP) files need to be passed:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">easyunfold</span> <span class="n">unfold</span> <span class="n">calculate</span> <span class="n">calc1</span><span class="o">/</span><span class="n">WAVECAR</span> <span class="n">calc2</span><span class="o">/</span><span class="n">WAVECAR</span>
-</pre></div>
-</div>
-<p>For large <code class="docutils literal notranslate"><span class="pre">WAVECAR</span></code>, it may take some time to parse and compute the weights.</p>
 </section>
 <section id="step-4-plot-the-results">
 <h2>Step 4 - Plot the results<a class="headerlink" href="#step-4-plot-the-results" title="Permalink to this heading">#</a></h2>
@@ -474,8 +510,29 @@ Note that the former is not written by default, and needs to be turned on by set
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">easyunfold</span> <span class="n">unfold</span> <span class="n">plot</span>
 </pre></div>
 </div>
-<p>to generate a plot of the spectral function.
-It is possible to further customise the plot though command line arguments - see the help with <code class="docutils literal notranslate"><span class="pre">easyunfold</span> <span class="pre">unfold</span> <span class="pre">plot</span> <span class="pre">--help</span></code>.</p>
+<p>to generate a plot of the spectral function, giving an output like this:</p>
+<figure class="align-default" id="id3">
+<a class="reference internal image-reference" href="_images/NaBiS2_unfold-plot.png"><img alt="NaBiS2 unfolded band structure" src="_images/NaBiS2_unfold-plot.png" style="width: 400px;" /></a>
+<figcaption>
+<p><span class="caption-text">Unfolded band structure of <span class="math notranslate nohighlight">\(\ce{NaBiS2}\)</span></span><a class="headerlink" href="#id3" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>It is possible to further customise the plot though command line arguments - see the help message with
+<code class="docutils literal notranslate"><span class="pre">easyunfold</span> <span class="pre">unfold</span> <span class="pre">plot</span> <span class="pre">--help</span></code>, with outputs like:</p>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>BuPu <code class="docutils literal notranslate"><span class="pre">cmap</span></code></p></th>
+<th class="head text-center"><p>viridis <code class="docutils literal notranslate"><span class="pre">cmap</span></code></p></th>
+<th class="head text-center"><p>atom-projected</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p><img alt="" src="_images/NaBiS2_unfold-plot_BuPu.png" /></p></td>
+<td class="text-center"><p><img alt="" src="_images/NaBiS2_unfold-plot_viridis.png" /></p></td>
+<td class="text-center"><p><a class="reference internal" href="_images/NaBiS2_unfold-plot_proj.png"><img alt="atom-projected NaBiS2 band structure" src="_images/NaBiS2_unfold-plot_proj.png" style="width: 1200px;" /></a></p></td>
+</tr>
+</tbody>
+</table>
 <hr class="footnotes docutils" />
 <aside class="footnote-list brackets">
 <aside class="footnote brackets" id="vasp" role="note">
@@ -538,8 +595,8 @@ It is possible to further customise the plot though command line arguments - see
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-generate-the-kpoints-path-of-the-primitive-cell">Step 1 - Generate the kpoints path of the primitive cell</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-generate-the-kpoints-to-be-used-for-the-supercell-calculation">Step 2 - Generate the kpoints to be used for the supercell calculation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-generate-the-k-point-path-for-the-primitive-cell">Step 1 - Generate the <em>k</em>-point path for the primitive cell</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-generate-the-k-point-path-for-the-supercell-calculation">Step 2 - Generate the <em>k</em>-point path for the supercell calculation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-perform-the-unfolding">Step 3 - Perform the unfolding</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#step-4-plot-the-results">Step 4 - Plot the results</a></li>
 </ul>

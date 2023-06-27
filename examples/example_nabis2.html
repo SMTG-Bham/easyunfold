@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Cation-Disordered NaBiS2 with and without Atomic Projections &#8212; Easyunfold</title>
+    <title>Cation-Disordered NaBiS2 with atomic projections &#8212; Easyunfold</title>
   
   
   
@@ -48,7 +48,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'examples/example_nabis2';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Unfolding a Si 2x1x1 supercell using CASTEP" href="example_si211_castep.html" />
+    <link rel="next" title="Si supercell using CASTEP" href="example_si211_castep.html" />
     <link rel="prev" title="MgO with atomic projections" href="example_mgo.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -162,21 +162,21 @@
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
                 <a class="reference internal" href="../index.html">
-                    Easyunfold documentation
+                    Easyunfold Documentation
                 </a>
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../guide.html">Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../examples.html">Examples</a><input checked class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="example_si222.html">Si supercell with a displaced atom</a></li>
 <li class="toctree-l2"><a class="reference internal" href="example_mgo.html">MgO with atomic projections</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">Cation-Disordered NaBiS<sub>2</sub> with and without Atomic Projections</a></li>
-<li class="toctree-l2"><a class="reference internal" href="example_si211_castep.html">Unfolding a Si 2x1x1 supercell using CASTEP</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Cation-Disordered NaBiS<sub>2</sub> with atomic projections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_si211_castep.html">Si supercell using CASTEP</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../theory.html">Theory of unfolding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../theory.html">Band Unfolding Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cli.html">CLI Reference</a></li>
@@ -344,7 +344,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Cation-Disordered NaBiS<sub>2</sub> with and without Atomic Projections</h1>
+    <h1>Cation-Disordered NaBiS<sub>2</sub> with atomic projections</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -358,16 +358,25 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="cation-disordered-nabis2-with-and-without-atomic-projections">
-<h1>Cation-Disordered NaBiS<sub>2</sub> with and without Atomic Projections<a class="headerlink" href="#cation-disordered-nabis2-with-and-without-atomic-projections" title="Permalink to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="cation-disordered-nabis2-with-atomic-projections">
+<h1>Cation-Disordered NaBiS<sub>2</sub> with atomic projections<a class="headerlink" href="#cation-disordered-nabis2-with-atomic-projections" title="Permalink to this heading">#</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Relevant files can be found in the <a class="reference external" href="https://github.com/SMTG-UCL/easyunfold/tree/main/examples/NaBiS2">examples/NaBiS2</a> folder.
-Note that the <code class="docutils literal notranslate"><span class="pre">PROCAR.gz</span></code> file will need to be decompressed with <code class="docutils literal notranslate"><span class="pre">gzip</span> <span class="pre">-d</span> <span class="pre">PROCAR.gz</span></code> if reproducing these example plots with the raw data.</p>
+<p>The files needed for reproducing this example are provided in the
+<a class="reference external" href="https://github.com/SMTG-UCL/easyunfold/tree/main/examples/NaBiS2">examples/NaBiS2</a> folder.
+Note that the <code class="docutils literal notranslate"><span class="pre">PROCAR.gz</span></code> file will need to be decompressed with <code class="docutils literal notranslate"><span class="pre">gzip</span> <span class="pre">-d</span> <span class="pre">PROCAR.gz</span></code> if recalculating
+and reproducing these example plots.</p>
 </div>
-<p>In this example, we unfold the bands from a 80-atom special-quasirandom (SQS) supercell of NaBiS<sub>2</sub>, where the Na and
-Bi cations are quasi-randomly distributed, in order to simulate randomised cation disorder in the material.
-These results were published in Y. T. Huang &amp; S. R. Kavanagh et al. 2022 <a class="footnote-reference brackets" href="#id3" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>, and an early version of
+<p>In this example, we unfold the bands from a 80-atom special-quasirandom (SQS) supercell of
+NaBiS<sub>2</sub>, where the Na and Bi cations are quasi-randomly distributed, in order to simulate
+randomised cation disorder in the material.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>SQS supercells can be generated using tools like
+<a class="reference external" href="https://icet.materialsmodeling.org/moduleref_icet/tools.html#module-icet.tools.structure_generation">icet</a>
+or <a class="reference external" href="https://www.brown.edu/Departments/Engineering/Labs/avdw/atat/">ATAT</a>.</p>
+</div>
+<p>These results were published in Y. T. Huang &amp; S. R. Kavanagh et al. 2022 <a class="footnote-reference brackets" href="#id3" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>, and an early version of
 <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code> was used for the similar AgBiS<span class="math notranslate nohighlight">\(_2\)</span> in Y. Wang &amp; S. R. Kavanagh et al. 2022 <a class="footnote-reference brackets" href="#id4" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>,
 with these plots demonstrating the key
 differences in electronic structure and thus photovoltaic performance between these two materials.</p>
@@ -425,7 +434,8 @@ Note that we use “1-based indexing” for the atoms here, matching the VASP fo
 not zero as in python).</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The projections are not stored in the <code class="docutils literal notranslate"><span class="pre">easyunfold.json</span></code> data file. So the <code class="docutils literal notranslate"><span class="pre">PROCAR</span></code> should be kept for replotting in the future.</p>
+<p>The atomic projections are not stored in the <code class="docutils literal notranslate"><span class="pre">easyunfold.json</span></code> data file, so the <code class="docutils literal notranslate"><span class="pre">PROCAR</span></code> file should be
+kept for replotting in the future.</p>
 </div>
 <p>While the main conclusions of S dominating the valence band and Bi dominating the conduction band are clear from the
 plot above, the high intensity of the S projections in the valence band makes the Bi contributions in the conduction
@@ -440,7 +450,8 @@ band more faint and less apparent.</p>
 <p><span class="caption-text">Unfolded band structure of NaBiS<sub>2</sub> with atomic contributions plotted separately.</span><a class="headerlink" href="#id7" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
-<p>An alternative option here is also to just plot only the contributions of Na and Bi cations, with no S projections:</p>
+<p>An alternative option here is also to just plot only the contributions of Na (<code class="docutils literal notranslate"><span class="pre">1-20</span></code>) and Bi (<code class="docutils literal notranslate"><span class="pre">21-40</span></code>)
+cations, with no S projections:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot-projections<span class="w"> </span>--atoms-idx<span class="o">=</span><span class="s2">&quot;1-20|21-40&quot;</span><span class="w"> </span>--procar<span class="w"> </span>PROCAR<span class="w">  </span>--intensity<span class="o">=</span><span class="m">2</span><span class="w">  </span>--combined<span class="w"> </span>--colors<span class="o">=</span><span class="s2">&quot;r,g&quot;</span>
 </pre></div>
 </div>
@@ -451,7 +462,8 @@ band more faint and less apparent.</p>
 </figcaption>
 </figure>
 <p>While this plot isn’t the most aesthetic, it clearly shows that Bi (green) contributes to both the conduction band and
-(less so) valence states, but Na (red) doesn’t contribute significantly at all.</p>
+(less so) valence band states, but Na (red) doesn’t contribute significantly at near the band edges
+(it’s a spectator ion!).</p>
 <hr class="footnotes docutils" />
 <aside class="footnote-list brackets">
 <aside class="footnote brackets" id="id3" role="note">
@@ -491,7 +503,7 @@ band more faint and less apparent.</p>
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Unfolding a Si 2x1x1 supercell using CASTEP</p>
+        <p class="prev-next-title">Si supercell using CASTEP</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

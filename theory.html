@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Theory of unfolding &#8212; Easyunfold</title>
+    <title>Band Unfolding Theory &#8212; Easyunfold</title>
   
   
   
@@ -49,7 +49,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="References" href="references.html" />
-    <link rel="prev" title="Unfolding a Si 2x1x1 supercell using CASTEP" href="examples/example_si211_castep.html" />
+    <link rel="prev" title="Si supercell using CASTEP" href="examples/example_si211_castep.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -162,21 +162,21 @@
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
                 <a class="reference internal" href="index.html">
-                    Easyunfold documentation
+                    Easyunfold Documentation
                 </a>
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="guide.html">Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="examples.html">Examples</a><input checked class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="examples/example_si222.html">Si supercell with a displaced atom</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/example_mgo.html">MgO with atomic projections</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/example_nabis2.html">Cation-Disordered NaBiS<sub>2</sub> with and without Atomic Projections</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/example_si211_castep.html">Unfolding a Si 2x1x1 supercell using CASTEP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/example_nabis2.html">Cation-Disordered NaBiS<sub>2</sub> with atomic projections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/example_si211_castep.html">Si supercell using CASTEP</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Theory of unfolding</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Band Unfolding Theory</a></li>
 <li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
 <li class="toctree-l1"><a class="reference internal" href="publications.html">Publications</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cli.html">CLI Reference</a></li>
@@ -346,7 +346,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Theory of unfolding</h1>
+    <h1>Band Unfolding Theory</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -356,7 +356,7 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symmetry-considerations">Symmetry considerations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symmetry-considerations">Symmetry Considerations</a></li>
 </ul>
             </nav>
         </div>
@@ -368,64 +368,77 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="theory-of-unfolding">
-<h1>Theory of unfolding<a class="headerlink" href="#theory-of-unfolding" title="Permalink to this heading">#</a></h1>
-<p>Theoretical background of the methodology used in this package is available in the literature<a class="footnote-reference brackets" href="#id3" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a><a class="footnote-reference brackets" href="#id4" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>.
-Here, only a brief summary is given for brevity.</p>
-<p>Notation: <span class="math notranslate nohighlight">\(\vec{k}\)</span> is the kpoint of the supercell and <span class="math notranslate nohighlight">\(\vec{k}\)</span> is that of the primitive cell.</p>
-<p>Reference: <a class="reference external" href="https://link.aps.org/doi/10.1103/PhysRevB.85.085201">https://link.aps.org/doi/10.1103/PhysRevB.85.085201</a></p>
+  <section class="tex2jax_ignore mathjax_ignore" id="band-unfolding-theory">
+<h1>Band Unfolding Theory<a class="headerlink" href="#band-unfolding-theory" title="Permalink to this heading">#</a></h1>
+<p>The theoretical background of the methodology used in this package is available in the literature.<a class="footnote-reference brackets" href="#id4" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a><a class="footnote-reference brackets" href="#id5" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>
+Here, only a summary is given for brevity.</p>
+<p>Notation: <span class="math notranslate nohighlight">\(\vec{K}\)</span> is the <em>k</em>-point of the supercell and <span class="math notranslate nohighlight">\(\vec{k}\)</span> is that of the primitive cell.</p>
 <p>Each <span class="math notranslate nohighlight">\(k\)</span> in the primitive cell can be mapped to that in the supercell where:</p>
 <div class="math notranslate nohighlight">
 \[
 \vec{K} = \vec{k} - \vec{G}_0.
 \]</div>
-<p>with <span class="math notranslate nohighlight">\(\vec{G}_0\)</span> being an reciprocal lattice vector.
+<p>with <span class="math notranslate nohighlight">\(\vec{G}_0\)</span> being a reciprocal lattice vector.
 Naturally, each <span class="math notranslate nohighlight">\(\vec{K}\)</span> in the supercell can be unfolded into a set of <span class="math notranslate nohighlight">\(\vec{k}_i\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[
-\vec{k_i} = \vec{K} + \vec{G}_i  i=1,...,N_{\vec{K}}
+\vec{k_i} = \vec{K} + \vec{G}_i\  ; \  i=1,...,N_{\vec{K}}
 \]</div>
 <p>The key implication is that for a given <span class="math notranslate nohighlight">\(\vec{k}\)</span>, there is a unique <span class="math notranslate nohighlight">\(\vec{K}\)</span> that it folds to.</p>
-<p>The goal of the band folding procedure is to obtain the <span class="math notranslate nohighlight">\(E(\vec{k})\)</span> from the complicated <span class="math notranslate nohighlight">\(E(\vec{K})\)</span>, where E is the energy of the Kohn-Sham states.
-This can be achieved by projecting <span class="math notranslate nohighlight">\(\ket{\vec{K}m}\)</span> on all of the primitive cell Block states <span class="math notranslate nohighlight">\(\ket{\vec{k}_i}\)</span> of a set of <span class="math notranslate nohighlight">\(\vec{k_i}\)</span> and compute the spectral weight:</p>
+<p>The goal of the band folding procedure is to obtain the <span class="math notranslate nohighlight">\(E(\vec{k})\)</span> from the complicated <span class="math notranslate nohighlight">\(E(\vec{K})\)</span>,
+where E is the energy/eigenvalue of the Kohn-Sham electronic states.
+This can be achieved by projecting <span class="math notranslate nohighlight">\(\ket{\vec{K}m}\)</span> on all of the primitive cell Block states
+<span class="math notranslate nohighlight">\(\ket{\vec{k}_i n}\)</span> of a fixed <span class="math notranslate nohighlight">\(\vec{k}_i\)</span>, where <span class="math notranslate nohighlight">\(m\)</span> and <span class="math notranslate nohighlight">\(n\)</span> are band indices in the supercell and
+primitive cell respectively, and compute the spectral weight:</p>
 <div class="math notranslate nohighlight">
 \[
 P_{\vec{K}m}(\vec{k}_i) = \sum_n |\braket{\vec{K}m |\vec{k}_i n}|^2.
 \]</div>
-<p>where <span class="math notranslate nohighlight">\(P\)</span> represents the probability of finding a set of primitive cell stats <span class="math notranslate nohighlight">\(\ket{\vec{k}_in}\)</span> contributing to the supercell state <span class="math notranslate nohighlight">\(\ket{\vec{K}m}\)</span>, or the amount of Bloch character <span class="math notranslate nohighlight">\(\vec{k}_i\)</span> preserved in <span class="math notranslate nohighlight">\(\ket{\vec{K}m}\)</span> at the same energy.</p>
-<p>Based on this, one can further derive the spectral function of <span class="math notranslate nohighlight">\(E\)</span>:</p>
+<p>where <span class="math notranslate nohighlight">\(P\)</span> represents the probability of finding a set of primitive cell states <span class="math notranslate nohighlight">\(\ket{\vec{k}_i n}\)</span>
+contributing to the supercell state <span class="math notranslate nohighlight">\(\ket{\vec{K}m}\)</span>, or the amount of Bloch character <span class="math notranslate nohighlight">\(\vec{k}_i\)</span>
+preserved in <span class="math notranslate nohighlight">\(\ket{\vec{K}m}\)</span> at the same energy.</p>
+<p>Based on this, one can further derive the spectral function of <span class="math notranslate nohighlight">\(E\)</span>, which represents the probability of
+an electronic state with energy <span class="math notranslate nohighlight">\(E\)</span> at <span class="math notranslate nohighlight">\(\vec{k}_i\)</span> (i.e. a ‘band structure density’):</p>
 <div class="math notranslate nohighlight">
 \[
 A(\vec{k}_i, E) = \sum_m P_{\vec{K}m}(\vec{k}_i)\delta(E_m - E).
 \]</div>
-<p>In practice, the <span class="math notranslate nohighlight">\(\delta\)</span> function is replaced with a Gaussian or Lorentzian function to smear the contribution with discretised <span class="math notranslate nohighlight">\(E\)</span>.</p>
+<p>In practice, the <span class="math notranslate nohighlight">\(\delta\)</span> function is replaced with a Gaussian or Lorentzian function to smear the
+contribution with discretised <span class="math notranslate nohighlight">\(E\)</span>.</p>
 <p>Hence, the central quantity to be calculated is the <span class="math notranslate nohighlight">\(P_{\vec{K}m}(\vec{k}_i)\)</span>.
-For plane-wave basis, it can shown that (equation 15 in Popescu et al.):</p>
+For a plane-wave basis, it can be shown that (equation 15 in Popescu et al.<a class="footnote-reference brackets" href="#id5" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>):</p>
 <div class="math notranslate nohighlight">
 \[
 P_{\vec{K}m}(\vec{k}_j) = \sum_{\vec{g}} |C_{\vec{Km}}(\vec{g} + \vec{G_j})|^2,
 \]</div>
-<p>where <span class="math notranslate nohighlight">\(C_{\vec{Km}}(\vec{g} + \vec{G_j})\)</span> are the plane wave coefficients of the supercell.
-Because the supercell is commensurate with the primitive cell, the vectors <span class="math notranslate nohighlight">\(\vec{g}\)</span> are included in the basis set of the supercell calculations.
-Since <span class="math notranslate nohighlight">\(\vec{G_{j}}\)</span> is the reciprocal lattice vector that wraps <span class="math notranslate nohighlight">\(\vec{k}\)</span> to <span class="math notranslate nohighlight">\(\vec{K}\)</span>,
-all plane wave coefficients that are needed to obtain <span class="math notranslate nohighlight">\(P_{\vec{K}_m}(\vec{k}_j)\)</span> are present in the wave function output of the supercell calculation.</p>
+<p>where <span class="math notranslate nohighlight">\(C_{\vec{Km}}(\vec{g} + \vec{G_j})\)</span> are the plane-wave coefficients of the supercell.
+Because the supercell is commensurate with the primitive cell, the vectors <span class="math notranslate nohighlight">\(\vec{g}\)</span> are included in
+the basis set of the supercell calculations. Since <span class="math notranslate nohighlight">\(\vec{G_{j}}\)</span> is the reciprocal lattice vector that
+wraps <span class="math notranslate nohighlight">\(\vec{k}\)</span> to <span class="math notranslate nohighlight">\(\vec{K}\)</span>, all plane-wave coefficients that are needed to obtain <span class="math notranslate nohighlight">\(P_{\vec{K}_m}(\vec
+{k}_j)\)</span> are present in the wavefunction output of the supercell calculation.</p>
 <section id="symmetry-considerations">
-<h2>Symmetry considerations<a class="headerlink" href="#symmetry-considerations" title="Permalink to this heading">#</a></h2>
-<p>The set of primitive cell kpoints <span class="math notranslate nohighlight">\(\vec{k}_i\)</span> are located on a given path in the Brillouin zone, going through multiple high symmetry points.
+<h2>Symmetry Considerations<a class="headerlink" href="#symmetry-considerations" title="Permalink to this heading">#</a></h2>
+<p>The set of primitive cell <em>k</em>-points <span class="math notranslate nohighlight">\(\vec{k}_i\)</span> are located on a given path in the Brillouin zone,
+going through multiple high symmetry points.
 The selection of the path is not unique, but often depends on the space group of the primitive cell.
-Only a limited set of paths are needed because of the presence of point group symmetry, as symmetrically equivalent <span class="math notranslate nohighlight">\(\vec{k}\)</span> contains the same eigenstates.</p>
-<p>However, the supercell to be unfolded does not necessarily contain the same point group symmetry due to imperfections (presence of defects, strain, distortions).
-The broken symmetry means that previously equivalent <span class="math notranslate nohighlight">\(\vec{k}\)</span> are no longer equivalent.</p>
-<p>We address this by first expanding each <span class="math notranslate nohighlight">\(\vec{k}\)</span> based on the symmetry operations of the primitive cell, followed by a reduction using the symmetry of the supercell.
-The spectral weight at each <span class="math notranslate nohighlight">\(\vec{k}\)</span> is then a weighted combination of that from a set of <span class="math notranslate nohighlight">\(\vec{k_s^\prime}\)</span> points that are inequivalent under the symmetry of the supercell.</p>
+Only a limited set of paths are needed because of the presence of point group symmetry, as
+symmetrically equivalent <span class="math notranslate nohighlight">\(\vec{k}\)</span> correspond to the same eigenstates.</p>
+<p>However, the supercell to be unfolded does not necessarily contain the same point group symmetry due to
+imperfections (presence of defects, strain, distortions, disorder). The broken symmetry means that
+previously equivalent <span class="math notranslate nohighlight">\(\vec{k}\)</span> are no longer equivalent.</p>
+<p>We address this by first expanding each <span class="math notranslate nohighlight">\(\vec{k}\)</span> based on the symmetry operations of the primitive
+cell, followed by a reduction using the symmetry of the supercell. The spectral weight at each <span class="math notranslate nohighlight">\(\vec{k}\)</span>
+is then a weighted combination of that set of <span class="math notranslate nohighlight">\(\vec{k_s^\prime}\)</span> points that are inequivalent under the
+symmetry of the supercell.</p>
 <hr class="footnotes docutils" />
 <aside class="footnote-list brackets">
-<aside class="footnote brackets" id="id3" role="note">
+<aside class="footnote brackets" id="id4" role="note">
 <span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
 <p>Popescu, V.; Zunger, A. Effective Band Structure of Random Alloys. Phys. Rev. Lett. 2010, 104 (23), 236403. <a class="reference external" href="https://doi.org/10.1103/PhysRevLett.104.236403">https://doi.org/10.1103/PhysRevLett.104.236403</a>.</p>
 </aside>
-<aside class="footnote brackets" id="id4" role="note">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
+<aside class="footnote brackets" id="id5" role="note">
+<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id2">1</a>,<a role="doc-backlink" href="#id3">2</a>)</span>
 <p>Popescu, V.; Zunger, A. Extracting <span class="math notranslate nohighlight">\(E\)</span> versus <span class="math notranslate nohighlight">\(\vec{k}\)</span> Effective Band Structure from Supercell Calculations on Alloys and Impurities. Phys. Rev. B 2012, 85 (8), 085201. <a class="reference external" href="https://doi.org/10.1103/PhysRevB.85.085201">https://doi.org/10.1103/PhysRevB.85.085201</a>.</p>
 </aside>
 </aside>
@@ -450,7 +463,7 @@ The spectral weight at each <span class="math notranslate nohighlight">\(\vec{k}
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Unfolding a Si 2x1x1 supercell using CASTEP</p>
+        <p class="prev-next-title">Si supercell using CASTEP</p>
       </div>
     </a>
     <a class="right-next"
@@ -480,7 +493,7 @@ The spectral weight at each <span class="math notranslate nohighlight">\(\vec{k}
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symmetry-considerations">Symmetry considerations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#symmetry-considerations">Symmetry Considerations</a></li>
 </ul>
   </nav></div>
 
