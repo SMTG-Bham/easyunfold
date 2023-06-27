@@ -566,8 +566,8 @@ class UnfoldPlotter:
                 legend_elements = []
                 for i, atom in enumerate(atoms):
                     legend_elements.append(Patch(facecolor=colors[i], label=atom, alpha=0.7))
-                axs.legend(handles=legend_elements, bbox_to_anchor=(1.01, 1))
-                fig.subplots_adjust(right=0.8)  # ensure legend is not cut off
+                axs.legend(handles=legend_elements, bbox_to_anchor=(1.025, 1))
+                fig.subplots_adjust(right=0.78)  # ensure legend is not cut off
 
         return fig
 

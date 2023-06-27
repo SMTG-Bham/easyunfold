@@ -289,9 +289,8 @@ class UnfoldKSet(MSONable):
             # A flat list containing all SC
             all_sc.extend(this_k)
 
-        # We now have bunch of supercell kpoints for each set of expanded kpoints
+        # We now have a bunch of supercell kpoints for each set of expanded kpoints
         # Try to find duplicated SC kpoints
-        # TODO: We can further reduce this by time-reversal symmetry here
         all_sc = np.array(all_sc)
         reduced_sckpts, _, sc_kpts_map = reduce_kpoints(all_sc, time_reversal=self.time_reversal)
         sc_kpts_map = list(sc_kpts_map)
