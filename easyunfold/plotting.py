@@ -402,7 +402,7 @@ class UnfoldPlotter:
 
     def plot_projected(
         self,
-        procar: Union[str, list],
+        procar: Union[str, list] = "PROCAR",
         eref=None,
         gamma=False,
         npoints=2000,

@@ -229,8 +229,9 @@ def add_plot_options(func):
                  show_default=True)(func)
     click.option('--procar',
                  multiple=True,
-                 help=('PROCAR files used for atomic weighting, '
-                       'can be passed multiple times if more than one PROCAR should be used.'))(func)
+                 default=["PROCAR"],
+                 help=('PROCAR files used for atomic weighting, can be passed multiple times if more '
+                       'than one PROCAR should be used. Default is to read PROCAR in current directory'))(func)
     click.option('--atoms-idx', help='Indices of the atoms to be used for weighting (1-indexed).')(func)
     click.option('--orbitals', help='Orbitals of to be used for weighting.')(func)
     click.option('--title', help='Title to be used')(func)
@@ -433,13 +434,15 @@ def _unfold_plot(ctx,
         eref = unfoldset.calculated_quantities.get('vbm', 0.0)
     click.echo(f'Using a reference energy of {eref:.3f} eV')
 
-    # Process the PROCAR
-    if procar:
-        click.echo(f'Loading projections from: {procar}')
-        unfoldset.load_procar(procar)
-
     # Setup the atoms_idx and orbitals
     if atoms_idx:
+        # Process the PROCAR
+        click.echo(f'Loading projections from: {procar}')
+        try:
+            unfoldset.load_procar(procar)
+        except FileNotFoundError:
+            click.echo(f'Could not find and parse the --procar file: {procar} – needed for atomic projections!')
+            raise click.Abort()
         atoms_idx, orbitals = process_projection_options(atoms_idx, orbitals)
     else:
         atoms_idx = None
