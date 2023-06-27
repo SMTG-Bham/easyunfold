@@ -18,7 +18,7 @@ DEFAULT_CMAPS = [
     'BuGn', 'YlGn'
 ]
 
-CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
+CONTEXT_SETTINGS = {'help_option_names': ['-h', '--help']}
 
 
 @click.group('easyunfold', context_settings=CONTEXT_SETTINGS)
