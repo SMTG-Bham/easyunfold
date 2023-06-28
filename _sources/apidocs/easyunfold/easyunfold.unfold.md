@@ -147,6 +147,14 @@ Bases: {py:obj}`monty.json.MSONable`
 
 ````
 
+````{py:method} check_version()
+:canonical: easyunfold.unfold.UnfoldKSet.check_version
+
+```{autodoc2-docstring} easyunfold.unfold.UnfoldKSet.check_version
+```
+
+````
+
 ````{py:property} is_calculated
 :canonical: easyunfold.unfold.UnfoldKSet.is_calculated
 :type: bool
@@ -414,14 +422,6 @@ Bases: {py:obj}`monty.json.MSONable`
 :canonical: easyunfold.unfold.Unfold.find_K_index
 
 ```{autodoc2-docstring} easyunfold.unfold.Unfold.find_K_index
-```
-
-````
-
-````{py:method} k2K_map(kpath) -> typing.List[int]
-:canonical: easyunfold.unfold.Unfold.k2K_map
-
-```{autodoc2-docstring} easyunfold.unfold.Unfold.k2K_map
 ```
 
 ````

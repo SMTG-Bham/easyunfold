@@ -43,7 +43,7 @@ easyunfold.effective_mass
 ````{py:data} __version__
 :canonical: easyunfold.__version__
 :value: >
-   '0.1.4'
+   '0.1.5'
 
 ```{autodoc2-docstring} easyunfold.__version__
 ```

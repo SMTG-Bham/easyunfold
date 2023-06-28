@@ -366,6 +366,7 @@ document.write(`
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.expand_K_by_symmetry"><code class="docutils literal notranslate"><span class="pre">expand_K_by_symmetry()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet._VERSION"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet._VERSION</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.check_version"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.check_version()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.is_calculated"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.is_calculated</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.has_averaged_spectral_weights"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.has_averaged_spectral_weights</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.from_atoms"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.from_atoms()</span></code></a></li>
@@ -401,7 +402,6 @@ document.write(`
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.Unfold.get_vbm_cbm"><code class="docutils literal notranslate"><span class="pre">Unfold.get_vbm_cbm()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.Unfold.get_ovlap_G"><code class="docutils literal notranslate"><span class="pre">Unfold.get_ovlap_G()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.Unfold.find_K_index"><code class="docutils literal notranslate"><span class="pre">Unfold.find_K_index()</span></code></a></li>
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.Unfold.k2K_map"><code class="docutils literal notranslate"><span class="pre">Unfold.k2K_map()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.Unfold.spectral_weight_k"><code class="docutils literal notranslate"><span class="pre">Unfold.spectral_weight_k()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.Unfold.spectral_weight"><code class="docutils literal notranslate"><span class="pre">Unfold.spectral_weight()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.Unfold.spectral_function"><code class="docutils literal notranslate"><span class="pre">Unfold.spectral_function()</span></code></a></li>
@@ -574,6 +574,12 @@ is also returned.</p>
 <dt class="sig sig-object py" id="easyunfold.unfold.UnfoldKSet._VERSION">
 <span class="sig-name descname"><span class="pre">_VERSION</span></span><a class="headerlink" href="#easyunfold.unfold.UnfoldKSet._VERSION" title="Permalink to this definition">#</a></dt>
 <dd><p>‘0.1.0’</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="easyunfold.unfold.UnfoldKSet.check_version">
+<span class="sig-name descname"><span class="pre">check_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.unfold.UnfoldKSet.check_version" title="Permalink to this definition">#</a></dt>
+<dd><p>Check the version of the program</p>
 </dd></dl>
 
 <dl class="py property">
@@ -898,12 +904,6 @@ primitive cell.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="easyunfold.unfold.Unfold.k2K_map">
-<span class="sig-name descname"><span class="pre">k2K_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kpath</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#easyunfold.unfold.Unfold.k2K_map" title="Permalink to this definition">#</a></dt>
-<dd><p>Return the map from primitive-cell k-points to supercell k-points.</p>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="easyunfold.unfold.Unfold.spectral_weight_k">
 <span class="sig-name descname"><span class="pre">spectral_weight_k</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">whichspin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.unfold.Unfold.spectral_weight_k" title="Permalink to this definition">#</a></dt>
 <dd><p>Spectral weight for a given <span class="math notranslate nohighlight">\(k\)</span>:</p>
@@ -1053,6 +1053,7 @@ color (str, tuple, list): HEX color string or tuple/list of RGB color.</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.expand_K_by_symmetry"><code class="docutils literal notranslate"><span class="pre">expand_K_by_symmetry()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet._VERSION"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet._VERSION</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.check_version"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.check_version()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.is_calculated"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.is_calculated</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.has_averaged_spectral_weights"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.has_averaged_spectral_weights</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.from_atoms"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.from_atoms()</span></code></a></li>
@@ -1088,7 +1089,6 @@ color (str, tuple, list): HEX color string or tuple/list of RGB color.</p>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.Unfold.get_vbm_cbm"><code class="docutils literal notranslate"><span class="pre">Unfold.get_vbm_cbm()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.Unfold.get_ovlap_G"><code class="docutils literal notranslate"><span class="pre">Unfold.get_ovlap_G()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.Unfold.find_K_index"><code class="docutils literal notranslate"><span class="pre">Unfold.find_K_index()</span></code></a></li>
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.Unfold.k2K_map"><code class="docutils literal notranslate"><span class="pre">Unfold.k2K_map()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.Unfold.spectral_weight_k"><code class="docutils literal notranslate"><span class="pre">Unfold.spectral_weight_k()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.Unfold.spectral_weight"><code class="docutils literal notranslate"><span class="pre">Unfold.spectral_weight()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.Unfold.spectral_function"><code class="docutils literal notranslate"><span class="pre">Unfold.spectral_function()</span></code></a></li>
