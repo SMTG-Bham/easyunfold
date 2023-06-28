@@ -51,6 +51,7 @@ class UnfoldPlotter:
         cmap='PuRd',
         show=False,
         title=None,
+        intensity=1.0,
     ):
         """
         Plot the spectral function.
@@ -104,6 +105,9 @@ class UnfoldPlotter:
         if vmax is None:
             vmax = sf[:, mask, :].max()
             vmax = (vmax - vmin) * vscale + vmin
+
+        # Intensity override
+        vmax = vmax / intensity
 
         for ispin, ax_ in zip(range(nspin), axes):
             if contour_plot:
@@ -201,6 +205,7 @@ class UnfoldPlotter:
             extent[2:] -= ebin * 0.5
             ax_.imshow(sf[ispin], extent=extent, aspect='auto', origin='upper')
             ax_.set_ylim(ylim)
+            ax_.set_xlim(0, sf.shape[2])
             ax_.set_ylabel('Energy (eV)', labelpad=5)
             ax_.set_title(title)
             self._add_kpoint_labels(ax_, x_is_kidx=True)
@@ -515,6 +520,7 @@ class UnfoldPlotter:
                     alpha=alpha,
                     dpi=dpi,
                     ylim=ylim,
+                    intensity=intensity,
                 )
         else:
             # Make a combined plot
