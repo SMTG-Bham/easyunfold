@@ -223,10 +223,22 @@ def add_plot_options(func):
     click.option('--no-symm-average',
                  is_flag=True,
                  default=False,
-                 help='Do not include symmetry '
-                 'related kpoints for '
-                 'averaging.',
+                 help='Do not include symmetry related kpoints for averaging.',
                  show_default=True)(func)
+    click.option('--dos', help='Path to vasprun.xml(.gz) file from which to read the density of states (DOS) information. '
+                               'If set, the density of states will be plotted alongside the unfolded bandstructure.')(func)
+    click.option('--dos-label', type=str, help='Axis label for DOS if included.', show_default=True)(func)
+    click.option('--zero-line', is_flag=True, default=False, help='Plot horizontal line at zero energy.', show_default=True)(func)
+    click.option('--dos-elements', help='Elemental orbitals to plot (e.g. "C.s.p,O") for DOS if included.')(func)
+    click.option('--dos-orbitals', help='Orbitals to split into lm-decomposed (e.g. p -> px, py, '
+                                    'pz) contributions (e.g. "Ti.d") for DOS if included.')(func)
+    click.option('--dos-atoms', help='Atoms to include (e.g. "O.1.2.3,Ru.1.2.3") for DOS if included.')(func)
+    click.option('--legend-cutoff', type=float, default=3, help='Cut-off in %% of total DOS that determines if a line is given a label.', show_default=True)(func)
+    click.option('--gaussian', type=float, help='Standard deviation of DOS gaussian broadening in eV.',
+                 default=0.05, show_default=True)(func)
+    click.option('--scale', type=float, help='Scaling factor for the DOS plot.', default=1.0)(func)
+    click.option('--no-total', is_flag=True, default=False, help="Don't plot the total density of states.")(func)
+    click.option('--total-only', is_flag=True, default=False, help="Only plot the total density of states.")(func)
     click.option('--procar',
                  multiple=True,
                  default=["PROCAR"],
@@ -347,16 +359,18 @@ def unfold_effective_mass(ctx, intensity_threshold, spin, band_filter, npoints, 
 @click.pass_context
 @add_plot_options
 def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl,
-                no_symm_average, colour_norm, procar, atoms, atoms_idx,
-                orbitals, title, width, height):
+                no_symm_average, colour_norm, dos, dos_label, zero_line, dos_elements, dos_orbitals,
+                dos_atoms, legend_cutoff, gaussian, no_total, total_only, scale,
+                procar, atoms, atoms_idx, orbitals, title, width, height):
     """
     Plot the spectral function
 
     This command uses the stored unfolding data to plot the effective bands structure (EBS) using the spectral function.
     """
     _unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl,
-                 no_symm_average, colour_norm, procar, atoms, atoms_idx,
-                 orbitals, title, width, height)
+                 no_symm_average, colour_norm, dos, dos_label, zero_line, dos_elements, dos_orbitals,
+                 dos_atoms, legend_cutoff, gaussian, no_total, total_only, scale,
+                 procar, atoms, atoms_idx, orbitals, title, width, height)
 
 
 @unfold.command('plot-projections')
@@ -364,8 +378,10 @@ def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cm
 @add_plot_options
 @click.option('--combined/--no-combined', is_flag=True, default=False, help='Plot all projections in a combined graph.')
 @click.option('--colors', help='Colors to be used for combined plot, comma separated.', default='r,g,b,purple', show_default=True)
-def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, colour_norm, procar,
-                            atoms, atoms_idx, orbitals, title, combined, colors, width, height):
+def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl,
+                            no_symm_average, colour_norm, dos, dos_label, zero_line, dos_elements, dos_orbitals,
+                            dos_atoms, legend_cutoff, gaussian, no_total, total_only, scale,
+                            procar, atoms, atoms_idx, orbitals, title, combined, colors, width, height):
     """
     Plot the effective band structure with atomic projections.
     """
@@ -377,7 +393,32 @@ def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, em
     click.echo(f'Loading projections from: {procar}')
 
     plotter = UnfoldPlotter(unfoldset)
+    if dos:
+        from sumo.plotting.dos_plotter import SDOSPlotter
+        from sumo.electronic_structure.dos import load_dos
+
+        dos, pdos = load_dos(dos,
+                             dos_elements,
+                             dos_orbitals,
+                             dos_atoms,
+                             gaussian,
+                             total_only,
+                             )
+        dos_plotter = SDOSPlotter(dos, pdos)
+        dos_options = {
+            "plot_total": not no_total,
+            "legend_cutoff": legend_cutoff,
+            "yscale": scale,
+        }
+    else:
+        dos_plotter = None
+        dos_options = None
+
     fig = plotter.plot_projected(procar,
+                                 dos_plotter=dos_plotter,
+                                 dos_label=dos_label,
+                                 dos_options=dos_options,
+                                 zero_line=zero_line,
                                  gamma=gamma,
                                  npoints=npoints,
                                  sigma=sigma,
@@ -416,6 +457,17 @@ def _unfold_plot(ctx,
                  ncl,
                  no_symm_average,
                  colour_norm,
+                 dos,
+                 dos_label,
+                 zero_line,
+                 dos_elements,
+                 dos_orbitals,
+                 dos_atoms,
+                 legend_cutoff,
+                 gaussian,
+                 no_total,
+                 total_only,
+                 scale,
                  procar,
                  atoms,
                  atoms_idx,
@@ -471,8 +523,33 @@ def _unfold_plot(ctx,
         emax = eng.max() - eref
 
     plotter = UnfoldPlotter(unfoldset)
+    if dos:
+        from sumo.plotting.dos_plotter import SDOSPlotter
+        from sumo.electronic_structure.dos import load_dos
+
+        dos, pdos = load_dos(dos,
+                             dos_elements,
+                             dos_orbitals,
+                             dos_atoms,
+                             gaussian,
+                             total_only,
+                             )
+        dos_plotter = SDOSPlotter(dos, pdos)
+        dos_options = {
+            "plot_total": not no_total,
+            "legend_cutoff": legend_cutoff,
+            "yscale": scale,
+        }
+    else:
+        dos_plotter = None
+        dos_options = None
+
     fig = plotter.plot_spectral_function(eng,
                                          spectral_function,
+                                         dos_plotter=dos_plotter,
+                                         dos_label=dos_label,
+                                         dos_options=dos_options,
+                                         zero_line=zero_line,
                                          eref=eref,
                                          figsize=(width, height),
                                          save=out_file,

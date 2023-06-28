@@ -2,6 +2,8 @@
 Plotting utilities
 """
 from typing import Union
+import warnings
+import itertools
 import matplotlib.pyplot as plt
 
 import numpy as np
@@ -14,6 +16,8 @@ from colormath.color_objects import (
     XYZColor,
     sRGBColor,
 )
+from matplotlib import cycler, rcParams
+from matplotlib.style import context
 from matplotlib.colors import to_rgb
 from matplotlib.patches import Patch
 
@@ -38,6 +42,10 @@ class UnfoldPlotter:
         self,
         engs: np.ndarray,
         sf: np.ndarray,
+        dos_plotter=None,
+        dos_label=None,
+        dos_options=None,
+        zero_line=False,
         eref=None,
         figsize=(4, 3),
         ylim=(-5, 5),
@@ -82,18 +90,29 @@ class UnfoldPlotter:
         if eref is None:
             eref = unfold.calculated_quantities.get('vbm', 0.0)
 
-        if ax is None:
-            if nspin == 1:
-                fig, ax = plt.subplots(1, 1, figsize=figsize, dpi=dpi)
-                axes = [ax]
-            else:
-                fig, axes = plt.subplots(1, 2, figsize=figsize, dpi=dpi)
+        if dos_plotter:
+            from pymatgen.electronic_structure.core import Spin
+
+            fig, axes = plt.subplots(
+                1, 2, facecolor="w", gridspec_kw={"width_ratios": [3, 1], "wspace": 0},
+                figsize=figsize, dpi=dpi
+            )
+            if nspin > 1:
+                warnings.warn("DOS plotter is not supported for spin-separated plots. Reverting to non spin-polarised plotting.")
+                nspin = 1
         else:
-            if not isinstance(ax, list):
-                axes = [ax]
+            if ax is None:
+                if nspin == 1:
+                    fig, ax = plt.subplots(1, 1, figsize=figsize, dpi=dpi)
+                    axes = [ax]
+                else:
+                    fig, axes = plt.subplots(1, 2, figsize=figsize, dpi=dpi)
             else:
-                axes = ax
-            fig = axes[0].figure
+                if not isinstance(ax, list):
+                    axes = [ax]
+                else:
+                    axes = ax
+                fig = axes[0].figure
 
         # Shift the kdist so the pcolormesh draw the pixel centred on the original point
         X, Y = np.meshgrid(kdist, engs - eref)
@@ -120,6 +139,72 @@ class UnfoldPlotter:
 
             # Label the kpoints
             self._add_kpoint_labels(ax_)
+
+        if dos_plotter:
+            ax = fig.axes[1]
+
+            if not dos_options:
+                dos_options = {}
+
+            # don't use first 4 colours; these are the band structure line colours
+            from sumo.plotting import sumo_base_style, sumo_bs_style
+            plt.style.use([sumo_base_style, sumo_bs_style])
+
+            cycle = cycler("color", rcParams["axes.prop_cycle"].by_key()["color"][4:])
+            with context({"axes.prop_cycle": cycle}):
+                plot_data = dos_plotter.dos_plot_data(xmin = ylim[0], xmax = ylim[1],
+                                                      zero_energy=eref, zero_to_efermi=False,
+                                                      **dos_options)
+
+            mask = plot_data["mask"]
+            energies = plot_data["energies"][mask]
+            lines = plot_data["lines"]
+            spins = [Spin.up] if len(lines[0][0]["dens"]) == 1 else [Spin.up, Spin.down]
+
+            # disable y ticks for DOS panel
+            ax.tick_params(axis="y", which="both", right=False)
+
+            for line_set in plot_data["lines"]:
+                for line, spin in itertools.product(line_set, spins):
+                    if spin == Spin.up or len(spins) == 1:
+                        label = line["label"]
+                        densities = line["dens"][spin][mask]
+                    else:
+                        label = ""
+                        densities = -line["dens"][spin][mask]
+                    ax.fill_betweenx(
+                        energies,
+                        densities,
+                        0,
+                        lw=0,
+                        facecolor=line["colour"],
+                        alpha=line["alpha"],
+                    )
+                    ax.plot(densities, energies, label=label, color=line["colour"])
+
+            # x and y axis reversed versus normal dos plotting
+            ax.set_ylim(*ylim)
+            if len(spins) == 1:
+                ax.set_xlim(0, plot_data["ymax"])
+            else:
+                ax.set_xlim(plot_data["ymin"], plot_data["ymax"])
+
+            if dos_label is not None:
+               ax.set_xlabel(dos_label)
+
+            ax.set_xticklabels([])
+            ax.set_yticklabels([])
+            ax.legend(loc=2, frameon=False, ncol=1, bbox_to_anchor=(1.0, 1.0), fontsize=9)
+
+        if zero_line:
+            try:
+                from sumo.plotting import draw_themed_line
+                draw_themed_line(0, axes[0], zorder = 10)  # bump zorder to put on top of pcolormesh
+                if dos_plotter:
+                    draw_themed_line(0, axes[1])
+
+            except ImportError:
+                warnings.warn("zero_line option requires sumo to be installed!")
 
         fig.tight_layout(pad=0.2)
         if save:
@@ -154,7 +239,7 @@ class UnfoldPlotter:
         :param ylim: Plotting limit for the y-axis, with respect to `eref`.
         :param dpi: DPI of the generated graph.
         :param save: The file where the generated figure is saved.
-        :param ax: An existing plotting axis to be be used.
+        :param ax: An existing plotting axis to be used.
         :param vmin: Lower bound for constructing the alpha channel.
         :param vmax: Upper bound for constructing the alpha channel.
         :param colour_norm: Scaling factor for the alpha channel.
@@ -404,6 +489,10 @@ class UnfoldPlotter:
     def plot_projected(
         self,
         procar: Union[str, list] = "PROCAR",
+        dos_plotter=None,
+        dos_label=None,
+        dos_options=None,
+        zero_line=False,
         eref=None,
         gamma=False,
         npoints=2000,
@@ -443,7 +532,7 @@ class UnfoldPlotter:
 
         unfoldset = self.unfold
         unfoldset.load_procar(procar)
-        nspins = unfoldset.calculated_quantities['spectral_weights_per_set'][0].shape[0]
+        nspin = unfoldset.calculated_quantities['spectral_weights_per_set'][0].shape[0]
 
         if atoms_idx is not None:
             atoms_idx_subplots = atoms_idx.split('|')  # list of strings
@@ -506,7 +595,10 @@ class UnfoldPlotter:
         vmin = 0.
 
         if use_subplot:
-            fig, axs = plt.subplots(nspins, len(atoms_idx_subplots), sharex=True, sharey=True, squeeze=False, figsize=(3.0 * nsub, 4.0))
+            if dos_plotter:
+                warnings.warn("DOS plotter is not supported for projected subplots. Use `--combined` if "
+                              "you want to plot the DOS along with the projected band structure!")
+            fig, axs = plt.subplots(nspin, len(atoms_idx_subplots), sharex=True, sharey=True, squeeze=False, figsize=(3.0 * nsub, 4.0))
             # Plot the spectral function with constant colour scales
             for spectral_function, i in zip(all_sf, range(len(atoms_idx_subplots))):
                 if (title is None or any(atom == title for atom in atoms)) and atoms is not None:
@@ -544,8 +636,21 @@ class UnfoldPlotter:
             sf_sum = np.sum(all_sf, axis=0)[:, :, :, None]
             sf_rgba = np.concatenate([sf_rgb, sf_sum], axis=-1)
 
-            if ax is None:
-                fig, axs = plt.subplots(1, nspins, figsize=figsize, squeeze=True)
+            if dos_plotter:
+                from pymatgen.electronic_structure.core import Spin
+
+                fig, axes = plt.subplots(
+                    1, 2, facecolor="w", gridspec_kw={"width_ratios": [3, 1], "wspace": 0},
+                    figsize=figsize, dpi=dpi, squeeze=True
+                )
+                ax = axes[0]
+                if nspin > 1:
+                    warnings.warn(
+                        "DOS plotter is not supported for spin-separated plots. Reverting to non spin-polarised plotting.")
+                    nspin = 1
+
+            elif ax is None:
+                fig, ax = plt.subplots(1, nspin, figsize=figsize, squeeze=True)
 
             self._plot_spectral_function_rgba(
                 eng,
@@ -554,18 +659,86 @@ class UnfoldPlotter:
                 save=save,
                 title=title,
                 colour_norm=colour_norm,
-                ax=axs,
+                ax=ax,
                 figsize=figsize,
                 show=show,
                 dpi=dpi,
                 ylim=ylim,
             )
 
+            if dos_plotter:
+                ax = fig.axes[1]
+
+                if not dos_options:
+                    dos_options = {}
+
+                # don't use first 4 colours; these are the band structure line colours
+                from sumo.plotting import sumo_base_style, sumo_bs_style
+                plt.style.use([sumo_base_style, sumo_bs_style])
+
+                cycle = cycler("color", rcParams["axes.prop_cycle"].by_key()["color"][4:])
+                with context({"axes.prop_cycle": cycle}):
+                    plot_data = dos_plotter.dos_plot_data(xmin=ylim[0], xmax=ylim[1],
+                                                          zero_energy=eref, zero_to_efermi=False,
+                                                          **dos_options)
+
+                mask = plot_data["mask"]
+                energies = plot_data["energies"][mask]
+                lines = plot_data["lines"]
+                spins = [Spin.up] if len(lines[0][0]["dens"]) == 1 else [Spin.up, Spin.down]
+
+                # disable y ticks for DOS panel
+                ax.tick_params(axis="y", which="both", right=False)
+
+                for line_set in plot_data["lines"]:
+                    for line, spin in itertools.product(line_set, spins):
+                        if spin == Spin.up or len(spins) == 1:
+                            label = line["label"]
+                            densities = line["dens"][spin][mask]
+                        else:
+                            label = ""
+                            densities = -line["dens"][spin][mask]
+                        ax.fill_betweenx(
+                            energies,
+                            densities,
+                            0,
+                            lw=0,
+                            facecolor=line["colour"],
+                            alpha=line["alpha"],
+                        )
+                        ax.plot(densities, energies, label=label, color=line["colour"])
+
+                # x and y axis reversed versus normal dos plotting
+                ax.set_ylim(*ylim)
+                if len(spins) == 1:
+                    ax.set_xlim(0, plot_data["ymax"])
+                else:
+                    ax.set_xlim(plot_data["ymin"], plot_data["ymax"])
+
+                if dos_label is not None:
+                    ax.set_xlabel(dos_label)
+
+                ax.set_xticklabels([])
+                ax.set_yticklabels([])
+                ax.legend(loc=2, frameon=False, ncol=1, bbox_to_anchor=(1.0, 1.0), fontsize=9)
+
+            if zero_line:
+                try:
+                    from sumo.plotting import draw_themed_line
+                    if dos_plotter:
+                        draw_themed_line(0, axes[0], zorder=10)  # bump zorder to put on top of pcolormesh
+                        draw_themed_line(0, axes[1])
+                    else:
+                        draw_themed_line(0, ax)
+
+                except ImportError:
+                    warnings.warn("zero_line option requires sumo to be installed!")
+
             if atoms is not None:  # add figure legend with atoms and colors
                 legend_elements = []
                 for i, atom in enumerate(atoms):
                     legend_elements.append(Patch(facecolor=colors[i], label=atom, alpha=0.7))
-                axs.legend(handles=legend_elements, bbox_to_anchor=(1.025, 1))
+                fig.axes[0].legend(handles=legend_elements, bbox_to_anchor=(1.025, 1))
                 fig.subplots_adjust(right=0.78)  # ensure legend is not cut off
 
         return fig
