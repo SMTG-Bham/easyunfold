@@ -1,7 +1,7 @@
 """
 Plotting utilities
 """
-from typing import Union
+from typing import Union, Sequence
 import matplotlib.pyplot as plt
 
 import numpy as np
@@ -122,7 +122,7 @@ class UnfoldPlotter:
 
         fig.tight_layout(pad=0.2)
         if save:
-            fig.savefig(save, dpi=300)
+            fig.savefig(save, dpi=dpi)
         if show:
             fig.show()
         return fig
@@ -207,7 +207,7 @@ class UnfoldPlotter:
 
         fig.tight_layout(pad=0.2)
         if save:
-            fig.savefig(save, dpi=300)
+            fig.savefig(save, dpi=dpi)
         if show:
             fig.show()
         return fig
@@ -395,39 +395,39 @@ class UnfoldPlotter:
         fig.tight_layout(pad=0.2)
 
         if save:
-            fig.savefig(save, dpi=300)
+            fig.savefig(save, dpi=dpi)
         if show:
             fig.show()
         return fig
 
     def plot_projected(
-        self,
-        procar: Union[str, list],
-        eref=None,
-        gamma=False,
-        npoints=2000,
-        sigma=0.2,
-        ncl=False,
-        symm_average=True,
-        figsize=(4, 3),
-        ylim=(-3, 3),
-        dpi=150,
-        vscale=1.0,
-        contour_plot=False,
-        alpha=1.0,
-        save=False,
-        ax=None,
-        vmin=None,
-        vmax=None,
-        cmap='PuRd',
-        show=False,
-        title=None,
-        atoms_idx=None,
-        orbitals=None,
-        intensity=1.0,
-        use_subplot=False,
-        colors=["r", "g", "b", "purple"],
-        colorspace='lab',
+            self,
+            procar: Union[str, list],
+            eref=None,
+            gamma=False,
+            npoints=2000,
+            sigma=0.2,
+            ncl=False,
+            symm_average=True,
+            figsize=(4, 3),
+            ylim=(-3, 3),
+            dpi=150,
+            vscale=1.0,
+            contour_plot=False,
+            alpha=1.0,
+            save=False,
+            ax=None,
+            vmin=None,
+            vmax=None,
+            cmap='PuRd',
+            show=False,
+            title=None,
+            atoms_idx=None,
+            orbitals=None,
+            intensity=1.0,
+            use_subplot=False,
+            colors=('r', 'g', 'b', 'purple'),
+            colorspace='lab',
     ):
         """
         Plot projected spectral function onto multiple subplots or a single plot with color mapping.
@@ -522,7 +522,7 @@ class UnfoldPlotter:
             stacked_sf = np.stack(all_sf, axis=-1).reshape(np.prod(sf_size), len(all_sf))
 
             # Construct the color basis
-            colors = colors[0:len(all_sf)]
+            colors = colors[:len(all_sf)]
             # Compute spectral weight data with RGB reshape it back into the shape (nengs, nk, 3)
             sf_rgb = interpolate_colors(colors, stacked_sf, colorspace, normalize=True).reshape(sf_size + (3,))
             sf_sum = np.sum(all_sf, axis=0)[:, :, :, None]
@@ -584,7 +584,7 @@ class UnfoldPlotter:
         return fig
 
 
-def interpolate_colors(colors: list, weights: list, colorspace='lab', normalize=True):
+def interpolate_colors(colors: Sequence, weights: list, colorspace='lab', normalize=True):
     """
     Interpolate colors at a number of points within a colorspace.
 
@@ -607,7 +607,7 @@ def interpolate_colors(colors: list, weights: list, colorspace='lab', normalize=
         'xyz': XYZColor,
     }
 
-    if colorspace not in list(colorspace_mapping.keys()):
+    if colorspace not in colorspace_mapping:
         raise ValueError(f'colorspace must be one of {colorspace_mapping.keys()}')
 
     colorspace = colorspace_mapping[colorspace]
