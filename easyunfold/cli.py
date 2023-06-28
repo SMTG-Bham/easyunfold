@@ -18,7 +18,7 @@ DEFAULT_CMAPS = [
     'BuGn', 'YlGn'
 ]
 
-CONTEXT_SETTINGS = dict(help_option_names=['-h', '--help'])
+CONTEXT_SETTINGS = {'help_option_names': ['-h', '--help']}
 
 
 @click.group('easyunfold', context_settings=CONTEXT_SETTINGS)
@@ -143,8 +143,13 @@ def generate(pc_file, code, sc_file, matrix, kpoints, time_reversal, out_file, n
 
 @easyunfold.group('unfold')
 @click.option('--data-file', default='easyunfold.json', type=click.Path(exists=True, file_okay=True, dir_okay=False), show_default=True)
+@click.option('--mpl-style-file',
+              type=click.Path(exists=True, file_okay=True, dir_okay=False),
+              show_default=True,
+              required=False,
+              help='Use this file to customise the matplotlib style sheet')
 @click.pass_context
-def unfold(ctx, data_file):
+def unfold(ctx, data_file, mpl_style_file):
     """
     Perform unfolding and plotting
 
@@ -154,6 +159,10 @@ def unfold(ctx, data_file):
     unfoldset = loadfn(data_file)
     click.echo(f'Loaded data from {data_file}')
     ctx.obj = {'obj': unfoldset, 'fname': data_file}
+    if mpl_style_file:
+        click.echo(f'Using custom plotting style from {mpl_style_file}')
+        import matplotlib.style
+        matplotlib.style.use(mpl_style_file)
 
 
 @unfold.command('status')
@@ -252,6 +261,7 @@ def add_plot_options(func):
     click.option('--title', help='Title to be used')(func)
     click.option('--width', help='Width of the figure', type=float, default=4., show_default=True)(func)
     click.option('--height', help='Height of the figure', type=float, default=3., show_default=True)(func)
+    click.option('--dpi', help='DPI for the figure when saved as raster image.', type=int, default=300, show_default=True)(func)
     return func
 
 
@@ -361,7 +371,7 @@ def unfold_effective_mass(ctx, intensity_threshold, spin, band_filter, npoints, 
 def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl,
                 no_symm_average, colour_norm, dos, dos_label, zero_line, dos_elements, dos_orbitals,
                 dos_atoms, legend_cutoff, gaussian, no_total, total_only, scale,
-                procar, atoms, atoms_idx, orbitals, title, width, height):
+                procar, atoms, atoms_idx, orbitals, title, width, height, dpi):
     """
     Plot the spectral function
 
@@ -370,7 +380,7 @@ def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cm
     _unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl,
                  no_symm_average, colour_norm, dos, dos_label, zero_line, dos_elements, dos_orbitals,
                  dos_atoms, legend_cutoff, gaussian, no_total, total_only, scale,
-                 procar, atoms, atoms_idx, orbitals, title, width, height)
+                 procar, atoms, atoms_idx, orbitals, title, width, height, dpi)
 
 
 @unfold.command('plot-projections')
@@ -381,7 +391,7 @@ def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cm
 def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl,
                             no_symm_average, colour_norm, dos, dos_label, zero_line, dos_elements, dos_orbitals,
                             dos_atoms, legend_cutoff, gaussian, no_total, total_only, scale,
-                            procar, atoms, atoms_idx, orbitals, title, combined, colors, width, height):
+                            procar, atoms, atoms_idx, orbitals, title, combined, colors, width, height, dpi):
     """
     Plot the effective band structure with atomic projections.
     """
@@ -437,7 +447,7 @@ def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, em
                                  colors=colors.split(',') if colors is not None else None)
 
     if out_file:
-        fig.savefig(out_file, dpi=300)
+        fig.savefig(out_file, dpi=dpi)
         click.echo(f'Unfolded band structure saved to {out_file}')
 
     if show:
@@ -475,6 +485,7 @@ def _unfold_plot(ctx,
                  title,
                  width,
                  height,
+                 dpi,
                  ax=None):
     """
     Routine for plotting the spectral function.
@@ -558,6 +569,7 @@ def _unfold_plot(ctx,
                                          colour_norm=colour_norm,
                                          cmap=cmap,
                                          title=title,
+                                         dpi=dpi,
                                          ax=ax)
 
     if out_file:

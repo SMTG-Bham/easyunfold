@@ -1,7 +1,7 @@
 """
 Plotting utilities
 """
-from typing import Union
+from typing import Union, Sequence
 import warnings
 import itertools
 import matplotlib.pyplot as plt
@@ -208,7 +208,7 @@ class UnfoldPlotter:
 
         fig.tight_layout(pad=0.2)
         if save:
-            fig.savefig(save, dpi=300)
+            fig.savefig(save, dpi=dpi)
         if show:
             fig.show()
         return fig
@@ -293,7 +293,7 @@ class UnfoldPlotter:
 
         fig.tight_layout(pad=0.2)
         if save:
-            fig.savefig(save, dpi=300)
+            fig.savefig(save, dpi=dpi)
         if show:
             fig.show()
         return fig
@@ -481,7 +481,7 @@ class UnfoldPlotter:
         fig.tight_layout(pad=0.2)
 
         if save:
-            fig.savefig(save, dpi=300)
+            fig.savefig(save, dpi=dpi)
         if show:
             fig.show()
         return fig
@@ -516,7 +516,7 @@ class UnfoldPlotter:
         atoms_idx=None,
         orbitals=None,
         use_subplot=False,
-        colors=["r", "g", "b", "purple"],
+        colors=('r', 'g', 'b', 'purple'),
         colorspace='lab',
     ):
         """
@@ -630,7 +630,7 @@ class UnfoldPlotter:
             stacked_sf = np.stack(all_sf, axis=-1).reshape(np.prod(sf_size), len(all_sf))
 
             # Construct the color basis
-            colors = colors[0:len(all_sf)]
+            colors = colors[:len(all_sf)]
             # Compute spectral weight data with RGB reshape it back into the shape (nengs, nk, 3)
             sf_rgb = interpolate_colors(colors, stacked_sf, colorspace, normalize=True).reshape(sf_size + (3,))
             sf_sum = np.sum(all_sf, axis=0)[:, :, :, None]
@@ -780,7 +780,7 @@ class UnfoldPlotter:
         return fig
 
 
-def interpolate_colors(colors: list, weights: list, colorspace='lab', normalize=True):
+def interpolate_colors(colors: Sequence, weights: list, colorspace='lab', normalize=True):
     """
     Interpolate colors at a number of points within a colorspace.
 
@@ -803,7 +803,7 @@ def interpolate_colors(colors: list, weights: list, colorspace='lab', normalize=
         'xyz': XYZColor,
     }
 
-    if colorspace not in list(colorspace_mapping.keys()):
+    if colorspace not in colorspace_mapping:
         raise ValueError(f'colorspace must be one of {colorspace_mapping.keys()}')
 
     colorspace = colorspace_mapping[colorspace]

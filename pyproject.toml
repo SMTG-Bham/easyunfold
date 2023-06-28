@@ -32,3 +32,4 @@ doc = [
 ]
 test = ["pytest", "pytest-cov", "coverage"]
 dos = ["sumo"]
+pre-commit = ["pre-commit", "pylint~=2.11"]

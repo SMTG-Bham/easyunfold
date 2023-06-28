@@ -633,26 +633,6 @@ def GaussianSmearing(x, x0, sigma=0.02):
     return 1. / (np.sqrt(2 * np.pi) * sigma) * np.exp(-(x - x0)**2 / (2 * sigma**2))
 
 
-def remove_duplicated_kpoints(kpoints: list, return_map=False, decimals=6):
-    """
-    remove duplicate kpoints in the list.
-
-    TODO: improve this implementation by clipping the range of the fractional coordinates
-    """
-    kpoints = np.asarray(kpoints)
-    _, kid, inv_kid = np.unique(
-        np.round(kpoints, decimals),
-        axis=0,
-        return_index=True,
-        return_inverse=True,
-    )
-    reducedK = kpoints[kid]
-
-    if return_map:
-        return reducedK, inv_kid
-    return reducedK
-
-
 def make_kpath(kbound: List[float], nseg=40):
     """
     Return a list of kpoints defining the path between the given kpoints.
