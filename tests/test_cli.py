@@ -67,12 +67,6 @@ def test_unfold(si_project_dir, tag):
     assert output.exit_code == 0
     assert 'Please run the supercell' in output.stdout
 
-    # matplotlib customisation check
-    args_calc = ['unfold', '--data-file', 'test.json', '--mpl-style-file', 'my.mplstyle', 'status']
-    output = runner.invoke(easyunfold, args_calc)
-    assert output.exit_code == 0
-    assert 'Using custom plotting style' in output.stdout
-
     # Perform the unfold
     args_calc = ['unfold', '--data-file', 'test.json', 'calculate', f'Si_super_deformed{tag}/WAVECAR']
     if 'soc' in tag:
@@ -106,6 +100,13 @@ def test_unfold(si_project_dir, tag):
     output = runner.invoke(easyunfold, ['unfold', '--data-file', 'test.json', 'plot'])
     assert output.exit_code == 0
     print(output.stdout)
+    assert Path('unfold.png').is_file()
+
+    # matplotlib customisation check
+    output = runner.invoke(easyunfold, ['unfold', '--data-file', 'test.json', 'plot', '--mpl-style-file', 'my.mplstyle'])
+    assert output.exit_code == 0
+    print(output.stdout)
+    assert 'Using custom plotting style' in output.stdout
     assert Path('unfold.png').is_file()
 
 

@@ -143,13 +143,8 @@ def generate(pc_file, code, sc_file, matrix, kpoints, time_reversal, out_file, n
 
 @easyunfold.group('unfold')
 @click.option('--data-file', default='easyunfold.json', type=click.Path(exists=True, file_okay=True, dir_okay=False), show_default=True)
-@click.option('--mpl-style-file',
-              type=click.Path(exists=True, file_okay=True, dir_okay=False),
-              show_default=True,
-              required=False,
-              help='Use this file to customise the matplotlib style sheet')
 @click.pass_context
-def unfold(ctx, data_file, mpl_style_file):
+def unfold(ctx, data_file):
     """
     Perform unfolding and plotting
 
@@ -159,10 +154,6 @@ def unfold(ctx, data_file, mpl_style_file):
     unfoldset = loadfn(data_file)
     click.echo(f'Loaded data from {data_file}')
     ctx.obj = {'obj': unfoldset, 'fname': data_file}
-    if mpl_style_file:
-        click.echo(f'Using custom plotting style from {mpl_style_file}')
-        import matplotlib.style
-        matplotlib.style.use(mpl_style_file)
 
 
 @unfold.command('status')
@@ -262,6 +253,9 @@ def add_plot_options(func):
     click.option('--width', help='Width of the figure', type=float, default=4., show_default=True)(func)
     click.option('--height', help='Height of the figure', type=float, default=3., show_default=True)(func)
     click.option('--dpi', help='DPI for the figure when saved as raster image.', type=int, default=300, show_default=True)(func)
+    click.option('--mpl-style-file',
+                  type=click.Path(exists=True, file_okay=True, dir_okay=False),
+                  help='Use this file to customise the matplotlib style sheet')(func)
     return func
 
 
@@ -371,12 +365,17 @@ def unfold_effective_mass(ctx, intensity_threshold, spin, band_filter, npoints, 
 def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl,
                 no_symm_average, colour_norm, dos, dos_label, zero_line, dos_elements, dos_orbitals,
                 dos_atoms, legend_cutoff, gaussian, no_total, total_only, scale,
-                procar, atoms, atoms_idx, orbitals, title, width, height, dpi):
+                procar, atoms, atoms_idx, orbitals, title, width, height, dpi, mpl_style_file):
     """
     Plot the spectral function
 
     This command uses the stored unfolding data to plot the effective bands structure (EBS) using the spectral function.
     """
+    if mpl_style_file:
+        click.echo(f'Using custom plotting style from {mpl_style_file}')
+        import matplotlib.style
+        matplotlib.style.use(mpl_style_file)
+
     _unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl,
                  no_symm_average, colour_norm, dos, dos_label, zero_line, dos_elements, dos_orbitals,
                  dos_atoms, legend_cutoff, gaussian, no_total, total_only, scale,
@@ -391,13 +390,18 @@ def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cm
 def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl,
                             no_symm_average, colour_norm, dos, dos_label, zero_line, dos_elements, dos_orbitals,
                             dos_atoms, legend_cutoff, gaussian, no_total, total_only, scale,
-                            procar, atoms, atoms_idx, orbitals, title, combined, colors, width, height, dpi):
+                            procar, atoms, atoms_idx, orbitals, title, combined, colors, width, height, dpi, mpl_style_file):
     """
     Plot the effective band structure with atomic projections.
     """
     from easyunfold.unfold import UnfoldKSet
     from easyunfold.plotting import UnfoldPlotter
     import matplotlib.pyplot as plt
+
+    if mpl_style_file:
+        click.echo(f'Using custom plotting style from {mpl_style_file}')
+        import matplotlib.style
+        matplotlib.style.use(mpl_style_file)
 
     unfoldset: UnfoldKSet = ctx.obj['obj']
     click.echo(f'Loading projections from: {procar}')
