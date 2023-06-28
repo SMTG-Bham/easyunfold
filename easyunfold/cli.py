@@ -169,10 +169,11 @@ def unfold(ctx, data_file, mpl_style_file):
 @click.pass_context
 def unfold_status(ctx):
     """Print the status"""
-    from easyunfold.unfold import UnfoldKSet
+    from easyunfold.unfold import UnfoldKSet, reduce_kpoints
+
     unfoldset: UnfoldKSet = ctx.obj['obj']
     print_symmetry_data(unfoldset)
-    nkpts_sc = len(unfoldset.expansion_results['reduced_sckpts'])
+    nkpts_sc = len(reduce_kpoints(unfoldset.expansion_results['reduced_sckpts'], time_reversal=unfoldset.time_reversal)[0])
     click.echo()
     click.echo(f'No. of k points in the primitive cell           : {unfoldset.nkpts_orig}')
     click.echo(f'No. of supercell k points                       : {nkpts_sc}')
