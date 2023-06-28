@@ -55,10 +55,6 @@
   - ```{autodoc2-docstring} easyunfold.unfold.GaussianSmearing
     :summary:
     ```
-* - {py:obj}`remove_duplicated_kpoints <easyunfold.unfold.remove_duplicated_kpoints>`
-  - ```{autodoc2-docstring} easyunfold.unfold.remove_duplicated_kpoints
-    :summary:
-    ```
 * - {py:obj}`make_kpath <easyunfold.unfold.make_kpath>`
   - ```{autodoc2-docstring} easyunfold.unfold.make_kpath
     :summary:
@@ -362,13 +358,6 @@ Bases: {py:obj}`monty.json.MSONable`
 :canonical: easyunfold.unfold.GaussianSmearing
 
 ```{autodoc2-docstring} easyunfold.unfold.GaussianSmearing
-```
-````
-
-````{py:function} remove_duplicated_kpoints(kpoints: list, return_map=False, decimals=6)
-:canonical: easyunfold.unfold.remove_duplicated_kpoints
-
-```{autodoc2-docstring} easyunfold.unfold.remove_duplicated_kpoints
 ```
 ````
 

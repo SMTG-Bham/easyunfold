@@ -137,6 +137,11 @@ Primitive cell band structure of Si.
 
 ## What happens if symmetry is not properly taken into account?
 
+It is quite common that the supercell has lower symmetry compared to the primitive cell. 
+By default, `easyunfold` takes account of such symmetry breaking effect by including
+additional _k_-points that no longer equivalent under the symmetry of the supercell cell.
+
+In this example, we show what happens if we **do not** include the additional kpoints.
 We can create a new unfolding project (`json` data file) using the following command:
 
 ```bash
@@ -189,7 +194,7 @@ Primitive cell information:
         Point group: m-3m
 
 No. of k points in the primitive cell           : 73
-No. of (non-symmetry-reduced) supercell kpoints : 70 (73)
+No. of supercell kpoints                        : 70
 No. of primitive cell symmetry operations       : 48
 No. of supercell symmetry operations            : 6
 
@@ -201,3 +206,12 @@ Path in the primitive cell:
    \Gamma    : 73   
 Unfolding had been performed - use `unfold plot` to plot the spectral function.
 ```
+
+Note that in most cases one would always want to include the additional kpoints to correctly capture the effect of symmetry breaking.
+The `--no-expand` option should be used with care and **only when there is no alternative**,
+for example, 
+when the expansion gives too many kpoints for very large supercells of special quasi-random structures.
+
+:::{note}
+One can always split the workload into multiple calculations with `--nk-per-split` to fit the computational resources available for individual calculations.
+:::

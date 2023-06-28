@@ -487,7 +487,11 @@ to symmetry breaking from the displaced atom.</p>
 </section>
 <section id="what-happens-if-symmetry-is-not-properly-taken-into-account">
 <h2>What happens if symmetry is not properly taken into account?<a class="headerlink" href="#what-happens-if-symmetry-is-not-properly-taken-into-account" title="Permalink to this heading">#</a></h2>
-<p>We can create a new unfolding project (<code class="docutils literal notranslate"><span class="pre">json</span></code> data file) using the following command:</p>
+<p>It is quite common that the supercell has lower symmetry compared to the primitive cell.
+By default, <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code> takes account of such symmetry breaking effect by including
+additional <em>k</em>-points that no longer equivalent under the symmetry of the supercell cell.</p>
+<p>In this example, we show what happens if we <strong>do not</strong> include the additional kpoints.
+We can create a new unfolding project (<code class="docutils literal notranslate"><span class="pre">json</span></code> data file) using the following command:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>generate<span class="w"> </span>Si/POSCAR<span class="w"> </span>Si_super_deformed/POSCAR<span class="w"> </span>Si/KPOINTS_band<span class="w"> </span>--no-expand<span class="w"> </span>--out-file<span class="w"> </span>no-expand.json
 </pre></div>
 </div>
@@ -530,7 +534,7 @@ Primitive<span class="w"> </span>cell<span class="w"> </span>information:
 <span class="w">        </span>Point<span class="w"> </span>group:<span class="w"> </span>m-3m
 
 No.<span class="w"> </span>of<span class="w"> </span>k<span class="w"> </span>points<span class="w"> </span><span class="k">in</span><span class="w"> </span>the<span class="w"> </span>primitive<span class="w"> </span>cell<span class="w">           </span>:<span class="w"> </span><span class="m">73</span>
-No.<span class="w"> </span>of<span class="w"> </span><span class="o">(</span>non-symmetry-reduced<span class="o">)</span><span class="w"> </span>supercell<span class="w"> </span>kpoints<span class="w"> </span>:<span class="w"> </span><span class="m">70</span><span class="w"> </span><span class="o">(</span><span class="m">73</span><span class="o">)</span>
+No.<span class="w"> </span>of<span class="w"> </span>supercell<span class="w"> </span>kpoints<span class="w">                        </span>:<span class="w"> </span><span class="m">70</span>
 No.<span class="w"> </span>of<span class="w"> </span>primitive<span class="w"> </span>cell<span class="w"> </span>symmetry<span class="w"> </span>operations<span class="w">       </span>:<span class="w"> </span><span class="m">48</span>
 No.<span class="w"> </span>of<span class="w"> </span>supercell<span class="w"> </span>symmetry<span class="w"> </span>operations<span class="w">            </span>:<span class="w"> </span><span class="m">6</span>
 
@@ -542,6 +546,14 @@ Path<span class="w"> </span><span class="k">in</span><span class="w"> </span>the
 <span class="w">   </span><span class="se">\G</span>amma<span class="w">    </span>:<span class="w"> </span><span class="m">73</span><span class="w">   </span>
 Unfolding<span class="w"> </span>had<span class="w"> </span>been<span class="w"> </span>performed<span class="w"> </span>-<span class="w"> </span>use<span class="w"> </span><span class="sb">`</span>unfold<span class="w"> </span>plot<span class="sb">`</span><span class="w"> </span>to<span class="w"> </span>plot<span class="w"> </span>the<span class="w"> </span>spectral<span class="w"> </span><span class="k">function</span>.
 </pre></div>
+</div>
+<p>Note that in most cases one would always want to include the additional kpoints to correctly capture the effect of symmetry breaking.
+The <code class="docutils literal notranslate"><span class="pre">--no-expand</span></code> option should be used with care and <strong>only when there is no alternative</strong>,
+for example,
+when the expansion gives too many kpoints for very large supercells of special quasi-random structures.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>One can always split the workload into multiple calculations with <code class="docutils literal notranslate"><span class="pre">--nk-per-split</span></code> to fit the computational resources available for individual calculations.</p>
 </div>
 </section>
 </section>
