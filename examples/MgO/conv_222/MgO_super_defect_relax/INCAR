@@ -1,0 +1,23 @@
+ALGO = normal
+IBRION = 1
+ISIF = 2
+POTIM = 0.05
+EDIFF = 1e-6
+NELMIN = 10
+ENCUT = 450
+ISPIN = 1
+LASPH = True
+LREAL = Auto
+LWAVE = .TRUE.
+NELM = 100
+NSW = 30
+PREC = normal
+SIGMA = 0.05
+LCHARG = .TRUE.
+KPAR = 4
+! NSCF
+!ICHARG = 11
+!LORBIT = 11
+
+! +2 Charge state
+NELECT = 248
