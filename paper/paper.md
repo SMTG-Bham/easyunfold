@@ -70,13 +70,16 @@ The Atomic Simulation Environment (`ase`) [@ase] is used for reading input cryst
 `easyunfold` is designed for researchers with or without prior knowledge of Python.
 A command-line interface is provided as the primary way of using the package.
 Although users may want to utilise the Python
-API directly for advanced analysis and integration with workflow engines such as `AiiDA` [@huber:2020] and `atomate` [@mathew:2017].
+API directly for advanced analysis and integration with workflow engines such as `AiiDA` [@huber:2020] and `atomate` [@mathew:2017],
+and modelling codes such as `icet` [@icet] and `doped` [@doped].
 `easyunfold` has been used in several scientific publications [@nicolson:2023; @wang:2022; @huang:2022] and graduate student research projects.
 
 The combination of easy-of-use, flexibility, and efficiency will improve the accessibility of
 band structure unfolding for materials modelling and help train new researchers.
 
-![Unfolded effective band structure of a $2\times2\times2$ Si supercell with a Si atom displaced from its equilibrium position. \label{fig:figure2}](unfold.png){width=100mm}
+![Projected effective band structure of a $2\times2\times2$ MgO supercell showing an localised defect state (2.5 eV from the VBM) resulting from a 2+ charged oxygen vacancy. Red: O, Green: Mg \label{fig:figure2}](mgo_unfold_project.png){width=80mm}
+
+![Projected effective band structure of a disordered $\mathrm{NaBiS_2}$ in separate plots (from left to right): Na, Bi, S.  \label{fig:figure3}](./NaBiS2_unfold-plot_proj_sep.png){width=130mm}
 
 
 # Theory
