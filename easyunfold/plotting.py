@@ -1,7 +1,7 @@
 """
 Plotting utilities
 """
-from typing import Union
+from typing import Union, Sequence
 import matplotlib.pyplot as plt
 
 import numpy as np
@@ -122,7 +122,7 @@ class UnfoldPlotter:
 
         fig.tight_layout(pad=0.2)
         if save:
-            fig.savefig(save, dpi=300)
+            fig.savefig(save, dpi=dpi)
         if show:
             fig.show()
         return fig
@@ -193,7 +193,13 @@ class UnfoldPlotter:
         sf[:, :, :, 3] = alpha
 
         for ispin, ax_ in zip(range(nspin), axes):
-            ax_.imshow(sf[ispin], extent=[0, sf.shape[2], max(engs) - eref, min(engs) - eref], aspect='auto')
+            # plt.imshow's pixel coordinates are not at the center of the pixel
+            # Hence, the `extent`` need to update so teh center of the pixel is aligned with the coordinates.
+            extent = np.array([0, sf.shape[2], max(engs) - eref, min(engs) - eref])
+            ebin = (max(engs) - min(engs)) / sf.shape[1]
+            extent[:2] -= 0.5
+            extent[2:] -= ebin * 0.5
+            ax_.imshow(sf[ispin], extent=extent, aspect='auto', origin='upper')
             ax_.set_ylim(ylim)
             ax_.set_ylabel('Energy (eV)', labelpad=5)
             ax_.set_title(title)
@@ -201,7 +207,7 @@ class UnfoldPlotter:
 
         fig.tight_layout(pad=0.2)
         if save:
-            fig.savefig(save, dpi=300)
+            fig.savefig(save, dpi=dpi)
         if show:
             fig.show()
         return fig
@@ -389,42 +395,42 @@ class UnfoldPlotter:
         fig.tight_layout(pad=0.2)
 
         if save:
-            fig.savefig(save, dpi=300)
+            fig.savefig(save, dpi=dpi)
         if show:
             fig.show()
         return fig
 
     def plot_projected(
-        self,
-        procar: Union[str, list],
-        eref=None,
-        gamma=False,
-        npoints=2000,
-        sigma=0.2,
-        ncl=False,
-        symm_average=True,
-        figsize=(4, 3),
-        ylim=(-3, 3),
-        dpi=150,
-        vscale=1.0,
-        contour_plot=False,
-        alpha=1.0,
-        save=False,
-        ax=None,
-        vmin=None,
-        vmax=None,
-        cmap='PuRd',
-        show=False,
-        title=None,
-        atoms_idx=None,
-        orbitals=None,
-        intensity=1.0,
-        use_subplot=False,
-        colors=None,
-        colorspace='lab',
+            self,
+            procar: Union[str, list],
+            eref=None,
+            gamma=False,
+            npoints=2000,
+            sigma=0.2,
+            ncl=False,
+            symm_average=True,
+            figsize=(4, 3),
+            ylim=(-3, 3),
+            dpi=150,
+            vscale=1.0,
+            contour_plot=False,
+            alpha=1.0,
+            save=False,
+            ax=None,
+            vmin=None,
+            vmax=None,
+            cmap='PuRd',
+            show=False,
+            title=None,
+            atoms_idx=None,
+            orbitals=None,
+            intensity=1.0,
+            use_subplot=False,
+            colors=('r', 'g', 'b', 'purple'),
+            colorspace='lab',
     ):
         """
-        Plot projected sepctral function onto multiple subplots or a single plot with colormapping.
+        Plot projected spectral function onto multiple subplots or a single plot with color mapping.
 
         This simply computes the spectral function at each orbital/atoms sites and plot them onto
         multiple subplots. The columns are for each orbital and the rows are for each spin channel.
@@ -440,17 +446,17 @@ class UnfoldPlotter:
 
         atoms_idx_subplots = atoms_idx.split('|')
         if orbitals is not None:
-            orbitals_subsplots = orbitals.split('|')
+            orbitals_subplots = orbitals.split('|')
 
             # Special case: if only one set is passed, apply it to all atomic specifications
-            if len(orbitals_subsplots) == 1:
-                orbitals_subsplots = orbitals_subsplots * len(atoms_idx_subplots)
+            if len(orbitals_subplots) == 1:
+                orbitals_subplots = orbitals_subplots * len(atoms_idx_subplots)
 
-            if len(orbitals_subsplots) != len(atoms_idx_subplots):
+            if len(orbitals_subplots) != len(atoms_idx_subplots):
                 raise ValueError('The number of elected orbitals and atoms indices are not matched.')
         # If not set, use all for all subsets
         else:
-            orbitals_subsplots = ['all'] * len(atoms_idx_subplots)
+            orbitals_subplots = ['all'] * len(atoms_idx_subplots)
 
         # Load the data
 
@@ -463,7 +469,7 @@ class UnfoldPlotter:
             eref = unfoldset.calculated_quantities.get('vbm', 0.0)
 
         # Collect spectral functions and scale
-        for this_idx, this_orbitals in zip(atoms_idx_subplots, orbitals_subsplots):
+        for this_idx, this_orbitals in zip(atoms_idx_subplots, orbitals_subplots):
             # Setup the atoms_idx and orbitals
             this_idx, this_orbitals = process_projection_options(this_idx, this_orbitals)
             eng, spectral_function = unfoldset.get_spectral_function(gamma=gamma,
@@ -516,9 +522,7 @@ class UnfoldPlotter:
             stacked_sf = np.stack(all_sf, axis=-1).reshape(np.prod(sf_size), len(all_sf))
 
             # Construct the color basis
-            if colors is None:
-                default_colors = ['r', 'g', 'b', 'purple']
-                colors = default_colors[0:len(all_sf)]
+            colors = colors[:len(all_sf)]
             # Compute spectral weight data with RGB reshape it back into the shape (nengs, nk, 3)
             sf_rgb = interpolate_colors(colors, stacked_sf, colorspace, normalize=True).reshape(sf_size + (3,))
             sf_sum = np.sum(all_sf, axis=0)[:, :, :, None]
@@ -580,7 +584,7 @@ class UnfoldPlotter:
         return fig
 
 
-def interpolate_colors(colors: list, weights: list, colorspace='lab', normalize=True):
+def interpolate_colors(colors: Sequence, weights: list, colorspace='lab', normalize=True):
     """
     Interpolate colors at a number of points within a colorspace.
 
@@ -603,7 +607,7 @@ def interpolate_colors(colors: list, weights: list, colorspace='lab', normalize=
         'xyz': XYZColor,
     }
 
-    if colorspace not in list(colorspace_mapping.keys()):
+    if colorspace not in colorspace_mapping:
         raise ValueError(f'colorspace must be one of {colorspace_mapping.keys()}')
 
     colorspace = colorspace_mapping[colorspace]

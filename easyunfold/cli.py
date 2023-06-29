@@ -9,7 +9,7 @@ from ase.io import read
 
 from easyunfold.unfold import process_projection_options
 
-# pylint:disable=import-outside-toplevel,too-many-locals
+# pylint:disable=import-outside-toplevel,too-many-locals,too-many-arguments
 
 SUPPORTED_DFT_CODES = ('vasp', 'castep')
 
@@ -18,8 +18,10 @@ DEFAULT_CMAPS = [
     'BuGn', 'YlGn'
 ]
 
+CONTEXT_SETTINGS = {'help_option_names': ['-h', '--help']}
 
-@click.group('easyunfold')
+
+@click.group('easyunfold', context_settings=CONTEXT_SETTINGS)
 def easyunfold():
     """
     Tool for performing band unfolding
@@ -55,8 +57,7 @@ def generate(pc_file, code, sc_file, matrix, kpoints, time_reversal, out_file, n
 
     There are two modes of running supercell calculations:
 
-    1. Use the generated kpoints for unfolding for non-SCF calculations, e.g. with a fixed
-       charged density from the SCF calculation.
+    1. Use the generated kpoints for unfolding for non-SCF calculations, e.g. with a fixed charged density from the SCF calculation.
     2. Include the generated kpoints in SCF calculation but set their weights to zeros.
 
     In both cases, the kpoints can be split into multiple calculations.
@@ -142,8 +143,13 @@ def generate(pc_file, code, sc_file, matrix, kpoints, time_reversal, out_file, n
 
 @easyunfold.group('unfold')
 @click.option('--data-file', default='easyunfold.json', type=click.Path(exists=True, file_okay=True, dir_okay=False), show_default=True)
+@click.option('--mpl-style-file',
+              type=click.Path(exists=True, file_okay=True, dir_okay=False),
+              show_default=True,
+              required=False,
+              help='Use this file to customise the matplotlib style sheet')
 @click.pass_context
-def unfold(ctx, data_file):
+def unfold(ctx, data_file, mpl_style_file):
     """
     Perform unfolding and plotting
 
@@ -153,21 +159,26 @@ def unfold(ctx, data_file):
     unfoldset = loadfn(data_file)
     click.echo(f'Loaded data from {data_file}')
     ctx.obj = {'obj': unfoldset, 'fname': data_file}
+    if mpl_style_file:
+        click.echo(f'Using custom plotting style from {mpl_style_file}')
+        import matplotlib.style
+        matplotlib.style.use(mpl_style_file)
 
 
 @unfold.command('status')
 @click.pass_context
 def unfold_status(ctx):
     """Print the status"""
-    from easyunfold.unfold import UnfoldKSet
+    from easyunfold.unfold import UnfoldKSet, reduce_kpoints
+
     unfoldset: UnfoldKSet = ctx.obj['obj']
     print_symmetry_data(unfoldset)
-    nkpts_sc = len(unfoldset.expansion_results['reduced_sckpts'])
+    nkpts_sc = len(reduce_kpoints(unfoldset.expansion_results['reduced_sckpts'], time_reversal=unfoldset.time_reversal)[0])
     click.echo()
     click.echo(f'No. of k points in the primitive cell           : {unfoldset.nkpts_orig}')
-    click.echo(f'No. of expanded kpoints to be calculated        : {nkpts_sc} ({unfoldset.nkpts_expand})')
-    click.echo(f'No. of rotations in the primitive cell          : {unfoldset.pc_opts.shape[0]}')
-    click.echo(f'No. of rotations in the super cell              : {unfoldset.sc_opts.shape[0]}')
+    click.echo(f'No. of supercell k points                       : {nkpts_sc}')
+    click.echo(f'No. of primitive cell symmetry operations       : {unfoldset.pc_opts.shape[0]}')
+    click.echo(f'No. of supercell symmetry operations            : {unfoldset.sc_opts.shape[0]}')
     click.echo()
     click.echo('Path in the primitive cell:')
     for index, label in unfoldset.kpoint_labels:
@@ -206,8 +217,8 @@ def unfold_calculate(ctx, wavefunc, save_as, gamma, ncl):
 
 def add_plot_options(func):
     """Added common plotting options to a function"""
-    click.option('--gamma', is_flag=True, help='Is the calculation a gamma only one?')(func)
-    click.option('--ncl', is_flag=True, help='Is the calculation with non-colinear spin?')(func)
+    click.option('--gamma', is_flag=True, help='Is the calculation a gamma only one?', show_default=True)(func)
+    click.option('--ncl', is_flag=True, help='Is the calculation with non-colinear spin?', show_default=True)(func)
     click.option('--npoints', type=int, default=2000, help='Number of bins for the energy.', show_default=True)(func)
     click.option('--sigma', type=float, default=0.02, help='Smearing width for the energy in ' 'eV.', show_default=True)(func)
     click.option('--eref', type=float, help='Reference energy in eV.')(func)
@@ -215,11 +226,7 @@ def add_plot_options(func):
     click.option('--emax', type=float, default=5., help='Maximum energy in eV relative to the ' 'reference.', show_default=True)(func)
     click.option('--vscale', type=float, help='A scaling factor for the colour mapping.', default=1.0, show_default=True)(func)
     click.option('--out-file', default='unfold.png', help='Name of the output file.', show_default=True)(func)
-    click.option('--cmap',
-                 default='PuRd',
-                 help='Name of the colour map(s) to use. Passing a list separated by "|" for the '
-                 'combined plot.',
-                 show_default=True)(func)
+    click.option('--cmap', default='PuRd', help='Name of the colour map to use.', show_default=True)(func)
     click.option('--show', is_flag=True, default=False, help='Show the plot interactively.')(func)
     click.option('--no-symm-average',
                  is_flag=True,
@@ -235,6 +242,9 @@ def add_plot_options(func):
     click.option('--atoms-idx', help='Indices of the atoms to be used for weighting (1-indexed).')(func)
     click.option('--orbitals', help='Orbitals of to be used for weighting.')(func)
     click.option('--title', help='Title to be used')(func)
+    click.option('--width', help='Width of the figure', type=float, default=4., show_default=True)(func)
+    click.option('--height', help='Height of the figure', type=float, default=3., show_default=True)(func)
+    click.option('--dpi', help='DPI for the figure when saved as raster image.', type=int, default=300, show_default=True)(func)
     return func
 
 
@@ -342,14 +352,14 @@ def unfold_effective_mass(ctx, intensity_threshold, spin, band_filter, npoints, 
 @click.pass_context
 @add_plot_options
 def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, procar, atoms_idx,
-                orbitals, title):
+                orbitals, title, width, height, dpi):
     """
     Plot the spectral function
 
     This command uses the stored unfolding data to plot the effective bands structure (EBS) using the spectral function.
     """
     _unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, procar, atoms_idx,
-                 orbitals, title)
+                 orbitals, title, width, height, dpi)
 
 
 @unfold.command('plot-projections')
@@ -357,9 +367,9 @@ def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cm
 @add_plot_options
 @click.option('--combined/--no-combined', is_flag=True, default=False, help='Plot all projections in a combined graph.')
 @click.option('--intensity', default=1.0, help='Color intensity for combined plot', type=float, show_default=True)
-@click.option('--colors', help='Colors to be used for combined plot. Comma separated. Default = "r,g,b".')
+@click.option('--colors', help='Colors to be used for combined plot, comma separated.', default='r,g,b,purple', show_default=True)
 def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, procar,
-                            atoms_idx, orbitals, title, combined, intensity, colors):
+                            atoms_idx, orbitals, title, combined, intensity, colors, width, height, dpi):
     """
     Plot the effective band structure with atomic projections.
     """
@@ -386,10 +396,11 @@ def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, em
                                  vscale=vscale,
                                  use_subplot=not combined,
                                  intensity=intensity,
+                                 figsize=(width, height),
                                  colors=colors.split(',') if colors is not None else None)
 
     if out_file:
-        fig.savefig(out_file, dpi=300)
+        fig.savefig(out_file, dpi=dpi)
         click.echo(f'Unfolded band structure saved to {out_file}')
 
     if show:
@@ -413,6 +424,9 @@ def _unfold_plot(ctx,
                  atoms_idx,
                  orbitals,
                  title,
+                 width,
+                 height,
+                 dpi,
                  ax=None):
     """
     Routine for plotting the spectral function.
@@ -457,12 +471,14 @@ def _unfold_plot(ctx,
     fig = plotter.plot_spectral_function(eng,
                                          spectral_function,
                                          eref=eref,
+                                         figsize=(width, height),
                                          save=out_file,
                                          show=False,
                                          ylim=(emin, emax),
                                          vscale=vscale,
                                          cmap=cmap,
                                          title=title,
+                                         dpi=dpi,
                                          ax=ax)
 
     if out_file:
@@ -479,13 +495,13 @@ def print_symmetry_data(kset):
     sc_spg = kset.metadata['symmetry_dataset_sc']
     click.echo('Supercell cell information:')
     click.echo(' ' * 8 + f'Space group number: {sc_spg["number"]}')
-    click.echo(' ' * 8 + f'Internation symbol: {sc_spg["international"]}')
+    click.echo(' ' * 8 + f'International symbol: {sc_spg["international"]}')
     click.echo(' ' * 8 + f'Point group: {sc_spg["pointgroup"]}')
 
     pc_spg = kset.metadata['symmetry_dataset_pc']
     click.echo('\nPrimitive cell information:')
     click.echo(' ' * 8 + f'Space group number: {pc_spg["number"]}')
-    click.echo(' ' * 8 + f'Internation symbol: {pc_spg["international"]}')
+    click.echo(' ' * 8 + f'International symbol: {pc_spg["international"]}')
     click.echo(' ' * 8 + f'Point group: {pc_spg["pointgroup"]}')
 
 

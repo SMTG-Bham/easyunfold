@@ -1,12 +1,22 @@
-# Cation-Disordered NaBiS<sub>2</sub> with and without Atomic Projections
+# Cation-Disordered NaBiS<sub>2</sub> with atomic projections
 
 :::{note}
-Relevant files can be found in the [examples/NaBiS2](https://github.com/SMTG-UCL/easyunfold/tree/main/examples/NaBiS2) folder. 
-Note that the `PROCAR.gz` file will need to be decompressed with `gzip -d PROCAR.gz` if reproducing these example plots with the raw data.
+The files needed for reproducing this example are provided in the 
+[examples/NaBiS2](https://github.com/SMTG-UCL/easyunfold/tree/main/examples/NaBiS2) folder. 
+Note that the `PROCAR.gz` file will need to be decompressed with `gzip -d PROCAR.gz` if recalculating 
+and reproducing these example plots.
 :::
 
-In this example, we unfold the bands from a 80-atom special-quasirandom (SQS) supercell of NaBiS<sub>2</sub>, where the Na and 
-Bi cations are quasi-randomly distributed, in order to simulate randomised cation disorder in the material.
+In this example, we unfold the bands from a 80-atom special-quasirandom (SQS) supercell of 
+NaBiS<sub>2</sub>, where the Na and Bi cations are quasi-randomly distributed, in order to simulate 
+randomised cation disorder in the material. 
+
+:::{tip}
+SQS supercells can be generated using tools like 
+[icet](https://icet.materialsmodeling.org/moduleref_icet/tools.html#module-icet.tools.structure_generation)
+or [ATAT](https://www.brown.edu/Departments/Engineering/Labs/avdw/atat/).
+:::
+
 These results were published in Y. T. Huang & S. R. Kavanagh et al. 2022 [^1], and an early version of 
 `easyunfold` was used for the similar AgBiS$_2$ in Y. Wang & S. R. Kavanagh et al. 2022 [^2], 
 with these plots demonstrating the key 
@@ -64,7 +74,8 @@ Note that we use "1-based indexing" for the atoms here, matching the VASP format
 not zero as in python).
 
 :::{note}
-The projections are not stored in the `easyunfold.json` data file. So the `PROCAR` should be kept for replotting in the future.
+The atomic projections are not stored in the `easyunfold.json` data file, so the `PROCAR` file should be 
+kept for replotting in the future.
 :::
 
 While the main conclusions of S dominating the valence band and Bi dominating the conduction band are clear from the 
@@ -85,7 +96,8 @@ Unfolded band structure of NaBiS<sub>2</sub> with atomic contributions plotted s
 ```
 
 
-An alternative option here is also to just plot only the contributions of Na and Bi cations, with no S projections:
+An alternative option here is also to just plot only the contributions of Na (`1-20`) and Bi (`21-40`) 
+cations, with no S projections:
 ```bash
 easyunfold unfold plot-projections --atoms-idx="1-20|21-40" --procar PROCAR  --intensity=2  --combined --colors="r,g"
 ```
@@ -98,7 +110,8 @@ Unfolded band structure of NaBiS<sub>2</sub> with atomic contributions of only N
 ```
 
 While this plot isn't the most aesthetic, it clearly shows that Bi (green) contributes to both the conduction band and 
-(less so) valence states, but Na (red) doesn't contribute significantly at all. 
+(less so) valence band states, but Na (red) doesn't contribute significantly at near the band edges 
+(it's a spectator ion!). 
 
 [^1]: [Huang, YT., Kavanagh, S.R., Righetto, M. et al. Strong absorption and ultrafast localisation in NaBiS2 nanocrystals with slow charge-carrier recombination. Nat Commun 13, 4960 (2022)](https://www.nature.com/articles/s41467-022-32669-3) 
 [^2]: [Wang, Y., Kavanagh, S.R., Burgués-Ceballos, I. et al. Cation disorder engineering yields AgBiS2 nanocrystals with enhanced optical absorption for efficient ultrathin solar cells. Nat. Photon. 16, 235–241 (2022).](https://www.nature.com/articles/s41566-021-00950-4)

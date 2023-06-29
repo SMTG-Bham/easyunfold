@@ -82,8 +82,7 @@ class Procar:
 
         self.nspins = proj_data.shape[0] // (self.nion * self.nbands * self.nkpts)
         self.nspins //= 4 if self._is_soc else 1
-        if self._is_soc:
-            self.spin = self.spin // 4
+
         # Reshape
         self.occs.resize((self.nspins, self.nkpts, self.nbands))
         self.kvecs.resize((self.nspins, self.nkpts, 3))
