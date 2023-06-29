@@ -54,7 +54,8 @@ There are existing packages that provide similar band structure unfolding capabi
 [@bandup], and `VaspBandUnfolding` [@vaspbandunfolding].
 `easyunfold` is written in Python with a focus of easy-to-use, data provenance and reproducibility.
 It also includes plotting functionalities and can generate publication-ready figures.
-An example outputs of the effective band structure produced is shown in Figure \autoref{fig:figure2} for a $2\times2\times2$ supercell of Si with a displaced Si atom.
+An example output of the effective band structure produced is shown in Figure \autoref{fig:figure2} for a $2\times2\times2$ $\mathrm{MgO}$ supercell containing a charged oxygen vacancy.
+\autoref{fig:figure3} shows the effective band structure of an disordered $\mathrm{NaBiS_2}$ structure, which each projected atomic channel plotted separately.
 A key feature of `easyunfold` is to provide data serialization complying the FAIR principle [@wilkinson:2016].
 Both the input settings and calculated spectral weights are stored as a single JSON file.
 This enables the unfolded band structure to be re-plotted and further analysed without reprocessing the wave function data, which can be time-consuming and require large storage space.
