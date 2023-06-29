@@ -876,18 +876,20 @@ class Unfold:
         # get the overlap G-vectors
         Gvalid, Gall = self.get_ovlap_G(ikpt=ikpt)
 
-        # If this kpoint is actuall -K0, use the relationship C_{k}(G) = C_{-k}*(-G)
-        # Since the coefficients are on a grid, we can just inverse the G vectors (unit of reciprocal lattice vector).
-        # There is no need to take conjugate as we only care about the norm.
-        if time_reversal:
-            Gvalid = -Gvalid
-            Gall = -Gall
-
         # Gnew = Gvalid + k0 - K0
         Goffset = Gvalid + G0[np.newaxis, :]
 
         # Index of the Gvalid in 3D grid
         GallIndex = Gall % self.wfc.mesh_size[np.newaxis, :]
+
+        # If this kpoint is actuall -K0, use the relationship C_{k}(G) = C_{-k}*(-G)
+        # Since the coefficients are on a grid, we can just inverse the G vectors (unit of reciprocal lattice vector).
+        # There is no need to take conjugate as we only care about the norm.
+        # GallIndex stores the index of each plane-weave coefficients, and is to used to assign the coefficients
+        # to the 3D grid, so we just need to inverse it here.
+        if time_reversal:
+            GallIndex *= -1
+
         GoffsetIndex = Goffset % self.wfc.mesh_size[np.newaxis, :]
 
         # 3d grid for planewave coefficients
