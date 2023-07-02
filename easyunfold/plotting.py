@@ -4,6 +4,7 @@ Plotting utilities
 from typing import Union, Sequence
 import warnings
 import itertools
+import colorsys
 import matplotlib.pyplot as plt
 
 import numpy as np
@@ -18,7 +19,7 @@ from colormath.color_objects import (
 )
 from matplotlib import cycler, rcParams
 from matplotlib.style import context
-from matplotlib.colors import to_rgb
+from matplotlib.colors import to_rgb, cnames
 from matplotlib.patches import Patch
 
 from .unfold import UnfoldKSet, clean_latex_string, process_projection_options, parse_atoms
@@ -676,10 +677,23 @@ class UnfoldPlotter:
                 from sumo.plotting import sumo_base_style, sumo_bs_style
                 plt.style.use([sumo_base_style, sumo_bs_style])
 
+                # set DOS element & orbital colours to match the easyunfold band structure projections
+                if orbitals is None:
+                    # set s,p,d,f to different shades of colors[i]
+                    # Create a dictionary with different shades
+                    colours = {atom: {"s": adjust_lightness(colors[i], 1.0),
+                                      "p": adjust_lightness(colors[i], 0.8),
+                                      "d": adjust_lightness(colors[i], 0.6),
+                                      "f": adjust_lightness(colors[i], 0.4)}
+                               for i, atom in enumerate(atoms)}
+                else:
+                    colours = None
+
                 cycle = cycler("color", rcParams["axes.prop_cycle"].by_key()["color"][4:])
                 with context({"axes.prop_cycle": cycle}):
                     plot_data = dos_plotter.dos_plot_data(xmin=ylim[0], xmax=ylim[1],
                                                           zero_energy=eref, zero_to_efermi=False,
+                                                          colours=colours,
                                                           **dos_options)
 
                 mask = plot_data["mask"]
@@ -832,3 +846,23 @@ def interpolate_colors(colors: Sequence, weights: list, colorspace='lab', normal
     # ensure all rgb values are less than 1 (sometimes issues in interpolation gives
     np.clip(rgb_colors, 0, 1, rgb_colors)
     return rgb_colors
+
+
+def adjust_lightness(color, amount=0.5):
+    """
+    Lightens the given color by multiplying (1-luminosity) by the given amount.
+    Input can be matplotlib color string, hex string, or RGB tuple.
+
+    Examples:
+    >> adjust_lightness('g', 1.1)  # slightly lighter
+    >> adjust_lightness('r', 0.6)  # significantly darker
+    >> adjust_lightness('#F034A3', 0.6)  # slightly darker
+    >> adjust_lightness((.3,.55,.1), 1.2)  # slightly lighter
+    """
+
+    try:
+        c = cnames[color]
+    except:
+        c = color
+    c = colorsys.rgb_to_hls(*to_rgb(c))
+    return colorsys.hls_to_rgb(c[0], 1 - amount * (1 - c[1]), c[2])
