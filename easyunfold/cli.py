@@ -232,11 +232,13 @@ def add_plot_options(func):
                                'If set, the density of states will be plotted alongside the unfolded bandstructure.')(func)
     click.option('--dos-label', type=str, help='Axis label for DOS if included.', show_default=True)(func)
     click.option('--zero-line', is_flag=True, default=False, help='Plot horizontal line at zero energy.', show_default=True)(func)
-    click.option('--dos-elements', help='Elemental orbitals to plot (e.g. "C.s.p,O") for DOS if included.')(func)
+    click.option('--dos-elements', help='Elemental orbitals to plot (e.g. "C.s.p,O") for DOS if '
+                                        'included. If not specified, will be set to the orbitals of `--atoms` (if '
+                                        'specified)')(func)
     click.option('--dos-orbitals', help='Orbitals to split into lm-decomposed (e.g. p -> px, py, '
-                                    'pz) contributions (e.g. "Ti.d") for DOS if included.')(func)
+                                    'pz) contributions (e.g. "S.p") for DOS if included.')(func)
     click.option('--dos-atoms', help='Atoms to include (e.g. "O.1.2.3,Ru.1.2.3") for DOS if included.')(func)
-    click.option('--legend-cutoff', type=float, default=3, help='Cut-off in %% of total DOS that determines if a line is given a label.', show_default=True)(func)
+    click.option('--legend-cutoff', type=float, default=3, help='Cut-off in % of total DOS that determines if a line is given a label.', show_default=True)(func)
     click.option('--gaussian', type=float, help='Standard deviation of DOS gaussian broadening in eV.',
                  default=0.05, show_default=True)(func)
     click.option('--scale', type=float, help='Scaling factor for the DOS plot.', default=1.0)(func)
@@ -250,8 +252,11 @@ def add_plot_options(func):
     click.option('--atoms', help='Atoms to be used for weighting, as a comma-separated list (e.g. "Na,'
                                  'Bi,S"). The POSCAR or CONTCAR file must be present in the current '
                                  'directory for this, otherwise use `--atoms-idx`.')(func)
-    click.option('--atoms-idx', help='Indices of the atoms to be used for weighting (1-indexed).')(func)
-    click.option('--orbitals', help='Orbitals to be used for weighting.')(func)
+    click.option('--atoms-idx', help='Indices of the atoms to be used for weighting (1-indexed), '
+                                     'comma-separated and "-" can be used to define ranges, in groups '
+                                     'separated by "|". E.g. "1-20|21,22,23"')(func)
+    click.option('--orbitals', help='Orbitals to be used for weighting, comma-separated, in groups '
+                                    'separated by "|". E.g. "px,py|pz"')(func)
     click.option('--title', help='Title to be used')(func)
     click.option('--width', help='Width of the figure', type=float, default=4., show_default=True)(func)
     click.option('--height', help='Height of the figure', type=float, default=3., show_default=True)(func)
