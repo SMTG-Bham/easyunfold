@@ -1060,7 +1060,7 @@ def create_white_colormap_from_existing(name: str) -> ListedColormap:
 
 def parse_atoms_idx(atoms_idx: str) -> List[int]:
     """
-    Expanding syntex like `1-2` (inclusive)
+    Expanding syntax like `1-2` (inclusive)
 
     For example, `1,2,3,4-6` will be expanded as `1,2,3,4,5,6`.
 
@@ -1085,6 +1085,9 @@ def process_projection_options(atoms_idx: str, orbitals: str) -> Tuple[list, lis
     """
     Process commandline-style specifications for project
 
+    :param atoms_idx: A "|"-separated string of atom projections
+    :param orbitals: A "|"-separated string of orbital projections
+
     :returns: A tuple of atom indices and the orbitals selected for projection.
     """
     indices = parse_atoms_idx(atoms_idx)
@@ -1095,6 +1098,11 @@ def process_projection_options(atoms_idx: str, orbitals: str) -> Tuple[list, lis
     return indices, orbitals
 
 def read_poscar_contcar_if_present():
+    """
+    Return an ase Atoms() object of the POSCAR or CONTCAR file if present in the current directory.
+
+    :returns: ASE Atoms() object
+    """
     try:
         return read_vasp("POSCAR")
     except FileNotFoundError:
@@ -1105,6 +1113,17 @@ def read_poscar_contcar_if_present():
 
 
 def parse_atoms(atoms_to_project: str, orbitals: str):
+    """
+    Parse the specified atoms (and orbitals if set) from a comma-separated
+    string (e.g. "Na,Bi") into a list of strings (e.g. ["Na", "Bi"]), as well
+    as a list of the corresponding atom indices in the structure and the parse
+    orbital projections.
+
+    :param atoms_to_project: A comma-separted string of atom symbols to project
+    :param orbitals: A "|"-separated string of orbital projections
+
+    :returns: A tuple of lists of atoms, atom indices and the orbitals selected for projection.
+    """
     atoms_to_project = re.split(', *', atoms_to_project)
     ase_atoms = read_poscar_contcar_if_present()
     try:  # check POTCAR if possible, to check the POSCAR-POTCARs match
