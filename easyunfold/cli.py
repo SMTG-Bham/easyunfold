@@ -418,7 +418,19 @@ def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, em
     if dos:
         from sumo.plotting.dos_plotter import SDOSPlotter
         from sumo.electronic_structure.dos import load_dos
+        from sumo.cli.dosplot import _el_orb, _atoms
 
+        dos_elements = _el_orb(dos_elements) if dos_elements is not None else None
+        dos_orbitals = _el_orb(dos_orbitals) if dos_orbitals is not None else None
+        dos_atoms = _atoms(dos_atoms) if dos_atoms is not None else None
+
+        # Set dos_elements to match atoms if set and dos_elements not specified
+        if atoms and not dos_elements:
+            parsed_atoms, _idx, _orbitals = parse_atoms(atoms, orbitals)
+            dos_elements = ",".join([f"{atom}.s.p.d.f" for atom in parsed_atoms])
+            dos_elements = _el_orb(dos_elements)
+
+        warnings.filterwarnings("ignore", message="No POTCAR file with matching TITEL fields")  # unnecessary pymatgen potcar warnings
         dos, pdos = load_dos(dos,
                              dos_elements,
                              dos_orbitals,
