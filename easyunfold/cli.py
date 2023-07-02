@@ -1,6 +1,7 @@
 """
 Commandline interface
 """
+import warnings
 from pathlib import Path
 from monty.serialization import loadfn
 import numpy as np
@@ -19,6 +20,8 @@ DEFAULT_CMAPS = [
 ]
 
 CONTEXT_SETTINGS = {'help_option_names': ['-h', '--help']}
+
+warnings.filterwarnings("ignore", message="No POTCAR file with matching TITEL fields")  # unnecessary pymatgen potcar warnings
 
 
 @click.group('easyunfold', context_settings=CONTEXT_SETTINGS)
@@ -542,6 +545,8 @@ def _unfold_plot(ctx,
         from sumo.plotting.dos_plotter import SDOSPlotter
         from sumo.electronic_structure.dos import load_dos
 
+        warnings.filterwarnings("ignore",
+                                message="No POTCAR file with matching TITEL fields")  # unnecessary pymatgen potcar warnings
         dos, pdos = load_dos(dos,
                              dos_elements,
                              dos_orbitals,
