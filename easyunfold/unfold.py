@@ -546,7 +546,7 @@ class UnfoldKSet(MSONable):
         :param gamma_half: Flag used for reading WAVECAR
         :param symm_average: Whether to perform symmetry averaging
         :param atoms_idx: Indices for the atoms for projection
-        :param orbitals: Indices for the atoms for projection
+        :param orbitals: Orbitals of the atoms for projection
 
         :returns: A tuple of the energies and the spectral functioin.
         """
@@ -1085,8 +1085,8 @@ def process_projection_options(atoms_idx: str, orbitals: str) -> Tuple[list, lis
     """
     Process commandline-style specifications for project
 
-    :param atoms_idx: A "|"-separated string of atom projections
-    :param orbitals: A "|"-separated string of orbital projections
+    :param atoms_idx: A comma- or hyphen-separated string of atom projections
+    :param orbitals: A comma-separated string of orbital projections
 
     :returns: A tuple of atom indices and the orbitals selected for projection.
     """
@@ -1096,6 +1096,7 @@ def process_projection_options(atoms_idx: str, orbitals: str) -> Tuple[list, lis
     else:
         orbitals = 'all'
     return indices, orbitals
+
 
 def read_poscar_contcar_if_present():
     """
@@ -1137,11 +1138,18 @@ def parse_atoms(atoms_to_project: str, orbitals: str):
             warnings.warn("The order of atoms in the POSCAR/CONTCAR and POTCAR do not match!")
     except FileNotFoundError:
         pass
-    atoms_idx = [[i for i, atom in enumerate(ase_atoms) if projected_atom_symbol in atom.symbol] for projected_atom_symbol in atoms_to_project]
+    atoms_idx = [
+        [i for i, atom in enumerate(ase_atoms) if projected_atom_symbol in atom.symbol] for projected_atom_symbol in atoms_to_project
+    ]
+
+    if orbitals is None:
+        orbitals = "all"
 
     if orbitals and orbitals != 'all':
         orbitals = [token.strip() for token in orbitals.split(',')]
     else:
         orbitals = 'all'
 
-    return atoms_to_project, atoms_idx, orbitals
+        orbitals_list.append(orbitals)
+
+    return atoms_to_project, atoms_idx, orbitals_list
