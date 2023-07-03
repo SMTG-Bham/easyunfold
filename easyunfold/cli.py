@@ -601,13 +601,19 @@ def _unfold_plot(ctx,
         atoms_idx_subplots = [None]
         orbitals_subplots = [None]
 
-    eng, spectral_function = unfoldset.get_spectral_function(gamma=gamma,
-                                                             npoints=npoints,
-                                                             sigma=sigma,
-                                                             ncl=ncl,
-                                                             atoms_idx=atoms_idx,
-                                                             orbitals=orbitals,
-                                                             symm_average=not no_symm_average)
+    # Collect spectral functions and scale
+    all_sf = []
+    for i, this_idx, this_orbitals in zip(range(len(atoms_idx_subplots)), atoms_idx_subplots, orbitals_subplots):
+        eng, spectral_function = unfoldset.get_spectral_function(gamma=gamma,
+                                                                 npoints=npoints,
+                                                                 sigma=sigma,
+                                                                 ncl=ncl,
+                                                                 atoms_idx=this_idx,
+                                                                 orbitals=this_orbitals,
+                                                                 symm_average=not no_symm_average)
+        all_sf.append(spectral_function)
+    spectral_function = np.sum(all_sf, axis=0)
+
     if emin is None:
         emin = eng.min() - eref
     if emax is None:
@@ -617,16 +623,47 @@ def _unfold_plot(ctx,
     if dos:
         from sumo.plotting.dos_plotter import SDOSPlotter
         from sumo.electronic_structure.dos import load_dos
+        from sumo.cli.dosplot import _el_orb, _atoms
 
-        warnings.filterwarnings("ignore",
-                                message="No POTCAR file with matching TITEL fields")  # unnecessary pymatgen potcar warnings
-        dos, pdos = load_dos(dos,
-                             dos_elements,
-                             dos_orbitals,
-                             dos_atoms,
-                             gaussian,
-                             total_only,
-                             )
+        warnings.filterwarnings("ignore", message="No POTCAR file with matching TITEL fields")  # unnecessary pymatgen potcar warnings
+
+        dos_elements = _el_orb(dos_elements) if dos_elements is not None else None
+        dos_orbitals = _el_orb(dos_orbitals) if dos_orbitals is not None else None
+        dos_atoms = _atoms(dos_atoms) if dos_atoms is not None else None
+
+        # Set dos_elements to match atoms (and orbitals) if set and dos_elements not specified
+        if atoms:
+            parsed_atoms, atoms_idx_subplots, parsed_orbitals = parse_atoms(atoms, orbitals)
+
+            draft_dos_elements = {atom: tuple(parsed_orbitals[i]) for i, atom in enumerate(parsed_atoms)}
+
+            if orbitals and any(i in orbital
+                                for my_tuple in draft_dos_elements.values()
+                                for orbital in my_tuple
+                                for i in ["x", "y", "z"]) and dos_orbitals is None:
+                dos_orbitals = {}
+                for atom, orbital_tuple in draft_dos_elements.items():
+                    dos_orbitals[atom] = ()
+                    for orbital in orbital_tuple:
+                        if len(orbital) > 1 and orbital != "all" and orbital[:1] not in dos_orbitals[atom]:
+                            dos_orbitals[atom] += (orbital[:1],)
+
+            if dos_elements is None:
+                dos_elements = {}
+                for atom, orbital_tuple in draft_dos_elements.items():
+                    dos_elements[atom] = ()
+                    if orbital_tuple != ("all",):
+                        for orbital in orbital_tuple:
+                            dos_elements[atom] += (orbital[:1],)
+
+        dos, pdos = load_dos(
+            dos,
+            dos_elements,
+            dos_orbitals,
+            dos_atoms,
+            gaussian,
+            total_only,
+        )
         dos_plotter = SDOSPlotter(dos, pdos)
         dos_options = {
             "plot_total": not no_total,
