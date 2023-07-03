@@ -572,15 +572,34 @@ def _unfold_plot(ctx,
         except FileNotFoundError:
             click.echo(f'Could not find and parse the --procar file: {procar} – needed for atomic projections!')
             raise click.Abort()
+
         if atoms_idx:
-            atoms_idx, orbitals = process_projection_options(atoms_idx, orbitals)
-        else:  # parse atoms
-            atoms, atoms_idx, orbitals = parse_atoms(atoms, orbitals)
-            atoms_idx = [idx for sublist in atoms_idx for idx in sublist]  # flatten atoms_idx for non-projected plot
+            atoms_idx_subplots = atoms_idx.split('|')  # list of strings
+            atoms_idx_subplots = [parse_atoms_idx(idx) for idx in atoms_idx_subplots]  # list of lists
+            if orbitals is None:
+                orbitals = "all"
+
+            orbitals_subplots = orbitals.split('|')
+
+            # Special case: if only one set is passed, apply it to all atomic specifications
+            if len(orbitals_subplots) == 1:
+                orbitals_subplots = orbitals_subplots * len(atoms_idx_subplots)
+
+            orbitals_list = []
+            for orbitals in orbitals_subplots:
+                if orbitals and orbitals != 'all':
+                    orbitals = [token.strip() for token in orbitals.split(',')]
+                else:
+                    orbitals = ['all',]
+
+                orbitals_list.append(orbitals)
+
+        elif atoms:
+            parsed_atoms, atoms_idx_subplots, orbitals_subplots = parse_atoms(atoms, orbitals)
 
     else:
-        atoms_idx = None
-        orbitals = None
+        atoms_idx_subplots = [None]
+        orbitals_subplots = [None]
 
     eng, spectral_function = unfoldset.get_spectral_function(gamma=gamma,
                                                              npoints=npoints,
