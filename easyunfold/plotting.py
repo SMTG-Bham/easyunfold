@@ -150,7 +150,11 @@ class UnfoldPlotter:
 
             cycle = cycler('color', rcParams['axes.prop_cycle'].by_key()['color'][4:])
             with context({'axes.prop_cycle': cycle}):
-                plot_data = dos_plotter.dos_plot_data(xmin=ylim[0], xmax=ylim[1], zero_energy=eref, zero_to_efermi=False, **dos_options)
+                plot_data = dos_plotter.dos_plot_data(xmin=ylim[0],
+                                                      xmax=ylim[1],
+                                                      zero_energy=eref,
+                                                      zero_to_efermi=False,
+                                                      **dos_options)
 
             mask = plot_data['mask']
             energies = plot_data['energies'][mask]
