@@ -50,7 +50,7 @@ def mgo_project_dir(datapath, tmp_path):
 @pytest.fixture
 def nabis2_project_dir(tmp_path):
     nabis2_dir = Path(__file__).parent / '..' / 'examples' / 'NaBiS2'
-    for i in ['POSCAR', 'KPOINTS', 'easyunfold.json', 'POTCAR', 'PROCAR.gz', 'vasprun.xml.gz']:
+    for i in ['POSCAR', 'KPOINTS', 'easyunfold.json', 'PROCAR.gz', 'vasprun.xml.gz']:
         shutil.copy2(nabis2_dir / i, tmp_path / i)
 
     # gzip decompress PROCAR, using subprocess
