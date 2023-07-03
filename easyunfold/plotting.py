@@ -94,10 +94,7 @@ class UnfoldPlotter:
         if dos_plotter:
             from pymatgen.electronic_structure.core import Spin
 
-            fig, axes = plt.subplots(
-                1, 2, facecolor="w", gridspec_kw={"width_ratios": [3, 1], "wspace": 0},
-                figsize=figsize, dpi=dpi
-            )
+            fig, axes = plt.subplots(1, 2, facecolor="w", gridspec_kw={"width_ratios": [3, 1], "wspace": 0}, figsize=figsize, dpi=dpi)
             if nspin > 1:
                 warnings.warn("DOS plotter is not supported for spin-separated plots. Reverting to non spin-polarised plotting.")
                 nspin = 1
@@ -153,9 +150,7 @@ class UnfoldPlotter:
 
             cycle = cycler("color", rcParams["axes.prop_cycle"].by_key()["color"][4:])
             with context({"axes.prop_cycle": cycle}):
-                plot_data = dos_plotter.dos_plot_data(xmin = ylim[0], xmax = ylim[1],
-                                                      zero_energy=eref, zero_to_efermi=False,
-                                                      **dos_options)
+                plot_data = dos_plotter.dos_plot_data(xmin=ylim[0], xmax=ylim[1], zero_energy=eref, zero_to_efermi=False, **dos_options)
 
             mask = plot_data["mask"]
             energies = plot_data["energies"][mask]
@@ -191,7 +186,7 @@ class UnfoldPlotter:
                 ax.set_xlim(plot_data["ymin"], plot_data["ymax"])
 
             if dos_label is not None:
-               ax.set_xlabel(dos_label)
+                ax.set_xlabel(dos_label)
 
             ax.set_xticklabels([])
             ax.set_yticklabels([])
@@ -200,7 +195,7 @@ class UnfoldPlotter:
         if zero_line:
             try:
                 from sumo.plotting import draw_themed_line
-                draw_themed_line(0, axes[0], zorder = 10)  # bump zorder to put on top of pcolormesh
+                draw_themed_line(0, axes[0], zorder=10)  # bump zorder to put on top of pcolormesh
                 if dos_plotter:
                     draw_themed_line(0, axes[1])
 
@@ -275,7 +270,7 @@ class UnfoldPlotter:
 
         # Clip the alpha range
         alpha = sf[:, :, :, 3]
-        alpha = (alpha - vmin) / (vmax - vmin) * (1/colour_norm)
+        alpha = (alpha - vmin) / (vmax - vmin) * (1 / colour_norm)
         alpha = np.clip(alpha, 0, 1)
         sf[:, :, :, 3] = alpha
 
@@ -488,37 +483,37 @@ class UnfoldPlotter:
         return fig
 
     def plot_projected(
-        self,
-        procar: Union[str, list] = "PROCAR",
-        dos_plotter=None,
-        dos_label=None,
-        dos_options=None,
-        zero_line=False,
-        eref=None,
-        gamma=False,
-        npoints=2000,
-        sigma=0.2,
-        ncl=False,
-        symm_average=True,
-        figsize=(4, 3),
-        ylim=(-5, 5),
-        dpi=150,
-        colour_norm=1.0,
-        contour_plot=False,
-        alpha=1.0,
-        save=False,
-        ax=None,
-        vmin=None,
-        vmax=None,
-        cmap='PuRd',
-        show=False,
-        title=None,
-        atoms=None,
-        atoms_idx=None,
-        orbitals=None,
-        use_subplot=False,
-        colors=('r', 'g', 'b', 'purple'),
-        colorspace='lab',
+            self,
+            procar: Union[str, list] = "PROCAR",
+            dos_plotter=None,
+            dos_label=None,
+            dos_options=None,
+            zero_line=False,
+            eref=None,
+            gamma=False,
+            npoints=2000,
+            sigma=0.2,
+            ncl=False,
+            symm_average=True,
+            figsize=(4, 3),
+            ylim=(-5, 5),
+            dpi=150,
+            colour_norm=1.0,
+            contour_plot=False,
+            alpha=1.0,
+            save=False,
+            ax=None,
+            vmin=None,
+            vmax=None,
+            cmap='PuRd',
+            show=False,
+            title=None,
+            atoms=None,
+            atoms_idx=None,
+            orbitals=None,
+            use_subplot=False,
+            colors=('r', 'g', 'b', 'purple'),
+            colorspace='lab',
     ):
         """
         Plot projected spectral function onto multiple subplots or a single plot with color mapping.
@@ -572,7 +567,7 @@ class UnfoldPlotter:
                 this_idx, this_orbitals = process_projection_options(this_idx, this_orbitals)
             else:  # list of integers; pre-processed by specifying atoms
                 if this_orbitals != "all":
-                    this_orbitals = [token.strip() for token in this_orbitals[1].split(',')]
+                    this_orbitals = [token.strip() for token in this_orbitals.split(',')]
 
             eng, spectral_function = unfoldset.get_spectral_function(gamma=gamma,
                                                                      npoints=npoints,
@@ -640,14 +635,19 @@ class UnfoldPlotter:
             if dos_plotter:
                 from pymatgen.electronic_structure.core import Spin
 
-                fig, axes = plt.subplots(
-                    1, 2, facecolor="w", gridspec_kw={"width_ratios": [3, 1], "wspace": 0},
-                    figsize=figsize, dpi=dpi, squeeze=True
-                )
+                fig, axes = plt.subplots(1,
+                                         2,
+                                         facecolor="w",
+                                         gridspec_kw={
+                                             "width_ratios": [3, 1],
+                                             "wspace": 0
+                                         },
+                                         figsize=figsize,
+                                         dpi=dpi,
+                                         squeeze=True)
                 ax = axes[0]
                 if nspin > 1:
-                    warnings.warn(
-                        "DOS plotter is not supported for spin-separated plots. Reverting to non spin-polarised plotting.")
+                    warnings.warn("DOS plotter is not supported for spin-separated plots. Reverting to non spin-polarised plotting.")
                     nspin = 1
 
             elif ax is None:
@@ -678,21 +678,26 @@ class UnfoldPlotter:
                 plt.style.use([sumo_base_style, sumo_bs_style])
 
                 # set DOS element & orbital colours to match the easyunfold band structure projections
-                if orbitals is None:
+                if atoms:
                     # set s,p,d,f to different shades of colors[i]
                     # Create a dictionary with different shades
-                    colours = {atom: {"s": adjust_lightness(colors[i], 1.0),
-                                      "p": adjust_lightness(colors[i], 0.8),
-                                      "d": adjust_lightness(colors[i], 0.6),
-                                      "f": adjust_lightness(colors[i], 0.4)}
-                               for i, atom in enumerate(atoms)}
+                    colours = {
+                        atom: {
+                            "s": adjust_lightness(colors[i], 1.0),
+                            "p": adjust_lightness(colors[i], 0.8),
+                            "d": adjust_lightness(colors[i], 0.6),
+                            "f": adjust_lightness(colors[i], 0.4)
+                        } for i, atom in enumerate(atoms)
+                    }
                 else:
                     colours = None
 
                 cycle = cycler("color", rcParams["axes.prop_cycle"].by_key()["color"][4:])
                 with context({"axes.prop_cycle": cycle}):
-                    plot_data = dos_plotter.dos_plot_data(xmin=ylim[0], xmax=ylim[1],
-                                                          zero_energy=eref, zero_to_efermi=False,
+                    plot_data = dos_plotter.dos_plot_data(xmin=ylim[0],
+                                                          xmax=ylim[1],
+                                                          zero_energy=eref,
+                                                          zero_to_efermi=False,
                                                           colours=colours,
                                                           **dos_options)
 
