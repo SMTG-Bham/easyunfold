@@ -8,7 +8,7 @@ import numpy as np
 import click
 from ase.io import read
 
-from easyunfold.unfold import process_projection_options, parse_atoms
+from easyunfold.unfold import process_projection_options, parse_atoms, parse_atoms_idx
 
 # pylint:disable=import-outside-toplevel,too-many-locals,too-many-arguments
 
@@ -391,10 +391,9 @@ def unfold_effective_mass(ctx, intensity_threshold, spin, band_filter, npoints, 
 @unfold.command('plot')
 @click.pass_context
 @add_plot_options
-def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl,
-                no_symm_average, colour_norm, dos, dos_label, zero_line, dos_elements, dos_orbitals,
-                dos_atoms, legend_cutoff, gaussian, no_total, total_only, scale,
-                procar, atoms, atoms_idx, orbitals, title, width, height, dpi, mpl_style_file):
+def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, colour_norm, dos, dos_label,
+                zero_line, dos_elements, dos_orbitals, dos_atoms, legend_cutoff, gaussian, no_total, total_only, scale, procar, atoms,
+                atoms_idx, orbitals, title, width, height, dpi, mpl_style_file):
     """
     Plot the spectral function
 
@@ -405,10 +404,9 @@ def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cm
         import matplotlib.style
         matplotlib.style.use(mpl_style_file)
 
-    _unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl,
-                 no_symm_average, colour_norm, dos, dos_label, zero_line, dos_elements, dos_orbitals,
-                 dos_atoms, legend_cutoff, gaussian, no_total, total_only, scale,
-                 procar, atoms, atoms_idx, orbitals, title, width, height, dpi)
+    _unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, colour_norm, dos, dos_label,
+                 zero_line, dos_elements, dos_orbitals, dos_atoms, legend_cutoff, gaussian, no_total, total_only, scale, procar, atoms,
+                 atoms_idx, orbitals, title, width, height, dpi)
 
 
 @unfold.command('plot-projections')
@@ -416,10 +414,9 @@ def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cm
 @add_plot_options
 @click.option('--combined/--no-combined', is_flag=True, default=False, help='Plot all projections in a combined graph.')
 @click.option('--colors', help='Colors to be used for combined plot, comma separated.', default='r,g,b,purple', show_default=True)
-def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl,
-                            no_symm_average, colour_norm, dos, dos_label, zero_line, dos_elements, dos_orbitals,
-                            dos_atoms, legend_cutoff, gaussian, no_total, total_only, scale,
-                            procar, atoms, atoms_idx, orbitals, title, combined, colors, width, height, dpi, mpl_style_file):
+def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, colour_norm, dos,
+                            dos_label, zero_line, dos_elements, dos_orbitals, dos_atoms, legend_cutoff, gaussian, no_total, total_only,
+                            scale, procar, atoms, atoms_idx, orbitals, title, combined, colors, width, height, dpi, mpl_style_file):
     """
     Plot the effective band structure with atomic projections.
     """
@@ -445,20 +442,39 @@ def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, em
         dos_orbitals = _el_orb(dos_orbitals) if dos_orbitals is not None else None
         dos_atoms = _atoms(dos_atoms) if dos_atoms is not None else None
 
-        # Set dos_elements to match atoms if set and dos_elements not specified
-        if atoms and not dos_elements:
-            parsed_atoms, _idx, _orbitals = parse_atoms(atoms, orbitals)
-            dos_elements = ",".join([f"{atom}.s.p.d.f" for atom in parsed_atoms])
-            dos_elements = _el_orb(dos_elements)
+        # Set dos_elements to match atoms (and orbitals) if set and dos_elements not specified
+        if atoms:
+            parsed_atoms, _idx, parsed_orbitals = parse_atoms(atoms, orbitals)
+            draft_dos_elements = {atom: tuple(parsed_orbitals[i]) for i, atom in enumerate(parsed_atoms)}
+
+            if orbitals and any(i in orbital
+                                for my_tuple in draft_dos_elements.values()
+                                for orbital in my_tuple
+                                for i in ["x", "y", "z"]) and dos_orbitals is None:
+                dos_orbitals = {}
+                for atom, orbital_tuple in draft_dos_elements.items():
+                    dos_orbitals[atom] = ()
+                    for orbital in orbital_tuple:
+                        if len(orbital) > 1 and orbital != "all" and orbital[:1] not in dos_orbitals[atom]:
+                            dos_orbitals[atom] += (orbital[:1],)
+
+            if dos_elements is None:
+                dos_elements = {}
+                for atom, orbital_tuple in draft_dos_elements.items():
+                    dos_elements[atom] = ()
+                    if orbital_tuple != ("all",):
+                        for orbital in orbital_tuple:
+                            dos_elements[atom] += (orbital[:1],)
 
         warnings.filterwarnings("ignore", message="No POTCAR file with matching TITEL fields")  # unnecessary pymatgen potcar warnings
-        dos, pdos = load_dos(dos,
-                             dos_elements,
-                             dos_orbitals,
-                             dos_atoms,
-                             gaussian,
-                             total_only,
-                             )
+        dos, pdos = load_dos(
+            dos,
+            dos_elements,
+            dos_orbitals,
+            dos_atoms,
+            gaussian,
+            total_only,
+        )
         dos_plotter = SDOSPlotter(dos, pdos)
         dos_options = {
             "plot_total": not no_total,
