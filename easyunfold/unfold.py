@@ -1145,10 +1145,20 @@ def parse_atoms(atoms_to_project: str, orbitals: str):
     if orbitals is None:
         orbitals = "all"
 
-    if orbitals and orbitals != 'all':
-        orbitals = [token.strip() for token in orbitals.split(',')]
-    else:
-        orbitals = 'all'
+    orbitals_subplots = orbitals.split('|')
+
+    # Special case: if only one set is passed, apply it to all atomic specifications
+    if len(orbitals_subplots) == 1:
+        orbitals_subplots = orbitals_subplots * len(atoms_idx)
+
+    orbitals_list = []
+    for orbitals in orbitals_subplots:
+        if orbitals and orbitals != 'all':
+            orbitals = [token.strip() for token in orbitals.split(',')]
+        else:
+            orbitals = [
+                'all',
+            ]
 
         orbitals_list.append(orbitals)
 
