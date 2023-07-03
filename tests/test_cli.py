@@ -133,3 +133,17 @@ def test_plot_projection(mgo_project_dir):
     assert output.exit_code == 0
     assert Path('unfold.png').is_file()
     Path('unfold.png').unlink()
+
+
+def test_help(nabis2_project_dir):
+    os.chdir(nabis2_project_dir)
+    runner = CliRunner()
+    output = runner.invoke(easyunfold,
+                           ['unfold', 'plot-projections', '-h'])
+    assert output.exit_code == 0
+    assert not Path('unfold.png').is_file()
+
+    output = runner.invoke(easyunfold,
+                           ['unfold', 'plot', '-h'])
+    assert output.exit_code == 0
+    assert not Path('unfold.png').is_file()
