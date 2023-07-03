@@ -888,7 +888,7 @@ def adjust_lightness(color, amount=0.5):
 
     try:
         col = cnames[color]
-    except IndexError:
+    except KeyError:
         col = color
     col = colorsys.rgb_to_hls(*to_rgb(col))
     return colorsys.hls_to_rgb(col[0], 1 - amount * (1 - col[1]), col[2])

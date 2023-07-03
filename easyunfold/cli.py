@@ -433,6 +433,7 @@ def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, em
         from sumo.plotting.dos_plotter import SDOSPlotter
         from sumo.electronic_structure.dos import load_dos
         from sumo.cli.dosplot import _el_orb, _atoms
+        from pymatgen.io.vasp.inputs import UnknownPotcarWarning
 
         dos_elements = _el_orb(dos_elements) if dos_elements is not None else None
         dos_orbitals = _el_orb(dos_orbitals) if dos_orbitals is not None else None
@@ -443,9 +444,7 @@ def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, em
             parsed_atoms, _idx, parsed_orbitals = parse_atoms(atoms, orbitals)
             draft_dos_elements = {atom: tuple(parsed_orbitals[i]) for i, atom in enumerate(parsed_atoms)}
 
-            if orbitals and any(i in orbital
-                                for my_tuple in draft_dos_elements.values()
-                                for orbital in my_tuple
+            if orbitals and any(i in orbital for my_tuple in draft_dos_elements.values() for orbital in my_tuple
                                 for i in ['x', 'y', 'z']) and dos_orbitals is None:
                 dos_orbitals = {}
                 for atom, orbital_tuple in draft_dos_elements.items():
@@ -463,6 +462,7 @@ def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, em
                             dos_elements[atom] += (orbital[:1],)
 
         warnings.filterwarnings('ignore', message='No POTCAR file with matching TITEL fields')  # unnecessary pymatgen potcar warnings
+        warnings.filterwarnings('ignore', category=UnknownPotcarWarning)
         dos, pdos = load_dos(
             dos,
             dos_elements,
@@ -622,8 +622,10 @@ def _unfold_plot(ctx,
         from sumo.plotting.dos_plotter import SDOSPlotter
         from sumo.electronic_structure.dos import load_dos
         from sumo.cli.dosplot import _el_orb, _atoms
+        from pymatgen.io.vasp.inputs import UnknownPotcarWarning
 
         warnings.filterwarnings('ignore', message='No POTCAR file with matching TITEL fields')  # unnecessary pymatgen potcar warnings
+        warnings.filterwarnings('ignore', category=UnknownPotcarWarning)
 
         dos_elements = _el_orb(dos_elements) if dos_elements is not None else None
         dos_orbitals = _el_orb(dos_orbitals) if dos_orbitals is not None else None
@@ -635,9 +637,7 @@ def _unfold_plot(ctx,
 
             draft_dos_elements = {atom: tuple(parsed_orbitals[i]) for i, atom in enumerate(parsed_atoms)}
 
-            if orbitals and any(i in orbital
-                                for my_tuple in draft_dos_elements.values()
-                                for orbital in my_tuple
+            if orbitals and any(i in orbital for my_tuple in draft_dos_elements.values() for orbital in my_tuple
                                 for i in ['x', 'y', 'z']) and dos_orbitals is None:
                 dos_orbitals = {}
                 for atom, orbital_tuple in draft_dos_elements.items():
