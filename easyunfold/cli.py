@@ -8,9 +8,9 @@ import numpy as np
 import click
 from ase.io import read
 
-from easyunfold.unfold import process_projection_options, parse_atoms, parse_atoms_idx
+from easyunfold.unfold import parse_atoms, parse_atoms_idx
 
-# pylint:disable=import-outside-toplevel,too-many-locals,too-many-arguments
+# pylint:disable=import-outside-toplevel, too-many-locals, too-many-arguments, too-many-nested-blocks, too-many-branches
 
 SUPPORTED_DFT_CODES = ('vasp', 'castep')
 
@@ -21,7 +21,7 @@ DEFAULT_CMAPS = [
 
 CONTEXT_SETTINGS = {'help_option_names': ['-h', '--help']}
 
-warnings.filterwarnings("ignore", message="No POTCAR file with matching TITEL fields")  # unnecessary pymatgen potcar warnings
+warnings.filterwarnings('ignore', message='No POTCAR file with matching TITEL fields')  # unnecessary pymatgen potcar warnings
 
 
 @click.group('easyunfold', context_settings=CONTEXT_SETTINGS)
@@ -255,10 +255,10 @@ def add_plot_options(func):
                  show_default=True)(func)
     click.option('--scale', type=float, help='Scaling factor for the DOS plot.', default=1.0)(func)
     click.option('--no-total', is_flag=True, default=False, help="Don't plot the total density of states.")(func)
-    click.option('--total-only', is_flag=True, default=False, help="Only plot the total density of states.")(func)
+    click.option('--total-only', is_flag=True, default=False, help='Only plot the total density of states.')(func)
     click.option('--procar',
                  multiple=True,
-                 default=["PROCAR"],
+                 default=['PROCAR'],
                  help=('PROCAR file(s) for atomic weighting, can be passed multiple times if more than one PROCAR '
                        'should be used. Default is to read PROCAR in current directory'))(func)
     click.option('--atoms',
@@ -446,23 +446,23 @@ def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, em
             if orbitals and any(i in orbital
                                 for my_tuple in draft_dos_elements.values()
                                 for orbital in my_tuple
-                                for i in ["x", "y", "z"]) and dos_orbitals is None:
+                                for i in ['x', 'y', 'z']) and dos_orbitals is None:
                 dos_orbitals = {}
                 for atom, orbital_tuple in draft_dos_elements.items():
                     dos_orbitals[atom] = ()
                     for orbital in orbital_tuple:
-                        if len(orbital) > 1 and orbital != "all" and orbital[:1] not in dos_orbitals[atom]:
+                        if len(orbital) > 1 and orbital != 'all' and orbital[:1] not in dos_orbitals[atom]:
                             dos_orbitals[atom] += (orbital[:1],)
 
             if dos_elements is None:
                 dos_elements = {}
                 for atom, orbital_tuple in draft_dos_elements.items():
                     dos_elements[atom] = ()
-                    if orbital_tuple != ("all",):
+                    if orbital_tuple != ('all',):
                         for orbital in orbital_tuple:
                             dos_elements[atom] += (orbital[:1],)
 
-        warnings.filterwarnings("ignore", message="No POTCAR file with matching TITEL fields")  # unnecessary pymatgen potcar warnings
+        warnings.filterwarnings('ignore', message='No POTCAR file with matching TITEL fields')  # unnecessary pymatgen potcar warnings
         dos, pdos = load_dos(
             dos,
             dos_elements,
@@ -473,9 +473,9 @@ def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, em
         )
         dos_plotter = SDOSPlotter(dos, pdos)
         dos_options = {
-            "plot_total": not no_total,
-            "legend_cutoff": legend_cutoff,
-            "yscale": scale,
+            'plot_total': not no_total,
+            'legend_cutoff': legend_cutoff,
+            'yscale': scale,
         }
     else:
         dos_plotter = None
@@ -565,15 +565,15 @@ def _unfold_plot(ctx,
         click.echo(f'Loading projections from: {procar}')
         try:
             unfoldset.load_procar(procar)
-        except FileNotFoundError:
+        except FileNotFoundError as exc:
             click.echo(f'Could not find and parse the --procar file: {procar} – needed for atomic projections!')
-            raise click.Abort()
+            raise click.Abort() from exc
 
         if atoms_idx:
             atoms_idx_subplots = atoms_idx.split('|')  # list of strings
             atoms_idx_subplots = [parse_atoms_idx(idx) for idx in atoms_idx_subplots]  # list of lists
             if orbitals is None:
-                orbitals = "all"
+                orbitals = 'all'
 
             orbitals_subplots = orbitals.split('|')
 
@@ -582,15 +582,15 @@ def _unfold_plot(ctx,
                 orbitals_subplots = orbitals_subplots * len(atoms_idx_subplots)
 
             orbitals_list = []
-            for orbitals in orbitals_subplots:
-                if orbitals and orbitals != 'all':
-                    orbitals = [token.strip() for token in orbitals.split(',')]
+            for orbital_sublist in orbitals_subplots:
+                if orbital_sublist and orbital_sublist != 'all':
+                    orbital_sublist = [token.strip() for token in orbital_sublist.split(',')]
                 else:
-                    orbitals = [
+                    orbital_sublist = [
                         'all',
                     ]
 
-                orbitals_list.append(orbitals)
+                orbitals_list.append(orbital_sublist)
 
         elif atoms:
             parsed_atoms, atoms_idx_subplots, orbitals_subplots = parse_atoms(atoms, orbitals)
@@ -623,7 +623,7 @@ def _unfold_plot(ctx,
         from sumo.electronic_structure.dos import load_dos
         from sumo.cli.dosplot import _el_orb, _atoms
 
-        warnings.filterwarnings("ignore", message="No POTCAR file with matching TITEL fields")  # unnecessary pymatgen potcar warnings
+        warnings.filterwarnings('ignore', message='No POTCAR file with matching TITEL fields')  # unnecessary pymatgen potcar warnings
 
         dos_elements = _el_orb(dos_elements) if dos_elements is not None else None
         dos_orbitals = _el_orb(dos_orbitals) if dos_orbitals is not None else None
@@ -638,19 +638,19 @@ def _unfold_plot(ctx,
             if orbitals and any(i in orbital
                                 for my_tuple in draft_dos_elements.values()
                                 for orbital in my_tuple
-                                for i in ["x", "y", "z"]) and dos_orbitals is None:
+                                for i in ['x', 'y', 'z']) and dos_orbitals is None:
                 dos_orbitals = {}
                 for atom, orbital_tuple in draft_dos_elements.items():
                     dos_orbitals[atom] = ()
                     for orbital in orbital_tuple:
-                        if len(orbital) > 1 and orbital != "all" and orbital[:1] not in dos_orbitals[atom]:
+                        if len(orbital) > 1 and orbital != 'all' and orbital[:1] not in dos_orbitals[atom]:
                             dos_orbitals[atom] += (orbital[:1],)
 
             if dos_elements is None:
                 dos_elements = {}
                 for atom, orbital_tuple in draft_dos_elements.items():
                     dos_elements[atom] = ()
-                    if orbital_tuple != ("all",):
+                    if orbital_tuple != ('all',):
                         for orbital in orbital_tuple:
                             dos_elements[atom] += (orbital[:1],)
 
@@ -664,9 +664,9 @@ def _unfold_plot(ctx,
         )
         dos_plotter = SDOSPlotter(dos, pdos)
         dos_options = {
-            "plot_total": not no_total,
-            "legend_cutoff": legend_cutoff,
-            "yscale": scale,
+            'plot_total': not no_total,
+            'legend_cutoff': legend_cutoff,
+            'yscale': scale,
         }
     else:
         dos_plotter = None

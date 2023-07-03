@@ -1105,12 +1105,12 @@ def read_poscar_contcar_if_present():
     :returns: ASE Atoms() object
     """
     try:
-        return read_vasp("POSCAR")
+        return read_vasp('POSCAR')
     except FileNotFoundError:
         try:
-            return read_vasp("CONTCAR")
-        except FileNotFoundError:
-            raise FileNotFoundError("`POSCAR` or `CONTCAR` not found in current directory!")
+            return read_vasp('CONTCAR')
+        except FileNotFoundError as exc:
+            raise FileNotFoundError('`POSCAR` or `CONTCAR` not found in current directory!') from exc
 
 
 def parse_atoms(atoms_to_project: str, orbitals: str):
@@ -1128,14 +1128,14 @@ def parse_atoms(atoms_to_project: str, orbitals: str):
     atoms_to_project = re.split(', *', atoms_to_project)
     ase_atoms = read_poscar_contcar_if_present()
     try:  # check POTCAR if possible, to check the POSCAR-POTCARs match
-        atom_types = get_atomtypes("POTCAR")
+        atom_types = get_atomtypes('POTCAR')
 
         def _check_order(smaller_list, larger_list):
             order_dict = {element: index for index, element in enumerate(smaller_list)}
             return all(order_dict[a] <= order_dict[b] for a, b in zip(larger_list, larger_list[1:]))
 
         if not _check_order(atom_types, ase_atoms.get_chemical_symbols()):
-            warnings.warn("The order of atoms in the POSCAR/CONTCAR and POTCAR do not match!")
+            warnings.warn('The order of atoms in the POSCAR/CONTCAR and POTCAR do not match!')
     except FileNotFoundError:
         pass
     atoms_idx = [
@@ -1143,7 +1143,7 @@ def parse_atoms(atoms_to_project: str, orbitals: str):
     ]
 
     if orbitals is None:
-        orbitals = "all"
+        orbitals = 'all'
 
     orbitals_subplots = orbitals.split('|')
 
@@ -1152,14 +1152,14 @@ def parse_atoms(atoms_to_project: str, orbitals: str):
         orbitals_subplots = orbitals_subplots * len(atoms_idx)
 
     orbitals_list = []
-    for orbitals in orbitals_subplots:
-        if orbitals and orbitals != 'all':
-            orbitals = [token.strip() for token in orbitals.split(',')]
+    for orbital_sublist in orbitals_subplots:
+        if orbital_sublist and orbital_sublist != 'all':
+            orbital_sublist = [token.strip() for token in orbital_sublist.split(',')]
         else:
-            orbitals = [
+            orbital_sublist = [
                 'all',
             ]
 
-        orbitals_list.append(orbitals)
+        orbitals_list.append(orbital_sublist)
 
     return atoms_to_project, atoms_idx, orbitals_list

@@ -116,13 +116,13 @@ class Procar:
         else:
             # replace any instance of "p" with "px,py,pz" and "d" with "dxy,dyz,dz2,dxz,dx2-y2"
             def _replace_p_d(single_proj):
-                if single_proj == "p":
-                    return ["px", "py", "pz"]
-                elif single_proj == "d":
-                    return ["dxy", "dyz", "dz2", "dxz", "x2-y2"]  # dx2-y2 labelled differently in VASP
+                if single_proj == 'p':
+                    return ['px', 'py', 'pz']
+                if single_proj == 'd':
+                    return ['dxy', 'dyz', 'dz2', 'dxz', 'x2-y2']  # dx2-y2 labelled differently in VASP
                     # PROCAR
-                else:
-                    return [single_proj]
+
+                return [single_proj]
 
             proj = [_replace_p_d(single_proj) for single_proj in proj]
             proj = [item for sublist in proj for item in sublist]

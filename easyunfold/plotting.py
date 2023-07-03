@@ -25,7 +25,7 @@ from matplotlib.patches import Patch
 from .unfold import UnfoldKSet, clean_latex_string, process_projection_options, parse_atoms
 from .effective_mass import EffectiveMass, fitted_band
 
-# pylint: disable=too-many-locals, too-many-arguments
+# pylint: disable=too-many-locals, too-many-arguments, import-outside-toplevel, too-many-branches, too-many-statements, too-many-nested-blocks
 
 
 class UnfoldPlotter:
@@ -94,9 +94,9 @@ class UnfoldPlotter:
         if dos_plotter:
             from pymatgen.electronic_structure.core import Spin
 
-            fig, axes = plt.subplots(1, 2, facecolor="w", gridspec_kw={"width_ratios": [3, 1], "wspace": 0}, figsize=figsize, dpi=dpi)
+            fig, axes = plt.subplots(1, 2, facecolor='w', gridspec_kw={'width_ratios': [3, 1], 'wspace': 0}, figsize=figsize, dpi=dpi)
             if nspin > 1:
-                warnings.warn("DOS plotter is not supported for spin-separated plots. Reverting to non spin-polarised plotting.")
+                warnings.warn('DOS plotter is not supported for spin-separated plots. Reverting to non spin-polarised plotting.')
                 nspin = 1
         else:
             if ax is None:
@@ -148,42 +148,42 @@ class UnfoldPlotter:
             from sumo.plotting import sumo_base_style, sumo_bs_style
             plt.style.use([sumo_base_style, sumo_bs_style])
 
-            cycle = cycler("color", rcParams["axes.prop_cycle"].by_key()["color"][4:])
-            with context({"axes.prop_cycle": cycle}):
+            cycle = cycler('color', rcParams['axes.prop_cycle'].by_key()['color'][4:])
+            with context({'axes.prop_cycle': cycle}):
                 plot_data = dos_plotter.dos_plot_data(xmin=ylim[0], xmax=ylim[1], zero_energy=eref, zero_to_efermi=False, **dos_options)
 
-            mask = plot_data["mask"]
-            energies = plot_data["energies"][mask]
-            lines = plot_data["lines"]
-            spins = [Spin.up] if len(lines[0][0]["dens"]) == 1 else [Spin.up, Spin.down]
+            mask = plot_data['mask']
+            energies = plot_data['energies'][mask]
+            lines = plot_data['lines']
+            spins = [Spin.up] if len(lines[0][0]['dens']) == 1 else [Spin.up, Spin.down]
 
             # disable y ticks for DOS panel
-            ax.tick_params(axis="y", which="both", right=False)
+            ax.tick_params(axis='y', which='both', right=False)
 
-            for line_set in plot_data["lines"]:
+            for line_set in plot_data['lines']:
                 for line, spin in itertools.product(line_set, spins):
                     if spin == Spin.up or len(spins) == 1:
-                        label = line["label"]
-                        densities = line["dens"][spin][mask]
+                        label = line['label']
+                        densities = line['dens'][spin][mask]
                     else:
-                        label = ""
-                        densities = -line["dens"][spin][mask]
+                        label = ''
+                        densities = -line['dens'][spin][mask]
                     ax.fill_betweenx(
                         energies,
                         densities,
                         0,
                         lw=0,
-                        facecolor=line["colour"],
-                        alpha=line["alpha"],
+                        facecolor=line['colour'],
+                        alpha=line['alpha'],
                     )
-                    ax.plot(densities, energies, label=label, color=line["colour"])
+                    ax.plot(densities, energies, label=label, color=line['colour'])
 
             # x and y axis reversed versus normal dos plotting
             ax.set_ylim(*ylim)
             if len(spins) == 1:
-                ax.set_xlim(0, plot_data["ymax"])
+                ax.set_xlim(0, plot_data['ymax'])
             else:
-                ax.set_xlim(plot_data["ymin"], plot_data["ymax"])
+                ax.set_xlim(plot_data['ymin'], plot_data['ymax'])
 
             if dos_label is not None:
                 ax.set_xlabel(dos_label)
@@ -200,7 +200,7 @@ class UnfoldPlotter:
                     draw_themed_line(0, axes[1])
 
             except ImportError:
-                warnings.warn("zero_line option requires sumo to be installed!")
+                warnings.warn('zero_line option requires sumo to be installed!')
 
         fig.tight_layout(pad=0.2)
         if save:
@@ -484,7 +484,7 @@ class UnfoldPlotter:
 
     def plot_projected(
             self,
-            procar: Union[str, list] = "PROCAR",
+            procar: Union[str, list] = 'PROCAR',
             dos_plotter=None,
             dos_label=None,
             dos_options=None,
@@ -566,7 +566,7 @@ class UnfoldPlotter:
             if isinstance(this_idx, str):
                 this_idx, this_orbitals = process_projection_options(this_idx, this_orbitals)
             else:  # list of integers; pre-processed by specifying atoms
-                if this_orbitals != "all":
+                if this_orbitals != 'all':
                     this_orbitals = [token.strip() for token in this_orbitals.split(',')]
 
             eng, spectral_function = unfoldset.get_spectral_function(gamma=gamma,
@@ -592,8 +592,8 @@ class UnfoldPlotter:
 
         if use_subplot:
             if dos_plotter:
-                warnings.warn("DOS plotter is not supported for projected subplots. Use `--combined` if "
-                              "you want to plot the DOS along with the projected band structure!")
+                warnings.warn('DOS plotter is not supported for projected subplots. Use `--combined` if '
+                              'you want to plot the DOS along with the projected band structure!')
             fig, axs = plt.subplots(nspin, len(atoms_idx_subplots), sharex=True, sharey=True, squeeze=False, figsize=(3.0 * nsub, 4.0))
             # Plot the spectral function with constant colour scales
             for spectral_function, i in zip(all_sf, range(len(atoms_idx_subplots))):
@@ -637,17 +637,17 @@ class UnfoldPlotter:
 
                 fig, axes = plt.subplots(1,
                                          2,
-                                         facecolor="w",
+                                         facecolor='w',
                                          gridspec_kw={
-                                             "width_ratios": [3, 1],
-                                             "wspace": 0
+                                             'width_ratios': [3, 1],
+                                             'wspace': 0
                                          },
                                          figsize=figsize,
                                          dpi=dpi,
                                          squeeze=True)
                 ax = axes[0]
                 if nspin > 1:
-                    warnings.warn("DOS plotter is not supported for spin-separated plots. Reverting to non spin-polarised plotting.")
+                    warnings.warn('DOS plotter is not supported for spin-separated plots. Reverting to non spin-polarised plotting.')
                     nspin = 1
 
             elif ax is None:
@@ -683,26 +683,26 @@ class UnfoldPlotter:
                     # Create a dictionary with different shades
                     colours = {
                         atom: {
-                            "s": adjust_lightness(colors[i], 1.0),
-                            "p": adjust_lightness(colors[i], 0.7),
-                            "px": adjust_lightness(colors[i], 0.7),
-                            "py": adjust_lightness(colors[i], 0.8),
-                            "pz": adjust_lightness(colors[i], 0.6),
-                            "d": adjust_lightness(colors[i], 0.45),
-                            "dxy": adjust_lightness(colors[i], 0.45),
-                            "dyz": adjust_lightness(colors[i], 0.55),
-                            "dxz": adjust_lightness(colors[i], 0.35),
-                            "dz2": adjust_lightness(colors[i], 0.65),
-                            "dx2-y2": adjust_lightness(colors[i], 0.25),
-                            "x2-y2": adjust_lightness(colors[i], 0.25),  # labelled differently in VASP PROCAR
-                            "f": adjust_lightness(colors[i], 0.2)
+                            's': adjust_lightness(colors[i], 1.0),
+                            'p': adjust_lightness(colors[i], 0.7),
+                            'px': adjust_lightness(colors[i], 0.7),
+                            'py': adjust_lightness(colors[i], 0.8),
+                            'pz': adjust_lightness(colors[i], 0.6),
+                            'd': adjust_lightness(colors[i], 0.45),
+                            'dxy': adjust_lightness(colors[i], 0.45),
+                            'dyz': adjust_lightness(colors[i], 0.55),
+                            'dxz': adjust_lightness(colors[i], 0.35),
+                            'dz2': adjust_lightness(colors[i], 0.65),
+                            'dx2-y2': adjust_lightness(colors[i], 0.25),
+                            'x2-y2': adjust_lightness(colors[i], 0.25),  # labelled differently in VASP PROCAR
+                            'f': adjust_lightness(colors[i], 0.2)
                         } for i, atom in enumerate(atoms)
                     }
                 else:
                     colours = None
 
-                cycle = cycler("color", rcParams["axes.prop_cycle"].by_key()["color"][4:])
-                with context({"axes.prop_cycle": cycle}):
+                cycle = cycler('color', rcParams['axes.prop_cycle'].by_key()['color'][4:])
+                with context({'axes.prop_cycle': cycle}):
                     plot_data = dos_plotter.dos_plot_data(xmin=ylim[0],
                                                           xmax=ylim[1],
                                                           zero_energy=eref,
@@ -710,51 +710,50 @@ class UnfoldPlotter:
                                                           colours=colours,
                                                           **dos_options)
 
-                mask = plot_data["mask"]
-                energies = plot_data["energies"][mask]
-                lines = plot_data["lines"]
-                spins = [Spin.up] if len(lines[0][0]["dens"]) == 1 else [Spin.up, Spin.down]
+                mask = plot_data['mask']
+                energies = plot_data['energies'][mask]
+                lines = plot_data['lines']
+                spins = [Spin.up] if len(lines[0][0]['dens']) == 1 else [Spin.up, Spin.down]
 
                 # disable y ticks for DOS panel
-                ax.tick_params(axis="y", which="both", right=False)
+                ax.tick_params(axis='y', which='both', right=False)
 
-                for line_set in plot_data["lines"]:
+                for line_set in plot_data['lines']:
                     for line, spin in itertools.product(line_set, spins):
                         if spin == Spin.up or len(spins) == 1:
-                            label = line["label"]
-                            densities = line["dens"][spin][mask]
+                            label = line['label']
+                            densities = line['dens'][spin][mask]
                         else:
-                            label = ""
-                            densities = -line["dens"][spin][mask]
+                            label = ''
+                            densities = -line['dens'][spin][mask]
 
-                        line_style = "-"
+                        line_style = '-'
                         if label:
-                            if any(i in label for i in ["py", "dyz"]):
-                                line_style = "--"
-                            elif any(i in label for i in ["pz", "dxz"]):
-                                line_style = ":"
-                            elif any(i in label for i in ["dz2"]):
-                                line_style = "-."
-                            elif any(i in label for i in ["x2-y2"]):
+                            if any(i in label for i in ['py', 'dyz']):
+                                line_style = '--'
+                            elif any(i in label for i in ['pz', 'dxz']):
+                                line_style = ':'
+                            elif any(i in label for i in ['dz2']):
+                                line_style = '-.'
+                            elif any(i in label for i in ['x2-y2']):
                                 line_style = (5, (10, 3))
-
 
                         ax.fill_betweenx(
                             energies,
                             densities,
                             0,
                             lw=0,
-                            facecolor=line["colour"],
-                            alpha=line["alpha"],
+                            facecolor=line['colour'],
+                            alpha=line['alpha'],
                         )
-                        ax.plot(densities, energies, label=label, color=line["colour"], ls=line_style)
+                        ax.plot(densities, energies, label=label, color=line['colour'], ls=line_style)
 
                 # x and y axis reversed versus normal dos plotting
                 ax.set_ylim(*ylim)
                 if len(spins) == 1:
-                    ax.set_xlim(0, plot_data["ymax"])
+                    ax.set_xlim(0, plot_data['ymax'])
                 else:
-                    ax.set_xlim(plot_data["ymin"], plot_data["ymax"])
+                    ax.set_xlim(plot_data['ymin'], plot_data['ymax'])
 
                 if dos_label is not None:
                     ax.set_xlabel(dos_label)
@@ -773,7 +772,7 @@ class UnfoldPlotter:
                         draw_themed_line(0, ax)
 
                 except ImportError:
-                    warnings.warn("zero_line option requires sumo to be installed!")
+                    warnings.warn('zero_line option requires sumo to be installed!')
 
             if atoms is not None:  # add figure legend with atoms and colors
                 legend_elements = []
@@ -888,8 +887,8 @@ def adjust_lightness(color, amount=0.5):
     """
 
     try:
-        c = cnames[color]
-    except:
-        c = color
-    c = colorsys.rgb_to_hls(*to_rgb(c))
-    return colorsys.hls_to_rgb(c[0], 1 - amount * (1 - c[1]), c[2])
+        col = cnames[color]
+    except IndexError:
+        col = color
+    col = colorsys.rgb_to_hls(*to_rgb(col))
+    return colorsys.hls_to_rgb(col[0], 1 - amount * (1 - col[1]), col[2])
