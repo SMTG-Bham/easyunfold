@@ -25,7 +25,7 @@ from matplotlib.patches import Patch
 from .unfold import UnfoldKSet, clean_latex_string, process_projection_options, parse_atoms
 from .effective_mass import EffectiveMass, fitted_band
 
-# pylint: disable=too-many-locals, too-many-arguments, import-outside-toplevel, too-many-branches, too-many-statements, too-many-nested-blocks
+# pylint: disable=too-many-locals, too-many-arguments, import-outside-toplevel, too-many-branches, too-many-statements, too-many-nested-blocks, unexpected-keyword-arg
 
 
 class UnfoldPlotter:
@@ -195,7 +195,10 @@ class UnfoldPlotter:
         if zero_line:
             try:
                 from sumo.plotting import draw_themed_line
-                draw_themed_line(0, axes[0], zorder=10)  # bump zorder to put on top of pcolormesh
+                try:
+                    draw_themed_line(0, axes[0], zorder=10)  # bump zorder to put on top of pcolormesh
+                except TypeError:  # old sumo
+                    draw_themed_line(0, axes[0])
                 if dos_plotter:
                     draw_themed_line(0, axes[1])
 
@@ -766,7 +769,10 @@ class UnfoldPlotter:
                 try:
                     from sumo.plotting import draw_themed_line
                     if dos_plotter:
-                        draw_themed_line(0, axes[0], zorder=10)  # bump zorder to put on top of pcolormesh
+                        try:
+                            draw_themed_line(0, axes[0], zorder=10)  # bump zorder to put on top of pcolormesh
+                        except TypeError:  # old sumo
+                            draw_themed_line(0, axes[0])
                         draw_themed_line(0, axes[1])
                     else:
                         draw_themed_line(0, ax)
