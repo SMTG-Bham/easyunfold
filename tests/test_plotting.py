@@ -6,7 +6,6 @@ import pytest
 import numpy as np
 from monty.serialization import loadfn
 from ase.io import read
-import easyunfold.effective_mass as em
 from easyunfold.unfold import UnfoldKSet
 from easyunfold.utils import read_kpoints
 from easyunfold.effective_mass import EffectiveMass

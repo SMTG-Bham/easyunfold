@@ -114,6 +114,8 @@ class Procar:
         if proj == 'all':
             out = self.proj_data[:, :, :, atom_mask, :].sum(axis=(-1, -2))
         else:
+            if isinstance(proj, str):
+                proj = [proj,]
             # replace any instance of "p" with "px,py,pz" and "d" with "dxy,dyz,dz2,dxz,dx2-y2"
             def _replace_p_d(single_proj):
                 if single_proj == 'p':
@@ -123,6 +125,7 @@ class Procar:
                     # PROCAR
 
                 return [single_proj]
+
 
             proj = [_replace_p_d(single_proj) for single_proj in proj]
             proj = [item for sublist in proj for item in sublist]
