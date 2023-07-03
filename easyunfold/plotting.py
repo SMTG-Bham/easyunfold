@@ -684,9 +684,18 @@ class UnfoldPlotter:
                     colours = {
                         atom: {
                             "s": adjust_lightness(colors[i], 1.0),
-                            "p": adjust_lightness(colors[i], 0.8),
-                            "d": adjust_lightness(colors[i], 0.6),
-                            "f": adjust_lightness(colors[i], 0.4)
+                            "p": adjust_lightness(colors[i], 0.7),
+                            "px": adjust_lightness(colors[i], 0.7),
+                            "py": adjust_lightness(colors[i], 0.8),
+                            "pz": adjust_lightness(colors[i], 0.6),
+                            "d": adjust_lightness(colors[i], 0.45),
+                            "dxy": adjust_lightness(colors[i], 0.45),
+                            "dyz": adjust_lightness(colors[i], 0.55),
+                            "dxz": adjust_lightness(colors[i], 0.35),
+                            "dz2": adjust_lightness(colors[i], 0.65),
+                            "dx2-y2": adjust_lightness(colors[i], 0.25),
+                            "x2-y2": adjust_lightness(colors[i], 0.25),  # labelled differently in VASP PROCAR
+                            "f": adjust_lightness(colors[i], 0.2)
                         } for i, atom in enumerate(atoms)
                     }
                 else:
@@ -717,6 +726,19 @@ class UnfoldPlotter:
                         else:
                             label = ""
                             densities = -line["dens"][spin][mask]
+
+                        line_style = "-"
+                        if label:
+                            if any(i in label for i in ["py", "dyz"]):
+                                line_style = "--"
+                            elif any(i in label for i in ["pz", "dxz"]):
+                                line_style = ":"
+                            elif any(i in label for i in ["dz2"]):
+                                line_style = "-."
+                            elif any(i in label for i in ["x2-y2"]):
+                                line_style = (5, (10, 3))
+
+
                         ax.fill_betweenx(
                             energies,
                             densities,
@@ -725,7 +747,7 @@ class UnfoldPlotter:
                             facecolor=line["colour"],
                             alpha=line["alpha"],
                         )
-                        ax.plot(densities, energies, label=label, color=line["colour"])
+                        ax.plot(densities, energies, label=label, color=line["colour"], ls=line_style)
 
                 # x and y axis reversed versus normal dos plotting
                 ax.set_ylim(*ylim)

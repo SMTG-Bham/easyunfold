@@ -119,7 +119,8 @@ class Procar:
                 if single_proj == "p":
                     return ["px", "py", "pz"]
                 elif single_proj == "d":
-                    return ["dxy", "dyz", "dz2", "dxz", "x2-y2"]
+                    return ["dxy", "dyz", "dz2", "dxz", "x2-y2"]  # dx2-y2 labelled differently in VASP
+                    # PROCAR
                 else:
                     return [single_proj]
 
