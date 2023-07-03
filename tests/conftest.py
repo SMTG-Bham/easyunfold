@@ -5,6 +5,7 @@ Pytest fixtures
 import urllib.request
 from pathlib import Path
 import shutil
+import gzip
 
 import pytest
 
@@ -43,4 +44,18 @@ def si_project_dir(datapath, tmp_path):
 def mgo_project_dir(datapath, tmp_path):
     shutil.copy2(datapath('mgo.json'), tmp_path / 'mgo.json')
     shutil.copy2(datapath('PROCAR.mgo'), tmp_path / 'PROCAR')
+    return tmp_path
+
+
+@pytest.fixture
+def nabis2_project_dir(tmp_path):
+    nabis2_dir = Path(__file__).parent / ".." / "examples" / "NaBiS2"
+    for i in ["POSCAR", "KPOINTS", "easyunfold.json", "POTCAR", "PROCAR.gz", "vasprun.xml.gz"]:
+        shutil.copy2(nabis2_dir / i, tmp_path / i)
+
+    # gzip decompress PROCAR, using subprocess
+    with gzip.open(nabis2_dir / "PROCAR.gz", "rb") as f_in:
+        with open(tmp_path / "PROCAR", "wb") as f_out:
+            shutil.copyfileobj(f_in, f_out)
+
     return tmp_path
