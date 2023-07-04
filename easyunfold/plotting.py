@@ -150,11 +150,14 @@ class UnfoldPlotter:
 
             cycle = cycler('color', rcParams['axes.prop_cycle'].by_key()['color'][4:])
             with context({'axes.prop_cycle': cycle}):
-                plot_data = dos_plotter.dos_plot_data(xmin=ylim[0],
-                                                      xmax=ylim[1],
-                                                      zero_energy=eref,
-                                                      zero_to_efermi=False,
-                                                      **dos_options)
+                try:
+                    plot_data = dos_plotter.dos_plot_data(
+                        xmin=ylim[0], xmax=ylim[1], zero_energy=eref, zero_to_efermi=False, **dos_options
+                    )
+                except TypeError:  # sumo < 2.3
+                    plot_data = dos_plotter.dos_plot_data(
+                        xmin=ylim[0], xmax=ylim[1], ref_energy=eref, zero_to_efermi=False, **dos_options
+                    )
 
             mask = plot_data['mask']
             energies = plot_data['energies'][mask]
@@ -710,12 +713,24 @@ class UnfoldPlotter:
 
                 cycle = cycler('color', rcParams['axes.prop_cycle'].by_key()['color'][4:])
                 with context({'axes.prop_cycle': cycle}):
-                    plot_data = dos_plotter.dos_plot_data(xmin=ylim[0],
-                                                          xmax=ylim[1],
-                                                          zero_energy=eref,
-                                                          zero_to_efermi=False,
-                                                          colours=colours,
-                                                          **dos_options)
+                    try:
+                        plot_data = dos_plotter.dos_plot_data(
+                            xmin=ylim[0],
+                            xmax=ylim[1],
+                            zero_energy=eref,
+                            zero_to_efermi=False,
+                            colours=colours,
+                            **dos_options
+                        )
+                    except TypeError:  # sumo < 2.3
+                        plot_data = dos_plotter.dos_plot_data(
+                            xmin=ylim[0],
+                            xmax=ylim[1],
+                            ref_energy=eref,
+                            zero_to_efermi=False,
+                            colours=colours,
+                            **dos_options
+                        )
 
                 mask = plot_data['mask']
                 energies = plot_data['energies'][mask]
