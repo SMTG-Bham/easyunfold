@@ -42,7 +42,7 @@ Primitive cell information:
         Point group: m-3m
 
 No. of k points in the primitive cell           : 21
-No. of (non-symmetry-reduced) supercell kpoints : 60 (61)
+No. of supercell k points                       : 51
 No. of primitive cell symmetry operations       : 48
 No. of supercell symmetry operations            : 24
 
