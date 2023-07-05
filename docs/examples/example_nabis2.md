@@ -1,4 +1,4 @@
-# Cation-Disordered NaBiS<sub>2</sub> with atomic projections
+# Disordered NaBiS<sub>2</sub> with atomic/orbital projections & DOS plotting
 
 :::{note}
 The files needed for reproducing this example are provided in the 
@@ -135,6 +135,13 @@ projections). Different groups are separated by `|`, and `-` can be used to defi
 type. A comma-separated list can also be used instead of ranges with hyphens. Note that 1-based indexing is used for 
 atoms, matching the convention in VASP, which is then converted to zero-based indexing internally in python. 
 :::
+
+## Unfolded Band Structure with Orbital Projections
+If we want to see the contributions of specific orbitals to the unfolded band structure, we can use the `--orbitals`
+option. This takes a string of the form `a,b|c|d,e,f` where `a`, `b`, `c`, `d`, `e` and `f` are the orbitals we want
+to project onto the unfolded band structure. For example, if we want to see the contributions of the Bi $p$ orbitals to
+the unfolded band structure, we can use the following command:
+```bash
 
 
 [^1]: [Huang, YT., Kavanagh, S.R., Righetto, M. et al. Strong absorption and ultrafast localisation in NaBiS2 nanocrystals with slow charge-carrier recombination. Nat Commun 13, 4960 (2022)](https://www.nature.com/articles/s41467-022-32669-3) 
