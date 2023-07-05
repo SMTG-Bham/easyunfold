@@ -46,6 +46,25 @@ BuPu             |  viridis        |  bone_r
 :-------------------------:|:-------------------------:|:-------------------------:
 ![](../../examples/NaBiS2/NaBiS2_unfold-plot_BuPu.png)  |  ![](../../examples/NaBiS2/NaBiS2_unfold-plot_viridis.png) |  ![](../../examples/NaBiS2/NaBiS2_unfold-plot_bone_r.png)
 
+## Unfolded Band Structure with Density of States (DOS)
+We can plot the electronic density of states (DOS) alongside the unfolded band structure using the `--dos` option to 
+provide the `vasprun.xml(.gz)` file from our supercell calculation:
+
+```bash
+easyunfold unfold plot --colour-norm=0.5 --dos vasprun.xml.gz --zero-line --dos-label DOS --gaussian 0.1
+```
+
+(Here we've used some other plot options to customise the DOS plot; see the help message with 
+`easyunfold unfold plot -h` for more info on this)
+
+```{figure} ../../examples/NaBiS2/NaBiS2_unfold-plot_dos.png
+:alt: NaBiS2 unfolded band structure with DOS
+:width: 400px
+
+Unfolded band structure of NaBiS<sub>2</sub> alongside the electronic density of states (DOS)
+```
+
+
 ## Atom-Projected Unfolded Band Structure
 We can also plot the unfolded band structure with atomic projections, which is useful for understanding the electronic 
 structure of the material. In this case, we are curious as to which atoms are contributing to the band edges, and so 

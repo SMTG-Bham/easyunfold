@@ -160,7 +160,8 @@ class UnfoldPlotter:
                                                               zero_to_efermi=False,
                                                               **dos_options)
                     except TypeError:  # sumo < 2.2
-                        plot_data = dos_plotter.dos_plot_data(xmin=ylim[0], xmax=ylim[1], zero_to_efermi=False, **dos_options)
+                        plot_data = dos_plotter.dos_plot_data(xmin=ylim[0], xmax=ylim[1],
+                                                              zero_to_efermi=True, **dos_options)
 
             mask = plot_data['mask']
             energies = plot_data['energies'][mask]
@@ -733,7 +734,7 @@ class UnfoldPlotter:
                         except TypeError:  # sumo < 2.2
                             plot_data = dos_plotter.dos_plot_data(xmin=ylim[0],
                                                                   xmax=ylim[1],
-                                                                  zero_to_efermi=False,
+                                                                  zero_to_efermi=True,
                                                                   colours=sumo_colours,
                                                                   **dos_options)
 
