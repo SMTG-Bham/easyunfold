@@ -75,9 +75,9 @@ class UnfoldPlotter:
         :param contour_plot): Whether to use contour plot instead of normal meshed color map.
         :param alphathe color map.
         :param savethe file where the generated figure is saved.
-        :param ax: An existing plotting axis to be be used.
-        :param vminfor the color map.
-        :param vmaxfor the color map.
+        :param ax: An existing plotting axis to be used.
+        :param vmin: Min value for the colour map.
+        :param vmax: Max value for the colour map.
         :param cmap: Name of the color map to be used.
 
         :returns: The figure generated containing the spectral function.
@@ -424,7 +424,7 @@ class UnfoldPlotter:
         :param dpi: DPI of the generated graph.
         :param alpha: Alpha for the markers.
         :param save: Name of the file where the generated figure is saved.
-        :param ax: Existing plotting axes to be be used (list if having two spin channels).
+        :param ax: Existing plotting axes to be used (list if having two spin channels).
         :param factor: Scaling factor for the marker size.
         :param color: Color of the markers.
         :param title: Title for the generated plot.
@@ -525,7 +525,7 @@ class UnfoldPlotter:
             atoms_idx=None,
             orbitals=None,
             use_subplot=False,
-            colors=('r', 'g', 'b', 'purple'),
+            colours=('r', 'g', 'b', 'purple'),
             colorspace='lab',
     ):
         """
@@ -538,7 +538,6 @@ class UnfoldPlotter:
 
         :returns: Generated plot.
         """
-
         unfoldset = self.unfold
         unfoldset.load_procar(procar)
         nspin = unfoldset.calculated_quantities['spectral_weights_per_set'][0].shape[0]
@@ -638,10 +637,10 @@ class UnfoldPlotter:
             sf_size = all_sf[0].shape
             stacked_sf = np.stack(all_sf, axis=-1).reshape(np.prod(sf_size), len(all_sf))
 
-            # Construct the color basis
-            colors = colors[:len(all_sf)]
+            # Construct the colour basis
+            colours = colours[:len(all_sf)]
             # Compute spectral weight data with RGB reshape it back into the shape (nengs, nk, 3)
-            sf_rgb = interpolate_colors(colors, stacked_sf, colorspace, normalize=True).reshape(sf_size + (3,))
+            sf_rgb = interpolate_colors(colours, stacked_sf, colorspace, normalize=True).reshape(sf_size + (3,))
             sf_sum = np.sum(all_sf, axis=0)[:, :, :, None]
             sf_rgba = np.concatenate([sf_rgb, sf_sum], axis=-1)
 
@@ -692,27 +691,27 @@ class UnfoldPlotter:
 
                 # set DOS element & orbital colours to match the easyunfold band structure projections
                 if atoms:
-                    # set s,p,d,f to different shades of colors[i]
+                    # set s,p,d,f to different shades of colours[i]
                     # Create a dictionary with different shades
-                    colours = {
+                    sumo_colours = {
                         atom: {
-                            's': adjust_lightness(colors[i], 1.0),
-                            'p': adjust_lightness(colors[i], 0.7),
-                            'px': adjust_lightness(colors[i], 0.7),
-                            'py': adjust_lightness(colors[i], 0.8),
-                            'pz': adjust_lightness(colors[i], 0.6),
-                            'd': adjust_lightness(colors[i], 0.45),
-                            'dxy': adjust_lightness(colors[i], 0.45),
-                            'dyz': adjust_lightness(colors[i], 0.55),
-                            'dxz': adjust_lightness(colors[i], 0.35),
-                            'dz2': adjust_lightness(colors[i], 0.65),
-                            'dx2-y2': adjust_lightness(colors[i], 0.25),
-                            'x2-y2': adjust_lightness(colors[i], 0.25),  # labelled differently in VASP PROCAR
-                            'f': adjust_lightness(colors[i], 0.2)
+                            's': adjust_lightness(colours[i], 1.0),
+                            'p': adjust_lightness(colours[i], 0.7),
+                            'px': adjust_lightness(colours[i], 0.7),
+                            'py': adjust_lightness(colours[i], 0.8),
+                            'pz': adjust_lightness(colours[i], 0.6),
+                            'd': adjust_lightness(colours[i], 0.45),
+                            'dxy': adjust_lightness(colours[i], 0.45),
+                            'dyz': adjust_lightness(colours[i], 0.55),
+                            'dxz': adjust_lightness(colours[i], 0.35),
+                            'dz2': adjust_lightness(colours[i], 0.65),
+                            'dx2-y2': adjust_lightness(colours[i], 0.25),
+                            'x2-y2': adjust_lightness(colours[i], 0.25),  # labelled differently in VASP PROCAR
+                            'f': adjust_lightness(colours[i], 0.2)
                         } for i, atom in enumerate(atoms)
                     }
                 else:
-                    colours = None
+                    sumo_colours = None
 
                 cycle = cycler('color', rcParams['axes.prop_cycle'].by_key()['color'][4:])
                 with context({'axes.prop_cycle': cycle}):
@@ -721,7 +720,7 @@ class UnfoldPlotter:
                                                               xmax=ylim[1],
                                                               zero_energy=eref,
                                                               zero_to_efermi=False,
-                                                              colours=colours,
+                                                              colours=sumo_colours,
                                                               **dos_options)
                     except TypeError:  # sumo < 2.3
                         try:
@@ -729,13 +728,13 @@ class UnfoldPlotter:
                                                                   xmax=ylim[1],
                                                                   ref_energy=eref,
                                                                   zero_to_efermi=False,
-                                                                  colours=colours,
+                                                                  colours=sumo_colours,
                                                                   **dos_options)
                         except TypeError:  # sumo < 2.2
                             plot_data = dos_plotter.dos_plot_data(xmin=ylim[0],
                                                                   xmax=ylim[1],
                                                                   zero_to_efermi=False,
-                                                                  colours=colours,
+                                                                  colours=sumo_colours,
                                                                   **dos_options)
 
                 mask = plot_data['mask']
@@ -808,7 +807,7 @@ class UnfoldPlotter:
             if atoms is not None:  # add figure legend with atoms and colors
                 legend_elements = []
                 for i, atom in enumerate(atoms):
-                    legend_elements.append(Patch(facecolor=colors[i], label=atom, alpha=0.7))
+                    legend_elements.append(Patch(facecolor=colours[i], label=atom, alpha=0.7))
                 fig.axes[0].legend(handles=legend_elements, bbox_to_anchor=(1.025, 1))
                 fig.subplots_adjust(right=0.78)  # ensure legend is not cut off
 
@@ -851,17 +850,17 @@ class UnfoldPlotter:
         return fig
 
 
-def interpolate_colors(colors: Sequence, weights: list, colorspace='lab', normalize=True):
+def interpolate_colors(colours: Sequence, weights: list, colorspace='lab', normalize=True):
     """
-    Interpolate colors at a number of points within a colorspace.
+    Interpolate colours at a number of points within a colorspace.
 
-    :param colors: A list of colors specified in any way supported by matplotlib.
+    :param colours: A list of colours specified in any way supported by matplotlib.
     :param weights: A list of weights with the shape (n, N). Where the N values of
-      the last axis give the amount of N colors supplied in `colors`.
+      the last axis give the amount of N colours supplied in `colours`.
     :param colorspace: The colorspace in which to perform the interpolation. The
             allowed values are rgb, hsv, lab, luvlc, lablch, and xyz.
 
-    :returns: A list of colors, specified in the rgb format as a (n, 3) array.
+    :returns: A list of colours, specified in the rgb format as a (n, 3) array.
     """
 
     # Set up and check the color spaces
@@ -880,7 +879,7 @@ def interpolate_colors(colors: Sequence, weights: list, colorspace='lab', normal
     colorspace = colorspace_mapping[colorspace]
 
     # Convert matplotlib color specification to colormath sRGB
-    colors_srgb = [sRGBColor(*to_rgb(c)) for c in colors]
+    colors_srgb = [sRGBColor(*to_rgb(c)) for c in colours]
 
     colors_basis = [np.array(convert_color(srgb, colorspace, target_illuminant='d50').get_value_tuple()) for srgb in colors_srgb]
 

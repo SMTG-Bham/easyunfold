@@ -6,13 +6,16 @@ import pytest
 import numpy as np
 from monty.serialization import loadfn
 from ase.io import read
+import matplotlib.pyplot as plt
+from matplotlib.figure import Figure
+
 from easyunfold.unfold import UnfoldKSet
 from easyunfold.utils import read_kpoints
 from easyunfold.effective_mass import EffectiveMass
 import easyunfold.plotting as pl
-import matplotlib.pyplot as plt
-from matplotlib.figure import Figure
 
+
+# pylint:disable=redefined-outer-name
 
 @pytest.fixture
 def silicon_unfolded(si_project_dir) -> UnfoldKSet:
@@ -20,7 +23,6 @@ def silicon_unfolded(si_project_dir) -> UnfoldKSet:
     Test unfolding on the real data
     """
     tag = ''
-    nspin = 1
     ncl = False
     si_project_dir = si_project_dir(tag)
     folder_name = f'Si_super_deformed{tag}'
@@ -78,9 +80,9 @@ def test_plotting_projection(unfold_obj: UnfoldKSet):
 
 def test_color_interpolation():
     """Test interpolating colours"""
-    colors = ['r', 'g', 'b', 'cyan']
+    colours = ['r', 'g', 'b', 'cyan']
     weights = np.random.rand(10, 4)
-    output = pl.interpolate_colors(colors, weights)
+    output = pl.interpolate_colors(colours, weights)
 
     assert output.shape == (10, 3)
     assert np.max(output) <= 1.0
