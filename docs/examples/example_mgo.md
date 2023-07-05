@@ -28,20 +28,15 @@ symmetry. The procedure is essentially the same as described in the
 [Si supercell example](https://smtg-ucl.github.io/easyunfold/examples/example_si222.html).
 
 The only difference here is that we turn on the calculation of orbital projections in `VASP` with 
-`LORBIT = 11` in the `INCAR` file, and then use the `plot-projections` subcommand when plotting the 
-unfolded band structure:
+`LORBIT = 11` (`12`, `13` and `14` will also work) in the `INCAR` file, and then use the `plot-projections` subcommand 
+when plotting the unfolded band structure:
 
 ```bash
-easyunfold unfold plot-projections --procar MgO_super/PROCAR --atoms-idx="1-4|5-8" \ 
---out-file unfold_project.png --combined --emin=-15 --emax=15
+easyunfold unfold plot-projections --procar MgO_super/PROCAR --atoms="Mg,O" --combined --emin=-6 --emax=20 \
+--colour-norm 0.15
 ```
 
-Note that the path of the `PROCAR` is passed along with the desired groupings of atoms (with 
-`--atoms-idx`).
-In this example, the first four atoms are `Mg` (`1-4`) and the last four are `O` (`5-8`), and we would
-like to show the elemental contributions to the bands. Different groups are separated by `|`, and `-` 
-can be used to define the range. Note that use of one-based indexing for atoms, although in python 
-zero-based indexing is used internally.
+Note that the path of the `PROCAR` is passed along with the desired atom projections (`Mg` and `O` here). 
 
 :::{note}
 The atomic projections are not stored in the `easyunfold.json` data file, so the `PROCAR` file should be 
@@ -56,20 +51,48 @@ projections into a single plot.
 :alt: MgO unfolded band structure
 :width: 400px
 :align: center
-Unfolded MgO band structure with atomic projections. Red for Mg and green for O atoms. 
+Unfolded MgO band structure with atomic projections. 
 ```
 
-
-In some cases, especially if there are many projection to be plotted at the same time, it can be clearer to create separated plots for each.
+The default colour map for atom projections is red, green, blue and purple for the 1st, 2nd, 3rd and 4th atomic species 
+specified. This can be changed with the `--colours` option, as well as several other plotting/visualisation settings – 
+see the output of `easyunfold unfold plot-projections --help` for more details. If we wanted to plot the atomic 
+projections with the same colouring scheme as the `sumo` plot above (i.e. red for Mg and blue for O), we can use:
 
 ```bash
-easyunfold unfold plot-projections  --procar MgO_super/PROCAR --atoms-idx="1-4|5-8" \
---out-file unfold_project_sep.png --emax=22 --emin=-18
+easyunfold unfold plot-projections --procar MgO_super/PROCAR --atoms="Mg,O" --combined --emin=-6 --emax=20 \
+--colour-norm 0.15 --colours "r,b"
+```
+
+```{figure} ../../examples/MgO/unfold_project_rb.png
+:alt: MgO unfolded band structure with specified colours
+:width: 400px
+:align: center
+Unfolded MgO band structure with atomic projections; red for Mg and blue for O atoms. 
+```
+
+:::{note}
+In order to specify the atomic projections with `--atoms`, the `POSCAR` or `CONTCAR` file for the supercell must be 
+present. If this is not the case, or we want to use projections from only specific atom subsets in the supercell, we can 
+alternatively use the `--atoms-idx` tag. This takes a string of the form `a-b|c-d|e-f` where `a`, `b`, `c`, `d`, `e` and
+`f` are integers corresponding to the atom indices in the VASP structure file (i.e. `POSCAR`/`CONTCAR`, corresponding 
+to the `PROCAR` being used to obtain the projections). Different groups are separated by `|`, and `-` 
+can be used to define the range for each projected atom type. A comma-separated list can also be used instead of ranges 
+with hyphens. Note that 1-based indexing is used for atoms, matching the convention in VASP, which is then converted to 
+zero-based indexing internally in python. In this example, we could set `--atoms-idx="1-4|5-8"` to get the same result
+as `--atoms="Mg,O"` (but without the figure legend).
+:::
+
+In some cases, especially if there are many projection to be plotted at the same time, it can be clearer to create 
+separated plots for each. This is the default behaviour for `plot-projections`, when `--combined` is not specified.
+
+```bash
+easyunfold unfold plot-projections --procar MgO_super/PROCAR --atoms="Mg,O" --emin=-6 --emax=20 --colour-norm 0.15
 ```
 
 ```{figure} ../../examples/MgO/unfold_project_sep.png
 :width: 800 px
 :alt: Projected MgO band structure  
 
-Unfolded MgO band structure with atomic projections plotted separately (Mg left and O right).
+Unfolded MgO band structure with atomic projections plotted separately.
 ```
