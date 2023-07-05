@@ -64,6 +64,19 @@ Here we've used some other plot options to customise the DOS plot; see the help 
 Unfolded band structure of NaBiS<sub>2</sub> alongside the electronic density of states (DOS)
 ```
 
+:::{note}
+For unfolded band structures calculated with (semi-)local DFT (LDA/GGA), you should not use the `vasprun.xml(.gz)` 
+from the band structure calculation (which uses a non-uniform _k_-point mesh, thus giving an unrepresentative DOS 
+output), but rather the preceding self-consistent calculation (used to obtain the `CHGCAR` for the LDA/GGA DOS 
+calculation), or a separate DOS calculation.
+:::
+
+:::{tip}
+To use the DOS plotting functionality of `easyunfold`, the `sumo` package must be installed. This is currently an 
+optional dependency for `easyunfold` (to avoid strict requirements and `pymatgen` dependencies), but can be installed 
+with `pip install sumo`.
+:::
+
 ## Atom-Projected Unfolded Band Structure
 We can also plot the unfolded band structure with atomic projections, which is useful for understanding the electronic 
 structure of the material. In this case, we are curious as to which atoms are contributing to the band edges, and so 
