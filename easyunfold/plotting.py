@@ -160,8 +160,7 @@ class UnfoldPlotter:
                                                               zero_to_efermi=False,
                                                               **dos_options)
                     except TypeError:  # sumo < 2.2
-                        plot_data = dos_plotter.dos_plot_data(xmin=ylim[0], xmax=ylim[1],
-                                                              zero_to_efermi=True, **dos_options)
+                        plot_data = dos_plotter.dos_plot_data(xmin=ylim[0], xmax=ylim[1], zero_to_efermi=True, **dos_options)
 
             mask = plot_data['mask']
             energies = plot_data['energies'][mask]
@@ -187,7 +186,7 @@ class UnfoldPlotter:
                         facecolor=line['colour'],
                         alpha=line['alpha'],
                     )
-                    ax.plot(densities, energies, label=label, color=line['colour'])
+                    ax.plot(densities, energies, label=label, color=line['colour'], lw=1)
 
             # x and y axis reversed versus normal dos plotting
             ax.set_ylim(*ylim)
@@ -218,7 +217,7 @@ class UnfoldPlotter:
 
         fig.tight_layout(pad=0.2)
         if save:
-            fig.savefig(save, dpi=dpi)
+            fig.savefig(save, dpi=dpi, bbox_inches='tight')
         if show:
             fig.show()
         return fig
@@ -774,7 +773,7 @@ class UnfoldPlotter:
                             facecolor=line['colour'],
                             alpha=line['alpha'],
                         )
-                        ax.plot(densities, energies, label=label, color=line['colour'], ls=line_style)
+                        ax.plot(densities, energies, label=label, color=line['colour'], ls=line_style, lw=1.0)
 
                 # x and y axis reversed versus normal dos plotting
                 ax.set_ylim(*ylim)

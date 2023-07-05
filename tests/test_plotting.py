@@ -14,8 +14,8 @@ from easyunfold.utils import read_kpoints
 from easyunfold.effective_mass import EffectiveMass
 import easyunfold.plotting as pl
 
-
 # pylint:disable=redefined-outer-name
+
 
 @pytest.fixture
 def silicon_unfolded(si_project_dir) -> UnfoldKSet:

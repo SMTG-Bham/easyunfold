@@ -504,7 +504,7 @@ def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, em
                                  colours=colours.split(',') if colours is not None else None)
 
     if out_file:
-        fig.savefig(out_file, dpi=dpi)
+        fig.savefig(out_file, dpi=dpi, bbox_inches='tight')
         click.echo(f'Unfolded band structure saved to {out_file}')
 
     if show:
