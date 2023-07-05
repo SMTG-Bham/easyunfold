@@ -54,8 +54,8 @@ provide the `vasprun.xml(.gz)` file from our supercell calculation:
 easyunfold unfold plot --colour-norm=0.5 --dos vasprun.xml.gz --zero-line --dos-label DOS --gaussian 0.1
 ```
 
-(Here we've used some other plot options to customise the DOS plot; see the help message with 
-`easyunfold unfold plot -h` for more info on this)
+Here we've used some other plot options to customise the DOS plot; see the help message with 
+`easyunfold unfold plot -h` for more info on this. 
 
 ```{figure} ../../examples/NaBiS2/NaBiS2_unfold-plot_dos.png
 :alt: NaBiS2 unfolded band structure with DOS
@@ -63,7 +63,6 @@ easyunfold unfold plot --colour-norm=0.5 --dos vasprun.xml.gz --zero-line --dos-
 
 Unfolded band structure of NaBiS<sub>2</sub> alongside the electronic density of states (DOS)
 ```
-
 
 ## Atom-Projected Unfolded Band Structure
 We can also plot the unfolded band structure with atomic projections, which is useful for understanding the electronic 
@@ -127,6 +126,23 @@ Unfolded band structure of NaBiS<sub>2</sub> with atomic contributions of only N
 While this plot isn't the most aesthetic, it clearly shows that Bi (green) contributes to both the conduction band and 
 (less so) valence band states, but Na (red) doesn't contribute significantly at or near the band edges 
 (it's a spectator ion!). 
+
+### Atom-projected Unfolded Band Structure with DOS
+We can also combine the atom projections with the DOS plotting, using the `--dos` option as before:
+```bash
+easyunfold unfold plot-projections --atoms "Na,Bi,S" --colour-norm=0.5 --combined --dos vasprun.xml.gz --zero-line \
+  --dos-label "DOS" --gaussian 0.1 --no-total --scale 2
+```
+
+```{figure} ../../examples/NaBiS2/NaBiS2_unfold-plot_proj_dos.png
+:alt: NaBiS2 atom-projected unfolded band structure with DOS
+:width: 400px
+
+Atom-projected unfolded band structure of NaBiS<sub>2</sub> alongside the electronic density of states (DOS)
+```
+The orbital contributions of elements in the DOS plot are automatically coloured to match that of the atomic 
+projections in the unfolded band structure plot, and these colours can be changed with the `--colours` option (as shown 
+in the [MgO example](https://smtg-ucl.github.io/easyunfold/examples/example_mgo.html)). 
 
 ## Unfolded Band Structure with Specific Atom Selection
 In certain cases, we may want to project the contributions of specific atoms to the unfolded band structure, rather
