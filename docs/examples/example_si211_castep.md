@@ -14,7 +14,7 @@ This guide assumes the current working directory is located at the root of that 
 First, generate the supercell _k_-points:
 
 ```bash
-easyunfold generate Si_prim.cell Si_211.cell band.cell --code castep
+easyunfold generate Si_prim.cell Si_211_band/Si_211_band.cell band.cell --code castep
 ```
 
 :::{tip}
