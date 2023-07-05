@@ -111,6 +111,11 @@ Output:
 Spectral function of the unfolded bands.
 ```
 
+:::{tip} 
+See the [NaBiS<sub>2</sub> example](https://smtg-ucl.github.io/easyunfold/examples/example_nabis2.html) for tips on 
+customising and prettifying the unfolded band structure plot.
+:::
+
 
 ## Band structures of the primitive cell and supercell
 
