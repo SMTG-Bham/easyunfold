@@ -209,7 +209,23 @@ the conduction band and lower valence band). We have also shown only the $s$ orb
 can see have minimal contributions to the electronic structure near the band gap.
 
 
+### $lm$-decomposed Orbital Projections
+We can also use the `--orbitals` option to project onto specific $lm$-decomposed orbitals, and/or use the 
+`--dos-orbitals` option to split the DOS plot into $lm$-decomposed orbital contributions. For example, if we want to
+see the contributions of the Bi and S $p_x$, $p_y$ and $p_z$ orbitals to the unfolded band structure, we can use the 
+following command:
+
 ```bash
+easyunfold unfold plot-projections --atoms "Na,Bi,S" --orbitals="all|px,py,pz|px,py,pz" --colour-norm=0.5 --combined \
+  --dos vasprun.xml.gz --zero-line --dos-label "DOS" --gaussian 0.1 --no-total --scale 6
+```
+
+```{figure} ../../examples/NaBiS2/NaBiS2_unfold-plot_proj_orbital_lm_dos.png
+:alt: NaBiS2 $lm$-decomposed orbtial-projected unfolded band structure with DOS
+:width: 400px
+
+$lm$-decomposed orbital-projected unfolded band structure of NaBiS<sub>2</sub> alongside the DOS
+```
 
 
 [^1]: [Huang, YT., Kavanagh, S.R., Righetto, M. et al. Strong absorption and ultrafast localisation in NaBiS2 nanocrystals with slow charge-carrier recombination. Nat Commun 13, 4960 (2022)](https://www.nature.com/articles/s41467-022-32669-3) 
