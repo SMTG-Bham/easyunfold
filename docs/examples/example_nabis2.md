@@ -187,8 +187,28 @@ atoms, matching the convention in VASP, which is then converted to zero-based in
 ## Unfolded Band Structure with Orbital Projections
 If we want to see the contributions of specific orbitals to the unfolded band structure, we can use the `--orbitals`
 option. This takes a string of the form `a,b|c|d,e,f` where `a`, `b`, `c`, `d`, `e` and `f` are the orbitals we want
-to project onto the unfolded band structure. For example, if we want to see the contributions of the Bi $p$ orbitals to
-the unfolded band structure, we can use the following command:
+to project onto the unfolded band structure. 
+
+For example, if we want to see the contributions of the Bi $s$, $p$ and S $s$ orbitals to the unfolded band structure, 
+we can use the following command:
+
+```bash
+easyunfold unfold plot-projections --atoms "Bi,Bi,S" --orbitals="s|p|s"  --colour-norm=0.5  --combined \
+  --dos vasprun.xml.gz --zero-line --dos-label "DOS" --gaussian 0.1 --no-total --scale 5
+```
+
+```{figure} ../../examples/NaBiS2/NaBiS2_unfold-plot_proj_sps_dos.png
+:alt: NaBiS2 atom-projected unfolded band structure with DOS and Bi s/p separated
+:width: 400px
+
+Orbital-projected unfolded band structure of NaBiS<sub>2</sub> alongside the electronic density of states (DOS)
+```
+Here we have separated out the contributions of Bi $s$ orbitals (which have some weak anti-bonding contributions to the upper 
+'bulk' VBM as expected, due to the occupied Bi lone-pair; see refs [^1] and [^2]) and $p$ orbitals (which contribute to 
+the conduction band and lower valence band). We have also shown only the $s$ orbital contributions of sulfur, which we
+can see have minimal contributions to the electronic structure near the band gap.
+
+
 ```bash
 
 
