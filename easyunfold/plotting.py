@@ -516,8 +516,6 @@ class UnfoldPlotter:
             alpha=1.0,
             save=False,
             ax=None,
-            vmin=None,
-            vmax=None,
             cmap='PuRd',
             show=False,
             title=None,
@@ -692,24 +690,38 @@ class UnfoldPlotter:
                 # set DOS element & orbital colours to match the easyunfold band structure projections
                 if atoms:
                     # set s,p,d,f to different shades of colours[i]
+                    def _get_orbital_colour_dict(index, colour_list):
+                        return {
+                            's': adjust_lightness(colour_list[index], 1.0),
+                            'p': adjust_lightness(colour_list[index], 0.7),
+                            'px': adjust_lightness(colour_list[index], 0.7),
+                            'py': adjust_lightness(colour_list[index], 0.8),
+                            'pz': adjust_lightness(colour_list[index], 0.6),
+                            'd': adjust_lightness(colour_list[index], 0.45),
+                            'dxy': adjust_lightness(colour_list[index], 0.45),
+                            'dyz': adjust_lightness(colour_list[index], 0.55),
+                            'dxz': adjust_lightness(colour_list[index], 0.35),
+                            'dz2': adjust_lightness(colour_list[index], 0.65),
+                            'dx2-y2': adjust_lightness(colour_list[index], 0.25),
+                            'x2-y2': adjust_lightness(colour_list[index], 0.25),  # labelled differently in VASP PROCAR
+                            'f': adjust_lightness(colour_list[index], 0.2)
+                        }
+
                     # Create a dictionary with different shades
-                    sumo_colours = {
-                        atom: {
-                            's': adjust_lightness(colours[i], 1.0),
-                            'p': adjust_lightness(colours[i], 0.7),
-                            'px': adjust_lightness(colours[i], 0.7),
-                            'py': adjust_lightness(colours[i], 0.8),
-                            'pz': adjust_lightness(colours[i], 0.6),
-                            'd': adjust_lightness(colours[i], 0.45),
-                            'dxy': adjust_lightness(colours[i], 0.45),
-                            'dyz': adjust_lightness(colours[i], 0.55),
-                            'dxz': adjust_lightness(colours[i], 0.35),
-                            'dz2': adjust_lightness(colours[i], 0.65),
-                            'dx2-y2': adjust_lightness(colours[i], 0.25),
-                            'x2-y2': adjust_lightness(colours[i], 0.25),  # labelled differently in VASP PROCAR
-                            'f': adjust_lightness(colours[i], 0.2)
-                        } for i, atom in enumerate(atoms)
-                    }
+                    sumo_colours = {atom: _get_orbital_colour_dict(i, colours) for i, atom in enumerate(atoms)}
+                    if len(atoms) != len(set(atoms)):
+                        # if atom entries are not all unique (i.e. repeated with different orbitals), then adjust
+                        # colours of specific orbitals
+                        for i, atom, this_orbitals in zip(range(len(atoms)), atoms, orbitals_subplots):
+                            if this_orbitals != 'all':
+                                orbital_list = [token.strip() for token in this_orbitals.split(',')]
+                                orbital_colour_dict = _get_orbital_colour_dict(i, colours)
+                                for orbital in orbital_list:
+                                    # set all orbital keys with "orbital" in key:
+                                    for key in sumo_colours[atom].keys():
+                                        if orbital in key:
+                                            sumo_colours[atom][key] = orbital_colour_dict[key]
+
                 else:
                     sumo_colours = None
 
