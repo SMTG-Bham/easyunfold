@@ -48,8 +48,8 @@ The spectral intensity is used to define the transparency (`alpha`) allowing the
 projections into a single plot.
 
 ```{figure} ../../examples/MgO/unfold_project.png
-:alt: MgO unfolded band structure
-:width: 400px
+:alt: MgO unfolded band structure with atomic projections
+:width: 600px
 :align: center
 Unfolded MgO band structure with atomic projections. 
 ```
@@ -66,7 +66,7 @@ easyunfold unfold plot-projections --procar MgO_super/PROCAR --atoms="Mg,O" --co
 
 ```{figure} ../../examples/MgO/unfold_project_rb.png
 :alt: MgO unfolded band structure with specified colours
-:width: 400px
+:width: 600px
 :align: center
 Unfolded MgO band structure with atomic projections; red for Mg and blue for O atoms. 
 ```

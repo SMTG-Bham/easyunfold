@@ -59,7 +59,7 @@ Here we've used some other plot options to customise the DOS plot; see the help 
 
 ```{figure} ../../examples/NaBiS2/NaBiS2_unfold-plot_dos.png
 :alt: NaBiS2 unfolded band structure with DOS
-:width: 400px
+:width: 700px
 
 Unfolded band structure of NaBiS<sub>2</sub> alongside the electronic density of states (DOS)
 ```
@@ -93,7 +93,7 @@ easyunfold unfold plot-projections --atoms="Na,Bi,S" --colour-norm=0.5 --combine
 
 ```{figure} ../../examples/NaBiS2/NaBiS2_unfold-plot_proj.png
 :alt: NaBiS2 atom-projected unfolded band structure
-:width: 400px
+:width: 700px
 
 Unfolded band structure of NaBiS<sub>2</sub> with atomic contributions.
 ```
@@ -131,7 +131,7 @@ easyunfold unfold plot-projections --atoms="Na,Bi" --colour-norm=0.5 --combined
 
 ```{figure} ../../examples/NaBiS2/NaBiS2_unfold-plot_proj_noS.png
 :alt: NaBiS2 atom-projected unfolded band structure, no S 
-:width: 400px
+:width: 700px
 
 Unfolded band structure of NaBiS<sub>2</sub> with atomic contributions of only Na and Bi.
 ```
@@ -149,7 +149,7 @@ easyunfold unfold plot-projections --atoms "Na,Bi,S" --colour-norm=0.5 --combine
 
 ```{figure} ../../examples/NaBiS2/NaBiS2_unfold-plot_proj_dos.png
 :alt: NaBiS2 atom-projected unfolded band structure with DOS
-:width: 400px
+:width: 700px
 
 Atom-projected unfolded band structure of NaBiS<sub>2</sub> alongside the electronic density of states (DOS)
 ```
@@ -168,7 +168,7 @@ easyunfold unfold plot-projections -unfold plot-projections --atoms-idx="1-55,57
 
 ```{figure} ../../examples/NaBiS2/NaBiS2_unfold-plot_proj_sep_atomsidx.png
 :alt: NaBiS2 atom-projected unfolded band structure, specific atoms 
-:width: 400px
+:width: 700px
 
 Unfolded band structure of NaBiS<sub>2</sub> with the atomic contributions of atoms 56 and 66 plotted separately.
 ```
@@ -199,7 +199,7 @@ easyunfold unfold plot-projections --atoms "Bi,Bi,S" --orbitals="s|p|s"  --colou
 
 ```{figure} ../../examples/NaBiS2/NaBiS2_unfold-plot_proj_sps_dos.png
 :alt: NaBiS2 atom-projected unfolded band structure with DOS and Bi s/p separated
-:width: 400px
+:width: 700px
 
 Orbital-projected unfolded band structure of NaBiS<sub>2</sub> alongside the electronic density of states (DOS)
 ```
@@ -222,10 +222,15 @@ easyunfold unfold plot-projections --atoms "Na,Bi,S" --orbitals="all|px,py,pz|px
 
 ```{figure} ../../examples/NaBiS2/NaBiS2_unfold-plot_proj_orbital_lm_dos.png
 :alt: NaBiS2 $lm$-decomposed orbtial-projected unfolded band structure with DOS
-:width: 400px
+:width: 700px
 
 $lm$-decomposed orbital-projected unfolded band structure of NaBiS<sub>2</sub> alongside the DOS
 ```
+
+Here, the $p_x$, $p_y$ and $p_z$ orbitals do not differ significantly in their contributions to the electronic 
+structure, due to the cubic symmetry of the NaBiS<sub>2</sub> crystal structure. However, in other cases, such as
+for the $d$ orbitals of transition metals in octahedral/tetrahedral environments, we would expect to see significant 
+differences in the contributions of different $lm$-decomposed orbitals to the electronic structure.
 
 
 [^1]: [Huang, YT., Kavanagh, S.R., Righetto, M. et al. Strong absorption and ultrafast localisation in NaBiS2 nanocrystals with slow charge-carrier recombination. Nat Commun 13, 4960 (2022)](https://www.nature.com/articles/s41467-022-32669-3) 
