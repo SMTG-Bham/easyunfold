@@ -636,7 +636,8 @@ def _unfold_plot(ctx,
         from sumo.cli.dosplot import _el_orb, _atoms
         from pymatgen.io.vasp.inputs import UnknownPotcarWarning
 
-        warnings.filterwarnings('ignore', message='No POTCAR file with matching TITEL fields')  # unnecessary pymatgen potcar warnings
+        # unnecessary pymatgen potcar warnings:
+        warnings.filterwarnings('ignore', message='No POTCAR file with matching TITEL fields')
         warnings.filterwarnings('ignore', category=UnknownPotcarWarning)
 
         dos_elements = _el_orb(dos_elements) if dos_elements is not None else None
@@ -645,26 +646,37 @@ def _unfold_plot(ctx,
 
         # Set dos_elements to match atoms (and orbitals) if set and dos_elements not specified
         if atoms:
-            parsed_atoms, atoms_idx_subplots, parsed_orbitals = parse_atoms(atoms, orbitals)
-
-            draft_dos_elements = {atom: tuple(parsed_orbitals[i]) for i, atom in enumerate(parsed_atoms)}
+            parsed_atoms, _idx, parsed_orbitals = parse_atoms(atoms, orbitals)
+            draft_dos_elements = {}
+            for i, atom in enumerate(parsed_atoms):
+                if atom not in draft_dos_elements:
+                    draft_dos_elements[atom] = ()
+                for orbital in parsed_orbitals[i]:
+                    if orbital not in draft_dos_elements[atom] and orbital != 'all':
+                        draft_dos_elements[atom] += (orbital,)
 
             if orbitals and any(i in orbital for my_tuple in draft_dos_elements.values() for orbital in my_tuple
                                 for i in ['x', 'y', 'z']) and dos_orbitals is None:
                 dos_orbitals = {}
                 for atom, orbital_tuple in draft_dos_elements.items():
-                    dos_orbitals[atom] = ()
+                    if atom not in dos_orbitals:
+                        dos_orbitals[atom] = ()
                     for orbital in orbital_tuple:
                         if len(orbital) > 1 and orbital != 'all' and orbital[:1] not in dos_orbitals[atom]:
                             dos_orbitals[atom] += (orbital[:1],)
 
             if dos_elements is None:
                 dos_elements = {}
+                # use draft dos_elements but convert orbitals to just s,p,d,f if lm-projected ones given
                 for atom, orbital_tuple in draft_dos_elements.items():
-                    dos_elements[atom] = ()
-                    if orbital_tuple != ('all',):
-                        for orbital in orbital_tuple:
-                            dos_elements[atom] += (orbital[:1],)
+                    if atom not in dos_elements:
+                        dos_elements[atom] = ()
+                    for orbital in orbital_tuple:
+                        if orbital != 'all' and orbital[:1] not in dos_elements[atom]:
+                            if orbital[:1] == 'x':  # special case in VASP PROCAR labelling, set to 'd'
+                                dos_elements[atom] += ('d',)
+                            else:
+                                dos_elements[atom] += (orbital[:1],)
 
         dos, pdos = load_dos(
             dos,
