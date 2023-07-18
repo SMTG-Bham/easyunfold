@@ -46,7 +46,7 @@ def easyunfold():
     show_default=True,
 )
 @click.option('--matrix', '-m', help='Transformation matrix')
-@click.option('--symprec', help='Transformation matrix', type=float, default=1e-5, show_default=True)
+@click.option('--symprec', help='Tolerance for determining the symmetry', type=float, default=1e-5, show_default=True)
 @click.option('--out-file', default='easyunfold.json', help='Name of the output file')
 @click.option('--no-expand', help='Do not expand the kpoints by symmetry', default=False, is_flag=True)
 @click.option('--nk-per-split', help='Number of band structure kpoints per split.', type=int)
