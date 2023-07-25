@@ -146,10 +146,12 @@ If the _k_-points have been split into multiple calculations (for example, for t
 functionals), all wave function files (e.g. `WAVECAR` for VASP) need to be passed:
 
 ```
-easyunfold unfold calculate calc1/WAVECAR calc2/WAVECAR
+easyunfold unfold calculate calc1/WAVECAR calc2/WAVECAR  # or 'calc*/WAVECAR' 
 ```
 
-For large `WAVECAR`s, it may take some time to parse and compute the weights.
+For large `WAVECAR`s, it may take some time to parse and compute the weights. Note you should use the `--gamma` and/or 
+`--ncl` options if the calculation has $\Gamma$-only _k_-points or non-collinear spins (i.e. spin-orbit coupling), 
+respectively.
 
 :::{tip}
 
