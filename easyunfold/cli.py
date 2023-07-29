@@ -224,6 +224,7 @@ def add_mpl_style_option(func):
                         type=click.Path(exists=True, file_okay=True, dir_okay=False),
                         help='Specify custom plotting mplstyle file',
                         show_default=True)(func)
+
     @functools.wraps(func)  # preserve original function metadata
     def wrapper(*args, **kwargs):
         mpl_style_file = kwargs.pop('mpl_style_file', None)
@@ -397,7 +398,7 @@ def add_plot_options(func):
                  'The POSCAR or CONTCAR file (matching `--poscar`) must be present, otherwise use `--atoms-idx`.')(func)
     click.option('--poscar',
                  help='Path to POSCAR or CONTCAR file from which to read atom indices for weighting.',
-                 default="POSCAR",
+                 default='POSCAR',
                  show_default=True,
                  type=str)(func)
     click.option('--atoms-idx',
@@ -420,9 +421,9 @@ def add_plot_options(func):
 @click.pass_context
 @add_plot_options
 @add_mpl_style_option
-def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, dos, dos_label,
-                zero_line, dos_elements, dos_orbitals, dos_atoms, legend_cutoff, gaussian, no_total, total_only, scale, procar, atoms,
-                poscar, atoms_idx, orbitals, title, width, height, dpi, intensity):
+def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, dos, dos_label, zero_line,
+                dos_elements, dos_orbitals, dos_atoms, legend_cutoff, gaussian, no_total, total_only, scale, procar, atoms, poscar,
+                atoms_idx, orbitals, title, width, height, dpi, intensity):
     """
     Plot the spectral function
 
@@ -525,8 +526,8 @@ def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, em
     click.echo(f'Loading projections from: {procar}')
 
     plotter = UnfoldPlotter(unfoldset)
-    dos_plotter, dos_options = process_dos(dos, dos_elements, dos_orbitals, dos_atoms, gaussian, total_only, atoms,
-                                           orbitals, poscar, no_total, legend_cutoff, scale)
+    dos_plotter, dos_options = process_dos(dos, dos_elements, dos_orbitals, dos_atoms, gaussian, total_only, atoms, orbitals, poscar,
+                                           no_total, legend_cutoff, scale)
 
     fig = plotter.plot_projected(procar,
                                  dos_plotter=dos_plotter,
@@ -670,8 +671,8 @@ def _unfold_plot(ctx,
         emax = eng.max() - eref
 
     plotter = UnfoldPlotter(unfoldset)
-    dos_plotter, dos_options = process_dos(dos, dos_elements, dos_orbitals, dos_atoms, gaussian, total_only, atoms,
-                                           orbitals, poscar, no_total, legend_cutoff, scale)
+    dos_plotter, dos_options = process_dos(dos, dos_elements, dos_orbitals, dos_atoms, gaussian, total_only, atoms, orbitals, poscar,
+                                           no_total, legend_cutoff, scale)
 
     fig = plotter.plot_spectral_function(eng,
                                          spectral_function,

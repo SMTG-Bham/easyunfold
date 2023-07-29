@@ -1135,7 +1135,7 @@ def read_poscar_contcar_if_present(poscar: str = 'POSCAR'):
         try:
             return read_vasp('CONTCAR')
         except FileNotFoundError as exc:
-            raise FileNotFoundError(f"`{poscar}` or `CONTCAR` not found in current directory!") from exc
+            raise FileNotFoundError(f'`{poscar}` or `CONTCAR` not found in current directory!') from exc
 
 
 def parse_atoms(atoms_to_project: str, orbitals: str, poscar: str):

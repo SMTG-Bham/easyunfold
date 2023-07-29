@@ -39,8 +39,7 @@ class UnfoldPlotter:
         """
         self.unfold = unfold
 
-    def plot_dos(self, ax, dos_plotter, dos_label, dos_options, ylim, eref,
-                 atoms=None, colours=None, orbitals_subplots=None):
+    def plot_dos(self, ax, dos_plotter, dos_label, dos_options, ylim, eref, atoms=None, colours=None, orbitals_subplots=None):
         """
         Prepare and plot the density of states.
         """
@@ -92,15 +91,26 @@ class UnfoldPlotter:
         cycle = cycler('color', rcParams['axes.prop_cycle'].by_key()['color'][4:])
         with context({'axes.prop_cycle': cycle}):
             try:
-                plot_data = dos_plotter.dos_plot_data(xmin=ylim[0], xmax=ylim[1], zero_energy=eref,
-                                                      zero_to_efermi=False, colours=sumo_colours, **dos_options)
+                plot_data = dos_plotter.dos_plot_data(xmin=ylim[0],
+                                                      xmax=ylim[1],
+                                                      zero_energy=eref,
+                                                      zero_to_efermi=False,
+                                                      colours=sumo_colours,
+                                                      **dos_options)
             except TypeError:  # sumo < 2.3
                 try:
-                    plot_data = dos_plotter.dos_plot_data(xmin=ylim[0], xmax=ylim[1], ref_energy=eref,
-                                                          zero_to_efermi=False, colours=sumo_colours, **dos_options)
+                    plot_data = dos_plotter.dos_plot_data(xmin=ylim[0],
+                                                          xmax=ylim[1],
+                                                          ref_energy=eref,
+                                                          zero_to_efermi=False,
+                                                          colours=sumo_colours,
+                                                          **dos_options)
                 except TypeError:  # sumo < 2.2
-                    plot_data = dos_plotter.dos_plot_data(xmin=ylim[0], xmax=ylim[1], zero_to_efermi=True,
-                                                          colours=sumo_colours, **dos_options)
+                    plot_data = dos_plotter.dos_plot_data(xmin=ylim[0],
+                                                          xmax=ylim[1],
+                                                          zero_to_efermi=True,
+                                                          colours=sumo_colours,
+                                                          **dos_options)
 
         mask = plot_data['mask']
         energies = plot_data['energies'][mask]
@@ -230,7 +240,8 @@ class UnfoldPlotter:
 
         if vmax is None:
             vmax = sf[:, mask, :].max()
-            vmax = (vmax - vmin) * (vscale/intensity) + vmin  # vscale and intensity have the equal opposite effect on the colour intensity
+            vmax = (vmax - vmin) * (vscale /
+                                    intensity) + vmin  # vscale and intensity have the equal opposite effect on the colour intensity
 
         for ispin, ax_ in zip(range(nspin), axes):
             if contour_plot:
@@ -571,7 +582,7 @@ class UnfoldPlotter:
             show=False,
             title=None,
             atoms=None,
-            poscar="POSCAR",
+            poscar='POSCAR',
             atoms_idx=None,
             orbitals=None,
             use_subplot=False,
