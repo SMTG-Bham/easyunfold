@@ -141,6 +141,14 @@ def test_plot_projection(mgo_project_dir):
     assert Path('unfold.png').is_file()
     Path('unfold.png').unlink()
 
+    # test parsing PROCAR from LORBIT = 14 calculation
+    output = runner.invoke(easyunfold,
+                           ['unfold', '--data-file', 'mgo.json', 'plot-projections', '--atoms', 'Mg,O', '--poscar',
+                            'POSCAR.mgo', '--procar', 'PROCAR_LORBIT_14.mgo'])
+    assert output.exit_code == 0
+    assert Path('unfold.png').is_file()
+    Path('unfold.png').unlink()
+
 
 def test_help(nabis2_project_dir):
     """Test help messages"""

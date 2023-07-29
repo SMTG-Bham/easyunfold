@@ -45,6 +45,12 @@ def mgo_project_dir(datapath, tmp_path):
     shutil.copy2(datapath('mgo.json'), tmp_path / 'mgo.json')
     shutil.copy2(datapath('PROCAR.mgo'), tmp_path / 'PROCAR')
     shutil.copy2(datapath('POSCAR.mgo'), tmp_path / 'POSCAR.mgo')
+
+    # gzip decompress PROCAR, using subprocess
+    with gzip.open(datapath('PROCAR_LORBIT_14.mgo.gz'), 'rb') as f_in:
+        with open(tmp_path / 'PROCAR_LORBIT_14.mgo', 'wb') as f_out:
+            shutil.copyfileobj(f_in, f_out)
+
     return tmp_path
 
 

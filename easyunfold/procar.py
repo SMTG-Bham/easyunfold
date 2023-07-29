@@ -49,11 +49,13 @@ class Procar:
         # Number of projects and their names
         nproj = None
         self.proj_names = None
+
         for line in fobj:
-            if re.match(r'^ion', line):
+            if re.match(r'^ion.*tot', line):  # only the first "ion" line, in case of LORBIT >= 12
                 nproj = len(line.strip().split()) - 2
                 self.proj_names = line.strip().split()[1:-1]
                 break
+
         # Count the number of data lines, these lines do not have any alphabets
         proj_data = []
         energies = []
@@ -62,7 +64,8 @@ class Procar:
         kweights = []
         fobj.seek(0)
         for line in fobj:
-            if not re.search(r'[a-zA-Z]', line) and line.strip():
+            if not re.search(r'[a-zA-Z]', line) and line.strip() and len(line.strip().split()) - 2 == nproj:
+                # only parse data if nproj is expected length, in case of LORBIT >= 12
                 proj_data.append([float(token) for token in line.strip().split()[1:-1]])
             elif line.startswith('band'):
                 tokens = line.strip().split()
