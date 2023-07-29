@@ -348,9 +348,10 @@ def add_plot_options(func):
     click.option('--eref', type=float, help='Reference energy in eV.')(func)
     click.option('--emin', type=float, default=-5., help='Minimum energy in eV relative to the reference.', show_default=True)(func)
     click.option('--emax', type=float, default=5., help='Maximum energy in eV relative to the reference.', show_default=True)(func)
+    click.option('--intensity', default=1.0, help='Scaling factor for the colour intensity.', type=float, show_default=True)(func)
     click.option('--vscale',
                  type=float,
-                 help='A normalisation/scaling factor for the colour mapping. Smaller values will increase colour intensity.',
+                 help='A normalisation/scaling factor for the colour mapping. Equivalent to (1/intensity).',
                  default=1.0,
                  show_default=True)(func)
     click.option('--out-file', '-o', default='unfold.png', help='Name of the output file.', show_default=True)(func)
@@ -408,7 +409,6 @@ def add_plot_options(func):
     click.option('--width', help='Width of the figure', type=float, default=4., show_default=True)(func)
     click.option('--height', help='Height of the figure', type=float, default=3., show_default=True)(func)
     click.option('--dpi', help='DPI for the figure when saved as raster image.', type=int, default=300, show_default=True)(func)
-    click.option('--intensity', default=1.0, help='Color intensity for combined plot', type=float, show_default=True)(func)
     return func
 
 

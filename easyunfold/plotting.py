@@ -50,7 +50,7 @@ class UnfoldPlotter:
         eref=None,
         figsize=(4, 3),
         ylim=(-5, 5),
-        dpi=150,
+        dpi=300,
         vscale=1.0,
         contour_plot=False,
         alpha=1.0,
@@ -285,13 +285,13 @@ class UnfoldPlotter:
 
         # Clip the alpha range
         alpha = sf[:, :, :, 3]
-        alpha = (alpha - vmin) / (vmax - vmin) * (intensity / vscale)  # vscale & intensity have equal opposite effects
+        alpha = ((alpha - vmin) / (vmax - vmin)) * (intensity / vscale)  # vscale & intensity have equal opposite effects
         alpha = np.clip(alpha, 0, 1)
         sf[:, :, :, 3] = alpha
 
         for ispin, ax_ in zip(range(nspin), axes):
-            # plt.imshow's pixel coordinates are not at the center of the pixel
-            # Hence, the `extent`` need to update so teh center of the pixel is aligned with the coordinates.
+            # plt.imshow's pixel coordinates are not at the centre of the pixel
+            # Hence, the `extent`` needs to be updated so the centre of the pixel is aligned with the coordinates:
             extent = np.array([0, sf.shape[2], max(engs) - eref, min(engs) - eref])
             ebin = (max(engs) - min(engs)) / sf.shape[1]
             extent[:2] -= 0.5
@@ -513,7 +513,7 @@ class UnfoldPlotter:
             symm_average=True,
             figsize=(4, 3),
             ylim=(-5, 5),
-            dpi=150,
+            dpi=300,
             vscale=1.0,
             contour_plot=False,
             alpha=1.0,
@@ -680,6 +680,7 @@ class UnfoldPlotter:
                 show=show,
                 dpi=dpi,
                 ylim=ylim,
+                intensity=intensity,
             )
 
             if dos_plotter:

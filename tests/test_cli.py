@@ -2,8 +2,8 @@
 Tests for the CLI system
 """
 import os
-import pytest
 from pathlib import Path
+import pytest
 
 from monty.serialization import loadfn
 from click.testing import CliRunner
@@ -136,6 +136,7 @@ def test_plot_projection(mgo_project_dir):
 
 
 def test_help(nabis2_project_dir):
+    """Test help messages"""
     os.chdir(nabis2_project_dir)
     runner = CliRunner()
     output = runner.invoke(easyunfold, ['unfold', 'plot-projections', '-h'])
@@ -166,7 +167,7 @@ def test_dos_atom_orbital_plots(nabis2_project_dir):
         'Na,Bi,S',
         '--orbitals',
         's|px,py,pz|p',
-        '--colour-norm',
+        '--vscale',
         '0.5',
         '--combined',
         '--dos',
@@ -187,7 +188,15 @@ def test_dos_atom_orbital_plots(nabis2_project_dir):
     Path('unfold.png').unlink()
 
     output = runner.invoke(easyunfold, [
-        'unfold', 'plot-projections', '--atoms', 'Na,Bi,S', '--orbitals', 's|px,py,pz|p', '--colour-norm', '0.5', '--combined', '--dos',
+        'unfold', 'plot-projections', '--atoms', 'Na,Bi,S', '--orbitals', 's|px,py,pz|p', '--vscale', '0.5', '--combined', '--dos',
+        'vasprun.xml.gz', '--zero-line', '--dos-label', 'DOS', '--gaussian', '0.1', '--no-total', '--scale', '2'
+    ])
+    assert output.exit_code == 0
+    assert Path('unfold.png').is_file()
+    Path('unfold.png').unlink()
+
+    output = runner.invoke(easyunfold, [  # same but with intensity instead of vscale:
+        'unfold', 'plot-projections', '--atoms', 'Na,Bi,S', '--orbitals', 's|px,py,pz|p', '--intensity', '2', '--combined', '--dos',
         'vasprun.xml.gz', '--zero-line', '--dos-label', 'DOS', '--gaussian', '0.1', '--no-total', '--scale', '2'
     ])
     assert output.exit_code == 0
@@ -195,7 +204,7 @@ def test_dos_atom_orbital_plots(nabis2_project_dir):
     Path('unfold.png').unlink()
 
     output = runner.invoke(easyunfold, [
-        'unfold', 'plot-projections', '--atoms', 'Na,Bi,S', '--colour-norm', '0.5', '--combined', '--dos', 'vasprun.xml.gz', '--zero-line',
+        'unfold', 'plot-projections', '--atoms', 'Na,Bi,S', '--vscale', '0.5', '--combined', '--dos', 'vasprun.xml.gz', '--zero-line',
         '--dos-label', 'DOS', '--gaussian', '0.1', '--no-total', '--scale', '2'
     ])
     assert output.exit_code == 0
@@ -203,7 +212,7 @@ def test_dos_atom_orbital_plots(nabis2_project_dir):
     Path('unfold.png').unlink()
 
     output = runner.invoke(easyunfold, [
-        'unfold', 'plot-projections', '--atoms', 'Na,Bi', '--colour-norm', '0.5', '--combined', '--dos', 'vasprun.xml.gz', '--zero-line',
+        'unfold', 'plot-projections', '--atoms', 'Na,Bi', '--vscale', '0.5', '--combined', '--dos', 'vasprun.xml.gz', '--zero-line',
         '--dos-label', 'DOS', '--gaussian', '0.1', '--no-total', '--scale', '2'
     ])
     assert output.exit_code == 0

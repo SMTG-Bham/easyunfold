@@ -23,7 +23,7 @@ differences in electronic structure and thus photovoltaic performance between th
 
 ## Standard Unfolded Band Structure
 We have previously calculated the `easyunfold.json` file from the calculation using `easyunfold calculate WAVECAR`. 
-Using `easyunfold unfold plot --colour-norm 0.5`, we obtain the following unfolded band structure:
+Using `easyunfold unfold plot --intensity 2`, we obtain the following unfolded band structure:
 
 ```{figure} ../../examples/NaBiS2/NaBiS2_unfold-plot.png
 :alt: NaBiS2 unfolded band structure
@@ -33,13 +33,13 @@ Unfolded band structure of $\ce{NaBiS2}$
 
 ### Visualisation Customisation: Colour map and intensity scaling
 The band structure above is nice, but we can make the plot a little clearer by adjusting some of the parameters like 
-the intensity scaling (via `--colour-norm`) and the colour map (via `--cmap`). Below we set `--colour-norm 0.4` to 
+the intensity scaling (via `--intensity`) and the colour map (via `--cmap`). Below we set `--intensity 2.5` to 
 increase the colourmap intensity, and try `BuPu`, `viridis` and `bone_r` from left to right below: 
 
 ```bash
-easyunfold unfold plot --colour-norm 0.4 --cmap "BuPu"
-easyunfold unfold plot --colour-norm 0.4 --cmap "viridis"
-easyunfold unfold plot --colour-norm 0.4 --cmap "bone_r"
+easyunfold unfold plot --intensity 2.5 --cmap "BuPu"
+easyunfold unfold plot --intensity 2.5 --cmap "viridis"
+easyunfold unfold plot --intensity 2.5 --cmap "bone_r"
 ```
 
 BuPu             |  viridis        |  bone_r
@@ -51,7 +51,7 @@ We can plot the electronic density of states (DOS) alongside the unfolded band s
 provide the `vasprun.xml(.gz)` file from our supercell calculation:
 
 ```bash
-easyunfold unfold plot --colour-norm=0.5 --dos vasprun.xml.gz --zero-line --dos-label DOS --gaussian 0.1
+easyunfold unfold plot --intensity 2 --dos vasprun.xml.gz --zero-line --dos-label DOS --gaussian 0.1
 ```
 
 Here we've used some other plot options to customise the DOS plot; see the help message with 
@@ -88,7 +88,7 @@ When plotting the unfolded band, the `plot-projections` subcommand is used with 
 `--atoms` options:
 
 ```bash
-easyunfold unfold plot-projections --atoms="Na,Bi,S" --colour-norm=0.5 --combined
+easyunfold unfold plot-projections --atoms="Na,Bi,S" --intensity 2 --combined
 ```
 
 ```{figure} ../../examples/NaBiS2/NaBiS2_unfold-plot_proj.png
@@ -114,7 +114,7 @@ So, we can create separated plots for each atom type to make their individual co
 `--combined` tag:
 
 ```bash
-easyunfold unfold plot-projections --atoms="Na,Bi,S" --cmap="bone_r" --colour-norm 0.5
+easyunfold unfold plot-projections --atoms="Na,Bi,S" --cmap="bone_r" --intensity 2
 ```
 
 ```{figure} ../../examples/NaBiS2/NaBiS2_unfold-plot_proj_sep.png
@@ -126,7 +126,7 @@ Unfolded band structure of NaBiS<sub>2</sub> with atomic contributions plotted s
 
 An alternative option here is also to just plot only the contributions of `Na` and `Bi` cations, with no S projections:
 ```bash
-easyunfold unfold plot-projections --atoms="Na,Bi" --colour-norm=0.5 --combined
+easyunfold unfold plot-projections --atoms="Na,Bi" --intensity 2 --combined
 ```
 
 ```{figure} ../../examples/NaBiS2/NaBiS2_unfold-plot_proj_noS.png
@@ -143,7 +143,7 @@ While this plot isn't the most aesthetic, it clearly shows that Bi (green) contr
 ### Atom-projected Unfolded Band Structure with DOS
 We can also combine the atom projections with the DOS plotting, using the `--dos` option as before:
 ```bash
-easyunfold unfold plot-projections --atoms "Na,Bi,S" --colour-norm=0.5 --combined --dos vasprun.xml.gz --zero-line \
+easyunfold unfold plot-projections --atoms "Na,Bi,S" --intensity 2 --combined --dos vasprun.xml.gz --zero-line \
   --dos-label "DOS" --gaussian 0.1 --no-total --scale 2
 ```
 
@@ -163,7 +163,7 @@ than all atoms of a certain element. For example, in this example case of NaBiS$
 is forming within the 'bulk' band gap. We can show that this state is contributed by only one or two atoms in the 
 supercell, using the `--atoms-idx` option:
 ```bash
-easyunfold unfold plot-projections -unfold plot-projections --atoms-idx="1-55,57-65,67-80|56,66" --colour-norm=0.5
+easyunfold unfold plot-projections -unfold plot-projections --atoms-idx="1-55,57-65,67-80|56,66" --intensity 2
 ```
 
 ```{figure} ../../examples/NaBiS2/NaBiS2_unfold-plot_proj_sep_atomsidx.png
@@ -193,7 +193,7 @@ For example, if we want to see the contributions of the Bi $s$, $p$ and S $s$ or
 we can use the following command:
 
 ```bash
-easyunfold unfold plot-projections --atoms "Bi,Bi,S" --orbitals="s|p|s"  --colour-norm=0.5  --combined \
+easyunfold unfold plot-projections --atoms "Bi,Bi,S" --orbitals="s|p|s"  --intensity 2  --combined \
   --dos vasprun.xml.gz --zero-line --dos-label "DOS" --gaussian 0.1 --no-total --scale 5
 ```
 
@@ -216,7 +216,7 @@ see the contributions of the Bi and S $p_x$, $p_y$ and $p_z$ orbitals to the unf
 following command:
 
 ```bash
-easyunfold unfold plot-projections --atoms "Na,Bi,S" --orbitals="all|px,py,pz|px,py,pz" --colour-norm=0.5 --combined \
+easyunfold unfold plot-projections --atoms "Na,Bi,S" --orbitals="all|px,py,pz|px,py,pz" --intensity 2 --combined \
   --dos vasprun.xml.gz --zero-line --dos-label "DOS" --gaussian 0.1 --no-total --scale 6
 ```
 

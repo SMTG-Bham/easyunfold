@@ -127,7 +127,7 @@ Spectral function of the unfolded bands.
 
 :::{tip} 
 See the [NaBiS<sub>2</sub> example](https://smtg-ucl.github.io/easyunfold/examples/example_nabis2.html) for tips on 
-customising and prettifying the unfolded band structure plot. Here we have also actually used the `--colour-norm 0.3` 
+customising and prettifying the unfolded band structure plot. Here we have also actually used the `--intensity 3.5` 
 option to increase the spectral function intensity.
 :::
 
@@ -163,7 +163,7 @@ cd Si_super_deformed
 mpirun -np 4 vasp_std
 cd ../
 easyunfold unfold --data-file  no-expand.json calculate Si_super_deformed/WAVECAR
-easyunfold unfold --data-file  no-expand.json  plot --out-file unfold_no-expand.png --colour-norm 0.3
+easyunfold unfold --data-file  no-expand.json  plot --out-file unfold_no-expand.png --intensity 3.5
 ```
 
 output:

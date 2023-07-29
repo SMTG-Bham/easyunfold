@@ -32,8 +32,8 @@ The only difference here is that we turn on the calculation of orbital projectio
 when plotting the unfolded band structure:
 
 ```bash
-easyunfold unfold plot-projections --procar MgO_super/PROCAR --atoms="Mg,O" --combined --emin=-6 --emax=20 \
---colour-norm 0.15
+easyunfold unfold plot-projections --procar MgO_super/PROCAR --atoms="Mg,O" --combined --emin=-6 \ 
+--emax=20 --intensity 6.5
 ```
 
 Note that the path of the `PROCAR` is passed along with the desired atom projections (`Mg` and `O` here). 
@@ -60,8 +60,8 @@ see the output of `easyunfold unfold plot-projections --help` for more details. 
 projections with the same colouring scheme as the `sumo` plot above (i.e. red for Mg and blue for O), we can use:
 
 ```bash
-easyunfold unfold plot-projections --procar MgO_super/PROCAR --atoms="Mg,O" --combined --emin=-6 --emax=20 \
---colour-norm 0.15 --colours "r,b"
+easyunfold unfold plot-projections --procar MgO_super/PROCAR --atoms="Mg,O" --combined --emin=-6 \
+--emax=20 --intensity 6.5 --colours "r,b"
 ```
 
 ```{figure} ../../examples/MgO/unfold_project_rb.png
@@ -87,7 +87,8 @@ In some cases, especially if there are many projection to be plotted at the same
 separated plots for each. This is the default behaviour for `plot-projections`, when `--combined` is not specified.
 
 ```bash
-easyunfold unfold plot-projections --procar MgO_super/PROCAR --atoms="Mg,O" --emin=-6 --emax=20 --colour-norm 0.15
+easyunfold unfold plot-projections --procar MgO_super/PROCAR --atoms="Mg,O" --emin=-6 \ 
+--emax=20 --intensity 6.5
 ```
 
 ```{figure} ../../examples/MgO/unfold_project_sep.png
