@@ -433,30 +433,19 @@ def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cm
                  poscar, atoms_idx, orbitals, title, width, height, dpi, intensity)
 
 
-@unfold.command('plot-projections')
-@click.pass_context
-@add_plot_options
-@add_mpl_style_option
-@click.option('--combined/--no-combined', is_flag=True, default=False, help='Plot all projections in a combined graph.')
-@click.option('--colours', help='Colours to be used for combined plot, comma separated.', default='r,g,b,purple', show_default=True)
-def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, dos,
-                            dos_label, zero_line, dos_elements, dos_orbitals, dos_atoms, legend_cutoff, gaussian, no_total, total_only,
-                            scale, procar, atoms, poscar, atoms_idx, orbitals, title, combined, colours, width, height, dpi, intensity):
+def process_dos(dos, dos_elements, dos_orbitals, dos_atoms, gaussian, total_only, atoms, orbitals, poscar, no_total, legend_cutoff, scale):
     """
-    Plot the effective band structure with atomic projections.
+    Process the DOS data for plotting, and return the SDOSPlotter object and dos_options dict.
     """
-    from easyunfold.unfold import UnfoldKSet
-    from easyunfold.plotting import UnfoldPlotter
-
-    unfoldset: UnfoldKSet = ctx.obj['obj']
-    click.echo(f'Loading projections from: {procar}')
-
-    plotter = UnfoldPlotter(unfoldset)
     if dos:
         from sumo.plotting.dos_plotter import SDOSPlotter
         from sumo.electronic_structure.dos import load_dos
         from sumo.cli.dosplot import _el_orb, _atoms
         from pymatgen.io.vasp.inputs import UnknownPotcarWarning
+
+        # unnecessary pymatgen potcar warnings:
+        warnings.filterwarnings('ignore', message='No POTCAR file with matching TITEL fields')
+        warnings.filterwarnings('ignore', category=UnknownPotcarWarning)
 
         dos_elements = _el_orb(dos_elements) if dos_elements is not None else None
         dos_orbitals = _el_orb(dos_orbitals) if dos_orbitals is not None else None
@@ -496,8 +485,6 @@ def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, em
                             else:
                                 dos_elements[atom] += (orbital[:1],)
 
-        warnings.filterwarnings('ignore', message='No POTCAR file with matching TITEL fields')  # unnecessary pymatgen potcar warnings
-        warnings.filterwarnings('ignore', category=UnknownPotcarWarning)  # ignore pymatgen unknown potcar warnings
         dos, pdos = load_dos(
             dos,
             dos_elements,
@@ -515,6 +502,31 @@ def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, em
     else:
         dos_plotter = None
         dos_options = None
+
+    return dos_plotter, dos_options
+
+
+@unfold.command('plot-projections')
+@click.pass_context
+@add_plot_options
+@add_mpl_style_option
+@click.option('--combined/--no-combined', is_flag=True, default=False, help='Plot all projections in a combined graph.')
+@click.option('--colours', help='Colours to be used for combined plot, comma separated.', default='r,g,b,purple', show_default=True)
+def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, dos,
+                            dos_label, zero_line, dos_elements, dos_orbitals, dos_atoms, legend_cutoff, gaussian, no_total, total_only,
+                            scale, procar, atoms, poscar, atoms_idx, orbitals, title, combined, colours, width, height, dpi, intensity):
+    """
+    Plot the effective band structure with atomic projections.
+    """
+    from easyunfold.unfold import UnfoldKSet
+    from easyunfold.plotting import UnfoldPlotter
+
+    unfoldset: UnfoldKSet = ctx.obj['obj']
+    click.echo(f'Loading projections from: {procar}')
+
+    plotter = UnfoldPlotter(unfoldset)
+    dos_plotter, dos_options = process_dos(dos, dos_elements, dos_orbitals, dos_atoms, gaussian, total_only, atoms,
+                                           orbitals, poscar, no_total, legend_cutoff, scale)
 
     fig = plotter.plot_projected(procar,
                                  dos_plotter=dos_plotter,
@@ -633,7 +645,7 @@ def _unfold_plot(ctx,
                 orbitals_list.append(orbital_sublist)
 
         elif atoms:
-            parsed_atoms, atoms_idx_subplots, orbitals_subplots = parse_atoms(atoms, orbitals, poscar)
+            _parsed_atoms, atoms_idx_subplots, orbitals_subplots = parse_atoms(atoms, orbitals, poscar)
 
     else:
         atoms_idx_subplots = [None]
@@ -641,7 +653,7 @@ def _unfold_plot(ctx,
 
     # Collect spectral functions and scale
     all_sf = []
-    for i, this_idx, this_orbitals in zip(range(len(atoms_idx_subplots)), atoms_idx_subplots, orbitals_subplots):
+    for this_idx, this_orbitals in zip(atoms_idx_subplots, orbitals_subplots):
         eng, spectral_function = unfoldset.get_spectral_function(gamma=gamma,
                                                                  npoints=npoints,
                                                                  sigma=sigma,
@@ -658,71 +670,8 @@ def _unfold_plot(ctx,
         emax = eng.max() - eref
 
     plotter = UnfoldPlotter(unfoldset)
-    if dos:
-        from sumo.plotting.dos_plotter import SDOSPlotter
-        from sumo.electronic_structure.dos import load_dos
-        from sumo.cli.dosplot import _el_orb, _atoms
-        from pymatgen.io.vasp.inputs import UnknownPotcarWarning
-
-        # unnecessary pymatgen potcar warnings:
-        warnings.filterwarnings('ignore', message='No POTCAR file with matching TITEL fields')
-        warnings.filterwarnings('ignore', category=UnknownPotcarWarning)
-
-        dos_elements = _el_orb(dos_elements) if dos_elements is not None else None
-        dos_orbitals = _el_orb(dos_orbitals) if dos_orbitals is not None else None
-        dos_atoms = _atoms(dos_atoms) if dos_atoms is not None else None
-
-        # Set dos_elements to match atoms (and orbitals) if set and dos_elements not specified
-        if atoms:
-            parsed_atoms, _idx, parsed_orbitals = parse_atoms(atoms, orbitals, poscar)
-            draft_dos_elements = {}
-            for i, atom in enumerate(parsed_atoms):
-                if atom not in draft_dos_elements:
-                    draft_dos_elements[atom] = ()
-                for orbital in parsed_orbitals[i]:
-                    if orbital not in draft_dos_elements[atom] and orbital != 'all':
-                        draft_dos_elements[atom] += (orbital,)
-
-            if orbitals and any(i in orbital for my_tuple in draft_dos_elements.values() for orbital in my_tuple
-                                for i in ['x', 'y', 'z']) and dos_orbitals is None:
-                dos_orbitals = {}
-                for atom, orbital_tuple in draft_dos_elements.items():
-                    if atom not in dos_orbitals:
-                        dos_orbitals[atom] = ()
-                    for orbital in orbital_tuple:
-                        if len(orbital) > 1 and orbital != 'all' and orbital[:1] not in dos_orbitals[atom]:
-                            dos_orbitals[atom] += (orbital[:1],)
-
-            if dos_elements is None:
-                dos_elements = {}
-                # use draft dos_elements but convert orbitals to just s,p,d,f if lm-projected ones given
-                for atom, orbital_tuple in draft_dos_elements.items():
-                    if atom not in dos_elements:
-                        dos_elements[atom] = ()
-                    for orbital in orbital_tuple:
-                        if orbital != 'all' and orbital[:1] not in dos_elements[atom]:
-                            if orbital[:1] == 'x':  # special case in VASP PROCAR labelling, set to 'd'
-                                dos_elements[atom] += ('d',)
-                            else:
-                                dos_elements[atom] += (orbital[:1],)
-
-        dos, pdos = load_dos(
-            dos,
-            dos_elements,
-            dos_orbitals,
-            dos_atoms,
-            gaussian,
-            total_only,
-        )
-        dos_plotter = SDOSPlotter(dos, pdos)
-        dos_options = {
-            'plot_total': not no_total,
-            'legend_cutoff': legend_cutoff,
-            'yscale': scale,
-        }
-    else:
-        dos_plotter = None
-        dos_options = None
+    dos_plotter, dos_options = process_dos(dos, dos_elements, dos_orbitals, dos_atoms, gaussian, total_only, atoms,
+                                           orbitals, poscar, no_total, legend_cutoff, scale)
 
     fig = plotter.plot_spectral_function(eng,
                                          spectral_function,
