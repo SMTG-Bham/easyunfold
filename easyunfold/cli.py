@@ -2,6 +2,7 @@
 Commandline interface
 """
 import warnings
+import functools
 from pathlib import Path
 from monty.serialization import loadfn
 import numpy as np
@@ -208,8 +209,28 @@ def unfold_calculate(ctx, wavefunc, save_as, gamma, ncl):
     click.echo('Unfolding data written to ' + out_path)
 
 
+def add_mpl_style_option(func):
+    """
+    Decorator that adds the mpl_style_file option to a command
+    """
+    func = click.option('--mpl-style-file',
+                        type=click.Path(exists=True, file_okay=True, dir_okay=False),
+                        help='Specify custom plotting mplstyle file')(func)
+    @functools.wraps(func)  # preserve original function metadata
+    def wrapper(*args, **kwargs):
+        mpl_style_file = kwargs.pop('mpl_style_file', None)
+        if mpl_style_file:
+            click.echo(f'Using custom plotting style from {mpl_style_file}')
+            import matplotlib.style
+            matplotlib.style.use(mpl_style_file)
+        return func(*args, **kwargs)
+
+    return wrapper
+
+
 @unfold.command('effective-mass')
 @click.pass_context
+@add_mpl_style_option
 @click.option('--intensity-threshold', type=float, default=0.1, help='Intensity threshold for detecting valid bands.', show_default=True)
 @click.option('--spin', type=int, default=0, help='Index of the spin channel.', show_default=True)
 @click.option('--npoints', type=int, default=3, help='Number of kpoints used for fitting from the extrema.', show_default=True)
@@ -309,7 +330,9 @@ def unfold_effective_mass(ctx, intensity_threshold, spin, band_filter, npoints, 
 
 
 def add_plot_options(func):
-    """Added common plotting options to a function"""
+    """
+    Decorator that adds common plotting options to a function
+    """
     click.option('--gamma', is_flag=True, help='Is the calculation a gamma only one?', show_default=True)(func)
     click.option('--ncl', is_flag=True, help='Is the calculation with non-colinear spin?', show_default=True)(func)
     click.option('--npoints', type=int, default=2000, help='Number of bins for the energy.', show_default=True)(func)
@@ -378,28 +401,21 @@ def add_plot_options(func):
     click.option('--width', help='Width of the figure', type=float, default=4., show_default=True)(func)
     click.option('--height', help='Height of the figure', type=float, default=3., show_default=True)(func)
     click.option('--dpi', help='DPI for the figure when saved as raster image.', type=int, default=300, show_default=True)(func)
-    click.option('--mpl-style-file',
-                 type=click.Path(exists=True, file_okay=True, dir_okay=False),
-                 help='Use this file to customise the matplotlib style sheet')(func)
     return func
 
 
 @unfold.command('plot')
 @click.pass_context
 @add_plot_options
+@add_mpl_style_option
 def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, colour_norm, dos, dos_label,
                 zero_line, dos_elements, dos_orbitals, dos_atoms, legend_cutoff, gaussian, no_total, total_only, scale, procar, atoms,
-                atoms_idx, orbitals, title, width, height, dpi, mpl_style_file):
+                atoms_idx, orbitals, title, width, height, dpi):
     """
     Plot the spectral function
 
     This command uses the stored unfolding data to plot the effective bands structure (EBS) using the spectral function.
     """
-    if mpl_style_file:
-        click.echo(f'Using custom plotting style from {mpl_style_file}')
-        import matplotlib.style
-        matplotlib.style.use(mpl_style_file)
-
     _unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, colour_norm, dos, dos_label,
                  zero_line, dos_elements, dos_orbitals, dos_atoms, legend_cutoff, gaussian, no_total, total_only, scale, procar, atoms,
                  atoms_idx, orbitals, title, width, height, dpi)
@@ -408,22 +424,18 @@ def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cm
 @unfold.command('plot-projections')
 @click.pass_context
 @add_plot_options
+@add_mpl_style_option
 @click.option('--combined/--no-combined', is_flag=True, default=False, help='Plot all projections in a combined graph.')
 @click.option('--colours', help='Colours to be used for combined plot, comma separated.', default='r,g,b,purple', show_default=True)
 def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, colour_norm, dos,
                             dos_label, zero_line, dos_elements, dos_orbitals, dos_atoms, legend_cutoff, gaussian, no_total, total_only,
-                            scale, procar, atoms, atoms_idx, orbitals, title, combined, colours, width, height, dpi, mpl_style_file):
+                            scale, procar, atoms, atoms_idx, orbitals, title, combined, colours, width, height, dpi):
     """
     Plot the effective band structure with atomic projections.
     """
     from easyunfold.unfold import UnfoldKSet
     from easyunfold.plotting import UnfoldPlotter
     import matplotlib.pyplot as plt
-
-    if mpl_style_file:
-        click.echo(f'Using custom plotting style from {mpl_style_file}')
-        import matplotlib.style
-        matplotlib.style.use(mpl_style_file)
 
     unfoldset: UnfoldKSet = ctx.obj['obj']
     click.echo(f'Loading projections from: {procar}')
