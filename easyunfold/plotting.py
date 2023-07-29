@@ -39,6 +39,116 @@ class UnfoldPlotter:
         """
         self.unfold = unfold
 
+    def plot_dos(self, ax, dos_plotter, dos_label, dos_options, ylim, eref,
+                 atoms=None, colours=None, orbitals_subplots=None):
+        """
+        Prepare and plot the density of states.
+        """
+        from pymatgen.electronic_structure.core import Spin
+
+        if not dos_options:
+            dos_options = {}
+
+        from sumo.plotting import sumo_base_style, sumo_bs_style
+        plt.style.use([sumo_base_style, sumo_bs_style])
+
+        if atoms:
+            # set DOS element & orbital colours to match the easyunfold band structure projections
+            def _get_orbital_colour_dict(index, colour_list):
+                # set s,p,d,f to different shades of colours[i]
+                return {
+                    's': adjust_lightness(colour_list[index], 1.0),
+                    'p': adjust_lightness(colour_list[index], 0.7),
+                    'px': adjust_lightness(colour_list[index], 0.7),
+                    'py': adjust_lightness(colour_list[index], 0.8),
+                    'pz': adjust_lightness(colour_list[index], 0.6),
+                    'd': adjust_lightness(colour_list[index], 0.45),
+                    'dxy': adjust_lightness(colour_list[index], 0.45),
+                    'dyz': adjust_lightness(colour_list[index], 0.55),
+                    'dxz': adjust_lightness(colour_list[index], 0.35),
+                    'dz2': adjust_lightness(colour_list[index], 0.65),
+                    'dx2-y2': adjust_lightness(colour_list[index], 0.25),
+                    'x2-y2': adjust_lightness(colour_list[index], 0.25),  # labelled differently in VASP PROCAR
+                    'f': adjust_lightness(colour_list[index], 0.2)
+                }
+
+            # Create a dictionary with different shades of colours[i] for each orbital
+            sumo_colours = {atom: _get_orbital_colour_dict(i, colours) for i, atom in enumerate(atoms)}
+            if len(atoms) != len(set(atoms)):
+                # if atom entries are not all unique (i.e. repeated with different orbitals), then adjust colours of specific orbitals
+                for i, atom, this_orbitals in zip(range(len(atoms)), atoms, orbitals_subplots):
+                    if this_orbitals != 'all':
+                        orbital_list = [token.strip() for token in this_orbitals.split(',')]
+                        orbital_colour_dict = _get_orbital_colour_dict(i, colours)
+                        for orbital in orbital_list:
+                            # set all orbital keys with "orbital" in key:
+                            for key in sumo_colours[atom].keys():
+                                if orbital in key:
+                                    sumo_colours[atom][key] = orbital_colour_dict[key]
+        else:
+            sumo_colours = None
+
+        # don't use first 4 colours; these are the band structure line colours:
+        cycle = cycler('color', rcParams['axes.prop_cycle'].by_key()['color'][4:])
+        with context({'axes.prop_cycle': cycle}):
+            try:
+                plot_data = dos_plotter.dos_plot_data(xmin=ylim[0], xmax=ylim[1], zero_energy=eref,
+                                                      zero_to_efermi=False, colours=sumo_colours, **dos_options)
+            except TypeError:  # sumo < 2.3
+                try:
+                    plot_data = dos_plotter.dos_plot_data(xmin=ylim[0], xmax=ylim[1], ref_energy=eref,
+                                                          zero_to_efermi=False, colours=sumo_colours, **dos_options)
+                except TypeError:  # sumo < 2.2
+                    plot_data = dos_plotter.dos_plot_data(xmin=ylim[0], xmax=ylim[1], zero_to_efermi=True,
+                                                          colours=sumo_colours, **dos_options)
+
+        mask = plot_data['mask']
+        energies = plot_data['energies'][mask]
+        lines = plot_data['lines']
+        spins = [Spin.up] if len(lines[0][0]['dens']) == 1 else [Spin.up, Spin.down]
+
+        # disable y ticks for DOS panel
+        ax.tick_params(axis='y', which='both', right=False)
+
+        for line_set in plot_data['lines']:
+            for line, spin in itertools.product(line_set, spins):
+                if spin == Spin.up or len(spins) == 1:
+                    label = line['label']
+                    densities = line['dens'][spin][mask]
+                else:
+                    label = ''
+                    densities = -line['dens'][spin][mask]
+
+                line_style = '-'
+                if label:
+                    if any(i in label for i in ['py', 'dyz']):
+                        line_style = '--'
+                    elif any(i in label for i in ['pz', 'dxz']):
+                        line_style = ':'
+                    elif any(i in label for i in ['dz2']):
+                        line_style = '-.'
+                    elif any(i in label for i in ['x2-y2']):
+                        line_style = (5, (10, 3))
+
+                ax.fill_betweenx(energies, densities, 0, lw=0, facecolor=line['colour'], alpha=line['alpha'])
+                ax.plot(densities, energies, label=label, color=line['colour'], ls=line_style, lw=1)
+
+        # x and y axis reversed versus normal dos plotting
+        ax.set_ylim(*ylim)
+        if len(spins) == 1:
+            ax.set_xlim(0, plot_data['ymax'])
+        else:
+            ax.set_xlim(plot_data['ymin'], plot_data['ymax'])
+
+        if dos_label is not None:
+            ax.set_xlabel(dos_label)
+
+        ax.set_xticklabels([])
+        ax.set_yticklabels([])
+        ax.legend(loc=2, frameon=False, ncol=1, bbox_to_anchor=(1.0, 1.0), fontsize=9)
+
+        return ax
+
     def plot_spectral_function(
         self,
         engs: np.ndarray,
@@ -66,16 +176,16 @@ class UnfoldPlotter:
         """
         Plot the spectral function.
 
-        :param np.ndarray engs: The energies of the spectral functions.
+        :param engs: The energies of the spectral functions.
         :param sf: An array of the spectral function.
-        :param float eref: Reference energy to be used - this energy will be set as zero.
+        :param eref: Reference energy to be used - this energy will be set as zero.
         :param figsize: Size of the figure.
         :param ylim: Plotting limit for the y-axis, with respect to `eref`.
         :param dpi: DPI of the generated graph.
         :param vscale: A normalisation/scaling factor for the colour map. Smaller values will increase the colour intensity.
-        :param contour_plot): Whether to use contour plot instead of normal meshed color map.
-        :param alphathe color map.
-        :param savethe file where the generated figure is saved.
+        :param contour_plot: Whether to use contour plot instead of normal meshed color map.
+        :param alpha: Color map transparency factor.
+        :param save: The file to save the generated figure to.
         :param ax: An existing plotting axis to be used.
         :param vmin: Min value for the colour map.
         :param vmax: Max value for the colour map.
@@ -93,8 +203,6 @@ class UnfoldPlotter:
             eref = unfold.calculated_quantities.get('vbm', 0.0)
 
         if dos_plotter:
-            from pymatgen.electronic_structure.core import Spin
-
             fig, axes = plt.subplots(1, 2, facecolor='w', gridspec_kw={'width_ratios': [3, 1], 'wspace': 0}, figsize=figsize, dpi=dpi)
             if nspin > 1:
                 warnings.warn('DOS plotter is not supported for spin-separated plots. Reverting to non spin-polarised plotting.')
@@ -141,67 +249,7 @@ class UnfoldPlotter:
 
         if dos_plotter:
             ax = fig.axes[1]
-
-            if not dos_options:
-                dos_options = {}
-
-            # don't use first 4 colours; these are the band structure line colours
-            from sumo.plotting import sumo_base_style, sumo_bs_style
-            plt.style.use([sumo_base_style, sumo_bs_style])
-
-            cycle = cycler('color', rcParams['axes.prop_cycle'].by_key()['color'][4:])
-            with context({'axes.prop_cycle': cycle}):
-                try:
-                    plot_data = dos_plotter.dos_plot_data(xmin=ylim[0], xmax=ylim[1], zero_energy=eref, zero_to_efermi=False, **dos_options)
-                except TypeError:  # sumo < 2.3
-                    try:
-                        plot_data = dos_plotter.dos_plot_data(xmin=ylim[0],
-                                                              xmax=ylim[1],
-                                                              ref_energy=eref,
-                                                              zero_to_efermi=False,
-                                                              **dos_options)
-                    except TypeError:  # sumo < 2.2
-                        plot_data = dos_plotter.dos_plot_data(xmin=ylim[0], xmax=ylim[1], zero_to_efermi=True, **dos_options)
-
-            mask = plot_data['mask']
-            energies = plot_data['energies'][mask]
-            lines = plot_data['lines']
-            spins = [Spin.up] if len(lines[0][0]['dens']) == 1 else [Spin.up, Spin.down]
-
-            # disable y ticks for DOS panel
-            ax.tick_params(axis='y', which='both', right=False)
-
-            for line_set in plot_data['lines']:
-                for line, spin in itertools.product(line_set, spins):
-                    if spin == Spin.up or len(spins) == 1:
-                        label = line['label']
-                        densities = line['dens'][spin][mask]
-                    else:
-                        label = ''
-                        densities = -line['dens'][spin][mask]
-                    ax.fill_betweenx(
-                        energies,
-                        densities,
-                        0,
-                        lw=0,
-                        facecolor=line['colour'],
-                        alpha=line['alpha'],
-                    )
-                    ax.plot(densities, energies, label=label, color=line['colour'], lw=1)
-
-            # x and y axis reversed versus normal dos plotting
-            ax.set_ylim(*ylim)
-            if len(spins) == 1:
-                ax.set_xlim(0, plot_data['ymax'])
-            else:
-                ax.set_xlim(plot_data['ymin'], plot_data['ymax'])
-
-            if dos_label is not None:
-                ax.set_xlabel(dos_label)
-
-            ax.set_xticklabels([])
-            ax.set_yticklabels([])
-            ax.legend(loc=2, frameon=False, ncol=1, bbox_to_anchor=(1.0, 1.0), fontsize=9)
+            ax = self.plot_dos(ax, dos_plotter, dos_label, dos_options, ylim, eref)
 
         if zero_line:
             try:
@@ -576,7 +624,7 @@ class UnfoldPlotter:
             eref = unfoldset.calculated_quantities.get('vbm', 0.0)
 
         # Collect spectral functions and scale
-        for i, this_idx, this_orbitals in zip(range(len(atoms_idx_subplots)), atoms_idx_subplots, orbitals_subplots):
+        for this_idx, this_orbitals in zip(atoms_idx_subplots, orbitals_subplots):
             # Setup the atoms_idx and orbitals
             if isinstance(this_idx, str):
                 this_idx, this_orbitals = process_projection_options(this_idx, this_orbitals)
@@ -649,8 +697,6 @@ class UnfoldPlotter:
             sf_rgba = np.concatenate([sf_rgb, sf_sum], axis=-1)
 
             if dos_plotter:
-                from pymatgen.electronic_structure.core import Spin
-
                 fig, axes = plt.subplots(1,
                                          2,
                                          facecolor='w',
@@ -686,127 +732,7 @@ class UnfoldPlotter:
 
             if dos_plotter:
                 ax = fig.axes[1]
-
-                if not dos_options:
-                    dos_options = {}
-
-                # don't use first 4 colours; these are the band structure line colours
-                from sumo.plotting import sumo_base_style, sumo_bs_style
-                plt.style.use([sumo_base_style, sumo_bs_style])
-
-                # set DOS element & orbital colours to match the easyunfold band structure projections
-                if atoms:
-                    # set s,p,d,f to different shades of colours[i]
-                    def _get_orbital_colour_dict(index, colour_list):
-                        return {
-                            's': adjust_lightness(colour_list[index], 1.0),
-                            'p': adjust_lightness(colour_list[index], 0.7),
-                            'px': adjust_lightness(colour_list[index], 0.7),
-                            'py': adjust_lightness(colour_list[index], 0.8),
-                            'pz': adjust_lightness(colour_list[index], 0.6),
-                            'd': adjust_lightness(colour_list[index], 0.45),
-                            'dxy': adjust_lightness(colour_list[index], 0.45),
-                            'dyz': adjust_lightness(colour_list[index], 0.55),
-                            'dxz': adjust_lightness(colour_list[index], 0.35),
-                            'dz2': adjust_lightness(colour_list[index], 0.65),
-                            'dx2-y2': adjust_lightness(colour_list[index], 0.25),
-                            'x2-y2': adjust_lightness(colour_list[index], 0.25),  # labelled differently in VASP PROCAR
-                            'f': adjust_lightness(colour_list[index], 0.2)
-                        }
-
-                    # Create a dictionary with different shades
-                    sumo_colours = {atom: _get_orbital_colour_dict(i, colours) for i, atom in enumerate(atoms)}
-                    if len(atoms) != len(set(atoms)):
-                        # if atom entries are not all unique (i.e. repeated with different orbitals), then adjust
-                        # colours of specific orbitals
-                        for i, atom, this_orbitals in zip(range(len(atoms)), atoms, orbitals_subplots):
-                            if this_orbitals != 'all':
-                                orbital_list = [token.strip() for token in this_orbitals.split(',')]
-                                orbital_colour_dict = _get_orbital_colour_dict(i, colours)
-                                for orbital in orbital_list:
-                                    # set all orbital keys with "orbital" in key:
-                                    for key in sumo_colours[atom].keys():
-                                        if orbital in key:
-                                            sumo_colours[atom][key] = orbital_colour_dict[key]
-
-                else:
-                    sumo_colours = None
-
-                cycle = cycler('color', rcParams['axes.prop_cycle'].by_key()['color'][4:])
-                with context({'axes.prop_cycle': cycle}):
-                    try:
-                        plot_data = dos_plotter.dos_plot_data(xmin=ylim[0],
-                                                              xmax=ylim[1],
-                                                              zero_energy=eref,
-                                                              zero_to_efermi=False,
-                                                              colours=sumo_colours,
-                                                              **dos_options)
-                    except TypeError:  # sumo < 2.3
-                        try:
-                            plot_data = dos_plotter.dos_plot_data(xmin=ylim[0],
-                                                                  xmax=ylim[1],
-                                                                  ref_energy=eref,
-                                                                  zero_to_efermi=False,
-                                                                  colours=sumo_colours,
-                                                                  **dos_options)
-                        except TypeError:  # sumo < 2.2
-                            plot_data = dos_plotter.dos_plot_data(xmin=ylim[0],
-                                                                  xmax=ylim[1],
-                                                                  zero_to_efermi=True,
-                                                                  colours=sumo_colours,
-                                                                  **dos_options)
-
-                mask = plot_data['mask']
-                energies = plot_data['energies'][mask]
-                lines = plot_data['lines']
-                spins = [Spin.up] if len(lines[0][0]['dens']) == 1 else [Spin.up, Spin.down]
-
-                # disable y ticks for DOS panel
-                ax.tick_params(axis='y', which='both', right=False)
-
-                for line_set in plot_data['lines']:
-                    for line, spin in itertools.product(line_set, spins):
-                        if spin == Spin.up or len(spins) == 1:
-                            label = line['label']
-                            densities = line['dens'][spin][mask]
-                        else:
-                            label = ''
-                            densities = -line['dens'][spin][mask]
-
-                        line_style = '-'
-                        if label:
-                            if any(i in label for i in ['py', 'dyz']):
-                                line_style = '--'
-                            elif any(i in label for i in ['pz', 'dxz']):
-                                line_style = ':'
-                            elif any(i in label for i in ['dz2']):
-                                line_style = '-.'
-                            elif any(i in label for i in ['x2-y2']):
-                                line_style = (5, (10, 3))
-
-                        ax.fill_betweenx(
-                            energies,
-                            densities,
-                            0,
-                            lw=0,
-                            facecolor=line['colour'],
-                            alpha=line['alpha'],
-                        )
-                        ax.plot(densities, energies, label=label, color=line['colour'], ls=line_style, lw=1.0)
-
-                # x and y axis reversed versus normal dos plotting
-                ax.set_ylim(*ylim)
-                if len(spins) == 1:
-                    ax.set_xlim(0, plot_data['ymax'])
-                else:
-                    ax.set_xlim(plot_data['ymin'], plot_data['ymax'])
-
-                if dos_label is not None:
-                    ax.set_xlabel(dos_label)
-
-                ax.set_xticklabels([])
-                ax.set_yticklabels([])
-                ax.legend(loc=2, frameon=False, ncol=1, bbox_to_anchor=(1.0, 1.0), fontsize=9)
+                ax = self.plot_dos(ax, dos_plotter, dos_label, dos_options, ylim, eref, atoms, colours, orbitals_subplots)
 
             if zero_line:
                 try:
