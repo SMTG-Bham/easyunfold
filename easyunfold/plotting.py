@@ -122,10 +122,7 @@ class UnfoldPlotter:
 
         if vmax is None:
             vmax = sf[:, mask, :].max()
-            vmax = (vmax - vmin) * vscale + vmin
-
-        # Intensity override
-        vmax = vmax / intensity
+            vmax = (vmax - vmin) * (vscale/intensity) + vmin  # vscale and intensity have the equal opposite effect on the colour intensity
 
         for ispin, ax_ in zip(range(nspin), axes):
             if contour_plot:
@@ -241,6 +238,7 @@ class UnfoldPlotter:
         title: Union[None, str] = None,
         vmin: Union[None, float] = None,
         vmax: Union[None, float] = None,
+        intensity: float = 1.0,
     ):
         """
         Plot spectral function defined as RGBA colours
@@ -287,7 +285,7 @@ class UnfoldPlotter:
 
         # Clip the alpha range
         alpha = sf[:, :, :, 3]
-        alpha = (alpha - vmin) / (vmax - vmin) * (1 / vscale)
+        alpha = (alpha - vmin) / (vmax - vmin) * (intensity / vscale)  # vscale & intensity have equal opposite effects
         alpha = np.clip(alpha, 0, 1)
         sf[:, :, :, 3] = alpha
 
@@ -530,6 +528,7 @@ class UnfoldPlotter:
             use_subplot=False,
             colours=('r', 'g', 'b', 'purple'),
             colorspace='lab',
+            intensity=1.0,
     ):
         """
         Plot projected spectral function onto multiple subplots or a single plot with color mapping.
@@ -598,7 +597,7 @@ class UnfoldPlotter:
             mask = (eng < (emax + eref)) & (eng > (emin + eref))
             vmin = spectral_function[:, mask, :].min()
             vmax = spectral_function[:, mask, :].max()
-            vmax = (vmax - vmin) * vscale + vmin
+            vmax = (vmax - vmin) * (vscale / intensity) + vmin  # vscale & intensity have equal opposite effects
             vmaxs.append(vmax)
 
         # Workout the vmax and vmin
