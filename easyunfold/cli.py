@@ -34,7 +34,7 @@ def easyunfold():
 
 
 @easyunfold.command()
-@click.option('--time-reversal/--no-time-reversal', default=True)  # TODO: Add help message??
+@click.option('--time-reversal/--no-time-reversal', default=True, help='Whether to assume time-reversal symmetry.', show_default=True)
 @click.argument('pc-file')
 @click.argument('sc-file')
 @click.argument('kpoints')

@@ -68,7 +68,7 @@ def rotate_kpt(k: np.ndarray, opt: np.ndarray):
 
 def expand_K_by_symmetry(kpt: Union[list, np.ndarray], opts_pc: np.ndarray, opts_sc: np.ndarray, time_reversal: bool = True):
     """
-    Expend the sampling of the PC kpoints due to symmetry breaking of the supercell cell.
+    Expand the sampling of the PC kpoints due to symmetry breaking of the supercell cell.
 
     :returns: Expanded kpoints and corresponding weights for each primitive cell kpoint.
     """
@@ -145,6 +145,7 @@ class UnfoldKSet(MSONable):
         :param pc_latt: A 3x3 matrix of row lattice vectors of the primitive cell
         :param pc_opts: Symmetry operations of the primitive cell
         :param sc_opts: Symmetry operations of the supercell
+        :param time_reversal: Whether to assume time-reversal symmetry or not
         :param expand: Whether to expand the kpoint to take account of broken symmetry or not
         :param expansion_results: Using existing results of symmetry expansion
         :param calculated_quantities: Existing calculated quantities
@@ -219,7 +220,7 @@ class UnfoldKSet(MSONable):
         :param kpts_pc: A list of kpoints in the PC
         :param pc: Primitive cell structure
         :param sc: Supercell structure
-        :param time_reversal: Assumes time-reversal symmetry
+        :param time_reversal: Whether to assume time-reversal symmetry or not
         :param expand: Whether to expand the kpoint to take account of broken symmetry or not
         :param symprec: Symmetry detection precision
 
@@ -887,7 +888,7 @@ class Unfold:
         # If this kpoint is actuall -K0, use the relationship C_{k}(G) = C_{-k}*(-G)
         # Since the coefficients are on a grid, we can just inverse the G vectors (unit of reciprocal lattice vector).
         # There is no need to take conjugate as we only care about the norm.
-        # GallIndex stores the index of each plane-weave coefficients, and is to used to assign the coefficients
+        # GallIndex stores the index of each plane-wave coefficients, and is to used to assign the coefficients
         # to the 3D grid, so we just need to inverse it here.
         if time_reversal:
             GallIndex *= -1
