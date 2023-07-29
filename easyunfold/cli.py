@@ -208,82 +208,6 @@ def unfold_calculate(ctx, wavefunc, save_as, gamma, ncl):
     click.echo('Unfolding data written to ' + out_path)
 
 
-def add_plot_options(func):
-    """Added common plotting options to a function"""
-    click.option('--gamma', is_flag=True, help='Is the calculation a gamma only one?', show_default=True)(func)
-    click.option('--ncl', is_flag=True, help='Is the calculation with non-colinear spin?', show_default=True)(func)
-    click.option('--npoints', type=int, default=2000, help='Number of bins for the energy.', show_default=True)(func)
-    click.option('--sigma', type=float, default=0.02, help='Smearing width for the energy in eV.', show_default=True)(func)
-    click.option('--eref', type=float, help='Reference energy in eV.')(func)
-    click.option('--emin', type=float, default=-5., help='Minimum energy in eV relative to the reference.', show_default=True)(func)
-    click.option('--emax', type=float, default=5., help='Maximum energy in eV relative to the reference.', show_default=True)(func)
-    click.option('--colour-norm',
-                 type=float,
-                 help='A normalisation/scaling factor for the colour mapping. Smaller values will increase colour '
-                 'intensity.',
-                 default=1.0,
-                 show_default=True)(func)
-    click.option('--out-file', default='unfold.png', help='Name of the output file.', show_default=True)(func)
-    click.option('--cmap', default='PuRd', help='Name of the colour map to use.', show_default=True)(func)
-    click.option('--show', is_flag=True, default=False, help='Show the plot interactively.')(func)
-    click.option('--no-symm-average',
-                 is_flag=True,
-                 default=False,
-                 help='Do not include symmetry related kpoints for averaging.',
-                 show_default=True)(func)
-    click.option('--dos',
-                 help='Path to vasprun.xml(.gz) file from which to read the density of states (DOS) information. '
-                 'If set, the density of states will be plotted alongside the unfolded bandstructure. '
-                 'For GGA bandstructures, this should not be the vasprun.xml(.gz) from the bandstructure '
-                 'calculation (-> non-uniform kpoint mesh), but rather the preceding SCF or separate DOS '
-                 'calculation.')(func)
-    click.option('--dos-label', type=str, help='Axis label for DOS if included.', show_default=True)(func)
-    click.option('--zero-line', is_flag=True, default=False, help='Plot horizontal line at zero energy.', show_default=True)(func)
-    click.option('--dos-elements',
-                 help='Elemental orbitals to plot (e.g. "C.s.p,O") for DOS if included. If not specified, will be '
-                 'set to the orbitals of `--atoms` (if specified)')(func)
-    click.option('--dos-orbitals',
-                 help='Orbitals to split into lm-decomposed (e.g. p -> px, py, pz) contributions (e.g. "S.p") '
-                 'for DOS if included.')(func)
-    click.option('--dos-atoms', help='Atoms to include (e.g. "O.1.2.3,Ru.1.2.3") for DOS if included.')(func)
-    click.option('--legend-cutoff',
-                 type=float,
-                 default=3,
-                 help='Cut-off in % of total DOS that determines if a line is given a label.',
-                 show_default=True)(func)
-    click.option('--gaussian', type=float, help='Standard deviation of DOS gaussian broadening in eV.', default=0.05,
-                 show_default=True)(func)
-    click.option('--scale', type=float, help='Scaling factor for the DOS plot.', default=1.0)(func)
-    click.option('--no-total', is_flag=True, default=False, help="Don't plot the total density of states.")(func)
-    click.option('--total-only', is_flag=True, default=False, help='Only plot the total density of states.')(func)
-    click.option('--procar',
-                 multiple=True,
-                 default=['PROCAR'],
-                 help=('PROCAR file(s) for atomic weighting, can be passed multiple times if more than one PROCAR '
-                       'should be used. Default is to read PROCAR in current directory'))(func)
-    click.option('--atoms',
-                 help='Atoms to be used for weighting, as a comma-separated list (e.g. "Na,Bi,S"). '
-                 'The POSCAR or CONTCAR file must be present in the current directory for this, '
-                 'otherwise use `--atoms-idx`.')(func)
-    click.option('--atoms-idx',
-                 help='Recommended to use `--atoms` if possible, otherwise use this. Indices of the atoms to be used '
-                 'for weighting (1-indexed), comma-separated and "-" can be used to define ranges (e.g. '
-                 '"1-20,21,22,23"). If using with plot-projections, different groups (i.e. colour projections) '
-                 'should be separated by "|" (e.g. "1-20|21,22,23|36").')(func)
-    click.option('--orbitals',
-                 help='Orbitals to be used for weighting, comma-separated (e.g. "s,p"). If different for different '
-                 'atom groups (specified with `--atoms`/`--atoms-idx`, then different groups should be separated '
-                 'by "|" (e.g. "px,py|s|p,d").')(func)
-    click.option('--title', help='Title to be used')(func)
-    click.option('--width', help='Width of the figure', type=float, default=4., show_default=True)(func)
-    click.option('--height', help='Height of the figure', type=float, default=3., show_default=True)(func)
-    click.option('--dpi', help='DPI for the figure when saved as raster image.', type=int, default=300, show_default=True)(func)
-    click.option('--mpl-style-file',
-                 type=click.Path(exists=True, file_okay=True, dir_okay=False),
-                 help='Use this file to customise the matplotlib style sheet')(func)
-    return func
-
-
 @unfold.command('effective-mass')
 @click.pass_context
 @click.option('--intensity-threshold', type=float, default=0.1, help='Intensity threshold for detecting valid bands.', show_default=True)
@@ -382,6 +306,82 @@ def unfold_effective_mass(ctx, intensity_threshold, spin, band_filter, npoints, 
                                                 carrier=carrier,
                                                 idx=int(idx),
                                                 save=fname + f'_fit_{carrier}_{idx}' + ext)
+
+
+def add_plot_options(func):
+    """Added common plotting options to a function"""
+    click.option('--gamma', is_flag=True, help='Is the calculation a gamma only one?', show_default=True)(func)
+    click.option('--ncl', is_flag=True, help='Is the calculation with non-colinear spin?', show_default=True)(func)
+    click.option('--npoints', type=int, default=2000, help='Number of bins for the energy.', show_default=True)(func)
+    click.option('--sigma', type=float, default=0.02, help='Smearing width for the energy in eV.', show_default=True)(func)
+    click.option('--eref', type=float, help='Reference energy in eV.')(func)
+    click.option('--emin', type=float, default=-5., help='Minimum energy in eV relative to the reference.', show_default=True)(func)
+    click.option('--emax', type=float, default=5., help='Maximum energy in eV relative to the reference.', show_default=True)(func)
+    click.option('--colour-norm',
+                 type=float,
+                 help='A normalisation/scaling factor for the colour mapping. Smaller values will increase colour '
+                 'intensity.',
+                 default=1.0,
+                 show_default=True)(func)
+    click.option('--out-file', default='unfold.png', help='Name of the output file.', show_default=True)(func)
+    click.option('--cmap', default='PuRd', help='Name of the colour map to use.', show_default=True)(func)
+    click.option('--show', is_flag=True, default=False, help='Show the plot interactively.')(func)
+    click.option('--no-symm-average',
+                 is_flag=True,
+                 default=False,
+                 help='Do not include symmetry related kpoints for averaging.',
+                 show_default=True)(func)
+    click.option('--dos',
+                 help='Path to vasprun.xml(.gz) file from which to read the density of states (DOS) information. '
+                 'If set, the density of states will be plotted alongside the unfolded bandstructure. '
+                 'For GGA bandstructures, this should not be the vasprun.xml(.gz) from the bandstructure '
+                 'calculation (-> non-uniform kpoint mesh), but rather the preceding SCF or separate DOS '
+                 'calculation.')(func)
+    click.option('--dos-label', type=str, help='Axis label for DOS if included.', show_default=True)(func)
+    click.option('--zero-line', is_flag=True, default=False, help='Plot horizontal line at zero energy.', show_default=True)(func)
+    click.option('--dos-elements',
+                 help='Elemental orbitals to plot (e.g. "C.s.p,O") for DOS if included. If not specified, will be '
+                 'set to the orbitals of `--atoms` (if specified)')(func)
+    click.option('--dos-orbitals',
+                 help='Orbitals to split into lm-decomposed (e.g. p -> px, py, pz) contributions (e.g. "S.p") '
+                 'for DOS if included.')(func)
+    click.option('--dos-atoms', help='Atoms to include (e.g. "O.1.2.3,Ru.1.2.3") for DOS if included.')(func)
+    click.option('--legend-cutoff',
+                 type=float,
+                 default=3,
+                 help='Cut-off in % of total DOS that determines if a line is given a label.',
+                 show_default=True)(func)
+    click.option('--gaussian', type=float, help='Standard deviation of DOS gaussian broadening in eV.', default=0.05,
+                 show_default=True)(func)
+    click.option('--scale', type=float, help='Scaling factor for the DOS plot.', default=1.0)(func)
+    click.option('--no-total', is_flag=True, default=False, help="Don't plot the total density of states.")(func)
+    click.option('--total-only', is_flag=True, default=False, help='Only plot the total density of states.')(func)
+    click.option('--procar',
+                 multiple=True,
+                 default=['PROCAR'],
+                 help=('PROCAR file(s) for atomic weighting, can be passed multiple times if more than one PROCAR '
+                       'should be used. Default is to read PROCAR in current directory'))(func)
+    click.option('--atoms',
+                 help='Atoms to be used for weighting, as a comma-separated list (e.g. "Na,Bi,S"). '
+                 'The POSCAR or CONTCAR file must be present in the current directory for this, '
+                 'otherwise use `--atoms-idx`.')(func)
+    click.option('--atoms-idx',
+                 help='Recommended to use `--atoms` if possible, otherwise use this. Indices of the atoms to be used '
+                 'for weighting (1-indexed), comma-separated and "-" can be used to define ranges (e.g. '
+                 '"1-20,21,22,23"). If using with plot-projections, different groups (i.e. colour projections) '
+                 'should be separated by "|" (e.g. "1-20|21,22,23|36").')(func)
+    click.option('--orbitals',
+                 help='Orbitals to be used for weighting, comma-separated (e.g. "s,p"). If different for different '
+                 'atom groups (specified with `--atoms`/`--atoms-idx`, then different groups should be separated '
+                 'by "|" (e.g. "px,py|s|p,d").')(func)
+    click.option('--title', help='Title to be used')(func)
+    click.option('--width', help='Width of the figure', type=float, default=4., show_default=True)(func)
+    click.option('--height', help='Height of the figure', type=float, default=3., show_default=True)(func)
+    click.option('--dpi', help='DPI for the figure when saved as raster image.', type=int, default=300, show_default=True)(func)
+    click.option('--mpl-style-file',
+                 type=click.Path(exists=True, file_okay=True, dir_okay=False),
+                 help='Use this file to customise the matplotlib style sheet')(func)
+    return func
 
 
 @unfold.command('plot')
