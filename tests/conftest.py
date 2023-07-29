@@ -44,6 +44,7 @@ def si_project_dir(datapath, tmp_path):
 def mgo_project_dir(datapath, tmp_path):
     shutil.copy2(datapath('mgo.json'), tmp_path / 'mgo.json')
     shutil.copy2(datapath('PROCAR.mgo'), tmp_path / 'PROCAR')
+    shutil.copy2(datapath('POSCAR.mgo'), tmp_path / 'POSCAR.mgo')
     return tmp_path
 
 

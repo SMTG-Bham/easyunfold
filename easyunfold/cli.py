@@ -394,8 +394,12 @@ def add_plot_options(func):
                        'should be used. Default is to read PROCAR in current directory'))(func)
     click.option('--atoms',
                  help='Atoms to be used for weighting, as a comma-separated list (e.g. "Na,Bi,S"). '
-                 'The POSCAR or CONTCAR file must be present in the current directory for this, '
-                 'otherwise use `--atoms-idx`.')(func)
+                 'The POSCAR or CONTCAR file (matching `--poscar`) must be present, otherwise use `--atoms-idx`.')(func)
+    click.option('--poscar',
+                 help='Path to POSCAR or CONTCAR file from which to read atom indices for weighting.',
+                 default="POSCAR",
+                 show_default=True,
+                 type=str)(func)
     click.option('--atoms-idx',
                  help='Recommended to use `--atoms` if possible, otherwise use this. Indices of the atoms to be used '
                  'for weighting (1-indexed), comma-separated and "-" can be used to define ranges (e.g. '
@@ -418,7 +422,7 @@ def add_plot_options(func):
 @add_mpl_style_option
 def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, dos, dos_label,
                 zero_line, dos_elements, dos_orbitals, dos_atoms, legend_cutoff, gaussian, no_total, total_only, scale, procar, atoms,
-                atoms_idx, orbitals, title, width, height, dpi, intensity):
+                poscar, atoms_idx, orbitals, title, width, height, dpi, intensity):
     """
     Plot the spectral function
 
@@ -426,7 +430,7 @@ def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cm
     """
     _unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, dos, dos_label,
                  zero_line, dos_elements, dos_orbitals, dos_atoms, legend_cutoff, gaussian, no_total, total_only, scale, procar, atoms,
-                 atoms_idx, orbitals, title, width, height, dpi, intensity)
+                 poscar, atoms_idx, orbitals, title, width, height, dpi, intensity)
 
 
 @unfold.command('plot-projections')
@@ -437,7 +441,7 @@ def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cm
 @click.option('--colours', help='Colours to be used for combined plot, comma separated.', default='r,g,b,purple', show_default=True)
 def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, dos,
                             dos_label, zero_line, dos_elements, dos_orbitals, dos_atoms, legend_cutoff, gaussian, no_total, total_only,
-                            scale, procar, atoms, atoms_idx, orbitals, title, combined, colours, width, height, dpi, intensity):
+                            scale, procar, atoms, poscar, atoms_idx, orbitals, title, combined, colours, width, height, dpi, intensity):
     """
     Plot the effective band structure with atomic projections.
     """
@@ -460,7 +464,7 @@ def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, em
 
         # Set dos_elements to match atoms (and orbitals) if set and dos_elements not specified
         if atoms:
-            parsed_atoms, _idx, parsed_orbitals = parse_atoms(atoms, orbitals)
+            parsed_atoms, _idx, parsed_orbitals = parse_atoms(atoms, orbitals, poscar)
             draft_dos_elements = {}
             for i, atom in enumerate(parsed_atoms):
                 if atom not in draft_dos_elements:
@@ -527,6 +531,7 @@ def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, em
                                  symm_average=not no_symm_average,
                                  atoms=atoms,
                                  atoms_idx=atoms_idx,
+                                 poscar=poscar,
                                  orbitals=orbitals,
                                  title=title,
                                  vscale=vscale,
@@ -570,6 +575,7 @@ def _unfold_plot(ctx,
                  scale,
                  procar,
                  atoms,
+                 poscar,
                  atoms_idx,
                  orbitals,
                  title,
@@ -627,7 +633,7 @@ def _unfold_plot(ctx,
                 orbitals_list.append(orbital_sublist)
 
         elif atoms:
-            parsed_atoms, atoms_idx_subplots, orbitals_subplots = parse_atoms(atoms, orbitals)
+            parsed_atoms, atoms_idx_subplots, orbitals_subplots = parse_atoms(atoms, orbitals, poscar)
 
     else:
         atoms_idx_subplots = [None]
@@ -668,7 +674,7 @@ def _unfold_plot(ctx,
 
         # Set dos_elements to match atoms (and orbitals) if set and dos_elements not specified
         if atoms:
-            parsed_atoms, _idx, parsed_orbitals = parse_atoms(atoms, orbitals)
+            parsed_atoms, _idx, parsed_orbitals = parse_atoms(atoms, orbitals, poscar)
             draft_dos_elements = {}
             for i, atom in enumerate(parsed_atoms):
                 if atom not in draft_dos_elements:

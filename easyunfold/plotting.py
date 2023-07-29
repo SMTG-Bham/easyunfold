@@ -523,6 +523,7 @@ class UnfoldPlotter:
             show=False,
             title=None,
             atoms=None,
+            poscar="POSCAR",
             atoms_idx=None,
             orbitals=None,
             use_subplot=False,
@@ -548,7 +549,7 @@ class UnfoldPlotter:
             atoms_idx_subplots = atoms_idx.split('|')  # list of strings
 
         else:  # parse atoms
-            atoms, atoms_idx_subplots, _ = parse_atoms(atoms, orbitals)
+            atoms, atoms_idx_subplots, _ = parse_atoms(atoms, orbitals, poscar)
             # atoms as a list, atoms_idx_subplots as a list of lists
 
         if orbitals is not None:

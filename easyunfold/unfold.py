@@ -1122,22 +1122,22 @@ def process_projection_options(atoms_idx: str, orbitals: str) -> Tuple[list, lis
     return indices, orbitals
 
 
-def read_poscar_contcar_if_present():
+def read_poscar_contcar_if_present(poscar: str = 'POSCAR'):
     """
     Return an ase Atoms() object of the POSCAR or CONTCAR file if present in the current directory.
 
     :returns: ASE Atoms() object
     """
     try:
-        return read_vasp('POSCAR')
+        return read_vasp(poscar)
     except FileNotFoundError:
         try:
             return read_vasp('CONTCAR')
         except FileNotFoundError as exc:
-            raise FileNotFoundError('`POSCAR` or `CONTCAR` not found in current directory!') from exc
+            raise FileNotFoundError(f"`{poscar}` or `CONTCAR` not found in current directory!") from exc
 
 
-def parse_atoms(atoms_to_project: str, orbitals: str):
+def parse_atoms(atoms_to_project: str, orbitals: str, poscar: str):
     """
     Parse the specified atoms (and orbitals if set) from a comma-separated
     string (e.g. "Na,Bi") into a list of strings (e.g. ["Na", "Bi"]), as well
@@ -1146,11 +1146,12 @@ def parse_atoms(atoms_to_project: str, orbitals: str):
 
     :param atoms_to_project: A comma-separted string of atom symbols to project
     :param orbitals: A "|"-separated string of orbital projections
+    :param poscar: The POSCAR file to read atom indices from
 
     :returns: A tuple of lists of atoms, atom indices and the orbitals selected for projection.
     """
     atoms_to_project = re.split(', *', atoms_to_project)
-    ase_atoms = read_poscar_contcar_if_present()
+    ase_atoms = read_poscar_contcar_if_present(poscar)
     try:  # check POTCAR if possible, to check the POSCAR-POTCARs match
         atom_types = get_atomtypes('POTCAR')
 

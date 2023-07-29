@@ -32,7 +32,7 @@ The only difference here is that we turn on the calculation of orbital projectio
 when plotting the unfolded band structure:
 
 ```bash
-easyunfold unfold plot-projections --procar MgO_super/PROCAR --atoms="Mg,O" --combined --emin=-6 \ 
+easyunfold unfold plot-projections --procar MgO_super/PROCAR --atoms="Mg,O" --combined --emin=-6 \
 --emax=20 --intensity 6.5
 ```
 
@@ -87,7 +87,7 @@ In some cases, especially if there are many projection to be plotted at the same
 separated plots for each. This is the default behaviour for `plot-projections`, when `--combined` is not specified.
 
 ```bash
-easyunfold unfold plot-projections --procar MgO_super/PROCAR --atoms="Mg,O" --emin=-6 \ 
+easyunfold unfold plot-projections --procar MgO_super/PROCAR --atoms="Mg,O" --emin=-6 \
 --emax=20 --intensity 6.5
 ```
 
