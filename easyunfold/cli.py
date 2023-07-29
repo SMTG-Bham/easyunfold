@@ -48,7 +48,7 @@ def easyunfold():
 )
 @click.option('--matrix', '-m', help='Transformation matrix')
 @click.option('--symprec', help='Tolerance for determining the symmetry', type=float, default=1e-5, show_default=True)
-@click.option('--out-file', default='easyunfold.json', help='Name of the output file')
+@click.option('--out-file', '-o', default='easyunfold.json', help='Name of the output file')
 @click.option('--no-expand', help='Do not expand the kpoints by symmetry', default=False, is_flag=True)
 @click.option('--nk-per-split', help='Number of band structure kpoints per split.', type=int)
 @click.option('--scf-kpoints',
@@ -146,7 +146,11 @@ def generate(pc_file, code, sc_file, matrix, kpoints, time_reversal, out_file, n
 
 
 @easyunfold.group('unfold')
-@click.option('--data-file', default='easyunfold.json', type=click.Path(exists=True, file_okay=True, dir_okay=False), show_default=True)
+@click.option('--data-file',
+              '-d',
+              default='easyunfold.json',
+              type=click.Path(exists=True, file_okay=True, dir_okay=False),
+              show_default=True)
 @click.pass_context
 def unfold(ctx, data_file):
     """
@@ -164,10 +168,11 @@ def unfold(ctx, data_file):
 @click.pass_context
 def unfold_status(ctx):
     """Print the status"""
-    from easyunfold.unfold import UnfoldKSet
+    from easyunfold.unfold import UnfoldKSet, reduce_kpoints
+
     unfoldset: UnfoldKSet = ctx.obj['obj']
     print_symmetry_data(unfoldset)
-    nkpts_sc = len(unfoldset.expansion_results['reduced_sckpts'])
+    nkpts_sc = len(reduce_kpoints(unfoldset.expansion_results['reduced_sckpts'], time_reversal=unfoldset.time_reversal)[0])
     click.echo()
     click.echo(f'No. of k points in the primitive cell           : {unfoldset.nkpts_orig}')
     click.echo(f'No. of supercell k points                       : {nkpts_sc}')
@@ -214,8 +219,11 @@ def add_mpl_style_option(func):
     Decorator that adds the mpl_style_file option to a command
     """
     func = click.option('--mpl-style-file',
+                        '-m',
+                        required=False,
                         type=click.Path(exists=True, file_okay=True, dir_okay=False),
-                        help='Specify custom plotting mplstyle file')(func)
+                        help='Specify custom plotting mplstyle file',
+                        show_default=True)(func)
     @functools.wraps(func)  # preserve original function metadata
     def wrapper(*args, **kwargs):
         mpl_style_file = kwargs.pop('mpl_style_file', None)
@@ -245,7 +253,7 @@ def add_mpl_style_option(func):
 @click.option('--plot-fit', is_flag=True, default=False, help='Generate plots of the band edge and parabolic fits.')
 @click.option('--fit-label', help='Which branch to use for plot fitting. e.g. electrons:0', default='electrons:0', show_default=True)
 @click.option('--band-filter', default=None, type=int, help='Only displace information for this band.')
-@click.option('--out-file', default='unfold-effective-mass.png', help='Name of the output file.', show_default=True)
+@click.option('--out-file', '-o', default='unfold-effective-mass.png', help='Name of the output file.', show_default=True)
 def unfold_effective_mass(ctx, intensity_threshold, spin, band_filter, npoints, extrema_detect_tol, degeneracy_detect_tol, nocc, plot,
                           plot_fit, fit_label, out_file):
     """
@@ -340,13 +348,13 @@ def add_plot_options(func):
     click.option('--eref', type=float, help='Reference energy in eV.')(func)
     click.option('--emin', type=float, default=-5., help='Minimum energy in eV relative to the reference.', show_default=True)(func)
     click.option('--emax', type=float, default=5., help='Maximum energy in eV relative to the reference.', show_default=True)(func)
-    click.option('--colour-norm',
+    click.option('--vscale',
                  type=float,
                  help='A normalisation/scaling factor for the colour mapping. Smaller values will increase colour '
                  'intensity.',
                  default=1.0,
                  show_default=True)(func)
-    click.option('--out-file', default='unfold.png', help='Name of the output file.', show_default=True)(func)
+    click.option('--out-file', '-o', default='unfold.png', help='Name of the output file.', show_default=True)(func)
     click.option('--cmap', default='PuRd', help='Name of the colour map to use.', show_default=True)(func)
     click.option('--show', is_flag=True, default=False, help='Show the plot interactively.')(func)
     click.option('--no-symm-average',
@@ -401,6 +409,7 @@ def add_plot_options(func):
     click.option('--width', help='Width of the figure', type=float, default=4., show_default=True)(func)
     click.option('--height', help='Height of the figure', type=float, default=3., show_default=True)(func)
     click.option('--dpi', help='DPI for the figure when saved as raster image.', type=int, default=300, show_default=True)(func)
+    click.option('--intensity', default=1.0, help='Color intensity for combined plot', type=float, show_default=True)(func)
     return func
 
 
@@ -408,17 +417,17 @@ def add_plot_options(func):
 @click.pass_context
 @add_plot_options
 @add_mpl_style_option
-def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, colour_norm, dos, dos_label,
+def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, dos, dos_label,
                 zero_line, dos_elements, dos_orbitals, dos_atoms, legend_cutoff, gaussian, no_total, total_only, scale, procar, atoms,
-                atoms_idx, orbitals, title, width, height, dpi):
+                atoms_idx, orbitals, title, width, height, dpi, intensity):
     """
     Plot the spectral function
 
     This command uses the stored unfolding data to plot the effective bands structure (EBS) using the spectral function.
     """
-    _unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, colour_norm, dos, dos_label,
+    _unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, dos, dos_label,
                  zero_line, dos_elements, dos_orbitals, dos_atoms, legend_cutoff, gaussian, no_total, total_only, scale, procar, atoms,
-                 atoms_idx, orbitals, title, width, height, dpi)
+                 atoms_idx, orbitals, title, width, height, dpi, intensity)
 
 
 @unfold.command('plot-projections')
@@ -427,15 +436,14 @@ def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cm
 @add_mpl_style_option
 @click.option('--combined/--no-combined', is_flag=True, default=False, help='Plot all projections in a combined graph.')
 @click.option('--colours', help='Colours to be used for combined plot, comma separated.', default='r,g,b,purple', show_default=True)
-def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, colour_norm, dos,
+def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, dos,
                             dos_label, zero_line, dos_elements, dos_orbitals, dos_atoms, legend_cutoff, gaussian, no_total, total_only,
-                            scale, procar, atoms, atoms_idx, orbitals, title, combined, colours, width, height, dpi):
+                            scale, procar, atoms, atoms_idx, orbitals, title, combined, colours, width, height, dpi, intensity):
     """
     Plot the effective band structure with atomic projections.
     """
     from easyunfold.unfold import UnfoldKSet
     from easyunfold.plotting import UnfoldPlotter
-    import matplotlib.pyplot as plt
 
     unfoldset: UnfoldKSet = ctx.obj['obj']
     click.echo(f'Loading projections from: {procar}')
@@ -522,9 +530,11 @@ def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, em
                                  atoms_idx=atoms_idx,
                                  orbitals=orbitals,
                                  title=title,
-                                 colour_norm=colour_norm,
+                                 vscale=vscale,
                                  use_subplot=not combined,
+                                 intensity=intensity,
                                  figsize=(width, height),
+                                 dpi=dpi,
                                  colours=colours.split(',') if colours is not None else None)
 
     if out_file:
@@ -532,7 +542,7 @@ def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, em
         click.echo(f'Unfolded band structure saved to {out_file}')
 
     if show:
-        plt.show()
+        fig.show(block=True)
 
 
 def _unfold_plot(ctx,
@@ -547,7 +557,7 @@ def _unfold_plot(ctx,
                  cmap,
                  ncl,
                  no_symm_average,
-                 colour_norm,
+                 vscale,
                  dos,
                  dos_label,
                  zero_line,
@@ -567,6 +577,7 @@ def _unfold_plot(ctx,
                  width,
                  height,
                  dpi,
+                 intensity,
                  ax=None):
     """
     Routine for plotting the spectral function.
@@ -719,17 +730,18 @@ def _unfold_plot(ctx,
                                          save=out_file,
                                          show=False,
                                          ylim=(emin, emax),
-                                         colour_norm=colour_norm,
+                                         vscale=vscale,
                                          cmap=cmap,
                                          title=title,
                                          dpi=dpi,
+                                         intensity=intensity,
                                          ax=ax)
 
     if out_file:
         click.echo(f'Unfolded band structure saved to {out_file}')
 
     if show:
-        fig.show()
+        fig.show(block=True)
 
 
 def print_symmetry_data(kset):

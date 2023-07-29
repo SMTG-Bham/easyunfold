@@ -8,6 +8,7 @@ The main module for unfolding workflow and algorithm
 import re
 import warnings
 from typing import Union, List, Tuple
+from packaging import version
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -164,8 +165,10 @@ class UnfoldKSet(MSONable):
         self.dft_code = dft_code
         if metadata is None:
             metadata = {}
+        # Not loaded from a file so populate this field
+        if 'program_version' not in metadata:
+            metadata['program_version'] = __version__
         self.metadata = metadata
-        self.metadata['program_version'] = __version__
         self.transient_quantities = {}
 
         # Transient properties
@@ -173,6 +176,19 @@ class UnfoldKSet(MSONable):
         self.reduced_sckpts_map = None
         if self.expansion_results is None:
             self.expand_pc_kpoints()
+
+        self.check_version()
+
+    def check_version(self):
+        """Check the version of the program"""
+        vnow = version.parse(__version__)
+        vcreated = version.parse(self.metadata['program_version'])
+        if vnow > vcreated:
+            print(f'The data file was generated with easyunfold {vcreated}, current {vnow}.')
+        if vcreated == version.parse('0.1.4'):
+            if self.time_reversal:
+                print(('Version 0.1.4 is known to have a bug with supercell kpoints with time-reversal symmetry\n'
+                       'Please regenerate the data file with a newer version.'))
 
     @property
     def is_calculated(self) -> bool:
@@ -292,7 +308,8 @@ class UnfoldKSet(MSONable):
         # We now have a bunch of supercell kpoints for each set of expanded kpoints
         # Try to find duplicated SC kpoints
         all_sc = np.array(all_sc)
-        reduced_sckpts, _, sc_kpts_map = reduce_kpoints(all_sc, time_reversal=self.time_reversal)
+        # Do not use time-reversal symmetry for reduction here, as we need to keep k = K - G_0 valid!
+        reduced_sckpts, _, sc_kpts_map = reduce_kpoints(all_sc, time_reversal=False)
         sc_kpts_map = list(sc_kpts_map)
 
         # Mapping between the pckpts to the reduced sckpts
@@ -323,6 +340,9 @@ class UnfoldKSet(MSONable):
         if self.expansion_results.get('reduced_sckpts') is None:
             self.generate_sc_kpoints()
         kpoints = np.asarray(self.expansion_results['reduced_sckpts'])
+        # Reduce the number of supercell kpoint via time-reversal symmetry
+        if self.time_reversal:
+            kpoints = reduce_kpoints(kpoints, time_reversal=self.time_reversal)[0]
         weights = None
         if nk_per_split is None:
             if scf_kpoints_and_weights:
@@ -824,18 +844,12 @@ class Unfold:
         K0_wrapped = wrap_kpoints(K0)
         for ii in range(self.wfc.nkpts):
             if np.alltrue(np.abs(kpts_wrapped[ii] - K0_wrapped) < 1E-5):
-                return ii + 1
+                return ii + 1, False
             # Check for kpoint related with time-reversal symmetry
             if self.time_reversal and np.alltrue(np.abs(kpts_wrapped[ii] + K0_wrapped) < 1E-5):
-                return ii + 1
+                # This actually returns the index of -K0
+                return ii + 1, True
         raise ValueError('Cannot find the corresponding K-points in WAVECAR!')
-
-    def k2K_map(self, kpath) -> List[int]:
-        """
-        Return the map from primitive-cell k-points to supercell k-points.
-        """
-
-        return [self.find_K_index(find_K_from_k(k, self.M)[0]) - 1 for k in kpath]
 
     def spectral_weight_k(self, k0, whichspin=1):
         r"""
@@ -859,15 +873,25 @@ class Unfold:
         # k0 = G0 + K0
         K0, G0 = find_K_from_k(k0, self.M)
         # find index of K0
-        ikpt = self.find_K_index(K0)
+        ikpt, time_reversal = self.find_K_index(K0)
 
         # get the overlap G-vectors
         Gvalid, Gall = self.get_ovlap_G(ikpt=ikpt)
+
         # Gnew = Gvalid + k0 - K0
         Goffset = Gvalid + G0[np.newaxis, :]
 
         # Index of the Gvalid in 3D grid
         GallIndex = Gall % self.wfc.mesh_size[np.newaxis, :]
+
+        # If this kpoint is actuall -K0, use the relationship C_{k}(G) = C_{-k}*(-G)
+        # Since the coefficients are on a grid, we can just inverse the G vectors (unit of reciprocal lattice vector).
+        # There is no need to take conjugate as we only care about the norm.
+        # GallIndex stores the index of each plane-weave coefficients, and is to used to assign the coefficients
+        # to the 3D grid, so we just need to inverse it here.
+        if time_reversal:
+            GallIndex *= -1
+
         GoffsetIndex = Goffset % self.wfc.mesh_size[np.newaxis, :]
 
         # 3d grid for planewave coefficients
