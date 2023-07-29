@@ -51,7 +51,7 @@ class UnfoldPlotter:
         figsize=(4, 3),
         ylim=(-5, 5),
         dpi=150,
-        colour_norm=1.0,
+        vscale=1.0,
         contour_plot=False,
         alpha=1.0,
         save=False,
@@ -72,7 +72,7 @@ class UnfoldPlotter:
         :param figsize: Size of the figure.
         :param ylim: Plotting limit for the y-axis, with respect to `eref`.
         :param dpi: DPI of the generated graph.
-        :param colour_norm: A normalisation/scaling factor for the colour map. Smaller values will increase the colour intensity.
+        :param vscale: A normalisation/scaling factor for the colour map. Smaller values will increase the colour intensity.
         :param contour_plot): Whether to use contour plot instead of normal meshed color map.
         :param alphathe color map.
         :param savethe file where the generated figure is saved.
@@ -122,7 +122,7 @@ class UnfoldPlotter:
 
         if vmax is None:
             vmax = sf[:, mask, :].max()
-            vmax = (vmax - vmin) * colour_norm + vmin
+            vmax = (vmax - vmin) * vscale + vmin
 
         # Intensity override
         vmax = vmax / intensity
@@ -234,7 +234,7 @@ class UnfoldPlotter:
         figsize=(4, 3),
         ylim=(-3, 3),
         dpi: float = 150,
-        colour_norm: float = 1.0,
+        vscale: float = 1.0,
         save: bool = False,
         ax: Union[None, plt.Axes] = None,
         show: bool = False,
@@ -255,7 +255,7 @@ class UnfoldPlotter:
         :param ax: An existing plotting axis to be used.
         :param vmin: Lower bound for constructing the alpha channel.
         :param vmax: Upper bound for constructing the alpha channel.
-        :param colour_norm: Scaling factor for the alpha channel.
+        :param vscale: Scaling factor for the alpha channel.
         :param title: Title for the plot.
 
         :returns: the figure generated containing the spectral function.
@@ -287,7 +287,7 @@ class UnfoldPlotter:
 
         # Clip the alpha range
         alpha = sf[:, :, :, 3]
-        alpha = (alpha - vmin) / (vmax - vmin) * (1 / colour_norm)
+        alpha = (alpha - vmin) / (vmax - vmin) * (1 / vscale)
         alpha = np.clip(alpha, 0, 1)
         sf[:, :, :, 3] = alpha
 
@@ -516,7 +516,7 @@ class UnfoldPlotter:
             figsize=(4, 3),
             ylim=(-5, 5),
             dpi=150,
-            colour_norm=1.0,
+            vscale=1.0,
             contour_plot=False,
             alpha=1.0,
             save=False,
@@ -598,7 +598,7 @@ class UnfoldPlotter:
             mask = (eng < (emax + eref)) & (eng > (emin + eref))
             vmin = spectral_function[:, mask, :].min()
             vmax = spectral_function[:, mask, :].max()
-            vmax = (vmax - vmin) * colour_norm + vmin
+            vmax = (vmax - vmin) * vscale + vmin
             vmaxs.append(vmax)
 
         # Workout the vmax and vmin
@@ -622,7 +622,7 @@ class UnfoldPlotter:
                     spectral_function,
                     eref=eref,
                     save=save,
-                    colour_norm=colour_norm,
+                    vscale=vscale,
                     vmax=vmax,
                     vmin=vmin,
                     cmap=cmap,
@@ -675,7 +675,7 @@ class UnfoldPlotter:
                 eref=eref,
                 save=save,
                 title=title,
-                colour_norm=colour_norm,
+                vscale=vscale,
                 ax=ax,
                 figsize=figsize,
                 show=show,

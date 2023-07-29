@@ -350,8 +350,7 @@ def add_plot_options(func):
     click.option('--emax', type=float, default=5., help='Maximum energy in eV relative to the reference.', show_default=True)(func)
     click.option('--vscale',
                  type=float,
-                 help='A normalisation/scaling factor for the colour mapping. Smaller values will increase colour '
-                 'intensity.',
+                 help='A normalisation/scaling factor for the colour mapping. Smaller values will increase colour intensity.',
                  default=1.0,
                  show_default=True)(func)
     click.option('--out-file', '-o', default='unfold.png', help='Name of the output file.', show_default=True)(func)
