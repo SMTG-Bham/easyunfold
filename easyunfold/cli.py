@@ -608,10 +608,10 @@ def _unfold_plot(ctx,
 
     # Setup the atoms_idx and orbitals
     if atoms or atoms_idx:
-        # Process the PROCAR
+        # Process the PROCARs
         click.echo(f'Loading projections from: {procar}')
         try:
-            unfoldset.load_procar(procar)
+            unfoldset.load_procars(procar)
         except FileNotFoundError as exc:
             click.echo(f'Could not find and parse the --procar file: {procar} – needed for atomic projections!')
             raise click.Abort() from exc

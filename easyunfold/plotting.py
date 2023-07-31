@@ -601,7 +601,7 @@ class UnfoldPlotter:
         :returns: Generated plot.
         """
         unfoldset = self.unfold
-        unfoldset.load_procar(procar)
+        unfoldset.load_procars(procar)
         nspin = unfoldset.calculated_quantities['spectral_weights_per_set'][0].shape[0]
 
         if atoms_idx is not None:

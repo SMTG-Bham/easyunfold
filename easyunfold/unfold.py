@@ -411,17 +411,17 @@ class UnfoldKSet(MSONable):
 
         return averaged_weights, weights_per_set
 
-    def load_procar(self, procar: Union[str, List[str]], force: bool = False):
+    def load_procars(self, procars: Union[str, List[str]], force: bool = False):
         """Read in PROCAR for band-based projection"""
-        if self.procars and not force:
+        if self.procar and not force:
             pass
 
-        if not isinstance(procar, (tuple, list)):
-            procar = [procar]
+        if not isinstance(procars, (tuple, list)):
+            procars = [procars]  # list of PROCAR files
 
         # Load the procars
         # Note that this method should be generalised for non-VASP as well.
-        self.transient_quantities['procars'] = [Procar(path) for path in procar]
+        self.transient_quantities['procars'] = Procar(procars)
         # Construct mapping from the primitive cell kpoints to those in the PROCAR
         self.transient_quantities['procars_kmap'] = self._construct_procar_kmap()
 
@@ -436,20 +436,17 @@ class UnfoldKSet(MSONable):
                 K_super, _ = find_K_from_k(kpoint, self.M)
                 # Search for kpoints in the procar
                 found = False
-                for iprocar, procar in enumerate(self.procars):
-                    for ikpt, kprocar in enumerate(procar.kvecs[0]):
-                        if kpoints_equal(K_super, kprocar, time_reversal=self.time_reversal):
-                            kidx_procar_sets[-1].append([iprocar, ikpt])
-                            found = True
-                            break
-                    if found:
+                for ikpt, kprocar in enumerate(self.procar.kvecs[0]):
+                    if kpoints_equal(K_super, kprocar, time_reversal=self.time_reversal):
+                        kidx_procar_sets[-1].append(ikpt)
+                        found = True
                         break
                 if found is False:
                     raise ValueError(f'Cannot found kpoint {K_super} in PROCAR files')
         return kidx_procar_sets
 
     @property
-    def procars(self) -> Union[None, Procar]:
+    def procar(self) -> Union[None, Procar]:
         """Loaded PROCARS"""
         return self.transient_quantities.get('procars')
 
@@ -497,7 +494,7 @@ class UnfoldKSet(MSONable):
 
         if also_spectral_function:
             if atoms_idx is not None:
-                # Read in the project weights
+                # Read in the projected weights
                 band_weight_sets = self.get_band_weight_sets(atoms_idx, orbitals)
             else:
                 band_weight_sets = None
@@ -531,18 +528,18 @@ class UnfoldKSet(MSONable):
         :returns: A list of weights for each band at each expanded kpoint
         """
         if procars:
-            self.load_procar(procars)
-        if self.procars is None:
+            self.load_procars(procars)
+        if self.procar is None:
             raise RuntimeError('PROCAR files needs to be loaded')
 
-        projs = [procar.get_projection(atoms_idx, orbitals) for procar in self.procars]
+        proj = self.procar.get_projection(atoms_idx, orbitals)
         # Construct band weighting, same structure as o
         band_weight_sets = []
         for kset in self.transient_quantities['procars_kmap']:
             band_weight_sets.append([])
             # Search
-            for iprocar, kidx in kset:
-                band_weight = projs[iprocar][:, kidx]
+            for kidx in kset:
+                band_weight = proj[:, kidx]
                 band_weight_sets[-1].append(band_weight)
         return band_weight_sets
 
@@ -1009,7 +1006,7 @@ def spectral_weight_multiple_source(kpoints: list, unfold_objs: List[Unfold], tr
         assert ns == obj.wfc.nspins
 
     # When reading from multiple wave function files (e.g. WAVECAR for VASP),
-    # it is possible that each of them may have differnt number of bands.
+    # it is possible that each of them may have different number of bands.
     # Ff so, we take only the first N bands, where N is the minimum values of bands
     nb = []
     for source in unfold_objs:
