@@ -350,7 +350,8 @@ def add_plot_options(func):
     click.option('--intensity', default=1.0, help='Scaling factor for the colour intensity.', type=float, show_default=True)(func)
     click.option('--vscale',
                  type=float,
-                 help='A normalisation/scaling factor for the colour mapping. Equivalent to (1/intensity).',
+                 help='A normalisation/scaling factor for the colour mapping. Equivalent to (1/intensity). '
+                      'Will be deprecated in future versions.',  # TODO: deprecate
                  default=1.0,
                  show_default=True)(func)
     click.option('--out-file', '-o', default='unfold.png', help='Name of the output file.', show_default=True)(func)
