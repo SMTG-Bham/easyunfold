@@ -342,8 +342,6 @@ def add_plot_options(func):
     """
     Decorator that adds common plotting options to a function
     """
-    click.option('--gamma', is_flag=True, help='Is the calculation a gamma only one?', show_default=True)(func)
-    click.option('--ncl', is_flag=True, help='Is the calculation with non-colinear spin?', show_default=True)(func)
     click.option('--npoints', type=int, default=2000, help='Number of bins for the energy.', show_default=True)(func)
     click.option('--sigma', type=float, default=0.02, help='Smearing width for the energy in eV.', show_default=True)(func)
     click.option('--eref', type=float, help='Reference energy in eV.')(func)
@@ -421,7 +419,7 @@ def add_plot_options(func):
 @click.pass_context
 @add_plot_options
 @add_mpl_style_option
-def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, dos, dos_label, zero_line,
+def unfold_plot(ctx, npoints, sigma, eref, out_file, show, emin, emax, cmap, no_symm_average, vscale, dos, dos_label, zero_line,
                 dos_elements, dos_orbitals, dos_atoms, legend_cutoff, gaussian, no_total, total_only, scale, procar, atoms, poscar,
                 atoms_idx, orbitals, title, width, height, dpi, intensity):
     """
@@ -429,7 +427,7 @@ def unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cm
 
     This command uses the stored unfolding data to plot the effective bands structure (EBS) using the spectral function.
     """
-    _unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, dos, dos_label,
+    _unfold_plot(ctx, npoints, sigma, eref, out_file, show, emin, emax, cmap, no_symm_average, vscale, dos, dos_label,
                  zero_line, dos_elements, dos_orbitals, dos_atoms, legend_cutoff, gaussian, no_total, total_only, scale, procar, atoms,
                  poscar, atoms_idx, orbitals, title, width, height, dpi, intensity)
 
@@ -513,7 +511,7 @@ def process_dos(dos, dos_elements, dos_orbitals, dos_atoms, gaussian, total_only
 @add_mpl_style_option
 @click.option('--combined/--no-combined', is_flag=True, default=False, help='Plot all projections in a combined graph.')
 @click.option('--colours', help='Colours to be used for combined plot, comma separated.', default='r,g,b,purple', show_default=True)
-def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, dos,
+def unfold_plot_projections(ctx, npoints, sigma, eref, out_file, show, emin, emax, cmap, no_symm_average, vscale, dos,
                             dos_label, zero_line, dos_elements, dos_orbitals, dos_atoms, legend_cutoff, gaussian, no_total, total_only,
                             scale, procar, atoms, poscar, atoms_idx, orbitals, title, combined, colours, width, height, dpi, intensity):
     """
@@ -534,13 +532,11 @@ def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, em
                                  dos_label=dos_label,
                                  dos_options=dos_options,
                                  zero_line=zero_line,
-                                 gamma=gamma,
                                  npoints=npoints,
                                  sigma=sigma,
                                  eref=eref,
                                  ylim=(emin, emax),
                                  cmap=cmap,
-                                 ncl=ncl,
                                  symm_average=not no_symm_average,
                                  atoms=atoms,
                                  atoms_idx=atoms_idx,
@@ -563,7 +559,6 @@ def unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, em
 
 
 def _unfold_plot(ctx,
-                 gamma,
                  npoints,
                  sigma,
                  eref,
@@ -572,7 +567,6 @@ def _unfold_plot(ctx,
                  emin,
                  emax,
                  cmap,
-                 ncl,
                  no_symm_average,
                  vscale,
                  dos,
@@ -655,10 +649,8 @@ def _unfold_plot(ctx,
     # Collect spectral functions and scale
     all_sf = []
     for this_idx, this_orbitals in zip(atoms_idx_subplots, orbitals_subplots):
-        eng, spectral_function = unfoldset.get_spectral_function(gamma=gamma,
-                                                                 npoints=npoints,
+        eng, spectral_function = unfoldset.get_spectral_function(npoints=npoints,
                                                                  sigma=sigma,
-                                                                 ncl=ncl,
                                                                  atoms_idx=this_idx,
                                                                  orbitals=this_orbitals,
                                                                  symm_average=not no_symm_average)
