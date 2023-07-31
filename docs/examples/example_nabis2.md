@@ -98,6 +98,12 @@ easyunfold unfold plot-projections --atoms="Na,Bi,S" --intensity 2 --combined
 Unfolded band structure of NaBiS<sub>2</sub> with atomic contributions.
 ```
 
+:::{tip}
+If the _k_-points have been split into multiple calculations (e.g. hybrid DFT band structures), the `--procar` option 
+should be passed multiple times to specify the path to each split `PROCAR` file (i.e. 
+`--procar calc1/PROCAR --procar cal2/PROCAR ...`).
+:::
+
 From this plot, we can see that sulfur anions dominate the valence band, while bismuth cations dominate the conduction 
 band, with minimal contributions from the sodium cations as expected.
 
