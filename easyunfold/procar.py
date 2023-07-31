@@ -44,9 +44,9 @@ class Procar:
 
         # First sweep - find the number of kpoints and the number of bands
         fobj.seek(0)
-        header = fobj.readline()
+        _header = fobj.readline()
         # Read the NK, NB and NIONS that are integers
-        total_nkpts, nbands, nion = [int(token) for token in re.sub(r'[^0-9]', ' ', fobj.readline()).split()]
+        _total_nkpts, nbands, nion = [int(token) for token in re.sub(r'[^0-9]', ' ', fobj.readline()).split()]
         if nion != self.nion:
             raise ValueError(f'Mismatch in number of ions in PROCARs supplied: ({nion} vs {self.nion})!')
 
@@ -67,7 +67,6 @@ class Procar:
                         kvecs.append(list(kvec))
                         kweights.append(float(tokens[-1]))
                     else:
-                        print("Warning: k-point {} already parsed, skipping".format(kvec))
                         # skip ahead to the next instance of two blank lines in a row
                         while line.strip() or fobj.readline().strip():
                             line = fobj.readline()
@@ -88,13 +87,14 @@ class Procar:
 
                 line = fobj.readline()
 
+        # dynamically determine whether PROCARs are SOC or not
         if tot_count == 4*len(occs):
             self._is_soc = True
         elif tot_count == len(occs):
             self._is_soc = False
         else:
-            print(len(occs), tot_count)
-            raise ValueError("Number of lines starting with 'tot' in PROCAR does not match expected values")
+            raise ValueError(f"Number of lines starting with 'tot' ({tot_count}) in PROCAR does not match expected "
+                             f"values ({4*len(occs)} or {len(occs)})!")
 
         occs = np.array(occs)
         kvecs = np.array(kvecs)
@@ -105,7 +105,6 @@ class Procar:
 
         # redetermine nkpts in case some were skipped due to already being parsed
         nkpts = len(kvecs)
-        print(total_nkpts, nkpts)
 
         self.nspins = proj_data.shape[0] // (self.nion * nbands * nkpts)
         self.nspins //= 4 if self._is_soc else 1
@@ -132,6 +131,7 @@ class Procar:
 
 
     def _read_header_nion_proj_names(self, fobj):
+        """Read the header, nion and proj_names from the PROCAR"""
         fobj.seek(0)
         self.header = fobj.readline()
         # Read the NK, NB and NIONS that are integers
@@ -144,12 +144,12 @@ class Procar:
                 break
 
 
-    def read(self, fobjs_or_paths):  # should be able to have nbands and nkpts differ, but not nion
+    def read(self, fobjs_or_paths):
+        """Read and amalgamate the data from a list of PROCARs"""
         def open_file(fobj_or_path):
             if isinstance(fobj_or_path, (str, Path)):
                 return open(fobj_or_path, encoding='utf-8')  # closed later
-            else:
-                return fobj_or_path  # already a file-like object, just return it
+            return fobj_or_path  # already a file-like object, just return it
 
         parsed_kpoints = None
         occs_list, kvecs_list, kweights_list = [], [], []
@@ -166,13 +166,12 @@ class Procar:
             nspins, occs, kvecs, kweights, eigenvalues, proj_data, proj_xyz, parsed_kpoints = self._read(
                 fobj, parsed_kpoints=parsed_kpoints)
             if current_nspins is not None and current_nspins != nspins:
-                    raise ValueError(f'Mismatch in number of spins in PROCARs supplied: ({nspins} vs {current_nspins})!')
+                raise ValueError(f'Mismatch in number of spins in PROCARs supplied: ({nspins} vs {current_nspins})!')
 
             if isinstance(fobj_or_path, (str, Path)):
                 fobj.close()  # if file was opened in this loop, close it
 
             # Append to respective lists
-            print(occs.shape, eigenvalues.shape, proj_data.shape, kvecs.shape, kweights.shape)
             occs_list.append(occs)
             kvecs_list.append(kvecs)
             kweights_list.append(kweights)
@@ -184,7 +183,7 @@ class Procar:
 
         # Combine along the nkpts axis:
         # for occs, eigenvalues, proj_data and proj_xyz, nbands (axis = 2) could differ, so set missing values to zero:
-        max_nbands = max([arr.shape[2] for arr in eigenvalues_list])
+        max_nbands = max(arr.shape[2] for arr in eigenvalues_list)
         for array_list in [occs_list, eigenvalues_list, proj_data_list, proj_xyz_list]:
             for i, arr in enumerate(array_list):
                 if arr is not None and arr.shape[2] < max_nbands:
@@ -205,7 +204,7 @@ class Procar:
         self.kvecs = np.concatenate(kvecs_list, axis=1)
         self.kweights = np.concatenate(kweights_list, axis=1)
         self.proj_data = np.concatenate(proj_data_list, axis=1)
-        if all([arr is not None for arr in proj_xyz_list]):
+        if all(arr is not None for arr in proj_xyz_list):
             self.proj_xyz = np.concatenate(proj_xyz_list, axis=1)
 
         self.nkpts = self.kvecs.shape[1]
