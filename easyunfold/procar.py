@@ -6,8 +6,13 @@ from pathlib import Path
 import re
 import numpy as np
 
+from monty.json import MSONable, MontyDecoder
 
-class Procar:
+from easyunfold import __version__
+
+# pylint:disable=too-many-locals,
+
+class Procar(MSONable):
     """Reader for PROCAR file"""
 
     def __init__(self, fobjs_or_paths=None, is_soc=False):
@@ -251,3 +256,41 @@ class Procar:
             for kidx in range(self.nkpts):
                 out[:, kidx, :] *= self.kweights[kidx]
         return out
+
+    def as_dict(self) -> dict:
+        """Convert the object into a dictionary representation (so it can be saved to json)"""
+        output = {'@module': self.__class__.__module__, '@class': self.__class__.__name__, '@version': __version__}
+        for key in [
+                '_is_soc', 'eigenvalues', 'kvecs', 'kweights', 'nbands', 'nkpts', 'nspins', 'nion', 'occs', 'proj_names',
+                'proj_data', 'header', 'proj_xyz'
+        ]:
+            output[key] = getattr(self, key)
+        return output
+
+
+    @classmethod
+    def from_dict(cls, d):
+        """
+        Reconstructs Procar object from a dict representation, without calling __init__().
+
+        Args:
+            d (dict): dict representation of Procar
+
+        Returns:
+            Procar object
+        """
+        def decode_dict(subdict):
+            if isinstance(subdict, dict) and "@module" in subdict:
+                return MontyDecoder().process_decoded(subdict)
+            return subdict
+
+        instance = cls.__new__(cls)  # create a new instance without calling __init__()
+        d_decoded = {k: decode_dict(v) for k, v in d.items()}
+
+        # set the instance variables directly from the dictionary
+        for key, value in d_decoded.items():
+            if key in ['@module', '@class', '@version']:
+                continue
+            setattr(instance, key, value)
+
+        return instance
