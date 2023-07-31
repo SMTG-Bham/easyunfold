@@ -46,3 +46,4 @@ POTCAR
 KPOINTS
 PROCAR
 *.json
+*.DS_Store

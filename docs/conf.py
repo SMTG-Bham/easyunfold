@@ -91,7 +91,7 @@ html_theme_options = {
 }
 
 html_logo = 'img/logo.svg'
-html_title = "Easyunfold"
+html_title = "easyunfold"
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
