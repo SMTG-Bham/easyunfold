@@ -31,6 +31,10 @@
   - ```{autodoc2-docstring} easyunfold.plotting.interpolate_colors
     :summary:
     ```
+* - {py:obj}`adjust_lightness <easyunfold.plotting.adjust_lightness>`
+  - ```{autodoc2-docstring} easyunfold.plotting.adjust_lightness
+    :summary:
+    ```
 ````
 
 ### API
@@ -47,7 +51,15 @@
 ```{autodoc2-docstring} easyunfold.plotting.UnfoldPlotter.__init__
 ```
 
-````{py:method} plot_spectral_function(engs: numpy.ndarray, sf: numpy.ndarray, eref=None, figsize=(4, 3), ylim=(-3, 3), dpi=150, vscale=1.0, contour_plot=False, alpha=1.0, save=False, ax=None, vmin=None, vmax=None, cmap='PuRd', show=False, title=None)
+````{py:method} plot_dos(ax, dos_plotter, dos_label, dos_options, ylim, eref, atoms=None, colours=None, orbitals_subplots=None)
+:canonical: easyunfold.plotting.UnfoldPlotter.plot_dos
+
+```{autodoc2-docstring} easyunfold.plotting.UnfoldPlotter.plot_dos
+```
+
+````
+
+````{py:method} plot_spectral_function(engs: numpy.ndarray, sf: numpy.ndarray, dos_plotter=None, dos_label=None, dos_options=None, zero_line=False, eref=None, figsize=(4, 3), ylim=(-5, 5), dpi=300, vscale=1.0, contour_plot=False, alpha=1.0, save=False, ax=None, vmin=None, vmax=None, cmap='PuRd', show=False, title=None, intensity=1.0)
 :canonical: easyunfold.plotting.UnfoldPlotter.plot_spectral_function
 
 ```{autodoc2-docstring} easyunfold.plotting.UnfoldPlotter.plot_spectral_function
@@ -55,7 +67,7 @@
 
 ````
 
-````{py:method} _plot_spectral_function_rgba(engs: numpy.ndarray, sf: numpy.ndarray, eref: typing.Union[None, float] = None, figsize=(4, 3), ylim=(-3, 3), dpi: float = 150, intensity: float = 1.0, save: bool = False, ax: typing.Union[None, matplotlib.pyplot.Axes] = None, show: bool = False, title: typing.Union[None, str] = None, vmin: typing.Union[None, float] = None, vmax: typing.Union[None, float] = None)
+````{py:method} _plot_spectral_function_rgba(engs: numpy.ndarray, sf: numpy.ndarray, eref: typing.Union[None, float] = None, figsize=(4, 3), ylim=(-3, 3), dpi: float = 150, vscale: float = 1.0, save: bool = False, ax: typing.Union[None, matplotlib.pyplot.Axes] = None, show: bool = False, title: typing.Union[None, str] = None, vmin: typing.Union[None, float] = None, vmax: typing.Union[None, float] = None, intensity: float = 1.0)
 :canonical: easyunfold.plotting.UnfoldPlotter._plot_spectral_function_rgba
 
 ```{autodoc2-docstring} easyunfold.plotting.UnfoldPlotter._plot_spectral_function_rgba
@@ -87,7 +99,7 @@
 
 ````
 
-````{py:method} plot_projected(procar: typing.Union[str, list], eref=None, gamma=False, npoints=2000, sigma=0.2, ncl=False, symm_average=True, figsize=(4, 3), ylim=(-3, 3), dpi=150, vscale=1.0, contour_plot=False, alpha=1.0, save=False, ax=None, vmin=None, vmax=None, cmap='PuRd', show=False, title=None, atoms_idx=None, orbitals=None, intensity=1.0, use_subplot=False, colors=('r', 'g', 'b', 'purple'), colorspace='lab')
+````{py:method} plot_projected(procar: typing.Union[str, list] = 'PROCAR', dos_plotter=None, dos_label=None, dos_options=None, zero_line=False, eref=None, gamma=False, npoints=2000, sigma=0.2, ncl=False, symm_average=True, figsize=(4, 3), ylim=(-5, 5), dpi=300, vscale=1.0, contour_plot=False, alpha=1.0, save=False, ax=None, cmap='PuRd', show=False, title=None, atoms=None, poscar='POSCAR', atoms_idx=None, orbitals=None, use_subplot=False, colours=('r', 'g', 'b', 'purple'), colorspace='lab', intensity=1.0)
 :canonical: easyunfold.plotting.UnfoldPlotter.plot_projected
 
 ```{autodoc2-docstring} easyunfold.plotting.UnfoldPlotter.plot_projected
@@ -106,9 +118,16 @@
 
 `````
 
-````{py:function} interpolate_colors(colors: typing.Sequence, weights: list, colorspace='lab', normalize=True)
+````{py:function} interpolate_colors(colours: typing.Sequence, weights: list, colorspace='lab', normalize=True)
 :canonical: easyunfold.plotting.interpolate_colors
 
 ```{autodoc2-docstring} easyunfold.plotting.interpolate_colors
+```
+````
+
+````{py:function} adjust_lightness(color, amount=0.5)
+:canonical: easyunfold.plotting.adjust_lightness
+
+```{autodoc2-docstring} easyunfold.plotting.adjust_lightness
 ```
 ````

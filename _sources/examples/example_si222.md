@@ -41,7 +41,7 @@ Supercell cell information:
         Point group: m-3m
 
 No. of k points in the primitive cell           : 73
-No. of (non-symmetry-reduced) supercell kpoints : 132 (136)
+No. of supercell k points                       : 103
 No. of primitive cell symmetry operations       : 48
 No. of supercell symmetry operations            : 6
 
@@ -125,6 +125,13 @@ Output:
 Spectral function of the unfolded bands.
 ```
 
+:::{tip} 
+See the [NaBiS<sub>2</sub> example](https://smtg-ucl.github.io/easyunfold/examples/example_nabis2.html) for tips on 
+customising and prettifying the unfolded band structure plot. Here we have also actually used the `--intensity 3.5` 
+option to increase the spectral function intensity.
+:::
+
+
 Note the appearance of extra branches compared to the band structure of the primitive cell (below), due 
 to symmetry breaking from the displaced atom.
 
@@ -156,7 +163,7 @@ cd Si_super_deformed
 mpirun -np 4 vasp_std
 cd ../
 easyunfold unfold --data-file  no-expand.json calculate Si_super_deformed/WAVECAR
-easyunfold unfold --data-file  no-expand.json  plot --out-file unfold_no-expand.png
+easyunfold unfold --data-file  no-expand.json  plot --out-file unfold_no-expand.png --intensity 3.5
 ```
 
 output:
@@ -194,7 +201,7 @@ Primitive cell information:
         Point group: m-3m
 
 No. of k points in the primitive cell           : 73
-No. of supercell kpoints                        : 70
+No. of supercell k points                       : 70
 No. of primitive cell symmetry operations       : 48
 No. of supercell symmetry operations            : 6
 

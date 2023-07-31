@@ -91,6 +91,14 @@
   - ```{autodoc2-docstring} easyunfold.unfold.process_projection_options
     :summary:
     ```
+* - {py:obj}`read_poscar_contcar_if_present <easyunfold.unfold.read_poscar_contcar_if_present>`
+  - ```{autodoc2-docstring} easyunfold.unfold.read_poscar_contcar_if_present
+    :summary:
+    ```
+* - {py:obj}`parse_atoms <easyunfold.unfold.parse_atoms>`
+  - ```{autodoc2-docstring} easyunfold.unfold.parse_atoms
+    :summary:
+    ```
 ````
 
 ### API
@@ -491,5 +499,19 @@ Bases: {py:obj}`monty.json.MSONable`
 :canonical: easyunfold.unfold.process_projection_options
 
 ```{autodoc2-docstring} easyunfold.unfold.process_projection_options
+```
+````
+
+````{py:function} read_poscar_contcar_if_present(poscar: str = 'POSCAR')
+:canonical: easyunfold.unfold.read_poscar_contcar_if_present
+
+```{autodoc2-docstring} easyunfold.unfold.read_poscar_contcar_if_present
+```
+````
+
+````{py:function} parse_atoms(atoms_to_project: str, orbitals: str, poscar: str)
+:canonical: easyunfold.unfold.parse_atoms
+
+```{autodoc2-docstring} easyunfold.unfold.parse_atoms
 ```
 ````

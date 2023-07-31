@@ -35,16 +35,24 @@
   - ```{autodoc2-docstring} easyunfold.cli.unfold_calculate
     :summary:
     ```
-* - {py:obj}`add_plot_options <easyunfold.cli.add_plot_options>`
-  - ```{autodoc2-docstring} easyunfold.cli.add_plot_options
+* - {py:obj}`add_mpl_style_option <easyunfold.cli.add_mpl_style_option>`
+  - ```{autodoc2-docstring} easyunfold.cli.add_mpl_style_option
     :summary:
     ```
 * - {py:obj}`unfold_effective_mass <easyunfold.cli.unfold_effective_mass>`
   - ```{autodoc2-docstring} easyunfold.cli.unfold_effective_mass
     :summary:
     ```
+* - {py:obj}`add_plot_options <easyunfold.cli.add_plot_options>`
+  - ```{autodoc2-docstring} easyunfold.cli.add_plot_options
+    :summary:
+    ```
 * - {py:obj}`unfold_plot <easyunfold.cli.unfold_plot>`
   - ```{autodoc2-docstring} easyunfold.cli.unfold_plot
+    :summary:
+    ```
+* - {py:obj}`process_dos <easyunfold.cli.process_dos>`
+  - ```{autodoc2-docstring} easyunfold.cli.process_dos
     :summary:
     ```
 * - {py:obj}`unfold_plot_projections <easyunfold.cli.unfold_plot_projections>`
@@ -131,7 +139,7 @@
 ```
 ````
 
-````{py:function} unfold(ctx, data_file, mpl_style_file)
+````{py:function} unfold(ctx, data_file)
 :canonical: easyunfold.cli.unfold
 
 ```{autodoc2-docstring} easyunfold.cli.unfold
@@ -152,10 +160,10 @@
 ```
 ````
 
-````{py:function} add_plot_options(func)
-:canonical: easyunfold.cli.add_plot_options
+````{py:function} add_mpl_style_option(func)
+:canonical: easyunfold.cli.add_mpl_style_option
 
-```{autodoc2-docstring} easyunfold.cli.add_plot_options
+```{autodoc2-docstring} easyunfold.cli.add_mpl_style_option
 ```
 ````
 
@@ -166,21 +174,35 @@
 ```
 ````
 
-````{py:function} unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, procar, atoms_idx, orbitals, title, width, height, dpi)
+````{py:function} add_plot_options(func)
+:canonical: easyunfold.cli.add_plot_options
+
+```{autodoc2-docstring} easyunfold.cli.add_plot_options
+```
+````
+
+````{py:function} unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, dos, dos_label, zero_line, dos_elements, dos_orbitals, dos_atoms, legend_cutoff, gaussian, no_total, total_only, scale, procar, atoms, poscar, atoms_idx, orbitals, title, width, height, dpi, intensity)
 :canonical: easyunfold.cli.unfold_plot
 
 ```{autodoc2-docstring} easyunfold.cli.unfold_plot
 ```
 ````
 
-````{py:function} unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, procar, atoms_idx, orbitals, title, combined, intensity, colors, width, height, dpi)
+````{py:function} process_dos(dos, dos_elements, dos_orbitals, dos_atoms, gaussian, total_only, atoms, orbitals, poscar, no_total, legend_cutoff, scale)
+:canonical: easyunfold.cli.process_dos
+
+```{autodoc2-docstring} easyunfold.cli.process_dos
+```
+````
+
+````{py:function} unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, dos, dos_label, zero_line, dos_elements, dos_orbitals, dos_atoms, legend_cutoff, gaussian, no_total, total_only, scale, procar, atoms, poscar, atoms_idx, orbitals, title, combined, colours, width, height, dpi, intensity)
 :canonical: easyunfold.cli.unfold_plot_projections
 
 ```{autodoc2-docstring} easyunfold.cli.unfold_plot_projections
 ```
 ````
 
-````{py:function} _unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, procar, atoms_idx, orbitals, title, width, height, dpi, ax=None)
+````{py:function} _unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, dos, dos_label, zero_line, dos_elements, dos_orbitals, dos_atoms, legend_cutoff, gaussian, no_total, total_only, scale, procar, atoms, poscar, atoms_idx, orbitals, title, width, height, dpi, intensity, ax=None)
 :canonical: easyunfold.cli._unfold_plot
 
 ```{autodoc2-docstring} easyunfold.cli._unfold_plot
