@@ -1,6 +1,7 @@
 """
 Plotting utilities
 """
+import os
 from typing import Union, Sequence
 import warnings
 import itertools
@@ -85,7 +86,17 @@ class UnfoldPlotter:
                                 if orbital in key:
                                     sumo_colours[atom][key] = orbital_colour_dict[key]
         else:
-            sumo_colours = None
+            from pkg_resources import Requirement, resource_filename
+            try:
+                import configparser
+            except ImportError:
+                import ConfigParser as configparser
+
+            config_path = resource_filename(
+                Requirement.parse("sumo"), "sumo/plotting/orbital_colours.conf"
+            )
+            sumo_colours = configparser.ConfigParser()
+            sumo_colours.read(os.path.abspath(config_path))
 
         # don't use first 4 colours; these are the band structure line colours:
         cycle = cycler('color', rcParams['axes.prop_cycle'].by_key()['color'][4:])
