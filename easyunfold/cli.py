@@ -11,7 +11,7 @@ from ase.io import read
 
 from easyunfold.unfold import parse_atoms, parse_atoms_idx
 
-# pylint:disable=import-outside-toplevel, too-many-locals, too-many-arguments, too-many-nested-blocks, too-many-branches
+# pylint:disable=import-outside-toplevel, too-many-locals, too-many-arguments, too-many-nested-blocks, too-many-branches, fixme
 
 SUPPORTED_DFT_CODES = ('vasp', 'castep')
 
