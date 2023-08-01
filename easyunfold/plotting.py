@@ -159,6 +159,7 @@ class UnfoldPlotter:
         if dos_label is not None:
             ax.set_xlabel(dos_label)
 
+
         ax.set_yticks([])  # no y ticks
         ax.set_xticks([])  # no x ticks
         ax.legend(loc=2, frameon=False, ncol=1, bbox_to_anchor=(1.0, 1.0), fontsize=9)
