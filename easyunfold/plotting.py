@@ -92,9 +92,7 @@ class UnfoldPlotter:
             except ImportError:
                 import ConfigParser as configparser
 
-            config_path = resource_filename(
-                Requirement.parse("sumo"), "sumo/plotting/orbital_colours.conf"
-            )
+            config_path = resource_filename(Requirement.parse('sumo'), 'sumo/plotting/orbital_colours.conf')
             sumo_colours = configparser.ConfigParser()
             sumo_colours.read(os.path.abspath(config_path))
 

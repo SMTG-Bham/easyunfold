@@ -348,12 +348,13 @@ def add_plot_options(func):
     click.option('--emin', type=float, default=-5., help='Minimum energy in eV relative to the reference.', show_default=True)(func)
     click.option('--emax', type=float, default=5., help='Maximum energy in eV relative to the reference.', show_default=True)(func)
     click.option('--intensity', default=1.0, help='Scaling factor for the colour intensity.', type=float, show_default=True)(func)
-    click.option('--vscale',
-                 type=float,
-                 help='A normalisation/scaling factor for the colour mapping. Equivalent to (1/intensity). '
-                      'Will be deprecated in future versions.',  # TODO: deprecate
-                 default=1.0,
-                 show_default=True)(func)
+    click.option(
+        '--vscale',
+        type=float,
+        help='A normalisation/scaling factor for the colour mapping. Equivalent to (1/intensity). '
+        'Will be deprecated in future versions.',  # TODO: deprecate
+        default=1.0,
+        show_default=True)(func)
     click.option('--out-file', '-o', default='unfold.png', help='Name of the output file.', show_default=True)(func)
     click.option('--cmap', default='PuRd', help='Name of the colour map to use.', show_default=True)(func)
     click.option('--show', is_flag=True, default=False, help='Show the plot interactively.')(func)
@@ -428,9 +429,9 @@ def unfold_plot(ctx, npoints, sigma, eref, out_file, show, emin, emax, cmap, no_
 
     This command uses the stored unfolding data to plot the effective bands structure (EBS) using the spectral function.
     """
-    _unfold_plot(ctx, npoints, sigma, eref, out_file, show, emin, emax, cmap, no_symm_average, vscale, dos, dos_label,
-                 zero_line, dos_elements, dos_orbitals, dos_atoms, legend_cutoff, gaussian, no_total, total_only, scale, procar, atoms,
-                 poscar, atoms_idx, orbitals, title, width, height, dpi, intensity)
+    _unfold_plot(ctx, npoints, sigma, eref, out_file, show, emin, emax, cmap, no_symm_average, vscale, dos, dos_label, zero_line,
+                 dos_elements, dos_orbitals, dos_atoms, legend_cutoff, gaussian, no_total, total_only, scale, procar, atoms, poscar,
+                 atoms_idx, orbitals, title, width, height, dpi, intensity)
 
 
 def process_dos(dos, dos_elements, dos_orbitals, dos_atoms, gaussian, total_only, atoms, orbitals, poscar, no_total, legend_cutoff, scale):
@@ -512,9 +513,9 @@ def process_dos(dos, dos_elements, dos_orbitals, dos_atoms, gaussian, total_only
 @add_mpl_style_option
 @click.option('--combined/--no-combined', is_flag=True, default=False, help='Plot all projections in a combined graph.')
 @click.option('--colours', help='Colours to be used for combined plot, comma separated.', default='r,g,b,purple', show_default=True)
-def unfold_plot_projections(ctx, npoints, sigma, eref, out_file, show, emin, emax, cmap, no_symm_average, vscale, dos,
-                            dos_label, zero_line, dos_elements, dos_orbitals, dos_atoms, legend_cutoff, gaussian, no_total, total_only,
-                            scale, procar, atoms, poscar, atoms_idx, orbitals, title, combined, colours, width, height, dpi, intensity):
+def unfold_plot_projections(ctx, npoints, sigma, eref, out_file, show, emin, emax, cmap, no_symm_average, vscale, dos, dos_label, zero_line,
+                            dos_elements, dos_orbitals, dos_atoms, legend_cutoff, gaussian, no_total, total_only, scale, procar, atoms,
+                            poscar, atoms_idx, orbitals, title, combined, colours, width, height, dpi, intensity):
     """
     Plot the effective band structure with atomic projections.
     """

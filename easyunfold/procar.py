@@ -12,6 +12,7 @@ from easyunfold import __version__
 
 # pylint:disable=too-many-locals,
 
+
 class Procar(MSONable):
     """Reader for PROCAR file"""
 
@@ -40,7 +41,6 @@ class Procar(MSONable):
         if isinstance(fobjs_or_paths, (str, Path)):
             fobjs_or_paths = [fobjs_or_paths]
         self.read(fobjs_or_paths)
-
 
     def _read(self, fobj, parsed_kpoints=None):
         """Main function for reading in the data"""
@@ -77,8 +77,7 @@ class Procar(MSONable):
                             line = fobj.readline()
                         continue
 
-                elif not re.search(r'[a-zA-Z]', line) and line.strip() and len(
-                        line.strip().split()) - 2 == len(self.proj_names):
+                elif not re.search(r'[a-zA-Z]', line) and line.strip() and len(line.strip().split()) - 2 == len(self.proj_names):
                     # only parse data if line is expected length, in case of LORBIT >= 12
                     proj_data.append([float(token) for token in line.strip().split()[1:-1]])
 
@@ -93,13 +92,13 @@ class Procar(MSONable):
                 line = fobj.readline()
 
         # dynamically determine whether PROCARs are SOC or not
-        if tot_count == 4*len(occs):
+        if tot_count == 4 * len(occs):
             self._is_soc = True
         elif tot_count == len(occs):
             self._is_soc = False
         else:
             raise ValueError(f"Number of lines starting with 'tot' ({tot_count}) in PROCAR does not match expected "
-                             f"values ({4*len(occs)} or {len(occs)})!")
+                             f'values ({4*len(occs)} or {len(occs)})!')
 
         occs = np.array(occs)
         kvecs = np.array(kvecs)
@@ -122,18 +121,15 @@ class Procar(MSONable):
 
         # Reshape the array
         if self._is_soc is False:
-            proj_data = proj_data.reshape(
-                (self.nspins, nkpts, nbands, self.nion, len(self.proj_names)))
+            proj_data = proj_data.reshape((self.nspins, nkpts, nbands, self.nion, len(self.proj_names)))
             proj_xyz = None
         else:
-            proj_data = proj_data.reshape(
-                (self.nspins, nkpts, nbands, 4, self.nion, len(self.proj_names)))
+            proj_data = proj_data.reshape((self.nspins, nkpts, nbands, 4, self.nion, len(self.proj_names)))
             # Split the data into xyz projection and total
             proj_xyz = proj_data[:, :, :, 1:, :, :]
             proj_data = proj_data[:, :, :, 0, :, :]
 
         return self.nspins, occs, kvecs, kweights, eigenvalues, proj_data, proj_xyz, parsed_kpoints
-
 
     def _read_header_nion_proj_names(self, fobj):
         """Read the header, nion and proj_names from the PROCAR"""
@@ -148,9 +144,9 @@ class Procar(MSONable):
                 self.proj_names = line.strip().split()[1:-1]
                 break
 
-
     def read(self, fobjs_or_paths):
         """Read and amalgamate the data from a list of PROCARs"""
+
         def open_file(fobj_or_path):
             if isinstance(fobj_or_path, (str, Path)):
                 return open(fobj_or_path, encoding='utf-8')  # closed later
@@ -168,8 +164,8 @@ class Procar(MSONable):
                 self._read_header_nion_proj_names(fobj)
 
             current_nspins = self.nspins  # check spin consistency between PROCARs
-            nspins, occs, kvecs, kweights, eigenvalues, proj_data, proj_xyz, parsed_kpoints = self._read(
-                fobj, parsed_kpoints=parsed_kpoints)
+            nspins, occs, kvecs, kweights, eigenvalues, proj_data, proj_xyz, parsed_kpoints = self._read(fobj,
+                                                                                                         parsed_kpoints=parsed_kpoints)
             if current_nspins is not None and current_nspins != nspins:
                 raise ValueError(f'Mismatch in number of spins in PROCARs supplied: ({nspins} vs {current_nspins})!')
 
@@ -184,7 +180,7 @@ class Procar(MSONable):
             proj_data_list.append(proj_data)
             proj_xyz_list.append(proj_xyz)
             if len(fobjs_or_paths) > 1:  # print progress if reading multiple files
-                print(f"Finished parsing PROCAR {i + 1}/{len(fobjs_or_paths)}")
+                print(f'Finished parsing PROCAR {i + 1}/{len(fobjs_or_paths)}')
 
         # Combine along the nkpts axis:
         # for occs, eigenvalues, proj_data and proj_xyz, nbands (axis = 2) could differ, so set missing values to zero:
@@ -195,11 +191,10 @@ class Procar(MSONable):
                     if len(arr.shape) == 3:  # occs_list, eigenvalues_list
                         array_list[i] = np.pad(arr, ((0, 0), (0, 0), (0, max_nbands - arr.shape[2])), mode='constant')
                     elif len(arr.shape) == 5:  # proj_xyz_list
-                        array_list[i] = np.pad(arr, ((0, 0), (0, 0), (0, max_nbands - arr.shape[2]), (0, 0), (0, 0)),
-                                                  mode='constant')
+                        array_list[i] = np.pad(arr, ((0, 0), (0, 0), (0, max_nbands - arr.shape[2]), (0, 0), (0, 0)), mode='constant')
                     elif len(arr.shape) == 6:  # proj_xyz_list
                         array_list[i] = np.pad(arr, ((0, 0), (0, 0), (0, max_nbands - arr.shape[2]), (0, 0), (0, 0), (0, 0)),
-                                                    mode='constant')
+                                               mode='constant')
                     else:
                         raise ValueError('Unexpected array shape encountered!')
 
@@ -261,12 +256,11 @@ class Procar(MSONable):
         """Convert the object into a dictionary representation (so it can be saved to json)"""
         output = {'@module': self.__class__.__module__, '@class': self.__class__.__name__, '@version': __version__}
         for key in [
-                '_is_soc', 'eigenvalues', 'kvecs', 'kweights', 'nbands', 'nkpts', 'nspins', 'nion', 'occs', 'proj_names',
-                'proj_data', 'header', 'proj_xyz'
+                '_is_soc', 'eigenvalues', 'kvecs', 'kweights', 'nbands', 'nkpts', 'nspins', 'nion', 'occs', 'proj_names', 'proj_data',
+                'header', 'proj_xyz'
         ]:
             output[key] = getattr(self, key)
         return output
-
 
     @classmethod
     def from_dict(cls, d):
@@ -279,8 +273,9 @@ class Procar(MSONable):
         Returns:
             Procar object
         """
+
         def decode_dict(subdict):
-            if isinstance(subdict, dict) and "@module" in subdict:
+            if isinstance(subdict, dict) and '@module' in subdict:
                 return MontyDecoder().process_decoded(subdict)
             return subdict
 
