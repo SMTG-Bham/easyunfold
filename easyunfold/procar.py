@@ -49,11 +49,13 @@ class Procar:
         # Number of projects and their names
         nproj = None
         self.proj_names = None
+
         for line in fobj:
-            if re.match(r'^ion', line):
+            if re.match(r'^ion.*tot', line):  # only the first "ion" line, in case of LORBIT >= 12
                 nproj = len(line.strip().split()) - 2
                 self.proj_names = line.strip().split()[1:-1]
                 break
+
         # Count the number of data lines, these lines do not have any alphabets
         proj_data = []
         energies = []
@@ -62,7 +64,8 @@ class Procar:
         kweights = []
         fobj.seek(0)
         for line in fobj:
-            if not re.search(r'[a-zA-Z]', line) and line.strip():
+            if not re.search(r'[a-zA-Z]', line) and line.strip() and len(line.strip().split()) - 2 == nproj:
+                # only parse data if nproj is expected length, in case of LORBIT >= 12
                 proj_data.append([float(token) for token in line.strip().split()[1:-1]])
             elif line.startswith('band'):
                 tokens = line.strip().split()
@@ -114,6 +117,23 @@ class Procar:
         if proj == 'all':
             out = self.proj_data[:, :, :, atom_mask, :].sum(axis=(-1, -2))
         else:
+            if isinstance(proj, str):
+                proj = [
+                    proj,
+                ]
+            # replace any instance of "p" with "px,py,pz" and "d" with "dxy,dyz,dz2,dxz,dx2-y2"
+            def _replace_p_d(single_proj):
+                if single_proj == 'p':
+                    return ['px', 'py', 'pz']
+                if single_proj == 'd':
+                    return ['dxy', 'dyz', 'dz2', 'dxz', 'x2-y2']  # dx2-y2 labelled differently in VASP
+                    # PROCAR
+
+                return [single_proj]
+
+            proj = [_replace_p_d(single_proj) for single_proj in proj]
+            proj = [item for sublist in proj for item in sublist]
+
             proj_idx = [proj_name in proj for proj_name in self.proj_names]
             assert any(proj_idx)
             out = self.proj_data[:, :, :, :, proj_idx]

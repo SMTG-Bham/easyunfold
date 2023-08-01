@@ -8,7 +8,7 @@ svg)](https://doi.org/10.21105/joss.)--->
 
 [![easyunfold](docs/img/logo.svg)](https://smtg-ucl.github.io/easyunfold/)
 
-`Easyunfold` is intended for obtaining the effective band structure of a supercell for a certain _k_-point
+`easyunfold` is intended for obtaining the effective band structure of a supercell for a certain _k_-point
 path of the primitive cell. It was originally based on
 [PyVaspwfc](https://github.com/QijingZheng/VaspBandUnfolding) for reading VASP wavefunction outputs,
 with a notable improvement being that symmetry-breaking is properly accounted for by sampling necessary

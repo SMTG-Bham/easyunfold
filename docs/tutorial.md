@@ -66,27 +66,26 @@ pip install sumo
 
 At this point, you should have your relaxed supercell structure (which likely has a lower symmetry than 
 the pristine primitive unit cell).
-The set of _k_-points for the supercell band structure can be generated with:
+For LDA/GGA DFT calculations, the set of _k_-points for the supercell band structure can be generated with:
 
 ```
 easyunfold generate primitive/POSCAR supercell/POSCAR primitive/KPOINTS_band --matrix "2 2 2"
 ```
 
-If an `IBZKPT` file is provided, its _k_-points will be included with their original weights, and all 
-_k_-points included by `easyunfold` will be zero-weighted. This is necessary for hybrid functional 
-calculations where the electronic minimisation must be conducted self-consistently (e.g. `ICHARG<10`), 
-as discussed on the 
-[VASPwiki](https://www.vasp.at/wiki/index.php/Band-structure_calculation_using_hybrid_functionals) 
-
-For hybrid DFT calculations, it can be useful to split the _k_-points into multiple calculations to 
-reduce the computational overhead and/or memory consumption, and this can be done with the 
-`--nk-per-split` option, e.g.:
+For hybrid DFT band structure calculations, the electronic minimisation must be conducted self-consistently 
+(i.e. `ICHARG<10`) as discussed on the 
+[VASPwiki](https://www.vasp.at/wiki/index.php/Band-structure_calculation_using_hybrid_functionals), and so in this case 
+we need to provide an `IBZKPT` file (e.g. from a previous SCF calculation for the supercell structure) using the 
+`--scf-kpoints` option, for which the _k_-points will be included with their original weights, and all band structure 
+_k_-points included by `easyunfold` will then be added as zero-weighted _k_-points. For hybrid DFT calculations, it can
+also be useful to split the _k_-points into multiple calculations to reduce the computational overhead and/or memory 
+consumption, and this can be done with the `--nk-per-split` option, e.g.:
 
 ```
-easyunfold generate primitive/POSCAR supercell/POSCAR primitive/KPOINTS_band --matrix "2 2 2" --nk-per-split 60
+easyunfold generate primitive/POSCAR supercell/POSCAR primitive/KPOINTS_band --matrix "2 2 2" --nk-per-split 60 --scf-kpoints supercell/IBZKPT
 ```
 This will generate files named as `KPOINTS_easyunfold_001`, `KPOINTS_easyunfold_002`, each containing 
-60 _k_-points.
+60 zero-weighted _k_-points on top of the weighted SCF _k_-points.
 
 See the help message with `easyunfold generate -h` for more details.
 Note that the `--matrix` input is for setting the transformation matrix such that
@@ -147,10 +146,12 @@ If the _k_-points have been split into multiple calculations (for example, for t
 functionals), all wave function files (e.g. `WAVECAR` for VASP) need to be passed:
 
 ```
-easyunfold unfold calculate calc1/WAVECAR calc2/WAVECAR
+easyunfold unfold calculate calc1/WAVECAR calc2/WAVECAR  # or 'calc*/WAVECAR' 
 ```
 
-For large `WAVECAR`s, it may take some time to parse and compute the weights.
+For large `WAVECAR`s, it may take some time to parse and compute the weights. Note you should use the `--gamma` and/or 
+`--ncl` options if the calculation has $\Gamma$-only _k_-points or non-collinear spins (i.e. spin-orbit coupling), 
+respectively.
 
 :::{tip}
 

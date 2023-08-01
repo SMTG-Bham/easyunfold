@@ -2,8 +2,8 @@
 Tests for the CLI system
 """
 import os
-import pytest
 from pathlib import Path
+import pytest
 
 from monty.serialization import loadfn
 from click.testing import CliRunner
@@ -129,6 +129,171 @@ def test_plot_projection(mgo_project_dir):
     output = runner.invoke(easyunfold, [
         'unfold', '--data-file', 'mgo.json', 'plot-projections', '--atoms-idx', '1,2|3-4', '--procar', 'PROCAR', '--combined', '--orbitals',
         'px,py|pz'
+    ])
+    assert output.exit_code == 0
+    assert Path('unfold.png').is_file()
+    Path('unfold.png').unlink()
+
+    # test --atoms option with --poscar specification
+    output = runner.invoke(easyunfold,
+                           ['unfold', '--data-file', 'mgo.json', 'plot-projections', '--atoms', 'Mg,O', '--poscar', 'POSCAR.mgo'])
+    assert output.exit_code == 0
+    assert Path('unfold.png').is_file()
+    Path('unfold.png').unlink()
+
+    # test parsing PROCAR from LORBIT = 14 calculation
+    output = runner.invoke(easyunfold, [
+        'unfold', '--data-file', 'mgo.json', 'plot-projections', '--atoms', 'Mg,O', '--poscar', 'POSCAR.mgo', '--procar',
+        'PROCAR_LORBIT_14.mgo'
+    ])
+    assert output.exit_code == 0
+    assert Path('unfold.png').is_file()
+    Path('unfold.png').unlink()
+
+
+def test_help(nabis2_project_dir):
+    """Test help messages"""
+    os.chdir(nabis2_project_dir)
+    runner = CliRunner()
+    output = runner.invoke(easyunfold, ['unfold', 'plot-projections', '-h'])
+    assert output.exit_code == 0
+    assert not Path('unfold.png').is_file()
+
+    output = runner.invoke(easyunfold, ['unfold', 'plot', '-h'])
+    assert output.exit_code == 0
+    assert not Path('unfold.png').is_file()
+
+    output = runner.invoke(easyunfold, ['unfold', 'plot-projections', '--help'])
+    assert output.exit_code == 0
+    assert not Path('unfold.png').is_file()
+
+    output = runner.invoke(easyunfold, ['unfold', 'plot', '--help'])
+    assert output.exit_code == 0
+    assert not Path('unfold.png').is_file()
+
+
+def test_dos_atom_orbital_plots(nabis2_project_dir):
+    """Test various dos/atom/orbital etc plot options with NaBiS2"""
+    os.chdir(nabis2_project_dir)
+    runner = CliRunner()
+    output = runner.invoke(easyunfold, [
+        'unfold',
+        'plot-projections',
+        '--atoms',
+        'Na,Bi,S',
+        '--orbitals',
+        's|px,py,pz|p',
+        '--vscale',
+        '0.5',
+        '--combined',
+        '--dos',
+        'vasprun.xml.gz',
+        '--zero-line',
+        '--dos-label',
+        'DOS',
+        '--gaussian',
+        '0.1',
+        '--no-total',
+        '--scale',
+        '2',
+        '--dos-elements',
+        'Bi.s.p',
+    ])
+    assert output.exit_code == 0
+    assert Path('unfold.png').is_file()
+    Path('unfold.png').unlink()
+
+    output = runner.invoke(easyunfold, [
+        'unfold', 'plot-projections', '--atoms', 'Na,Bi,S', '--orbitals', 's|px,py,pz|p', '--vscale', '0.5', '--combined', '--dos',
+        'vasprun.xml.gz', '--zero-line', '--dos-label', 'DOS', '--gaussian', '0.1', '--no-total', '--scale', '2'
+    ])
+    assert output.exit_code == 0
+    assert Path('unfold.png').is_file()
+    Path('unfold.png').unlink()
+
+    output = runner.invoke(
+        easyunfold,
+        [  # same but with intensity instead of vscale:
+            'unfold', 'plot-projections', '--atoms', 'Na,Bi,S', '--orbitals', 's|px,py,pz|p', '--intensity', '2', '--combined', '--dos',
+            'vasprun.xml.gz', '--zero-line', '--dos-label', 'DOS', '--gaussian', '0.1', '--no-total', '--scale', '2'
+        ])
+    assert output.exit_code == 0
+    assert Path('unfold.png').is_file()
+    Path('unfold.png').unlink()
+
+    output = runner.invoke(easyunfold, [
+        'unfold', 'plot-projections', '--atoms', 'Na,Bi,S', '--vscale', '0.5', '--combined', '--dos', 'vasprun.xml.gz', '--zero-line',
+        '--dos-label', 'DOS', '--gaussian', '0.1', '--no-total', '--scale', '2'
+    ])
+    assert output.exit_code == 0
+    assert Path('unfold.png').is_file()
+    Path('unfold.png').unlink()
+
+    output = runner.invoke(easyunfold, [
+        'unfold', 'plot-projections', '--atoms', 'Na,Bi', '--vscale', '0.5', '--combined', '--dos', 'vasprun.xml.gz', '--zero-line',
+        '--dos-label', 'DOS', '--gaussian', '0.1', '--no-total', '--scale', '2'
+    ])
+    assert output.exit_code == 0
+    assert Path('unfold.png').is_file()
+    Path('unfold.png').unlink()
+
+    output = runner.invoke(easyunfold, ['unfold', 'plot-projections', '--atoms', 'Na,Bi,S', '--dos', 'vasprun.xml.gz'])
+    assert output.exit_code == 0
+    assert Path('unfold.png').is_file()
+    Path('unfold.png').unlink()
+
+    output = runner.invoke(easyunfold, ['unfold', 'plot-projections', '--atoms', 'Na,Bi,S', '--combined', '--dos', 'vasprun.xml.gz'])
+    assert output.exit_code == 0
+    assert Path('unfold.png').is_file()
+    Path('unfold.png').unlink()
+
+    output = runner.invoke(easyunfold, ['unfold', 'plot', '--atoms-idx', '1-20|21-40', '--orbitals', 's|p', '--dos', 'vasprun.xml.gz'])
+    assert output.exit_code == 0
+    assert Path('unfold.png').is_file()
+    Path('unfold.png').unlink()
+
+    output = runner.invoke(easyunfold, ['unfold', 'plot', '--atoms', 'Na,Bi', '--orbitals', 's|p', '--dos', 'vasprun.xml.gz'])
+    assert output.exit_code == 0
+    assert Path('unfold.png').is_file()
+    Path('unfold.png').unlink()
+
+    output = runner.invoke(easyunfold,
+                           ['unfold', 'plot-projections', '--atoms', 'Na,Bi', '--combined', '--orbitals', 's', '--dos', 'vasprun.xml.gz'])
+    assert output.exit_code == 0
+    assert Path('unfold.png').is_file()
+    Path('unfold.png').unlink()
+
+    output = runner.invoke(easyunfold, [
+        'unfold', 'plot-projections', '--atoms', 'Na,Bi', '--combined', '--orbitals', 's', '--dos', 'vasprun.xml.gz', '--dos-elements',
+        'Bi.s'
+    ])
+    assert output.exit_code == 0
+    assert Path('unfold.png').is_file()
+    Path('unfold.png').unlink()
+
+    output = runner.invoke(easyunfold, [
+        'unfold', 'plot-projections', '--atoms-idx', '1-20,21,22,33', '--combined', '--orbitals', 's', '--dos', 'vasprun.xml.gz',
+        '--dos-elements', 'Bi.s'
+    ])
+    assert output.exit_code == 0
+    assert Path('unfold.png').is_file()
+    Path('unfold.png').unlink()
+
+    output = runner.invoke(
+        easyunfold,
+        ['unfold', 'plot', '--atoms-idx', '1-20,21,22,33', '--orbitals', 's', '--dos', 'vasprun.xml.gz', '--dos-elements', 'Bi.s'])
+    assert output.exit_code == 0
+    assert Path('unfold.png').is_file()
+    Path('unfold.png').unlink()
+
+    output = runner.invoke(easyunfold, ['unfold', 'plot', '--dos', 'vasprun.xml.gz'])
+    assert output.exit_code == 0
+    assert Path('unfold.png').is_file()
+    Path('unfold.png').unlink()
+
+    output = runner.invoke(easyunfold, [
+        'unfold', 'plot-projections', '--atoms', 'Na,Bi', '--orbitals', 's', '--combined', '--dos', 'vasprun.xml.gz', '--dos-elements',
+        'Bi.s'
     ])
     assert output.exit_code == 0
     assert Path('unfold.png').is_file()

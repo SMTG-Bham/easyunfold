@@ -8,6 +8,7 @@ The main module for unfolding workflow and algorithm
 import re
 import warnings
 from typing import Union, List, Tuple
+from packaging import version
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -67,7 +68,7 @@ def rotate_kpt(k: np.ndarray, opt: np.ndarray):
 
 def expand_K_by_symmetry(kpt: Union[list, np.ndarray], opts_pc: np.ndarray, opts_sc: np.ndarray, time_reversal: bool = True):
     """
-    Expend the sampling of the PC kpoints due to symmetry breaking of the supercell cell.
+    Expand the sampling of the PC kpoints due to symmetry breaking of the supercell cell.
 
     :returns: Expanded kpoints and corresponding weights for each primitive cell kpoint.
     """
@@ -144,6 +145,7 @@ class UnfoldKSet(MSONable):
         :param pc_latt: A 3x3 matrix of row lattice vectors of the primitive cell
         :param pc_opts: Symmetry operations of the primitive cell
         :param sc_opts: Symmetry operations of the supercell
+        :param time_reversal: Whether to assume time-reversal symmetry or not
         :param expand: Whether to expand the kpoint to take account of broken symmetry or not
         :param expansion_results: Using existing results of symmetry expansion
         :param calculated_quantities: Existing calculated quantities
@@ -164,8 +166,10 @@ class UnfoldKSet(MSONable):
         self.dft_code = dft_code
         if metadata is None:
             metadata = {}
+        # Not loaded from a file so populate this field
+        if 'program_version' not in metadata:
+            metadata['program_version'] = __version__
         self.metadata = metadata
-        self.metadata['program_version'] = __version__
         self.transient_quantities = {}
 
         # Transient properties
@@ -173,6 +177,19 @@ class UnfoldKSet(MSONable):
         self.reduced_sckpts_map = None
         if self.expansion_results is None:
             self.expand_pc_kpoints()
+
+        self.check_version()
+
+    def check_version(self):
+        """Check the version of the program"""
+        vnow = version.parse(__version__)
+        vcreated = version.parse(self.metadata['program_version'])
+        if vnow > vcreated:
+            print(f'The data file was generated with easyunfold {vcreated}, current {vnow}.')
+        if vcreated == version.parse('0.1.4'):
+            if self.time_reversal:
+                print(('Version 0.1.4 is known to have a bug with supercell kpoints with time-reversal symmetry\n'
+                       'Please regenerate the data file with a newer version.'))
 
     @property
     def is_calculated(self) -> bool:
@@ -203,7 +220,7 @@ class UnfoldKSet(MSONable):
         :param kpts_pc: A list of kpoints in the PC
         :param pc: Primitive cell structure
         :param sc: Supercell structure
-        :param time_reversal: Assumes time-reversal symmetry
+        :param time_reversal: Whether to assume time-reversal symmetry or not
         :param expand: Whether to expand the kpoint to take account of broken symmetry or not
         :param symprec: Symmetry detection precision
 
@@ -292,7 +309,8 @@ class UnfoldKSet(MSONable):
         # We now have a bunch of supercell kpoints for each set of expanded kpoints
         # Try to find duplicated SC kpoints
         all_sc = np.array(all_sc)
-        reduced_sckpts, _, sc_kpts_map = reduce_kpoints(all_sc, time_reversal=self.time_reversal)
+        # Do not use time-reversal symmetry for reduction here, as we need to keep k = K - G_0 valid!
+        reduced_sckpts, _, sc_kpts_map = reduce_kpoints(all_sc, time_reversal=False)
         sc_kpts_map = list(sc_kpts_map)
 
         # Mapping between the pckpts to the reduced sckpts
@@ -323,6 +341,9 @@ class UnfoldKSet(MSONable):
         if self.expansion_results.get('reduced_sckpts') is None:
             self.generate_sc_kpoints()
         kpoints = np.asarray(self.expansion_results['reduced_sckpts'])
+        # Reduce the number of supercell kpoint via time-reversal symmetry
+        if self.time_reversal:
+            kpoints = reduce_kpoints(kpoints, time_reversal=self.time_reversal)[0]
         weights = None
         if nk_per_split is None:
             if scf_kpoints_and_weights:
@@ -546,7 +567,7 @@ class UnfoldKSet(MSONable):
         :param gamma_half: Flag used for reading WAVECAR
         :param symm_average: Whether to perform symmetry averaging
         :param atoms_idx: Indices for the atoms for projection
-        :param orbitals: Indices for the atoms for projection
+        :param orbitals: Orbitals of the atoms for projection
 
         :returns: A tuple of the energies and the spectral functioin.
         """
@@ -824,18 +845,12 @@ class Unfold:
         K0_wrapped = wrap_kpoints(K0)
         for ii in range(self.wfc.nkpts):
             if np.alltrue(np.abs(kpts_wrapped[ii] - K0_wrapped) < 1E-5):
-                return ii + 1
+                return ii + 1, False
             # Check for kpoint related with time-reversal symmetry
             if self.time_reversal and np.alltrue(np.abs(kpts_wrapped[ii] + K0_wrapped) < 1E-5):
-                return ii + 1
+                # This actually returns the index of -K0
+                return ii + 1, True
         raise ValueError('Cannot find the corresponding K-points in WAVECAR!')
-
-    def k2K_map(self, kpath) -> List[int]:
-        """
-        Return the map from primitive-cell k-points to supercell k-points.
-        """
-
-        return [self.find_K_index(find_K_from_k(k, self.M)[0]) - 1 for k in kpath]
 
     def spectral_weight_k(self, k0, whichspin=1):
         r"""
@@ -859,15 +874,25 @@ class Unfold:
         # k0 = G0 + K0
         K0, G0 = find_K_from_k(k0, self.M)
         # find index of K0
-        ikpt = self.find_K_index(K0)
+        ikpt, time_reversal = self.find_K_index(K0)
 
         # get the overlap G-vectors
         Gvalid, Gall = self.get_ovlap_G(ikpt=ikpt)
+
         # Gnew = Gvalid + k0 - K0
         Goffset = Gvalid + G0[np.newaxis, :]
 
         # Index of the Gvalid in 3D grid
         GallIndex = Gall % self.wfc.mesh_size[np.newaxis, :]
+
+        # If this kpoint is actuall -K0, use the relationship C_{k}(G) = C_{-k}*(-G)
+        # Since the coefficients are on a grid, we can just inverse the G vectors (unit of reciprocal lattice vector).
+        # There is no need to take conjugate as we only care about the norm.
+        # GallIndex stores the index of each plane-wave coefficients, and is to used to assign the coefficients
+        # to the 3D grid, so we just need to inverse it here.
+        if time_reversal:
+            GallIndex *= -1
+
         GoffsetIndex = Goffset % self.wfc.mesh_size[np.newaxis, :]
 
         # 3d grid for planewave coefficients
@@ -1060,7 +1085,7 @@ def create_white_colormap_from_existing(name: str) -> ListedColormap:
 
 def parse_atoms_idx(atoms_idx: str) -> List[int]:
     """
-    Expanding syntex like `1-2` (inclusive)
+    Expanding syntax like `1-2` (inclusive)
 
     For example, `1,2,3,4-6` will be expanded as `1,2,3,4,5,6`.
 
@@ -1085,6 +1110,9 @@ def process_projection_options(atoms_idx: str, orbitals: str) -> Tuple[list, lis
     """
     Process commandline-style specifications for project
 
+    :param atoms_idx: A comma- or hyphen-separated string of atom projections
+    :param orbitals: A comma-separated string of orbital projections
+
     :returns: A tuple of atom indices and the orbitals selected for projection.
     """
     indices = parse_atoms_idx(atoms_idx)
@@ -1094,35 +1122,70 @@ def process_projection_options(atoms_idx: str, orbitals: str) -> Tuple[list, lis
         orbitals = 'all'
     return indices, orbitals
 
-def read_poscar_contcar_if_present():
+
+def read_poscar_contcar_if_present(poscar: str = 'POSCAR'):
+    """
+    Return an ase Atoms() object of the POSCAR or CONTCAR file if present in the current directory.
+
+    :returns: ASE Atoms() object
+    """
     try:
-        return read_vasp("POSCAR")
+        return read_vasp(poscar)
     except FileNotFoundError:
         try:
-            return read_vasp("CONTCAR")
-        except FileNotFoundError:
-            raise FileNotFoundError("`POSCAR` or `CONTCAR` not found in current directory!")
+            return read_vasp('CONTCAR')
+        except FileNotFoundError as exc:
+            raise FileNotFoundError(f'`{poscar}` or `CONTCAR` not found in current directory!') from exc
 
 
-def parse_atoms(atoms_to_project: str, orbitals: str):
+def parse_atoms(atoms_to_project: str, orbitals: str, poscar: str):
+    """
+    Parse the specified atoms (and orbitals if set) from a comma-separated
+    string (e.g. "Na,Bi") into a list of strings (e.g. ["Na", "Bi"]), as well
+    as a list of the corresponding atom indices in the structure and the parse
+    orbital projections.
+
+    :param atoms_to_project: A comma-separted string of atom symbols to project
+    :param orbitals: A "|"-separated string of orbital projections
+    :param poscar: The POSCAR file to read atom indices from
+
+    :returns: A tuple of lists of atoms, atom indices and the orbitals selected for projection.
+    """
     atoms_to_project = re.split(', *', atoms_to_project)
-    ase_atoms = read_poscar_contcar_if_present()
+    ase_atoms = read_poscar_contcar_if_present(poscar)
     try:  # check POTCAR if possible, to check the POSCAR-POTCARs match
-        atom_types = get_atomtypes("POTCAR")
+        atom_types = get_atomtypes('POTCAR')
 
         def _check_order(smaller_list, larger_list):
             order_dict = {element: index for index, element in enumerate(smaller_list)}
             return all(order_dict[a] <= order_dict[b] for a, b in zip(larger_list, larger_list[1:]))
 
         if not _check_order(atom_types, ase_atoms.get_chemical_symbols()):
-            warnings.warn("The order of atoms in the POSCAR/CONTCAR and POTCAR do not match!")
+            warnings.warn('The order of atoms in the POSCAR/CONTCAR and POTCAR do not match!')
     except FileNotFoundError:
         pass
-    atoms_idx = [[i for i, atom in enumerate(ase_atoms) if projected_atom_symbol in atom.symbol] for projected_atom_symbol in atoms_to_project]
+    atoms_idx = [
+        [i for i, atom in enumerate(ase_atoms) if projected_atom_symbol in atom.symbol] for projected_atom_symbol in atoms_to_project
+    ]
 
-    if orbitals and orbitals != 'all':
-        orbitals = [token.strip() for token in orbitals.split(',')]
-    else:
+    if orbitals is None:
         orbitals = 'all'
 
-    return atoms_to_project, atoms_idx, orbitals
+    orbitals_subplots = orbitals.split('|')
+
+    # Special case: if only one set is passed, apply it to all atomic specifications
+    if len(orbitals_subplots) == 1:
+        orbitals_subplots = orbitals_subplots * len(atoms_idx)
+
+    orbitals_list = []
+    for orbital_sublist in orbitals_subplots:
+        if orbital_sublist and orbital_sublist != 'all':
+            orbital_sublist = [token.strip() for token in orbital_sublist.split(',')]
+        else:
+            orbital_sublist = [
+                'all',
+            ]
+
+        orbitals_list.append(orbital_sublist)
+
+    return atoms_to_project, atoms_idx, orbitals_list
