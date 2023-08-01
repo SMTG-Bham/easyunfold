@@ -59,6 +59,7 @@ class Procar(MSONable):
         proj_data, energies, kvecs, kweights, occs = [], [], [], [], []
         tot_count = 0  # count the instances of lines starting with "tot" -> (4 + 1) * nbands * nkpts for SOC calcs
         fobj.seek(0)
+
         with fobj:
             line = fobj.readline()
             while line:
