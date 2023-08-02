@@ -14,7 +14,7 @@ This guide assumes the current working directory is located at the root of that 
 First, generate the supercell _k_-points:
 
 ```bash
-easyunfold generate Si_prim.cell Si_211.cell band.cell --code castep
+easyunfold generate Si_prim.cell Si_211_band/Si_211_band.cell band.cell --code castep
 ```
 
 :::{tip}
@@ -42,7 +42,7 @@ Primitive cell information:
         Point group: m-3m
 
 No. of k points in the primitive cell           : 21
-No. of (non-symmetry-reduced) supercell kpoints : 60 (61)
+No. of supercell k points                       : 51
 No. of primitive cell symmetry operations       : 48
 No. of supercell symmetry operations            : 24
 
@@ -110,6 +110,11 @@ Output:
 
 Spectral function of the unfolded bands.
 ```
+
+:::{tip} 
+See the [NaBiS<sub>2</sub> example](https://smtg-ucl.github.io/easyunfold/examples/example_nabis2.html) for tips on 
+customising and prettifying the unfolded band structure plot.
+:::
 
 
 ## Band structures of the primitive cell and supercell
