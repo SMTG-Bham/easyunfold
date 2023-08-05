@@ -223,19 +223,15 @@ class UnfoldPlotter:
             if nspin > 1:
                 warnings.warn('DOS plotter is not supported for spin-separated plots. Reverting to non spin-polarised plotting.')
                 nspin = 1
-        else:
-            if ax is None:
-                if nspin == 1:
-                    fig, ax = plt.subplots(1, 1, figsize=figsize, dpi=dpi)
-                    axes = [ax]
-                else:
-                    fig, axes = plt.subplots(1, 2, figsize=figsize, dpi=dpi)
+        elif ax is None:
+            if nspin == 1:
+                fig, ax = plt.subplots(1, 1, figsize=figsize, dpi=dpi)
+                axes = [ax]
             else:
-                if not isinstance(ax, list):
-                    axes = [ax]
-                else:
-                    axes = ax
-                fig = axes[0].figure
+                fig, axes = plt.subplots(1, 2, figsize=figsize, dpi=dpi)
+        else:
+            axes = [ax] if not isinstance(ax, list) else ax
+            fig = axes[0].figure
 
         # Shift the kdist so the pcolormesh draw the pixel centred on the original point
         X, Y = np.meshgrid(kdist, engs - eref)
@@ -336,10 +332,7 @@ class UnfoldPlotter:
             else:
                 fig, axes = plt.subplots(1, 2, figsize=figsize, dpi=dpi)
         else:
-            if not isinstance(ax, list):
-                axes = [ax]
-            else:
-                axes = ax
+            axes = [ax] if not isinstance(ax, list) else ax
             fig = axes[0].figure
 
         mask = (engs < (ylim[1] + eref)) & (engs > (ylim[0] + eref))
@@ -385,10 +378,7 @@ class UnfoldPlotter:
         tick_locs = []
         tick_labels = []
         for index, label in labels:
-            if x_is_kidx:
-                xloc = index
-            else:
-                xloc = kdist[index]
+            xloc = index if x_is_kidx else kdist[index]
             ax.axvline(x=xloc, lw=0.5, color='k', ls=':', alpha=0.8)
             tick_locs.append(xloc)
             tick_labels.append(clean_latex_string(label))
@@ -517,10 +507,7 @@ class UnfoldPlotter:
             else:
                 fig, axes = plt.subplots(1, 2, figsize=figsize, dpi=dpi)
         else:
-            if not isinstance(ax, list):
-                axes = [ax]
-            else:
-                axes = ax
+            axes = [ax] if not isinstance(ax, list) else ax
             fig = axes[0].figure
 
         kweights = unfold.expansion_results['weights']
@@ -642,12 +629,11 @@ class UnfoldPlotter:
 
         # Collect spectral functions and scale
         for this_idx, this_orbitals in zip(atoms_idx_subplots, orbitals_subplots):
-            # Setup the atoms_idx and orbitals
+            # Set up the atoms_idx and orbitals
             if isinstance(this_idx, str):
                 this_idx, this_orbitals = process_projection_options(this_idx, this_orbitals)
-            else:  # list of integers; pre-processed by specifying atoms
-                if this_orbitals != 'all':
-                    this_orbitals = [token.strip() for token in this_orbitals.split(',')]
+            elif this_orbitals != 'all':
+                this_orbitals = [token.strip() for token in this_orbitals.split(',')]
 
             eng, spectral_function = unfoldset.get_spectral_function(gamma=gamma,
                                                                      npoints=npoints,
@@ -767,9 +753,10 @@ class UnfoldPlotter:
                     warnings.warn('zero_line option requires sumo to be installed!')
 
             if atoms is not None:  # add figure legend with atoms and colors
-                legend_elements = []
-                for i, atom in enumerate(atoms):
-                    legend_elements.append(Patch(facecolor=colours[i], label=atom, alpha=0.7))
+                legend_elements = [
+                    Patch(facecolor=colours[i], label=atom, alpha=0.7)
+                    for i, atom in enumerate(atoms)
+                ]
                 fig.axes[0].legend(handles=legend_elements, bbox_to_anchor=(1.025, 1), fontsize=9)
                 fig.subplots_adjust(right=0.78)  # ensure legend is not cut off
 
