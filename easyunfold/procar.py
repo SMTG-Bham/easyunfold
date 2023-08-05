@@ -130,6 +130,16 @@ class Procar(MSONable):
             proj_xyz = proj_data[:, :, :, 1:, :, :]
             proj_data = proj_data[:, :, :, 0, :, :]
 
+        # normalise: (for each nspin, nkpt, nband, the sum of the projections over nion and proj_names should be 1)
+        proj_sum = np.sum(proj_data, axis=(-2, -1), keepdims=True)
+        proj_sum[proj_sum == 0] = 1  # just in case, avoid division by zero
+        proj_data /= proj_sum
+
+        if proj_xyz is not None:
+            proj_sum = np.sum(proj_xyz, axis=(-3, -2, -1), keepdims=True)
+            proj_sum[proj_sum == 0] = 1
+            proj_xyz /= proj_sum
+
         return self.nspins, occs, kvecs, kweights, eigenvalues, proj_data, proj_xyz, parsed_kpoints
 
     def _read_header_nion_proj_names(self, fobj):
@@ -165,8 +175,8 @@ class Procar(MSONable):
                 self._read_header_nion_proj_names(fobj)
 
             current_nspins = self.nspins  # check spin consistency between PROCARs
-            nspins, occs, kvecs, kweights, eigenvalues, proj_data, proj_xyz, parsed_kpoints = self._read(fobj,
-                                                                                                         parsed_kpoints=parsed_kpoints)
+            nspins, occs, kvecs, kweights, eigenvalues, proj_data, proj_xyz, parsed_kpoints = self._read(
+                fobj, parsed_kpoints=parsed_kpoints)
             if current_nspins is not None and current_nspins != nspins:
                 raise ValueError(f'Mismatch in number of spins in PROCARs supplied: ({nspins} vs {current_nspins})!')
 
