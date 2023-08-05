@@ -483,7 +483,7 @@ def process_dos(dos, dos_elements, dos_orbitals, dos_atoms, gaussian, total_only
                     for orbital in orbital_tuple:
                         if orbital != 'all' and orbital[:1] not in dos_elements[atom]:
                             # special case in VASP PROCAR labelling, set to 'd' if x, else just first letter
-                            dos_elements[atom] += ('d', ) if orbital[:1] == 'x' else (orbital[:1], )
+                            dos_elements[atom] += ('d',) if orbital[:1] == 'x' else (orbital[:1],)
 
         dos, pdos = load_dos(
             dos,
@@ -511,11 +511,15 @@ def process_dos(dos, dos_elements, dos_orbitals, dos_atoms, gaussian, total_only
 @add_plot_options
 @add_mpl_style_option
 @click.option('--combined/--no-combined', is_flag=True, default=False, help='Plot all projections in a combined graph.')
-@click.option('--colours', help='Colours to be used for combined plot, comma separated (e.g. "r,b,y"). '
-                                'Default is red, green, blue, purple, orange, yellow.', default=None)
-@click.option('--colourspace', help='Colourspace in which to perform interpolation for combined plot. '
-                                    'Allowed values are rgb, hsv, lab, luvlch, lablch, and xyz.',
-              default="xyz", show_default=True, type=click.Choice(["rgb", "hsv", "lab", "luv", "luvch", "xyz"]))
+@click.option('--colours',
+              help='Colours to be used for combined plot, comma separated (e.g. "r,b,y"). '
+              'Default is red, green, blue, purple, orange, yellow.',
+              default=None)
+@click.option('--colourspace',
+              help='Colourspace in which to perform interpolation for combined plot.',
+              default='xyz',
+              show_default=True,
+              type=click.Choice(['rgb', 'hsv', 'lab', 'luvlch', 'lablch', 'xyz']))
 def unfold_plot_projections(ctx, npoints, sigma, eref, out_file, show, emin, emax, cmap, no_symm_average, vscale, dos, dos_label, zero_line,
                             dos_elements, dos_orbitals, dos_atoms, legend_cutoff, gaussian, no_total, total_only, scale, procar, atoms,
                             poscar, atoms_idx, orbitals, title, combined, colours, colourspace, width, height, dpi, intensity):
@@ -699,6 +703,7 @@ def _unfold_plot(ctx,
 
 def print_symmetry_data(kset):
     """Print the symmetry information"""
+
     def _print_symmetry_data_from_kset(kset, dataset_key, dataset_title):
         # Print space group information
         sc_spg = kset.metadata[dataset_key]
@@ -707,12 +712,8 @@ def print_symmetry_data(kset):
         click.echo(' ' * 8 + f'International symbol: {sc_spg["international"]}')
         click.echo(' ' * 8 + f'Point group: {sc_spg["pointgroup"]}')
 
-    _print_symmetry_data_from_kset(
-        kset, 'symmetry_dataset_sc', 'Supercell cell information:'
-    )
-    _print_symmetry_data_from_kset(
-        kset, 'symmetry_dataset_pc', '\nPrimitive cell information:'
-    )
+    _print_symmetry_data_from_kset(kset, 'symmetry_dataset_sc', 'Supercell cell information:')
+    _print_symmetry_data_from_kset(kset, 'symmetry_dataset_pc', '\nPrimitive cell information:')
 
 
 def matrix_from_string(string):

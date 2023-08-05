@@ -3,7 +3,6 @@
 The main module for unfolding workflow and algorithm
 """
 
-
 import contextlib
 import itertools
 # pylint: disable=invalid-name,protected-access,too-many-locals

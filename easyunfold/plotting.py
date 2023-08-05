@@ -551,37 +551,37 @@ class UnfoldPlotter:
         return fig
 
     def plot_projected(
-            self,
-            procar: Union[str, list] = 'PROCAR',
-            dos_plotter=None,
-            dos_label=None,
-            dos_options=None,
-            zero_line=False,
-            eref=None,
-            gamma=False,
-            npoints=2000,
-            sigma=0.2,
-            ncl=False,
-            symm_average=True,
-            figsize=(4, 3),
-            ylim=(-5, 5),
-            dpi=300,
-            vscale=1.0,
-            contour_plot=False,
-            alpha=1.0,
-            save=False,
-            ax=None,
-            cmap='PuRd',
-            show=False,
-            title=None,
-            atoms=None,
-            poscar='POSCAR',
-            atoms_idx=None,
-            orbitals=None,
-            use_subplot=False,
-            colours=None,  # set to red, green, blue, purple, orange, yellow by default, if None
-            colorspace='xyz',
-            intensity=1.0,
+        self,
+        procar: Union[str, list] = 'PROCAR',
+        dos_plotter=None,
+        dos_label=None,
+        dos_options=None,
+        zero_line=False,
+        eref=None,
+        gamma=False,
+        npoints=2000,
+        sigma=0.2,
+        ncl=False,
+        symm_average=True,
+        figsize=(4, 3),
+        ylim=(-5, 5),
+        dpi=300,
+        vscale=1.0,
+        contour_plot=False,
+        alpha=1.0,
+        save=False,
+        ax=None,
+        cmap='PuRd',
+        show=False,
+        title=None,
+        atoms=None,
+        poscar='POSCAR',
+        atoms_idx=None,
+        orbitals=None,
+        use_subplot=False,
+        colours=None,  # set to red, green, blue, purple, orange, yellow by default, if None
+        colorspace='xyz',
+        intensity=1.0,
     ):
         """
         Plot projected spectral function onto multiple subplots or a single plot with color mapping.
@@ -765,10 +765,7 @@ class UnfoldPlotter:
                     warnings.warn('zero_line option requires sumo to be installed!')
 
             if atoms is not None:  # add figure legend with atoms and colors
-                legend_elements = [
-                    Patch(facecolor=colours[i], label=atom, alpha=0.7)
-                    for i, atom in enumerate(atoms)
-                ]
+                legend_elements = [Patch(facecolor=colours[i], label=atom, alpha=0.7) for i, atom in enumerate(atoms)]
                 fig.axes[0].legend(handles=legend_elements, bbox_to_anchor=(1.025, 1), fontsize=9)
                 fig.subplots_adjust(right=0.78)  # ensure legend is not cut off
 

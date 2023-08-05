@@ -175,8 +175,8 @@ class Procar(MSONable):
                 self._read_header_nion_proj_names(fobj)
 
             current_nspins = self.nspins  # check spin consistency between PROCARs
-            nspins, occs, kvecs, kweights, eigenvalues, proj_data, proj_xyz, parsed_kpoints = self._read(
-                fobj, parsed_kpoints=parsed_kpoints)
+            nspins, occs, kvecs, kweights, eigenvalues, proj_data, proj_xyz, parsed_kpoints = self._read(fobj,
+                                                                                                         parsed_kpoints=parsed_kpoints)
             if current_nspins is not None and current_nspins != nspins:
                 raise ValueError(f'Mismatch in number of spins in PROCARs supplied: ({nspins} vs {current_nspins})!')
 
