@@ -858,10 +858,20 @@ def interpolate_colors(colours: Sequence, weights: list, colorspace='lab', norma
 
     # convert the interpolated colors back to RGB
     rgb_colors = [convert_color(colorspace(*c), sRGBColor).get_value_tuple() for c in interpolated_colors]
-    rgb_colors = np.stack(rgb_colors, axis=0)
 
-    # ensure all rgb values are less than 1 (sometimes issues in interpolation gives
-    np.clip(rgb_colors, 0, 1, rgb_colors)
+    # ensure all rgb values are less than 1 (sometimes issues in interpolation)
+    normalised_rgb_colors = []
+    for rgb_color_tuple in rgb_colors:
+        if np.max(rgb_color_tuple) > 1:
+            normalised_rgb_color = np.array(rgb_color_tuple) / np.max(rgb_color_tuple)
+        else:
+            normalised_rgb_color = np.array(rgb_color_tuple)
+
+        normalised_rgb_color = np.clip(normalised_rgb_color, 0, 1)  # ensure all rgb values are between 0 and 1
+        normalised_rgb_colors.append(normalised_rgb_color)
+
+    rgb_colors = np.stack(normalised_rgb_colors, axis=0)
+
     return rgb_colors
 
 
