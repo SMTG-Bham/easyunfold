@@ -579,8 +579,8 @@ class UnfoldPlotter:
             atoms_idx=None,
             orbitals=None,
             use_subplot=False,
-            colours=('r', 'g', 'b', 'purple'),
-            colorspace='lab',
+            colours=None,  # set to red, green, blue, purple, orange, yellow by default, if None
+            colorspace='xyz',
             intensity=1.0,
     ):
         """
@@ -693,6 +693,18 @@ class UnfoldPlotter:
             stacked_sf = np.stack(all_sf, axis=-1).reshape(np.prod(sf_size), len(all_sf))
 
             # Construct the colour basis
+            if colours is None:
+                colours = [
+                    (1, 0, 0),  # red
+                    (0, 1, 0),  # green
+                    (0, 0, 1),  # blue
+                    (152 / 255, 78 / 255, 163 / 255),  # purple
+                    (1, 127 / 255, 0),  # orange
+                    (1, 1, 51 / 255),  # yellow
+                    # "#CC33A7",
+                    # "#A7CC33",
+                    # "#33A7CC"
+                ]  # one of the recommended qualitative colour schemes from colorbrewer2.org
             colours = colours[:len(all_sf)]
             # Compute spectral weight data with RGB reshape it back into the shape (nengs, nk, 3)
             sf_rgb = interpolate_colors(colours, stacked_sf, colorspace, normalize=True).reshape(sf_size + (3,))
