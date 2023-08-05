@@ -512,10 +512,14 @@ def process_dos(dos, dos_elements, dos_orbitals, dos_atoms, gaussian, total_only
 @add_plot_options
 @add_mpl_style_option
 @click.option('--combined/--no-combined', is_flag=True, default=False, help='Plot all projections in a combined graph.')
-@click.option('--colours', help='Colours to be used for combined plot, comma separated.', default='r,g,b,purple', show_default=True)
+@click.option('--colours', help='Colours to be used for combined plot, comma separated (e.g. "r,b,y"). '
+                                'Default is red, green, blue, purple, orange, yellow.', default=None)
+@click.option('--colourspace', help='Colourspace in which to perform interpolation for combined plot. '
+                                    'Allowed values are rgb, hsv, lab, luvlch, lablch, and xyz.',
+              default="xyz", show_default=True, type=click.Choice(["rgb", "hsv", "lab", "luv", "luvch", "xyz"]))
 def unfold_plot_projections(ctx, npoints, sigma, eref, out_file, show, emin, emax, cmap, no_symm_average, vscale, dos, dos_label, zero_line,
                             dos_elements, dos_orbitals, dos_atoms, legend_cutoff, gaussian, no_total, total_only, scale, procar, atoms,
-                            poscar, atoms_idx, orbitals, title, combined, colours, width, height, dpi, intensity):
+                            poscar, atoms_idx, orbitals, title, combined, colours, colourspace, width, height, dpi, intensity):
     """
     Plot the effective band structure with atomic projections.
     """
@@ -550,7 +554,8 @@ def unfold_plot_projections(ctx, npoints, sigma, eref, out_file, show, emin, ema
                                  intensity=intensity,
                                  figsize=(width, height),
                                  dpi=dpi,
-                                 colours=colours.split(',') if colours is not None else None)
+                                 colours=colours.split(',') if colours is not None else None,
+                                 colorspace=colourspace)
 
     if out_file:
         fig.savefig(out_file, dpi=dpi, bbox_inches='tight')
