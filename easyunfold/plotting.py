@@ -837,7 +837,7 @@ def interpolate_colors(colours: Sequence, weights: list, colorspace='lab', norma
 
     # Normalise the weights if needed
     if normalize:
-        weights = weights / np.linalg.norm(weights, axis=1)[:, None]
+        weights = weights / np.sum(weights, axis=1)[:, None]  # each row sums to 1
 
     # perform the interpolation in the colorspace basis
     interpolated_colors = colors_basis[0] * weights[:, 0][:, None]
