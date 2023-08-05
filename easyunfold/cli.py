@@ -1,6 +1,8 @@
 """
 Commandline interface
 """
+
+import contextlib
 import warnings
 import functools
 from pathlib import Path
@@ -105,11 +107,8 @@ def generate(pc_file, code, sc_file, matrix, kpoints, time_reversal, out_file, n
                                       dft_code=code,
                                       symprec=symprec)
     unfoldset.kpoint_labels = labels
-    try:
+    with contextlib.suppress(KeyError):
         print_symmetry_data(unfoldset)
-    except KeyError:
-        pass
-
     out_file = Path(out_file)
     if code == 'vasp':
         out_kpt_name = f'KPOINTS_{out_file.stem}'
@@ -142,7 +141,7 @@ def generate(pc_file, code, sc_file, matrix, kpoints, time_reversal, out_file, n
 
     Path(out_file).write_text(unfoldset.to_json(), encoding='utf-8')
 
-    click.echo('Unfolding settings written to ' + str(out_file))
+    click.echo(f'Unfolding settings written to {str(out_file)}')
 
 
 @easyunfold.group('unfold')
@@ -211,7 +210,7 @@ def unfold_calculate(ctx, wavefunc, save_as, gamma, ncl):
 
     out_path = save_as if save_as else ctx.obj['fname']
     Path(out_path).write_text(unfoldset.to_json(), encoding='utf-8')
-    click.echo('Unfolding data written to ' + out_path)
+    click.echo(f'Unfolding data written to {out_path}')
 
 
 def add_mpl_style_option(func):
@@ -331,11 +330,13 @@ def unfold_effective_mass(ctx, intensity_threshold, spin, band_filter, npoints, 
         ext = Path(out_file).suffix
         for carrier in ['electrons', 'holes']:
             for idx, _ in enumerate(output[carrier]):
-                plotter.plot_effective_mass_fit(efm=efm,
-                                                npoints=npoints,
-                                                carrier=carrier,
-                                                idx=int(idx),
-                                                save=fname + f'_fit_{carrier}_{idx}' + ext)
+                plotter.plot_effective_mass_fit(
+                    efm=efm,
+                    npoints=npoints,
+                    carrier=carrier,
+                    idx=int(idx),
+                    save=f'{fname}_fit_{carrier}_{idx}{ext}',
+                )
 
 
 def add_plot_options(func):
@@ -481,10 +482,8 @@ def process_dos(dos, dos_elements, dos_orbitals, dos_atoms, gaussian, total_only
                         dos_elements[atom] = ()
                     for orbital in orbital_tuple:
                         if orbital != 'all' and orbital[:1] not in dos_elements[atom]:
-                            if orbital[:1] == 'x':  # special case in VASP PROCAR labelling, set to 'd'
-                                dos_elements[atom] += ('d',)
-                            else:
-                                dos_elements[atom] += (orbital[:1],)
+                            # special case in VASP PROCAR labelling, set to 'd' if x, else just first letter
+                            dos_elements[atom] += ('d', ) if orbital[:1] == 'x' else (orbital[:1], )
 
         dos, pdos = load_dos(
             dos,
@@ -613,7 +612,7 @@ def _unfold_plot(ctx,
         eref = unfoldset.calculated_quantities.get('vbm', 0.0)
     click.echo(f'Using a reference energy of {eref:.3f} eV')
 
-    # Setup the atoms_idx and orbitals
+    # Set up the atoms_idx and orbitals
     if atoms or atoms_idx:
         # Process the PROCARs
         click.echo(f'Loading projections from: {procar}')
@@ -700,27 +699,24 @@ def _unfold_plot(ctx,
 
 def print_symmetry_data(kset):
     """Print the symmetry information"""
+    def _print_symmetry_data_from_kset(kset, dataset_key, dataset_title):
+        # Print space group information
+        sc_spg = kset.metadata[dataset_key]
+        click.echo(dataset_title)
+        click.echo(' ' * 8 + f'Space group number: {sc_spg["number"]}')
+        click.echo(' ' * 8 + f'International symbol: {sc_spg["international"]}')
+        click.echo(' ' * 8 + f'Point group: {sc_spg["pointgroup"]}')
 
-    # Print space group information
-    sc_spg = kset.metadata['symmetry_dataset_sc']
-    click.echo('Supercell cell information:')
-    click.echo(' ' * 8 + f'Space group number: {sc_spg["number"]}')
-    click.echo(' ' * 8 + f'International symbol: {sc_spg["international"]}')
-    click.echo(' ' * 8 + f'Point group: {sc_spg["pointgroup"]}')
-
-    pc_spg = kset.metadata['symmetry_dataset_pc']
-    click.echo('\nPrimitive cell information:')
-    click.echo(' ' * 8 + f'Space group number: {pc_spg["number"]}')
-    click.echo(' ' * 8 + f'International symbol: {pc_spg["international"]}')
-    click.echo(' ' * 8 + f'Point group: {pc_spg["pointgroup"]}')
+    _print_symmetry_data_from_kset(
+        kset, 'symmetry_dataset_sc', 'Supercell cell information:'
+    )
+    _print_symmetry_data_from_kset(
+        kset, 'symmetry_dataset_pc', '\nPrimitive cell information:'
+    )
 
 
 def matrix_from_string(string):
-    """Parse transform matrix from a string"""
+    """Parse transformation matrix from a string"""
     elems = [float(x) for x in string.split()]
-    # Try gussing the transform matrix
-    if len(elems) == 3:
-        transform_matrix = np.diag(elems)
-    else:
-        transform_matrix = np.array(elems).reshape((3, 3))
-    return transform_matrix
+    # try guessing the transormation matrix
+    return np.diag(elems) if len(elems) == 3 else np.array(elems).reshape((3, 3))
