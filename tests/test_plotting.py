@@ -77,6 +77,7 @@ def test_plotting_projection(unfold_obj: UnfoldKSet):
     assert isinstance(fig, Figure)
 
     # test options
+    poscar_path = Path(__file__).parent / 'test_data/POSCAR.mgo'
     fig = plotter.plot_projected(procar_path,
                                  eref=2,
                                  gamma=False,
@@ -90,13 +91,13 @@ def test_plotting_projection(unfold_obj: UnfoldKSet):
                                  vscale=2.0,
                                  contour_plot=True,
                                  alpha=0.4,
-                                 save=True,
+                                 save="test.png",
                                  ax=None,
                                  cmap='PuBu',
                                  show=True,
                                  title='Test',
                                  atoms='Mg,O',
-                                 poscar='POSCAR.mgo',
+                                 poscar=poscar_path,
                                  orbitals='s,p',
                                  use_subplot=True,
                                  colours='r,g',
