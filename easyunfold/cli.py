@@ -510,7 +510,7 @@ def process_dos(dos, dos_elements, dos_orbitals, dos_atoms, gaussian, total_only
 @click.pass_context
 @add_plot_options
 @add_mpl_style_option
-@click.option('--combined/--no-combined', is_flag=True, default=False, help='Plot all projections in a combined graph.')
+@click.option('--combined/--no-combined', is_flag=True, default=False, help='Plot all projections in a combined graph.', show_default=True)
 @click.option('--colours',
               help='Colours to be used for combined plot, comma separated (e.g. "r,b,y"). '
               'Default is pastel red, green, blue if <=3 projections, else red, green, blue, purple, orange, yellow.',

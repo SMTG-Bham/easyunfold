@@ -116,36 +116,43 @@ def test_plot_projection(mgo_project_dir):
     runner = CliRunner()
     output = runner.invoke(easyunfold,
                            ['unfold', '--data-file', 'mgo.json', 'plot-projections', '--atoms-idx', '1,2|3-4', '--procar', 'PROCAR'])
-    assert output.exit_code == 0
-    assert Path('unfold.png').is_file()
-    Path('unfold.png').unlink()
+    _plot_projection_check(output)
 
     output = runner.invoke(
         easyunfold, ['unfold', '--data-file', 'mgo.json', 'plot-projections', '--atoms-idx', '1,2|3-4', '--procar', 'PROCAR', '--combined'])
-    assert output.exit_code == 0
-    assert Path('unfold.png').is_file()
-    Path('unfold.png').unlink()
+    _plot_projection_check(output)
 
     output = runner.invoke(easyunfold, [
         'unfold', '--data-file', 'mgo.json', 'plot-projections', '--atoms-idx', '1,2|3-4', '--procar', 'PROCAR', '--combined', '--orbitals',
         'px,py|pz'
     ])
-    assert output.exit_code == 0
-    assert Path('unfold.png').is_file()
-    Path('unfold.png').unlink()
+    _plot_projection_check(output)
 
     # test --atoms option with --poscar specification
     output = runner.invoke(easyunfold,
                            ['unfold', '--data-file', 'mgo.json', 'plot-projections', '--atoms', 'Mg,O', '--poscar', 'POSCAR.mgo'])
-    assert output.exit_code == 0
-    assert Path('unfold.png').is_file()
-    Path('unfold.png').unlink()
+    _plot_projection_check(output)
 
     # test parsing PROCAR from LORBIT = 14 calculation
     output = runner.invoke(easyunfold, [
         'unfold', '--data-file', 'mgo.json', 'plot-projections', '--atoms', 'Mg,O', '--poscar', 'POSCAR.mgo', '--procar',
         'PROCAR_LORBIT_14.mgo'
     ])
+    _plot_projection_check(output)
+
+    # test options
+    output = runner.invoke(easyunfold, [
+        'unfold', '--data-file', 'mgo.json', 'plot-projections', '--atoms', 'Mg,O', '--poscar', 'POSCAR.mgo', '--eref', '2',
+        '--no-symm-average', '--cmap', 'PuBu', '--orbitals', 's,p', '--colours', 'r,g', '--orbitals', 's,p', '--colours', 'r,g',
+        '--colourspace', 'luvlch', '--intensity', '0.5', '--emin', '-2', '--emax', '5', '--dpi', '500', '--vscale', '2.0', '--cmap', 'PuBu',
+        '--npoints', '200', '--sigma', '0.15', '--title', 'Test', '--no-combined', '--height', '2', '--width', '3', '-o', 'test.png'
+    ])
+    assert output.exit_code == 0
+    assert Path('test.png').is_file()  # different file name this time
+    Path('test.png').unlink()
+
+
+def _plot_projection_check(output):
     assert output.exit_code == 0
     assert Path('unfold.png').is_file()
     Path('unfold.png').unlink()
@@ -199,17 +206,13 @@ def test_dos_atom_orbital_plots(nabis2_project_dir):
         '--dos-elements',
         'Bi.s.p',
     ])
-    assert output.exit_code == 0
-    assert Path('unfold.png').is_file()
-    Path('unfold.png').unlink()
+    _check_dos_atom_orbital_plots(output)
 
     output = runner.invoke(easyunfold, [
         'unfold', 'plot-projections', '--atoms', 'Na,Bi,S', '--orbitals', 's|px,py,pz|p', '--vscale', '0.5', '--combined', '--dos',
         'vasprun.xml.gz', '--zero-line', '--dos-label', 'DOS', '--gaussian', '0.1', '--no-total', '--scale', '2'
     ])
-    assert output.exit_code == 0
-    assert Path('unfold.png').is_file()
-    Path('unfold.png').unlink()
+    _check_dos_atom_orbital_plots(output)
 
     output = runner.invoke(
         easyunfold,
@@ -217,84 +220,64 @@ def test_dos_atom_orbital_plots(nabis2_project_dir):
             'unfold', 'plot-projections', '--atoms', 'Na,Bi,S', '--orbitals', 's|px,py,pz|p', '--intensity', '2', '--combined', '--dos',
             'vasprun.xml.gz', '--zero-line', '--dos-label', 'DOS', '--gaussian', '0.1', '--no-total', '--scale', '2'
         ])
-    assert output.exit_code == 0
-    assert Path('unfold.png').is_file()
-    Path('unfold.png').unlink()
+    _check_dos_atom_orbital_plots(output)
 
     output = runner.invoke(easyunfold, [
         'unfold', 'plot-projections', '--atoms', 'Na,Bi,S', '--vscale', '0.5', '--combined', '--dos', 'vasprun.xml.gz', '--zero-line',
         '--dos-label', 'DOS', '--gaussian', '0.1', '--no-total', '--scale', '2'
     ])
-    assert output.exit_code == 0
-    assert Path('unfold.png').is_file()
-    Path('unfold.png').unlink()
+    _check_dos_atom_orbital_plots(output)
 
     output = runner.invoke(easyunfold, [
         'unfold', 'plot-projections', '--atoms', 'Na,Bi', '--vscale', '0.5', '--combined', '--dos', 'vasprun.xml.gz', '--zero-line',
         '--dos-label', 'DOS', '--gaussian', '0.1', '--no-total', '--scale', '2'
     ])
-    assert output.exit_code == 0
-    assert Path('unfold.png').is_file()
-    Path('unfold.png').unlink()
+    _check_dos_atom_orbital_plots(output)
 
     output = runner.invoke(easyunfold, ['unfold', 'plot-projections', '--atoms', 'Na,Bi,S', '--dos', 'vasprun.xml.gz'])
-    assert output.exit_code == 0
-    assert Path('unfold.png').is_file()
-    Path('unfold.png').unlink()
+    _check_dos_atom_orbital_plots(output)
 
     output = runner.invoke(easyunfold, ['unfold', 'plot-projections', '--atoms', 'Na,Bi,S', '--combined', '--dos', 'vasprun.xml.gz'])
-    assert output.exit_code == 0
-    assert Path('unfold.png').is_file()
-    Path('unfold.png').unlink()
+    _check_dos_atom_orbital_plots(output)
 
     output = runner.invoke(easyunfold, ['unfold', 'plot', '--atoms-idx', '1-20|21-40', '--orbitals', 's|p', '--dos', 'vasprun.xml.gz'])
-    assert output.exit_code == 0
-    assert Path('unfold.png').is_file()
-    Path('unfold.png').unlink()
+    _check_dos_atom_orbital_plots(output)
 
     output = runner.invoke(easyunfold, ['unfold', 'plot', '--atoms', 'Na,Bi', '--orbitals', 's|p', '--dos', 'vasprun.xml.gz'])
-    assert output.exit_code == 0
-    assert Path('unfold.png').is_file()
-    Path('unfold.png').unlink()
+    _check_dos_atom_orbital_plots(output)
 
     output = runner.invoke(easyunfold,
                            ['unfold', 'plot-projections', '--atoms', 'Na,Bi', '--combined', '--orbitals', 's', '--dos', 'vasprun.xml.gz'])
-    assert output.exit_code == 0
-    assert Path('unfold.png').is_file()
-    Path('unfold.png').unlink()
+    _check_dos_atom_orbital_plots(output)
 
     output = runner.invoke(easyunfold, [
         'unfold', 'plot-projections', '--atoms', 'Na,Bi', '--combined', '--orbitals', 's', '--dos', 'vasprun.xml.gz', '--dos-elements',
         'Bi.s'
     ])
-    assert output.exit_code == 0
-    assert Path('unfold.png').is_file()
-    Path('unfold.png').unlink()
+    _check_dos_atom_orbital_plots(output)
 
     output = runner.invoke(easyunfold, [
         'unfold', 'plot-projections', '--atoms-idx', '1-20,21,22,33', '--combined', '--orbitals', 's', '--dos', 'vasprun.xml.gz',
         '--dos-elements', 'Bi.s'
     ])
-    assert output.exit_code == 0
-    assert Path('unfold.png').is_file()
-    Path('unfold.png').unlink()
+    _check_dos_atom_orbital_plots(output)
 
     output = runner.invoke(
         easyunfold,
         ['unfold', 'plot', '--atoms-idx', '1-20,21,22,33', '--orbitals', 's', '--dos', 'vasprun.xml.gz', '--dos-elements', 'Bi.s'])
-    assert output.exit_code == 0
-    assert Path('unfold.png').is_file()
-    Path('unfold.png').unlink()
+    _check_dos_atom_orbital_plots(output)
 
     output = runner.invoke(easyunfold, ['unfold', 'plot', '--dos', 'vasprun.xml.gz'])
-    assert output.exit_code == 0
-    assert Path('unfold.png').is_file()
-    Path('unfold.png').unlink()
+    _check_dos_atom_orbital_plots(output)
 
     output = runner.invoke(easyunfold, [
         'unfold', 'plot-projections', '--atoms', 'Na,Bi', '--orbitals', 's', '--combined', '--dos', 'vasprun.xml.gz', '--dos-elements',
         'Bi.s'
     ])
+    _check_dos_atom_orbital_plots(output)
+
+
+def _check_dos_atom_orbital_plots(output):
     assert output.exit_code == 0
     assert Path('unfold.png').is_file()
     Path('unfold.png').unlink()

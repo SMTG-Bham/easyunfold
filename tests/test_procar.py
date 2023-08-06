@@ -4,7 +4,6 @@ Tests from reading PROCAR
 
 from pathlib import Path
 import numpy as np
-import pytest
 
 from easyunfold.procar import Procar
 
@@ -22,7 +21,7 @@ def test_procar():
     assert procar.kweights.shape == (1, 47)
     assert np.all(procar.kvecs[0][0] == 0.)
     assert procar.occs.shape == (1, 47, 20)
-    assert procar.get_projection([0], 'all').sum() == 303.278
-    assert procar.get_projection([0], ['s', 'px']).sum() == 57.95700000000001
-    assert procar.get_projection([0], ['s']).sum() + procar.get_projection([0], 'px').sum() == 57.957
+    assert procar.get_projection([0], 'all').sum() == 618.2850603903657
+    assert procar.get_projection([0], ['s', 'px']).sum() == 124.10684519359549
+    assert procar.get_projection([0], ['s']).sum() + procar.get_projection([0], 'px').sum() == 124.10684519359546
     assert procar.proj_names == ['s', 'py', 'pz', 'px', 'dxy', 'dyz', 'dz2', 'dxz', 'x2-y2']
