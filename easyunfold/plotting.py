@@ -865,6 +865,10 @@ def interpolate_colors(colours: Sequence, weights: list, colorspace='xyz', norma
             normalised_rgb_color = np.array(rgb_color_tuple)
 
         normalised_rgb_color = np.clip(normalised_rgb_color, 0, 1)  # ensure all rgb values are between 0 and 1
+        # if too white, darken:
+        if np.linalg.norm(normalised_rgb_color) > 1:  # white af
+            normalised_rgb_color *= (1 / np.linalg.norm(normalised_rgb_color)**(1/2))
+
         normalised_rgb_colors.append(normalised_rgb_color)
 
     rgb_colors = np.stack(normalised_rgb_colors, axis=0)
