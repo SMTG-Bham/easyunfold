@@ -513,11 +513,11 @@ def process_dos(dos, dos_elements, dos_orbitals, dos_atoms, gaussian, total_only
 @click.option('--combined/--no-combined', is_flag=True, default=False, help='Plot all projections in a combined graph.')
 @click.option('--colours',
               help='Colours to be used for combined plot, comma separated (e.g. "r,b,y"). '
-              'Default is red, green, blue, purple, orange, yellow.',
+              'Default is pastel red, green, blue if <=3 projections, else red, green, blue, purple, orange, yellow.',
               default=None)
 @click.option('--colourspace',
               help='Colourspace in which to perform interpolation for combined plot.',
-              default='xyz',
+              default='lablch',
               show_default=True,
               type=click.Choice(['rgb', 'hsv', 'lab', 'luvlch', 'lablch', 'xyz']))
 def unfold_plot_projections(ctx, npoints, sigma, eref, out_file, show, emin, emax, cmap, no_symm_average, vscale, dos, dos_label, zero_line,

@@ -579,8 +579,8 @@ class UnfoldPlotter:
         atoms_idx=None,
         orbitals=None,
         use_subplot=False,
-        colours=None,  # set to red, green, blue, purple, orange, yellow by default, if None
-        colorspace='xyz',
+        colours=None,
+        colorspace='lablch',
         intensity=1.0,
     ):
         """
@@ -590,6 +590,9 @@ class UnfoldPlotter:
         multiple subplots. The columns are for each orbital and the rows are for each spin channel.
 
         :param procar: Name of names of the `PROCAR` files.
+
+        :param colours: Default is pastel red, green, blue if <=3 projections, else red, green,
+            blue, purple, orange, yellow.
 
         :returns: Generated plot.
         """
@@ -694,17 +697,17 @@ class UnfoldPlotter:
 
             # Construct the colour basis
             if colours is None:
-                colours = [
-                    (1, 0, 0),  # red
-                    (0, 1, 0),  # green
-                    (0, 0, 1),  # blue
-                    (152 / 255, 78 / 255, 163 / 255),  # purple
-                    (1, 127 / 255, 0),  # orange
-                    (1, 1, 51 / 255),  # yellow
-                    # "#CC33A7",
-                    # "#A7CC33",
-                    # "#33A7CC"
-                ]  # one of the recommended qualitative colour schemes from colorbrewer2.org
+                if len(all_sf) <= 3:
+                    colours = ['#CC33A7', '#A7CC33', '#33A7CC']
+                else:
+                    colours = [
+                        (1, 0, 0),  # red
+                        (0, 1, 0),  # green
+                        (0, 0, 1),  # blue
+                        (152 / 255, 78 / 255, 163 / 255),  # purple
+                        (1, 127 / 255, 0),  # orange
+                        (1, 1, 51 / 255),  # yellow
+                    ]
             colours = colours[:len(all_sf)]
             # Compute spectral weight data with RGB reshape it back into the shape (nengs, nk, 3)
             sf_rgb = interpolate_colors(colours, stacked_sf, colorspace, normalize=True).reshape(sf_size + (3,))
@@ -808,7 +811,7 @@ class UnfoldPlotter:
         return fig
 
 
-def interpolate_colors(colours: Sequence, weights: list, colorspace='xyz', normalize=True):
+def interpolate_colors(colours: Sequence, weights: list, colorspace='lablch', normalize=True):
     """
     Interpolate colours at a number of points within a colorspace.
 
@@ -816,7 +819,7 @@ def interpolate_colors(colours: Sequence, weights: list, colorspace='xyz', norma
     :param weights: A list of weights with the shape (n, N). Where the N values of
       the last axis give the amount of N colours supplied in `colours`.
     :param colorspace: The colorspace in which to perform the interpolation. The
-            allowed values are rgb, hsv, lab, luvlc, lablch, and xyz.
+            allowed values are rgb, hsv, lab, luvlch, lablch, and xyz.
 
     :returns: A list of colours, specified in the rgb format as a (n, 3) array.
     """
@@ -867,7 +870,7 @@ def interpolate_colors(colours: Sequence, weights: list, colorspace='xyz', norma
         normalised_rgb_color = np.clip(normalised_rgb_color, 0, 1)  # ensure all rgb values are between 0 and 1
         # if too white, darken:
         if np.linalg.norm(normalised_rgb_color) > 1:  # white af
-            normalised_rgb_color *= (1 / np.linalg.norm(normalised_rgb_color)**(1/2))
+            normalised_rgb_color *= (1 / np.linalg.norm(normalised_rgb_color)**(1 / 2))
 
         normalised_rgb_colors.append(normalised_rgb_color)
 
