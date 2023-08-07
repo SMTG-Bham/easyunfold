@@ -517,7 +517,7 @@ def process_dos(dos, dos_elements, dos_orbitals, dos_atoms, gaussian, total_only
               default=None)
 @click.option('--colourspace',
               help='Colourspace in which to perform interpolation for combined plot.',
-              default='lablch',
+              default='lab',
               show_default=True,
               type=click.Choice(['rgb', 'hsv', 'lab', 'luvlch', 'lablch', 'xyz']))
 def unfold_plot_projections(ctx, npoints, sigma, eref, out_file, show, emin, emax, cmap, no_symm_average, vscale, dos, dos_label, zero_line,

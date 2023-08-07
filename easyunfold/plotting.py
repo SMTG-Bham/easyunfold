@@ -580,7 +580,7 @@ class UnfoldPlotter:
         orbitals=None,
         use_subplot=False,
         colours=None,
-        colorspace='lablch',
+        colorspace='lab',
         intensity=1.0,
     ):
         """
@@ -811,7 +811,7 @@ class UnfoldPlotter:
         return fig
 
 
-def interpolate_colors(colours: Sequence, weights: list, colorspace='lablch', normalize=True):
+def interpolate_colors(colours: Sequence, weights: list, colorspace='lab', normalize=True):
     """
     Interpolate colours at a number of points within a colorspace.
 
