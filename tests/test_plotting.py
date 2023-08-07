@@ -91,7 +91,7 @@ def test_plotting_projection(unfold_obj: UnfoldKSet):
                                  vscale=2.0,
                                  contour_plot=True,
                                  alpha=0.4,
-                                 save="test.png",
+                                 save='test.png',
                                  ax=None,
                                  cmap='PuBu',
                                  show=True,
