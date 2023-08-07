@@ -103,3 +103,8 @@ easyunfold unfold plot-projections --procar MgO_super/PROCAR --atoms="Mg,O" --em
 
 Unfolded MgO band structure with atomic projections plotted separately.
 ```
+
+:::{tip}
+There are _many_ customisation options available for the plotting functions in `easyunfold`. See `easyunfold plot -h` or 
+`easyunfold unfold plot-projections -h` for more details!
+:::
