@@ -23,7 +23,7 @@ For the methodology of supercell band unfolding, see
 ### Example Outputs
 Cs$_2$(Sn/Ti)Br$_6$ Vacancy-Ordered Perovskite Alloys |     Symmetry-broken Si Supercell     
 :-------------------------:|:------------------------------------:
-<img src="../img/CSTB_easyunfold.gif" width="600"/> | <img src="../img/Si_222_unfold_tall.png" width="425"/>
+<img src="../img/CSTB_easyunfold.gif" height="400"/> | <img src="../img/Si_222_unfold_tall.png" height="400"/>
 
 ## Usage
 
