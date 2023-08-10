@@ -60,37 +60,36 @@ class Procar(MSONable):
         tot_count = 0  # count the instances of lines starting with "tot" -> (4 + 1) * nbands * nkpts for SOC calcs
         fobj.seek(0)
 
-        with fobj:
+        line = fobj.readline()
+        while line:
+            if line.startswith(' k-point'):
+                line = re.sub(r'(\d)-', r'\1 -', line)
+                tokens = line.strip().split()
+                kvec = tuple(round(float(val), 5) for val in  # tuple to make it hashable
+                             tokens[-6:-3])  # round to 5 decimal places to ensure proper kpoint matching
+                if kvec not in parsed_kpoints:
+                    parsed_kpoints.add(kvec)
+                    kvecs.append(list(kvec))
+                    kweights.append(float(tokens[-1]))
+                else:
+                    # skip ahead to the next instance of two blank lines in a row
+                    while line.strip() or fobj.readline().strip():
+                        line = fobj.readline()
+                    continue
+
+            elif not re.search(r'[a-zA-Z]', line) and line.strip() and len(line.strip().split()) - 2 == len(self.proj_names):
+                # only parse data if line is expected length, in case of LORBIT >= 12
+                proj_data.append([float(token) for token in line.strip().split()[1:-1]])
+
+            elif line.startswith('band'):
+                tokens = line.strip().split()
+                energies.append(float(tokens[4]))
+                occs.append(float(tokens[-1]))
+
+            elif line.startswith('tot'):
+                tot_count += 1
+
             line = fobj.readline()
-            while line:
-                if line.startswith(' k-point'):
-                    line = re.sub(r'(\d)-', r'\1 -', line)
-                    tokens = line.strip().split()
-                    kvec = tuple(round(float(val), 5) for val in  # tuple to make it hashable
-                                 tokens[-6:-3])  # round to 5 decimal places to ensure proper kpoint matching
-                    if kvec not in parsed_kpoints:
-                        parsed_kpoints.add(kvec)
-                        kvecs.append(list(kvec))
-                        kweights.append(float(tokens[-1]))
-                    else:
-                        # skip ahead to the next instance of two blank lines in a row
-                        while line.strip() or fobj.readline().strip():
-                            line = fobj.readline()
-                        continue
-
-                elif not re.search(r'[a-zA-Z]', line) and line.strip() and len(line.strip().split()) - 2 == len(self.proj_names):
-                    # only parse data if line is expected length, in case of LORBIT >= 12
-                    proj_data.append([float(token) for token in line.strip().split()[1:-1]])
-
-                elif line.startswith('band'):
-                    tokens = line.strip().split()
-                    energies.append(float(tokens[4]))
-                    occs.append(float(tokens[-1]))
-
-                elif line.startswith('tot'):
-                    tot_count += 1
-
-                line = fobj.readline()
 
         # dynamically determine whether PROCARs are SOC or not
         if tot_count == 4 * len(occs):
