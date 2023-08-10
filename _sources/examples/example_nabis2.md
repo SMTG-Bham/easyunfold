@@ -88,7 +88,7 @@ When plotting the unfolded band, the `plot-projections` subcommand is used with 
 `--atoms` options:
 
 ```bash
-easyunfold unfold plot-projections --atoms="Na,Bi,S" --intensity 2 --combined
+easyunfold unfold plot-projections --atoms="Na,Bi,S" --intensity 3 --combined
 ```
 
 ```{figure} ../../examples/NaBiS2/NaBiS2_unfold-plot_proj.png
@@ -97,6 +97,12 @@ easyunfold unfold plot-projections --atoms="Na,Bi,S" --intensity 2 --combined
 
 Unfolded band structure of NaBiS<sub>2</sub> with atomic contributions.
 ```
+
+:::{tip}
+If the _k_-points have been split into multiple calculations (e.g. hybrid DFT band structures), the `--procar` option 
+should be passed multiple times to specify the path to each split `PROCAR` file (i.e. 
+`--procar calc1/PROCAR --procar cal2/PROCAR ...`).
+:::
 
 From this plot, we can see that sulfur anions dominate the valence band, while bismuth cations dominate the conduction 
 band, with minimal contributions from the sodium cations as expected.
@@ -126,7 +132,7 @@ Unfolded band structure of NaBiS<sub>2</sub> with atomic contributions plotted s
 
 An alternative option here is also to just plot only the contributions of `Na` and `Bi` cations, with no S projections:
 ```bash
-easyunfold unfold plot-projections --atoms="Na,Bi" --intensity 2 --combined
+easyunfold unfold plot-projections --atoms="Na,Bi" --intensity 3 --combined
 ```
 
 ```{figure} ../../examples/NaBiS2/NaBiS2_unfold-plot_proj_noS.png
@@ -143,7 +149,7 @@ While this plot isn't the most aesthetic, it clearly shows that Bi (green) contr
 ### Atom-projected Unfolded Band Structure with DOS
 We can also combine the atom projections with the DOS plotting, using the `--dos` option as before:
 ```bash
-easyunfold unfold plot-projections --atoms "Na,Bi,S" --intensity 2 --combined --dos vasprun.xml.gz --zero-line \
+easyunfold unfold plot-projections --atoms "Na,Bi,S" --intensity 3 --combined --dos vasprun.xml.gz --zero-line \
   --dos-label "DOS" --gaussian 0.1 --no-total --scale 2
 ```
 
@@ -193,7 +199,7 @@ For example, if we want to see the contributions of the Bi $s$, $p$ and S $s$ or
 we can use the following command:
 
 ```bash
-easyunfold unfold plot-projections --atoms "Bi,Bi,S" --orbitals="s|p|s"  --intensity 2  --combined \
+easyunfold unfold plot-projections --atoms "Bi,Bi,S" --orbitals="s|p|s"  --intensity 3  --combined \
   --dos vasprun.xml.gz --zero-line --dos-label "DOS" --gaussian 0.1 --no-total --scale 5
 ```
 
@@ -216,7 +222,7 @@ see the contributions of the Bi and S $p_x$, $p_y$ and $p_z$ orbitals to the unf
 following command:
 
 ```bash
-easyunfold unfold plot-projections --atoms "Na,Bi,S" --orbitals="all|px,py,pz|px,py,pz" --intensity 2 --combined \
+easyunfold unfold plot-projections --atoms "Na,Bi,S" --orbitals="all|px,py,pz|px,py,pz" --intensity 3 --combined \
   --dos vasprun.xml.gz --zero-line --dos-label "DOS" --gaussian 0.1 --no-total --scale 6
 ```
 
@@ -232,6 +238,10 @@ structure, due to the cubic symmetry of the NaBiS<sub>2</sub> crystal structure.
 for the $d$ orbitals of transition metals in octahedral/tetrahedral environments, we would expect to see significant 
 differences in the contributions of different $lm$-decomposed orbitals to the electronic structure.
 
+:::{tip}
+There are _many_ customisation options available for the plotting functions in `easyunfold`. See `easyunfold plot -h` or 
+`easyunfold unfold plot-projections -h` for more details!
+:::
 
 [^1]: [Huang, YT., Kavanagh, S.R., Righetto, M. et al. Strong absorption and ultrafast localisation in NaBiS2 nanocrystals with slow charge-carrier recombination. Nat Commun 13, 4960 (2022)](https://www.nature.com/articles/s41467-022-32669-3) 
 [^2]: [Wang, Y., Kavanagh, S.R., Burgués-Ceballos, I. et al. Cation disorder engineering yields AgBiS2 nanocrystals with enhanced optical absorption for efficient ultrathin solar cells. Nat. Photon. 16, 235–241 (2022).](https://www.nature.com/articles/s41566-021-00950-4)

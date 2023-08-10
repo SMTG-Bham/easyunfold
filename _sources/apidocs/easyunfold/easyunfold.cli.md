@@ -181,7 +181,7 @@
 ```
 ````
 
-````{py:function} unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, dos, dos_label, zero_line, dos_elements, dos_orbitals, dos_atoms, legend_cutoff, gaussian, no_total, total_only, scale, procar, atoms, poscar, atoms_idx, orbitals, title, width, height, dpi, intensity)
+````{py:function} unfold_plot(ctx, npoints, sigma, eref, out_file, show, emin, emax, cmap, no_symm_average, vscale, dos, dos_label, zero_line, dos_elements, dos_orbitals, dos_atoms, legend_cutoff, gaussian, no_total, total_only, scale, procar, atoms, poscar, atoms_idx, orbitals, title, width, height, dpi, intensity)
 :canonical: easyunfold.cli.unfold_plot
 
 ```{autodoc2-docstring} easyunfold.cli.unfold_plot
@@ -195,14 +195,14 @@
 ```
 ````
 
-````{py:function} unfold_plot_projections(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, dos, dos_label, zero_line, dos_elements, dos_orbitals, dos_atoms, legend_cutoff, gaussian, no_total, total_only, scale, procar, atoms, poscar, atoms_idx, orbitals, title, combined, colours, width, height, dpi, intensity)
+````{py:function} unfold_plot_projections(ctx, npoints, sigma, eref, out_file, show, emin, emax, cmap, no_symm_average, vscale, dos, dos_label, zero_line, dos_elements, dos_orbitals, dos_atoms, legend_cutoff, gaussian, no_total, total_only, scale, procar, atoms, poscar, atoms_idx, orbitals, title, combined, colours, colourspace, width, height, dpi, intensity)
 :canonical: easyunfold.cli.unfold_plot_projections
 
 ```{autodoc2-docstring} easyunfold.cli.unfold_plot_projections
 ```
 ````
 
-````{py:function} _unfold_plot(ctx, gamma, npoints, sigma, eref, out_file, show, emin, emax, cmap, ncl, no_symm_average, vscale, dos, dos_label, zero_line, dos_elements, dos_orbitals, dos_atoms, legend_cutoff, gaussian, no_total, total_only, scale, procar, atoms, poscar, atoms_idx, orbitals, title, width, height, dpi, intensity, ax=None)
+````{py:function} _unfold_plot(ctx, npoints, sigma, eref, out_file, show, emin, emax, cmap, no_symm_average, vscale, dos, dos_label, zero_line, dos_elements, dos_orbitals, dos_atoms, legend_cutoff, gaussian, no_total, total_only, scale, procar, atoms, poscar, atoms_idx, orbitals, title, width, height, dpi, intensity, ax=None)
 :canonical: easyunfold.cli._unfold_plot
 
 ```{autodoc2-docstring} easyunfold.cli._unfold_plot

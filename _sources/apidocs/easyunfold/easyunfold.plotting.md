@@ -99,7 +99,7 @@
 
 ````
 
-````{py:method} plot_projected(procar: typing.Union[str, list] = 'PROCAR', dos_plotter=None, dos_label=None, dos_options=None, zero_line=False, eref=None, gamma=False, npoints=2000, sigma=0.2, ncl=False, symm_average=True, figsize=(4, 3), ylim=(-5, 5), dpi=300, vscale=1.0, contour_plot=False, alpha=1.0, save=False, ax=None, cmap='PuRd', show=False, title=None, atoms=None, poscar='POSCAR', atoms_idx=None, orbitals=None, use_subplot=False, colours=('r', 'g', 'b', 'purple'), colorspace='lab', intensity=1.0)
+````{py:method} plot_projected(procar: typing.Union[str, list] = 'PROCAR', dos_plotter=None, dos_label=None, dos_options=None, zero_line=False, eref=None, gamma=False, npoints=2000, sigma=0.2, ncl=False, symm_average=True, figsize=(4, 3), ylim=(-5, 5), dpi=300, vscale=1.0, contour_plot=False, alpha=1.0, save=False, ax=None, cmap='PuRd', show=False, title=None, atoms=None, poscar='POSCAR', atoms_idx=None, orbitals=None, use_subplot=False, colours=None, colorspace='lab', intensity=1.0)
 :canonical: easyunfold.plotting.UnfoldPlotter.plot_projected
 
 ```{autodoc2-docstring} easyunfold.plotting.UnfoldPlotter.plot_projected

@@ -182,13 +182,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../cli.html">CLI Reference</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../apidocs/index.html">API Reference</a><input checked class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.procar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.procar</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.vasp_constant.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.vasp_constant</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.plotting.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.plotting</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.wavefun.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavefun</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.effective_mass.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.effective_mass</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.wavecar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavecar</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.unfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.unfold</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.effective_mass.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.effective_mass</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.wavefun.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavefun</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.plotting.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.plotting</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.wavecar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavecar</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.procar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.procar</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.utils</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.cli.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.cli</span></code></a></li>
 </ul>
@@ -491,6 +491,11 @@ supercell with no symmetry-breaking is used here.</p>
 <p>which, as expected, is the same as the primitive cell if it is folded back along the midpoint between
 <span class="math notranslate nohighlight">\(\Gamma\)</span> and <span class="math notranslate nohighlight">\(X\)</span>, corresponding to the 2x expansion of the primitive cell along the <span class="math notranslate nohighlight">\(x\)</span> direction in
 generating the 2x1x1 supercell.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>There are <em>many</em> customisation options available for the plotting functions in <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code>. See <code class="docutils literal notranslate"><span class="pre">easyunfold</span> <span class="pre">plot</span> <span class="pre">-h</span></code> or
+<code class="docutils literal notranslate"><span class="pre">easyunfold</span> <span class="pre">unfold</span> <span class="pre">plot-projections</span> <span class="pre">-h</span></code> for more details!</p>
+</div>
 </section>
 </section>
 

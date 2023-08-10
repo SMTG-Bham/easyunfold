@@ -177,13 +177,13 @@
 <li class="toctree-l1"><a class="reference internal" href="cli.html">CLI Reference</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/index.html">API Reference</a><input checked class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="apidocs/easyunfold/easyunfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.procar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.procar</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.vasp_constant.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.vasp_constant</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.plotting.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.plotting</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.wavefun.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavefun</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.effective_mass.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.effective_mass</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.wavecar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavecar</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.unfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.unfold</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.effective_mass.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.effective_mass</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.wavefun.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavefun</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.plotting.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.plotting</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.wavecar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavecar</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.procar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.procar</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.utils</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.cli.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.cli</span></code></a></li>
 </ul>
@@ -386,6 +386,13 @@ document.write(`
 </li>
       </ul></li>
       <li>
+    --colourspace
+
+      <ul>
+        <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-projections-colourspace">easyunfold-unfold-plot-projections command line option</a>
+</li>
+      </ul></li>
+      <li>
     --combined
 
       <ul>
@@ -507,10 +514,6 @@ document.write(`
       <ul>
         <li><a href="cli.html#cmdoption-easyunfold-unfold-calculate-gamma">easyunfold-unfold-calculate command line option</a>
 </li>
-        <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-gamma">easyunfold-unfold-plot command line option</a>
-</li>
-        <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-projections-gamma">easyunfold-unfold-plot-projections command line option</a>
-</li>
       </ul></li>
       <li>
     --gaussian
@@ -578,10 +581,6 @@ document.write(`
 
       <ul>
         <li><a href="cli.html#cmdoption-easyunfold-unfold-calculate-ncl">easyunfold-unfold-calculate command line option</a>
-</li>
-        <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-ncl">easyunfold-unfold-plot command line option</a>
-</li>
-        <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-projections-ncl">easyunfold-unfold-plot-projections command line option</a>
 </li>
       </ul></li>
       <li>
@@ -881,6 +880,8 @@ document.write(`
 </li>
       <li><a href="apidocs/easyunfold/easyunfold.procar.html#easyunfold.procar.Procar._read">_read() (easyunfold.procar.Procar method)</a>
 </li>
+      <li><a href="apidocs/easyunfold/easyunfold.procar.html#easyunfold.procar.Procar._read_header_nion_proj_names">_read_header_nion_proj_names() (easyunfold.procar.Procar method)</a>
+</li>
       <li><a href="apidocs/easyunfold/easyunfold.unfold.html#easyunfold.unfold.UnfoldKSet._read_weights">_read_weights() (easyunfold.unfold.UnfoldKSet method)</a>
 </li>
       <li><a href="apidocs/easyunfold/easyunfold.cli.html#easyunfold.cli._unfold_plot">_unfold_plot() (in module easyunfold.cli)</a>
@@ -903,8 +904,12 @@ document.write(`
 </li>
       <li><a href="apidocs/easyunfold/easyunfold.effective_mass.html#easyunfold.effective_mass.angstrom_to_bohr">angstrom_to_bohr (in module easyunfold.effective_mass)</a>
 </li>
-      <li><a href="apidocs/easyunfold/easyunfold.unfold.html#easyunfold.unfold.UnfoldKSet.as_dict">as_dict() (easyunfold.unfold.UnfoldKSet method)</a>
+      <li><a href="apidocs/easyunfold/easyunfold.procar.html#easyunfold.procar.Procar.as_dict">as_dict() (easyunfold.procar.Procar method)</a>
+
+      <ul>
+        <li><a href="apidocs/easyunfold/easyunfold.unfold.html#easyunfold.unfold.UnfoldKSet.as_dict">(easyunfold.unfold.UnfoldKSet method)</a>
 </li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="apidocs/easyunfold/easyunfold.vasp_constant.html#easyunfold.vasp_constant.AUTDEBYE">AUTDEBYE (in module easyunfold.vasp_constant)</a>
@@ -1112,8 +1117,6 @@ document.write(`
 </li>
         <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-eref">--eref</a>
 </li>
-        <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-gamma">--gamma</a>
-</li>
         <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-gaussian">--gaussian</a>
 </li>
         <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-height">--height</a>
@@ -1123,8 +1126,6 @@ document.write(`
         <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-legend-cutoff">--legend-cutoff</a>
 </li>
         <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-m">--mpl-style-file</a>
-</li>
-        <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-ncl">--ncl</a>
 </li>
         <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-no-symm-average">--no-symm-average</a>
 </li>
@@ -1175,6 +1176,8 @@ document.write(`
 </li>
         <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-projections-colours">--colours</a>
 </li>
+        <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-projections-colourspace">--colourspace</a>
+</li>
         <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-projections-combined">--combined</a>
 </li>
         <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-projections-dos">--dos</a>
@@ -1195,8 +1198,6 @@ document.write(`
 </li>
         <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-projections-eref">--eref</a>
 </li>
-        <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-projections-gamma">--gamma</a>
-</li>
         <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-projections-gaussian">--gaussian</a>
 </li>
         <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-projections-height">--height</a>
@@ -1206,8 +1207,6 @@ document.write(`
         <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-projections-legend-cutoff">--legend-cutoff</a>
 </li>
         <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-projections-m">--mpl-style-file</a>
-</li>
-        <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-projections-ncl">--ncl</a>
 </li>
         <li><a href="cli.html#cmdoption-easyunfold-unfold-plot-projections-combined">--no-combined</a>
 </li>
@@ -1337,13 +1336,15 @@ document.write(`
 </li>
       <li><a href="apidocs/easyunfold/easyunfold.utils.html#easyunfold.utils.find_unique">find_unique() (in module easyunfold.utils)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="apidocs/easyunfold/easyunfold.effective_mass.html#easyunfold.effective_mass.fit_effective_mass">fit_effective_mass() (in module easyunfold.effective_mass)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="apidocs/easyunfold/easyunfold.effective_mass.html#easyunfold.effective_mass.fitted_band">fitted_band() (in module easyunfold.effective_mass)</a>
 </li>
       <li><a href="apidocs/easyunfold/easyunfold.unfold.html#easyunfold.unfold.UnfoldKSet.from_atoms">from_atoms() (easyunfold.unfold.UnfoldKSet class method)</a>
+</li>
+      <li><a href="apidocs/easyunfold/easyunfold.procar.html#easyunfold.procar.Procar.from_dict">from_dict() (easyunfold.procar.Procar class method)</a>
 </li>
       <li><a href="apidocs/easyunfold/easyunfold.unfold.html#easyunfold.unfold.UnfoldKSet.from_file">from_file() (easyunfold.unfold.UnfoldKSet class method)</a>
 
@@ -1468,7 +1469,7 @@ document.write(`
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="apidocs/easyunfold/easyunfold.unfold.html#easyunfold.unfold.UnfoldKSet.load_procar">load_procar() (easyunfold.unfold.UnfoldKSet method)</a>
+      <li><a href="apidocs/easyunfold/easyunfold.unfold.html#easyunfold.unfold.UnfoldKSet.load_procars">load_procars() (easyunfold.unfold.UnfoldKSet method)</a>
 </li>
       <li><a href="apidocs/easyunfold/easyunfold.effective_mass.html#easyunfold.effective_mass.locate_kpoint_segment">locate_kpoint_segment() (in module easyunfold.effective_mass)</a>
 </li>
@@ -1608,9 +1609,9 @@ document.write(`
 </li>
       <li><a href="apidocs/easyunfold/easyunfold.procar.html#easyunfold.procar.Procar">Procar (class in easyunfold.procar)</a>
 </li>
-      <li><a href="apidocs/easyunfold/easyunfold.unfold.html#easyunfold.unfold.UnfoldKSet.procar_kmaps">procar_kmaps (easyunfold.unfold.UnfoldKSet property)</a>
+      <li><a href="apidocs/easyunfold/easyunfold.unfold.html#easyunfold.unfold.UnfoldKSet.procar">procar (easyunfold.unfold.UnfoldKSet property)</a>
 </li>
-      <li><a href="apidocs/easyunfold/easyunfold.unfold.html#easyunfold.unfold.UnfoldKSet.procars">procars (easyunfold.unfold.UnfoldKSet property)</a>
+      <li><a href="apidocs/easyunfold/easyunfold.unfold.html#easyunfold.unfold.UnfoldKSet.procar_kmaps">procar_kmaps (easyunfold.unfold.UnfoldKSet property)</a>
 </li>
       <li><a href="apidocs/easyunfold/easyunfold.cli.html#easyunfold.cli.process_dos">process_dos() (in module easyunfold.cli)</a>
 </li>
@@ -1624,6 +1625,8 @@ document.write(`
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="apidocs/easyunfold/easyunfold.utils.html#easyunfold.utils.RE_COMMENT">RE_COMMENT (in module easyunfold.utils)</a>
 </li>
+      <li><a href="apidocs/easyunfold/easyunfold.procar.html#easyunfold.procar.Procar.read">read() (easyunfold.procar.Procar method)</a>
+</li>
       <li><a href="apidocs/easyunfold/easyunfold.wavecar.html#easyunfold.wavecar.Wavecar.read_band_coeffs">read_band_coeffs() (easyunfold.wavecar.Wavecar method)</a>
 </li>
       <li><a href="apidocs/easyunfold/easyunfold.wavecar.html#easyunfold.wavecar.Wavecar.read_bands">read_bands() (easyunfold.wavecar.Wavecar method)</a>
@@ -1632,10 +1635,10 @@ document.write(`
 </li>
       <li><a href="apidocs/easyunfold/easyunfold.utils.html#easyunfold.utils.read_kpoints_castep">read_kpoints_castep() (in module easyunfold.utils)</a>
 </li>
-      <li><a href="apidocs/easyunfold/easyunfold.utils.html#easyunfold.utils.read_kpoints_line_vasp">read_kpoints_line_vasp() (in module easyunfold.utils)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="apidocs/easyunfold/easyunfold.utils.html#easyunfold.utils.read_kpoints_line_vasp">read_kpoints_line_vasp() (in module easyunfold.utils)</a>
+</li>
       <li><a href="apidocs/easyunfold/easyunfold.utils.html#easyunfold.utils.read_kpoints_vasp">read_kpoints_vasp() (in module easyunfold.utils)</a>
 </li>
       <li><a href="apidocs/easyunfold/easyunfold.unfold.html#easyunfold.unfold.read_poscar_contcar_if_present">read_poscar_contcar_if_present() (in module easyunfold.unfold)</a>

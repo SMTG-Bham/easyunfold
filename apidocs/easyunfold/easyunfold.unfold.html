@@ -48,8 +48,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'apidocs/easyunfold/easyunfold.unfold';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="easyunfold.utils" href="easyunfold.utils.html" />
-    <link rel="prev" title="easyunfold.wavecar" href="easyunfold.wavecar.html" />
+    <link rel="next" title="easyunfold.effective_mass" href="easyunfold.effective_mass.html" />
+    <link rel="prev" title="easyunfold.vasp_constant" href="easyunfold.vasp_constant.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -182,13 +182,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../../cli.html">CLI Reference</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Reference</a><input checked class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="easyunfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="easyunfold.procar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.procar</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="easyunfold.vasp_constant.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.vasp_constant</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="easyunfold.plotting.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.plotting</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="easyunfold.wavefun.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavefun</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="easyunfold.effective_mass.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.effective_mass</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="easyunfold.wavecar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavecar</span></code></a></li>
 <li class="toctree-l3 current active"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.unfold</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="easyunfold.effective_mass.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.effective_mass</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="easyunfold.wavefun.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavefun</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="easyunfold.plotting.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.plotting</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="easyunfold.wavecar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavecar</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="easyunfold.procar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.procar</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="easyunfold.utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.utils</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="easyunfold.cli.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.cli</span></code></a></li>
 </ul>
@@ -381,9 +381,9 @@ document.write(`
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.write_sc_kpoints"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.write_sc_kpoints()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.write_pc_kpoints"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.write_pc_kpoints()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet._read_weights"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet._read_weights()</span></code></a></li>
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.load_procar"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.load_procar()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.load_procars"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.load_procars()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet._construct_procar_kmap"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet._construct_procar_kmap()</span></code></a></li>
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.procars"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.procars</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.procar"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.procar</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.procar_kmaps"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.procar_kmaps</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet._get_spectral_weights"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet._get_spectral_weights()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.get_band_weight_sets"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.get_band_weight_sets()</span></code></a></li>
@@ -702,8 +702,8 @@ Results are stored into <code class="docutils literal notranslate"><span class="
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="easyunfold.unfold.UnfoldKSet.load_procar">
-<span class="sig-name descname"><span class="pre">load_procar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">procar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.unfold.UnfoldKSet.load_procar" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="easyunfold.unfold.UnfoldKSet.load_procars">
+<span class="sig-name descname"><span class="pre">load_procars</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">procars</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.unfold.UnfoldKSet.load_procars" title="Permalink to this definition">#</a></dt>
 <dd><p>Read in PROCAR for band-based projection</p>
 </dd></dl>
 
@@ -714,8 +714,8 @@ Results are stored into <code class="docutils literal notranslate"><span class="
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="easyunfold.unfold.UnfoldKSet.procars">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">procars</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="easyunfold.procar.html#easyunfold.procar.Procar" title="easyunfold.procar.Procar"><span class="pre">easyunfold.procar.Procar</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#easyunfold.unfold.UnfoldKSet.procars" title="Permalink to this definition">#</a></dt>
+<dt class="sig sig-object py" id="easyunfold.unfold.UnfoldKSet.procar">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">procar</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="easyunfold.procar.html#easyunfold.procar.Procar" title="easyunfold.procar.Procar"><span class="pre">easyunfold.procar.Procar</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#easyunfold.unfold.UnfoldKSet.procar" title="Permalink to this definition">#</a></dt>
 <dd><p>Loaded PROCARS</p>
 </dd></dl>
 
@@ -1058,20 +1058,20 @@ orbital projections.</p>
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="easyunfold.wavecar.html"
+       href="easyunfold.vasp_constant.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavecar</span></code></p>
+        <p class="prev-next-title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.vasp_constant</span></code></p>
       </div>
     </a>
     <a class="right-next"
-       href="easyunfold.utils.html"
+       href="easyunfold.effective_mass.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.utils</span></code></p>
+        <p class="prev-next-title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.effective_mass</span></code></p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1118,9 +1118,9 @@ orbital projections.</p>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.write_sc_kpoints"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.write_sc_kpoints()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.write_pc_kpoints"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.write_pc_kpoints()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet._read_weights"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet._read_weights()</span></code></a></li>
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.load_procar"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.load_procar()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.load_procars"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.load_procars()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet._construct_procar_kmap"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet._construct_procar_kmap()</span></code></a></li>
-<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.procars"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.procars</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.procar"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.procar</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.procar_kmaps"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.procar_kmaps</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet._get_spectral_weights"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet._get_spectral_weights()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.get_band_weight_sets"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.get_band_weight_sets()</span></code></a></li>

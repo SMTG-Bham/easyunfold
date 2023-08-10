@@ -46,8 +46,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'apidocs/easyunfold/easyunfold.procar';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="easyunfold.vasp_constant" href="easyunfold.vasp_constant.html" />
-    <link rel="prev" title="easyunfold" href="easyunfold.html" />
+    <link rel="next" title="easyunfold.utils" href="easyunfold.utils.html" />
+    <link rel="prev" title="easyunfold.wavecar" href="easyunfold.wavecar.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -180,13 +180,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../../cli.html">CLI Reference</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Reference</a><input checked class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="easyunfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
-<li class="toctree-l3 current active"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.procar</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="easyunfold.vasp_constant.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.vasp_constant</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="easyunfold.plotting.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.plotting</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="easyunfold.wavefun.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavefun</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="easyunfold.effective_mass.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.effective_mass</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="easyunfold.wavecar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavecar</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="easyunfold.unfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.unfold</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="easyunfold.effective_mass.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.effective_mass</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="easyunfold.wavefun.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavefun</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="easyunfold.plotting.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.plotting</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="easyunfold.wavecar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavecar</span></code></a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.procar</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="easyunfold.utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.utils</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="easyunfold.cli.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.cli</span></code></a></li>
 </ul>
@@ -359,7 +359,11 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api">API</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.procar.Procar"><code class="docutils literal notranslate"><span class="pre">Procar</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.procar.Procar._read"><code class="docutils literal notranslate"><span class="pre">Procar._read()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.procar.Procar._read_header_nion_proj_names"><code class="docutils literal notranslate"><span class="pre">Procar._read_header_nion_proj_names()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.procar.Procar.read"><code class="docutils literal notranslate"><span class="pre">Procar.read()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.procar.Procar.get_projection"><code class="docutils literal notranslate"><span class="pre">Procar.get_projection()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.procar.Procar.as_dict"><code class="docutils literal notranslate"><span class="pre">Procar.as_dict()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.procar.Procar.from_dict"><code class="docutils literal notranslate"><span class="pre">Procar.from_dict()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -396,28 +400,41 @@ document.write(`
 <h3>API<a class="headerlink" href="#api" title="Permalink to this heading">#</a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="easyunfold.procar.Procar">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">easyunfold.procar.</span></span><span class="sig-name descname"><span class="pre">Procar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fobj_or_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_soc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.procar.Procar" title="Permalink to this definition">#</a></dt>
-<dd><p>Reader for PROCAR file</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">easyunfold.procar.</span></span><span class="sig-name descname"><span class="pre">Procar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fobjs_or_paths</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_soc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.procar.Procar" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">monty.json.MSONable</span></code></p>
+<p>Reader for PROCAR file</p>
 <p class="rubric">Initialization</p>
 <p>Read the PROCAR file from a handle or path</p>
 <dl class="myst field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>fobj_or_path</strong> – A file-like obj or a path</p></li>
+<li><p><strong>fobjs_or_paths</strong> – Either a string or list of file-like objs or paths</p></li>
 <li><p><strong>is_soc</strong> – Whether the PROCAR is from a calculation with spin-orbit coupling</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="easyunfold.procar.Procar._read">
-<span class="sig-name descname"><span class="pre">_read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fobj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.procar.Procar._read" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">_read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fobj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parsed_kpoints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.procar.Procar._read" title="Permalink to this definition">#</a></dt>
 <dd><p>Main function for reading in the data</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="easyunfold.procar.Procar._read_header_nion_proj_names">
+<span class="sig-name descname"><span class="pre">_read_header_nion_proj_names</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fobj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.procar.Procar._read_header_nion_proj_names" title="Permalink to this definition">#</a></dt>
+<dd><p>Read the header, nion and proj_names from the PROCAR</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="easyunfold.procar.Procar.read">
+<span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fobjs_or_paths</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.procar.Procar.read" title="Permalink to this definition">#</a></dt>
+<dd><p>Read and amalgamate the data from a list of PROCARs</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="easyunfold.procar.Procar.get_projection">
 <span class="sig-name descname"><span class="pre">get_projection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atom_idx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_by_k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.procar.Procar.get_projection" title="Permalink to this definition">#</a></dt>
-<dd><p>Get project for specific atoms and specific projectors</p>
+<dd><p>Get projection for specific atoms and specific projectors</p>
 <dl class="myst field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -427,9 +444,25 @@ document.write(`
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The project summed over the selected atoms and the projectors</p>
+<dd class="field-even"><p>The projection summed over the selected atoms and the projectors</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="easyunfold.procar.Procar.as_dict">
+<span class="sig-name descname"><span class="pre">as_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#easyunfold.procar.Procar.as_dict" title="Permalink to this definition">#</a></dt>
+<dd><p>Convert the object into a dictionary representation (so it can be saved to json)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="easyunfold.procar.Procar.from_dict">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.procar.Procar.from_dict" title="Permalink to this definition">#</a></dt>
+<dd><p>Reconstructs Procar object from a dict representation, without calling <strong>init</strong>().</p>
+<p>Args:
+d (dict): dict representation of Procar</p>
+<p>Returns:
+Procar object</p>
 </dd></dl>
 
 </dd></dl>
@@ -451,20 +484,20 @@ document.write(`
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="easyunfold.html"
+       href="easyunfold.wavecar.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold</span></code></p>
+        <p class="prev-next-title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavecar</span></code></p>
       </div>
     </a>
     <a class="right-next"
-       href="easyunfold.vasp_constant.html"
+       href="easyunfold.utils.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.vasp_constant</span></code></p>
+        <p class="prev-next-title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.utils</span></code></p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -491,7 +524,11 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api">API</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.procar.Procar"><code class="docutils literal notranslate"><span class="pre">Procar</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.procar.Procar._read"><code class="docutils literal notranslate"><span class="pre">Procar._read()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.procar.Procar._read_header_nion_proj_names"><code class="docutils literal notranslate"><span class="pre">Procar._read_header_nion_proj_names()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.procar.Procar.read"><code class="docutils literal notranslate"><span class="pre">Procar.read()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.procar.Procar.get_projection"><code class="docutils literal notranslate"><span class="pre">Procar.get_projection()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.procar.Procar.as_dict"><code class="docutils literal notranslate"><span class="pre">Procar.as_dict()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.procar.Procar.from_dict"><code class="docutils literal notranslate"><span class="pre">Procar.from_dict()</span></code></a></li>
 </ul>
 </li>
 </ul>

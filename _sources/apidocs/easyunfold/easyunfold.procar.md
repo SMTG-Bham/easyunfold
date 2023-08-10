@@ -23,8 +23,10 @@
 
 ### API
 
-`````{py:class} Procar(fobj_or_path=None, is_soc=False)
+`````{py:class} Procar(fobjs_or_paths=None, is_soc=False)
 :canonical: easyunfold.procar.Procar
+
+Bases: {py:obj}`monty.json.MSONable`
 
 ```{autodoc2-docstring} easyunfold.procar.Procar
 ```
@@ -35,10 +37,26 @@
 ```{autodoc2-docstring} easyunfold.procar.Procar.__init__
 ```
 
-````{py:method} _read(fobj)
+````{py:method} _read(fobj, parsed_kpoints=None)
 :canonical: easyunfold.procar.Procar._read
 
 ```{autodoc2-docstring} easyunfold.procar.Procar._read
+```
+
+````
+
+````{py:method} _read_header_nion_proj_names(fobj)
+:canonical: easyunfold.procar.Procar._read_header_nion_proj_names
+
+```{autodoc2-docstring} easyunfold.procar.Procar._read_header_nion_proj_names
+```
+
+````
+
+````{py:method} read(fobjs_or_paths)
+:canonical: easyunfold.procar.Procar.read
+
+```{autodoc2-docstring} easyunfold.procar.Procar.read
 ```
 
 ````
@@ -47,6 +65,23 @@
 :canonical: easyunfold.procar.Procar.get_projection
 
 ```{autodoc2-docstring} easyunfold.procar.Procar.get_projection
+```
+
+````
+
+````{py:method} as_dict() -> dict
+:canonical: easyunfold.procar.Procar.as_dict
+
+```{autodoc2-docstring} easyunfold.procar.Procar.as_dict
+```
+
+````
+
+````{py:method} from_dict(d)
+:canonical: easyunfold.procar.Procar.from_dict
+:classmethod:
+
+```{autodoc2-docstring} easyunfold.procar.Procar.from_dict
 ```
 
 ````

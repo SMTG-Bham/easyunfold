@@ -280,10 +280,10 @@ Bases: {py:obj}`monty.json.MSONable`
 
 ````
 
-````{py:method} load_procar(procar: typing.Union[str, typing.List[str]], force: bool = False)
-:canonical: easyunfold.unfold.UnfoldKSet.load_procar
+````{py:method} load_procars(procars: typing.Union[str, typing.List[str]])
+:canonical: easyunfold.unfold.UnfoldKSet.load_procars
 
-```{autodoc2-docstring} easyunfold.unfold.UnfoldKSet.load_procar
+```{autodoc2-docstring} easyunfold.unfold.UnfoldKSet.load_procars
 ```
 
 ````
@@ -296,11 +296,11 @@ Bases: {py:obj}`monty.json.MSONable`
 
 ````
 
-````{py:property} procars
-:canonical: easyunfold.unfold.UnfoldKSet.procars
+````{py:property} procar
+:canonical: easyunfold.unfold.UnfoldKSet.procar
 :type: typing.Union[None, easyunfold.procar.Procar]
 
-```{autodoc2-docstring} easyunfold.unfold.UnfoldKSet.procars
+```{autodoc2-docstring} easyunfold.unfold.UnfoldKSet.procar
 ```
 
 ````

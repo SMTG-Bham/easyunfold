@@ -180,13 +180,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../cli.html">CLI Reference</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../apidocs/index.html">API Reference</a><input checked class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.procar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.procar</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.vasp_constant.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.vasp_constant</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.plotting.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.plotting</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.wavefun.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavefun</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.effective_mass.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.effective_mass</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.wavecar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavecar</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.unfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.unfold</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.effective_mass.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.effective_mass</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.wavefun.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavefun</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.plotting.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.plotting</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.wavecar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavecar</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.procar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.procar</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.utils</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.cli.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.cli</span></code></a></li>
 </ul>
@@ -388,10 +388,16 @@ when plotting the unfolded band structure:</p>
 </pre></div>
 </div>
 <p>Note that the path of the <code class="docutils literal notranslate"><span class="pre">PROCAR</span></code> is passed along with the desired atom projections (<code class="docutils literal notranslate"><span class="pre">Mg</span></code> and <code class="docutils literal notranslate"><span class="pre">O</span></code> here).</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If the <em>k</em>-points have been split into multiple calculations (e.g. hybrid DFT band structures), the <code class="docutils literal notranslate"><span class="pre">--procar</span></code> option
+should be passed multiple times to specify the path to each split <code class="docutils literal notranslate"><span class="pre">PROCAR</span></code> file (i.e.
+<code class="docutils literal notranslate"><span class="pre">--procar</span> <span class="pre">calc1/PROCAR</span> <span class="pre">--procar</span> <span class="pre">cal2/PROCAR</span> <span class="pre">...</span></code>).</p>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The atomic projections are not stored in the <code class="docutils literal notranslate"><span class="pre">easyunfold.json</span></code> data file, so the <code class="docutils literal notranslate"><span class="pre">PROCAR</span></code> file should be
-kept for replotting in the future.</p>
+<p>The atomic projections are not stored in the <code class="docutils literal notranslate"><span class="pre">easyunfold.json</span></code> data file, so the <code class="docutils literal notranslate"><span class="pre">PROCAR</span></code> file(s) should be kept for
+replotting in the future.</p>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">--combined</span></code> option creates a combined plot with different colour maps for each atomic grouping.
 The spectral intensity is used to define the transparency (<code class="docutils literal notranslate"><span class="pre">alpha</span></code>) allowing the fusion of multiple
@@ -440,6 +446,11 @@ separated plots for each. This is the default behaviour for <code class="docutil
 <p><span class="caption-text">Unfolded MgO band structure with atomic projections plotted separately.</span><a class="headerlink" href="#id4" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>There are <em>many</em> customisation options available for the plotting functions in <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code>. See <code class="docutils literal notranslate"><span class="pre">easyunfold</span> <span class="pre">plot</span> <span class="pre">-h</span></code> or
+<code class="docutils literal notranslate"><span class="pre">easyunfold</span> <span class="pre">unfold</span> <span class="pre">plot-projections</span> <span class="pre">-h</span></code> for more details!</p>
+</div>
 </section>
 
 
