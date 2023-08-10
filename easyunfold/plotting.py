@@ -1,6 +1,7 @@
 """
 Plotting utilities
 """
+import os
 from typing import Union, Sequence
 import warnings
 import itertools
@@ -85,7 +86,15 @@ class UnfoldPlotter:
                                 if orbital in key:
                                     sumo_colours[atom][key] = orbital_colour_dict[key]
         else:
-            sumo_colours = None
+            from pkg_resources import Requirement, resource_filename
+            try:
+                import configparser
+            except ImportError:
+                import ConfigParser as configparser
+
+            config_path = resource_filename(Requirement.parse('sumo'), 'sumo/plotting/orbital_colours.conf')
+            sumo_colours = configparser.ConfigParser()
+            sumo_colours.read(os.path.abspath(config_path))
 
         # don't use first 4 colours; these are the band structure line colours:
         cycle = cycler('color', rcParams['axes.prop_cycle'].by_key()['color'][4:])
@@ -116,9 +125,6 @@ class UnfoldPlotter:
         energies = plot_data['energies'][mask]
         lines = plot_data['lines']
         spins = [Spin.up] if len(lines[0][0]['dens']) == 1 else [Spin.up, Spin.down]
-
-        # disable y ticks for DOS panel
-        ax.tick_params(axis='y', which='both', right=False)
 
         for line_set in plot_data['lines']:
             for line, spin in itertools.product(line_set, spins):
@@ -153,8 +159,8 @@ class UnfoldPlotter:
         if dos_label is not None:
             ax.set_xlabel(dos_label)
 
-        ax.set_xticklabels([])
-        ax.set_yticklabels([])
+        ax.set_yticks([])  # no y ticks
+        ax.set_xticks([])  # no x ticks
         ax.legend(loc=2, frameon=False, ncol=1, bbox_to_anchor=(1.0, 1.0), fontsize=9)
 
         return ax
@@ -217,19 +223,15 @@ class UnfoldPlotter:
             if nspin > 1:
                 warnings.warn('DOS plotter is not supported for spin-separated plots. Reverting to non spin-polarised plotting.')
                 nspin = 1
-        else:
-            if ax is None:
-                if nspin == 1:
-                    fig, ax = plt.subplots(1, 1, figsize=figsize, dpi=dpi)
-                    axes = [ax]
-                else:
-                    fig, axes = plt.subplots(1, 2, figsize=figsize, dpi=dpi)
+        elif ax is None:
+            if nspin == 1:
+                fig, ax = plt.subplots(1, 1, figsize=figsize, dpi=dpi)
+                axes = [ax]
             else:
-                if not isinstance(ax, list):
-                    axes = [ax]
-                else:
-                    axes = ax
-                fig = axes[0].figure
+                fig, axes = plt.subplots(1, 2, figsize=figsize, dpi=dpi)
+        else:
+            axes = [ax] if not isinstance(ax, list) else ax
+            fig = axes[0].figure
 
         # Shift the kdist so the pcolormesh draw the pixel centred on the original point
         X, Y = np.meshgrid(kdist, engs - eref)
@@ -330,10 +332,7 @@ class UnfoldPlotter:
             else:
                 fig, axes = plt.subplots(1, 2, figsize=figsize, dpi=dpi)
         else:
-            if not isinstance(ax, list):
-                axes = [ax]
-            else:
-                axes = ax
+            axes = [ax] if not isinstance(ax, list) else ax
             fig = axes[0].figure
 
         mask = (engs < (ylim[1] + eref)) & (engs > (ylim[0] + eref))
@@ -379,10 +378,7 @@ class UnfoldPlotter:
         tick_locs = []
         tick_labels = []
         for index, label in labels:
-            if x_is_kidx:
-                xloc = index
-            else:
-                xloc = kdist[index]
+            xloc = index if x_is_kidx else kdist[index]
             ax.axvline(x=xloc, lw=0.5, color='k', ls=':', alpha=0.8)
             tick_locs.append(xloc)
             tick_labels.append(clean_latex_string(label))
@@ -511,10 +507,7 @@ class UnfoldPlotter:
             else:
                 fig, axes = plt.subplots(1, 2, figsize=figsize, dpi=dpi)
         else:
-            if not isinstance(ax, list):
-                axes = [ax]
-            else:
-                axes = ax
+            axes = [ax] if not isinstance(ax, list) else ax
             fig = axes[0].figure
 
         kweights = unfold.expansion_results['weights']
@@ -558,37 +551,37 @@ class UnfoldPlotter:
         return fig
 
     def plot_projected(
-            self,
-            procar: Union[str, list] = 'PROCAR',
-            dos_plotter=None,
-            dos_label=None,
-            dos_options=None,
-            zero_line=False,
-            eref=None,
-            gamma=False,
-            npoints=2000,
-            sigma=0.2,
-            ncl=False,
-            symm_average=True,
-            figsize=(4, 3),
-            ylim=(-5, 5),
-            dpi=300,
-            vscale=1.0,
-            contour_plot=False,
-            alpha=1.0,
-            save=False,
-            ax=None,
-            cmap='PuRd',
-            show=False,
-            title=None,
-            atoms=None,
-            poscar='POSCAR',
-            atoms_idx=None,
-            orbitals=None,
-            use_subplot=False,
-            colours=('r', 'g', 'b', 'purple'),
-            colorspace='lab',
-            intensity=1.0,
+        self,
+        procar: Union[str, list] = 'PROCAR',
+        dos_plotter=None,
+        dos_label=None,
+        dos_options=None,
+        zero_line=False,
+        eref=None,
+        gamma=False,
+        npoints=2000,
+        sigma=0.2,
+        ncl=False,
+        symm_average=True,
+        figsize=(4, 3),
+        ylim=(-5, 5),
+        dpi=300,
+        vscale=1.0,
+        contour_plot=False,
+        alpha=1.0,
+        save=False,
+        ax=None,
+        cmap='PuRd',
+        show=False,
+        title=None,
+        atoms=None,
+        poscar='POSCAR',
+        atoms_idx=None,
+        orbitals=None,
+        use_subplot=False,
+        colours=None,
+        colorspace='lab',
+        intensity=1.0,
     ):
         """
         Plot projected spectral function onto multiple subplots or a single plot with color mapping.
@@ -598,10 +591,13 @@ class UnfoldPlotter:
 
         :param procar: Name of names of the `PROCAR` files.
 
+        :param colours: Default is pastel red, green, blue if <=3 projections, else red, green,
+            blue, purple, orange, yellow.
+
         :returns: Generated plot.
         """
         unfoldset = self.unfold
-        unfoldset.load_procar(procar)
+        unfoldset.load_procars(procar)
         nspin = unfoldset.calculated_quantities['spectral_weights_per_set'][0].shape[0]
 
         if atoms_idx is not None:
@@ -636,12 +632,11 @@ class UnfoldPlotter:
 
         # Collect spectral functions and scale
         for this_idx, this_orbitals in zip(atoms_idx_subplots, orbitals_subplots):
-            # Setup the atoms_idx and orbitals
+            # Set up the atoms_idx and orbitals
             if isinstance(this_idx, str):
                 this_idx, this_orbitals = process_projection_options(this_idx, this_orbitals)
-            else:  # list of integers; pre-processed by specifying atoms
-                if this_orbitals != 'all':
-                    this_orbitals = [token.strip() for token in this_orbitals.split(',')]
+            elif this_orbitals != 'all':
+                this_orbitals = [token.strip() for token in this_orbitals.split(',')]
 
             eng, spectral_function = unfoldset.get_spectral_function(gamma=gamma,
                                                                      npoints=npoints,
@@ -701,6 +696,18 @@ class UnfoldPlotter:
             stacked_sf = np.stack(all_sf, axis=-1).reshape(np.prod(sf_size), len(all_sf))
 
             # Construct the colour basis
+            if colours is None:
+                if len(all_sf) <= 3:
+                    colours = ['#CC33A7', '#A7CC33', '#33A7CC']
+                else:
+                    colours = [
+                        (1, 0, 0),  # red
+                        (0, 1, 0),  # green
+                        (0, 0, 1),  # blue
+                        (152 / 255, 78 / 255, 163 / 255),  # purple
+                        (1, 127 / 255, 0),  # orange
+                        (1, 1, 51 / 255),  # yellow
+                    ]
             colours = colours[:len(all_sf)]
             # Compute spectral weight data with RGB reshape it back into the shape (nengs, nk, 3)
             sf_rgb = interpolate_colors(colours, stacked_sf, colorspace, normalize=True).reshape(sf_size + (3,))
@@ -761,9 +768,7 @@ class UnfoldPlotter:
                     warnings.warn('zero_line option requires sumo to be installed!')
 
             if atoms is not None:  # add figure legend with atoms and colors
-                legend_elements = []
-                for i, atom in enumerate(atoms):
-                    legend_elements.append(Patch(facecolor=colours[i], label=atom, alpha=0.7))
+                legend_elements = [Patch(facecolor=colours[i], label=atom, alpha=0.7) for i, atom in enumerate(atoms)]
                 fig.axes[0].legend(handles=legend_elements, bbox_to_anchor=(1.025, 1), fontsize=9)
                 fig.subplots_adjust(right=0.78)  # ensure legend is not cut off
 
@@ -814,7 +819,7 @@ def interpolate_colors(colours: Sequence, weights: list, colorspace='lab', norma
     :param weights: A list of weights with the shape (n, N). Where the N values of
       the last axis give the amount of N colours supplied in `colours`.
     :param colorspace: The colorspace in which to perform the interpolation. The
-            allowed values are rgb, hsv, lab, luvlc, lablch, and xyz.
+            allowed values are rgb, hsv, lab, luvlch, lablch, and xyz.
 
     :returns: A list of colours, specified in the rgb format as a (n, 3) array.
     """
@@ -844,7 +849,7 @@ def interpolate_colors(colours: Sequence, weights: list, colorspace='lab', norma
 
     # Normalise the weights if needed
     if normalize:
-        weights = weights / np.linalg.norm(weights, axis=1)[:, None]
+        weights = weights / np.sum(weights, axis=1)[:, None]  # each row sums to 1
 
     # perform the interpolation in the colorspace basis
     interpolated_colors = colors_basis[0] * weights[:, 0][:, None]
@@ -853,10 +858,24 @@ def interpolate_colors(colours: Sequence, weights: list, colorspace='lab', norma
 
     # convert the interpolated colors back to RGB
     rgb_colors = [convert_color(colorspace(*c), sRGBColor).get_value_tuple() for c in interpolated_colors]
-    rgb_colors = np.stack(rgb_colors, axis=0)
 
-    # ensure all rgb values are less than 1 (sometimes issues in interpolation gives
-    np.clip(rgb_colors, 0, 1, rgb_colors)
+    # ensure all rgb values are less than 1 (sometimes issues in interpolation)
+    normalised_rgb_colors = []
+    for rgb_color_tuple in rgb_colors:
+        if np.max(rgb_color_tuple) > 1:
+            normalised_rgb_color = np.array(rgb_color_tuple) / np.max(rgb_color_tuple)
+        else:
+            normalised_rgb_color = np.array(rgb_color_tuple)
+
+        normalised_rgb_color = np.clip(normalised_rgb_color, 0, 1)  # ensure all rgb values are between 0 and 1
+        # if too white, darken:
+        if np.linalg.norm(normalised_rgb_color) > 1:  # white af
+            normalised_rgb_color *= (1 / np.linalg.norm(normalised_rgb_color)**(1 / 2))
+
+        normalised_rgb_colors.append(normalised_rgb_color)
+
+    rgb_colors = np.stack(normalised_rgb_colors, axis=0)
+
     return rgb_colors
 
 

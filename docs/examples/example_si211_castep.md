@@ -144,3 +144,8 @@ Supercell band structure of Si in a 2x1x1 supercell
 which, as expected, is the same as the primitive cell if it is folded back along the midpoint between 
 $\Gamma$ and $X$, corresponding to the 2x expansion of the primitive cell along the $x$ direction in 
 generating the 2x1x1 supercell. 
+
+:::{tip}
+There are _many_ customisation options available for the plotting functions in `easyunfold`. See `easyunfold plot -h` or 
+`easyunfold unfold plot-projections -h` for more details!
+:::

@@ -2,6 +2,9 @@
 """
 The main module for unfolding workflow and algorithm
 """
+
+import contextlib
+import itertools
 # pylint: disable=invalid-name,protected-access,too-many-locals
 
 ############################################################
@@ -317,9 +320,7 @@ class UnfoldKSet(MSONable):
         # Collect from form nested list containing the mappings to the reduce sc kpoints
         reduced_sc_map = []
         for sc_set in expended_sc:
-            map_indx = []
-            for _ in sc_set:
-                map_indx.append(sc_kpts_map.pop(0))
+            map_indx = [sc_kpts_map.pop(0) for _ in sc_set]
             reduced_sc_map.append(map_indx)
 
         self.expansion_results['reduced_sckpts'] = reduced_sckpts
@@ -411,17 +412,14 @@ class UnfoldKSet(MSONable):
 
         return averaged_weights, weights_per_set
 
-    def load_procar(self, procar: Union[str, List[str]], force: bool = False):
+    def load_procars(self, procars: Union[str, List[str]]):
         """Read in PROCAR for band-based projection"""
-        if self.procars and not force:
-            pass
-
-        if not isinstance(procar, (tuple, list)):
-            procar = [procar]
+        if not isinstance(procars, (tuple, list)):
+            procars = [procars]  # list of PROCAR files
 
         # Load the procars
         # Note that this method should be generalised for non-VASP as well.
-        self.transient_quantities['procars'] = [Procar(path) for path in procar]
+        self.transient_quantities['procars'] = Procar(procars)
         # Construct mapping from the primitive cell kpoints to those in the PROCAR
         self.transient_quantities['procars_kmap'] = self._construct_procar_kmap()
 
@@ -436,20 +434,17 @@ class UnfoldKSet(MSONable):
                 K_super, _ = find_K_from_k(kpoint, self.M)
                 # Search for kpoints in the procar
                 found = False
-                for iprocar, procar in enumerate(self.procars):
-                    for ikpt, kprocar in enumerate(procar.kvecs[0]):
-                        if kpoints_equal(K_super, kprocar, time_reversal=self.time_reversal):
-                            kidx_procar_sets[-1].append([iprocar, ikpt])
-                            found = True
-                            break
-                    if found:
+                for ikpt, kprocar in enumerate(self.procar.kvecs[0]):
+                    if kpoints_equal(K_super, kprocar, time_reversal=self.time_reversal):
+                        kidx_procar_sets[-1].append(ikpt)
+                        found = True
                         break
                 if found is False:
                     raise ValueError(f'Cannot found kpoint {K_super} in PROCAR files')
         return kidx_procar_sets
 
     @property
-    def procars(self) -> Union[None, Procar]:
+    def procar(self) -> Union[None, Procar]:
         """Loaded PROCARS"""
         return self.transient_quantities.get('procars')
 
@@ -481,9 +476,8 @@ class UnfoldKSet(MSONable):
         # If wave function is given - reload from the data
         if wavefunction:
             self._read_weights(wavefunction, gamma=gamma, ncl=ncl, gamma_half=gamma_half)
-        else:
-            if not self.is_calculated:
-                raise RuntimeWarning('The spectral weights need to be calculated first - please pass the wave function file(s).')
+        elif not self.is_calculated:
+            raise RuntimeWarning('The spectral weights need to be calculated first - please pass the wave function file(s).')
 
         # Use existing results
         if symm_average:
@@ -493,11 +487,11 @@ class UnfoldKSet(MSONable):
             # No averaging - we just return the first item of each set, which is the weight of the original set
             sws = [item[:, :1, :, :] for item in self.calculated_quantities['spectral_weights_per_set']]
             # Recreate the full weights array
-            kweight_sets = [[1.0] for i in range(len(sws))]
+            kweight_sets = [[1.0] for _ in range(len(sws))]
 
         if also_spectral_function:
             if atoms_idx is not None:
-                # Read in the project weights
+                # Read in the projected weights
                 band_weight_sets = self.get_band_weight_sets(atoms_idx, orbitals)
             else:
                 band_weight_sets = None
@@ -531,18 +525,18 @@ class UnfoldKSet(MSONable):
         :returns: A list of weights for each band at each expanded kpoint
         """
         if procars:
-            self.load_procar(procars)
-        if self.procars is None:
+            self.load_procars(procars)
+        if self.procar is None:
             raise RuntimeError('PROCAR files needs to be loaded')
 
-        projs = [procar.get_projection(atoms_idx, orbitals) for procar in self.procars]
+        proj = self.procar.get_projection(atoms_idx, orbitals)
         # Construct band weighting, same structure as o
         band_weight_sets = []
         for kset in self.transient_quantities['procars_kmap']:
             band_weight_sets.append([])
             # Search
-            for iprocar, kidx in kset:
-                band_weight = projs[iprocar][:, kidx]
+            for kidx in kset:
+                band_weight = proj[:, kidx]
                 band_weight_sets[-1].append(band_weight)
         return band_weight_sets
 
@@ -673,12 +667,11 @@ def clean_latex_string(label: str):
     :returns: Cleaned tag string
     """
     if label == 'G':
-        label = r'$\mathrm{\mathsf{\Gamma}}$'
-    elif label.startswith('\\'):  ## This is a latex formatted label already
-        label = f'$\\mathrm{{\\mathsf{{{label}}}}}$'
-    else:
-        label = r'$\mathrm{\mathsf{' + label + r'}}$'
-    return label
+        return r'$\mathrm{\mathsf{\Gamma}}$'
+    if label.startswith('\\'):  ## This is a latex formatted label already
+        return f'$\\mathrm{{\\mathsf{{{label}}}}}$'
+
+    return r'$\mathrm{\mathsf{' + label + r'}}$'
 
 
 def spectral_function_from_weight_sets(spectral_weight_sets: np.ndarray,
@@ -710,18 +703,17 @@ def spectral_function_from_weight_sets(spectral_weight_sets: np.ndarray,
     emax = spectral_weight_sets[0][:, :, :, 0].max() if emax is None else emax
     e0 = np.linspace(emin - 5 * sigma, emax + 5 * sigma, nedos)
 
-    for ispin in range(ns):
-        for ii in range(nk):  # Iterate through kpoint sets (of primitive cell kpoints)
-            for jj in range(spectral_weight_sets[ii].shape[1]):
-                kweight = kweight_sets[ii][jj]
-                E_Km = spectral_weight_sets[ii][ispin, jj, :, 0]
-                P_Km = spectral_weight_sets[ii][ispin, jj, :, 1]
-                if band_weight_sets is not None:
-                    P_Km = P_Km * band_weight_sets[ii][jj][ispin, :P_Km.shape[0]]
-                # Take weighted average spectral functions
-                spectral_function[ispin, :,
-                                  ii] += np.sum(LorentzSmearing(e0[:, np.newaxis], E_Km[np.newaxis, :], sigma=sigma) * P_Km[np.newaxis, :],
-                                                axis=1) * kweight
+    for ispin, ii in itertools.product(range(ns), range(nk)):  # Iterate through kpoint sets (of primitive cell kpoints)
+        for jj in range(spectral_weight_sets[ii].shape[1]):
+            kweight = kweight_sets[ii][jj]
+            E_Km = spectral_weight_sets[ii][ispin, jj, :, 0]
+            P_Km = spectral_weight_sets[ii][ispin, jj, :, 1]
+            if band_weight_sets is not None:
+                P_Km = P_Km * band_weight_sets[ii][jj][ispin, :P_Km.shape[0]]
+            # Take weighted average spectral functions
+            spectral_function[ispin, :,
+                              ii] += np.sum(LorentzSmearing(e0[:, np.newaxis], E_Km[np.newaxis, :], sigma=sigma) * P_Km[np.newaxis, :],
+                                            axis=1) * kweight
     return e0, spectral_function
 
 
@@ -1009,11 +1001,9 @@ def spectral_weight_multiple_source(kpoints: list, unfold_objs: List[Unfold], tr
         assert ns == obj.wfc.nspins
 
     # When reading from multiple wave function files (e.g. WAVECAR for VASP),
-    # it is possible that each of them may have differnt number of bands.
+    # it is possible that each of them may have different number of bands.
     # Ff so, we take only the first N bands, where N is the minimum values of bands
-    nb = []
-    for source in unfold_objs:
-        nb.append(source.bands.shape[2])
+    nb = [source.bands.shape[2] for source in unfold_objs]
     nbands = min(nb)
 
     spectral_weights = []
@@ -1101,9 +1091,8 @@ def parse_atoms_idx(atoms_idx: str) -> List[int]:
             out.extend(range(int(match.group(1)), int(match.group(2)) + 1))
         else:
             out.append(int(item))
-    # Expect passing 1-based indexing
-    out = [x - 1 for x in out]
-    return out
+
+    return [x - 1 for x in out]  # Expect passing 1-based indexing
 
 
 def process_projection_options(atoms_idx: str, orbitals: str) -> Tuple[list, list]:
@@ -1153,7 +1142,7 @@ def parse_atoms(atoms_to_project: str, orbitals: str, poscar: str):
     """
     atoms_to_project = re.split(', *', atoms_to_project)
     ase_atoms = read_poscar_contcar_if_present(poscar)
-    try:  # check POTCAR if possible, to check the POSCAR-POTCARs match
+    with contextlib.suppress(FileNotFoundError):
         atom_types = get_atomtypes('POTCAR')
 
         def _check_order(smaller_list, larger_list):
@@ -1162,8 +1151,6 @@ def parse_atoms(atoms_to_project: str, orbitals: str, poscar: str):
 
         if not _check_order(atom_types, ase_atoms.get_chemical_symbols()):
             warnings.warn('The order of atoms in the POSCAR/CONTCAR and POTCAR do not match!')
-    except FileNotFoundError:
-        pass
     atoms_idx = [
         [i for i, atom in enumerate(ase_atoms) if projected_atom_symbol in atom.symbol] for projected_atom_symbol in atoms_to_project
     ]
@@ -1175,7 +1162,7 @@ def parse_atoms(atoms_to_project: str, orbitals: str, poscar: str):
 
     # Special case: if only one set is passed, apply it to all atomic specifications
     if len(orbitals_subplots) == 1:
-        orbitals_subplots = orbitals_subplots * len(atoms_idx)
+        orbitals_subplots *= len(atoms_idx)
 
     orbitals_list = []
     for orbital_sublist in orbitals_subplots:
