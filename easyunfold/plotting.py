@@ -2,6 +2,9 @@
 Plotting utilities
 """
 from typing import Union, Sequence
+import warnings
+import itertools
+import colorsys
 import matplotlib.pyplot as plt
 
 import numpy as np
@@ -14,12 +17,15 @@ from colormath.color_objects import (
     XYZColor,
     sRGBColor,
 )
-from matplotlib.colors import to_rgb
+from matplotlib import cycler, rcParams
+from matplotlib.style import context
+from matplotlib.colors import to_rgb, cnames
+from matplotlib.patches import Patch
 
-from .unfold import UnfoldKSet, clean_latex_string, process_projection_options
+from .unfold import UnfoldKSet, clean_latex_string, process_projection_options, parse_atoms
 from .effective_mass import EffectiveMass, fitted_band
 
-# pylint: disable=too-many-locals, too-many-arguments
+# pylint: disable=too-many-locals, too-many-arguments, import-outside-toplevel, too-many-branches, too-many-statements, too-many-nested-blocks, unexpected-keyword-arg
 
 
 class UnfoldPlotter:
@@ -33,14 +39,138 @@ class UnfoldPlotter:
         """
         self.unfold = unfold
 
+    def plot_dos(self, ax, dos_plotter, dos_label, dos_options, ylim, eref, atoms=None, colours=None, orbitals_subplots=None):
+        """
+        Prepare and plot the density of states.
+        """
+        from pymatgen.electronic_structure.core import Spin
+
+        if not dos_options:
+            dos_options = {}
+
+        from sumo.plotting import sumo_base_style, sumo_bs_style
+        plt.style.use([sumo_base_style, sumo_bs_style])
+
+        if atoms:
+            # set DOS element & orbital colours to match the easyunfold band structure projections
+            def _get_orbital_colour_dict(index, colour_list):
+                # set s,p,d,f to different shades of colours[i]
+                return {
+                    's': adjust_lightness(colour_list[index], 1.0),
+                    'p': adjust_lightness(colour_list[index], 0.7),
+                    'px': adjust_lightness(colour_list[index], 0.7),
+                    'py': adjust_lightness(colour_list[index], 0.8),
+                    'pz': adjust_lightness(colour_list[index], 0.6),
+                    'd': adjust_lightness(colour_list[index], 0.45),
+                    'dxy': adjust_lightness(colour_list[index], 0.45),
+                    'dyz': adjust_lightness(colour_list[index], 0.55),
+                    'dxz': adjust_lightness(colour_list[index], 0.35),
+                    'dz2': adjust_lightness(colour_list[index], 0.65),
+                    'dx2-y2': adjust_lightness(colour_list[index], 0.25),
+                    'x2-y2': adjust_lightness(colour_list[index], 0.25),  # labelled differently in VASP PROCAR
+                    'f': adjust_lightness(colour_list[index], 0.2)
+                }
+
+            # Create a dictionary with different shades of colours[i] for each orbital
+            sumo_colours = {atom: _get_orbital_colour_dict(i, colours) for i, atom in enumerate(atoms)}
+            if len(atoms) != len(set(atoms)):
+                # if atom entries are not all unique (i.e. repeated with different orbitals), then adjust colours of specific orbitals
+                for i, atom, this_orbitals in zip(range(len(atoms)), atoms, orbitals_subplots):
+                    if this_orbitals != 'all':
+                        orbital_list = [token.strip() for token in this_orbitals.split(',')]
+                        orbital_colour_dict = _get_orbital_colour_dict(i, colours)
+                        for orbital in orbital_list:
+                            # set all orbital keys with "orbital" in key:
+                            for key in sumo_colours[atom].keys():
+                                if orbital in key:
+                                    sumo_colours[atom][key] = orbital_colour_dict[key]
+        else:
+            sumo_colours = None
+
+        # don't use first 4 colours; these are the band structure line colours:
+        cycle = cycler('color', rcParams['axes.prop_cycle'].by_key()['color'][4:])
+        with context({'axes.prop_cycle': cycle}):
+            try:
+                plot_data = dos_plotter.dos_plot_data(xmin=ylim[0],
+                                                      xmax=ylim[1],
+                                                      zero_energy=eref,
+                                                      zero_to_efermi=False,
+                                                      colours=sumo_colours,
+                                                      **dos_options)
+            except TypeError:  # sumo < 2.3
+                try:
+                    plot_data = dos_plotter.dos_plot_data(xmin=ylim[0],
+                                                          xmax=ylim[1],
+                                                          ref_energy=eref,
+                                                          zero_to_efermi=False,
+                                                          colours=sumo_colours,
+                                                          **dos_options)
+                except TypeError:  # sumo < 2.2
+                    plot_data = dos_plotter.dos_plot_data(xmin=ylim[0],
+                                                          xmax=ylim[1],
+                                                          zero_to_efermi=True,
+                                                          colours=sumo_colours,
+                                                          **dos_options)
+
+        mask = plot_data['mask']
+        energies = plot_data['energies'][mask]
+        lines = plot_data['lines']
+        spins = [Spin.up] if len(lines[0][0]['dens']) == 1 else [Spin.up, Spin.down]
+
+        # disable y ticks for DOS panel
+        ax.tick_params(axis='y', which='both', right=False)
+
+        for line_set in plot_data['lines']:
+            for line, spin in itertools.product(line_set, spins):
+                if spin == Spin.up or len(spins) == 1:
+                    label = line['label']
+                    densities = line['dens'][spin][mask]
+                else:
+                    label = ''
+                    densities = -line['dens'][spin][mask]
+
+                line_style = '-'
+                if label:
+                    if any(i in label for i in ['py', 'dyz']):
+                        line_style = '--'
+                    elif any(i in label for i in ['pz', 'dxz']):
+                        line_style = ':'
+                    elif any(i in label for i in ['dz2']):
+                        line_style = '-.'
+                    elif any(i in label for i in ['x2-y2']):
+                        line_style = (5, (10, 3))
+
+                ax.fill_betweenx(energies, densities, 0, lw=0, facecolor=line['colour'], alpha=line['alpha'])
+                ax.plot(densities, energies, label=label, color=line['colour'], ls=line_style, lw=1)
+
+        # x and y axis reversed versus normal dos plotting
+        ax.set_ylim(*ylim)
+        if len(spins) == 1:
+            ax.set_xlim(0, plot_data['ymax'])
+        else:
+            ax.set_xlim(plot_data['ymin'], plot_data['ymax'])
+
+        if dos_label is not None:
+            ax.set_xlabel(dos_label)
+
+        ax.set_xticklabels([])
+        ax.set_yticklabels([])
+        ax.legend(loc=2, frameon=False, ncol=1, bbox_to_anchor=(1.0, 1.0), fontsize=9)
+
+        return ax
+
     def plot_spectral_function(
         self,
         engs: np.ndarray,
         sf: np.ndarray,
+        dos_plotter=None,
+        dos_label=None,
+        dos_options=None,
+        zero_line=False,
         eref=None,
         figsize=(4, 3),
-        ylim=(-3, 3),
-        dpi=150,
+        ylim=(-5, 5),
+        dpi=300,
         vscale=1.0,
         contour_plot=False,
         alpha=1.0,
@@ -51,23 +181,24 @@ class UnfoldPlotter:
         cmap='PuRd',
         show=False,
         title=None,
+        intensity=1.0,
     ):
         """
         Plot the spectral function.
 
-        :param np.ndarray engs: The energies of the spectral functions.
+        :param engs: The energies of the spectral functions.
         :param sf: An array of the spectral function.
-        :param float eref: Reference energy to be used - this energy will be set as zero.
+        :param eref: Reference energy to be used - this energy will be set as zero.
         :param figsize: Size of the figure.
         :param ylim: Plotting limit for the y-axis, with respect to `eref`.
         :param dpi: DPI of the generated graph.
-        :param vscale: A scaling factor for the colour map.
-        :param contour_plot): Whether to use contour plot instead of normal meshed color map.
-        :param alphathe color map.
-        :param savethe file where the generated figure is saved.
-        :param ax: An existing plotting axis to be be used.
-        :param vminfor the color map.
-        :param vmaxfor the color map.
+        :param vscale: A normalisation/scaling factor for the colour map. Smaller values will increase the colour intensity.
+        :param contour_plot: Whether to use contour plot instead of normal meshed color map.
+        :param alpha: Color map transparency factor.
+        :param save: The file to save the generated figure to.
+        :param ax: An existing plotting axis to be used.
+        :param vmin: Min value for the colour map.
+        :param vmax: Max value for the colour map.
         :param cmap: Name of the color map to be used.
 
         :returns: The figure generated containing the spectral function.
@@ -81,18 +212,24 @@ class UnfoldPlotter:
         if eref is None:
             eref = unfold.calculated_quantities.get('vbm', 0.0)
 
-        if ax is None:
-            if nspin == 1:
-                fig, ax = plt.subplots(1, 1, figsize=figsize, dpi=dpi)
-                axes = [ax]
-            else:
-                fig, axes = plt.subplots(1, 2, figsize=figsize, dpi=dpi)
+        if dos_plotter:
+            fig, axes = plt.subplots(1, 2, facecolor='w', gridspec_kw={'width_ratios': [3, 1], 'wspace': 0}, figsize=figsize, dpi=dpi)
+            if nspin > 1:
+                warnings.warn('DOS plotter is not supported for spin-separated plots. Reverting to non spin-polarised plotting.')
+                nspin = 1
         else:
-            if not isinstance(ax, list):
-                axes = [ax]
+            if ax is None:
+                if nspin == 1:
+                    fig, ax = plt.subplots(1, 1, figsize=figsize, dpi=dpi)
+                    axes = [ax]
+                else:
+                    fig, axes = plt.subplots(1, 2, figsize=figsize, dpi=dpi)
             else:
-                axes = ax
-            fig = axes[0].figure
+                if not isinstance(ax, list):
+                    axes = [ax]
+                else:
+                    axes = ax
+                fig = axes[0].figure
 
         # Shift the kdist so the pcolormesh draw the pixel centred on the original point
         X, Y = np.meshgrid(kdist, engs - eref)
@@ -103,7 +240,8 @@ class UnfoldPlotter:
 
         if vmax is None:
             vmax = sf[:, mask, :].max()
-            vmax = (vmax - vmin) * vscale + vmin
+            vmax = (vmax - vmin) * (vscale /
+                                    intensity) + vmin  # vscale and intensity have the equal opposite effect on the colour intensity
 
         for ispin, ax_ in zip(range(nspin), axes):
             if contour_plot:
@@ -120,9 +258,26 @@ class UnfoldPlotter:
             # Label the kpoints
             self._add_kpoint_labels(ax_)
 
+        if dos_plotter:
+            ax = fig.axes[1]
+            ax = self.plot_dos(ax, dos_plotter, dos_label, dos_options, ylim, eref)
+
+        if zero_line:
+            try:
+                from sumo.plotting import draw_themed_line
+                try:
+                    draw_themed_line(0, axes[0], zorder=10)  # bump zorder to put on top of pcolormesh
+                except TypeError:  # old sumo
+                    draw_themed_line(0, axes[0])
+                if dos_plotter:
+                    draw_themed_line(0, axes[1])
+
+            except ImportError:
+                warnings.warn('zero_line option requires sumo to be installed!')
+
         fig.tight_layout(pad=0.2)
         if save:
-            fig.savefig(save, dpi=dpi)
+            fig.savefig(save, dpi=dpi, bbox_inches='tight')
         if show:
             fig.show()
         return fig
@@ -135,13 +290,14 @@ class UnfoldPlotter:
         figsize=(4, 3),
         ylim=(-3, 3),
         dpi: float = 150,
-        intensity: float = 1.0,
+        vscale: float = 1.0,
         save: bool = False,
         ax: Union[None, plt.Axes] = None,
         show: bool = False,
         title: Union[None, str] = None,
         vmin: Union[None, float] = None,
         vmax: Union[None, float] = None,
+        intensity: float = 1.0,
     ):
         """
         Plot spectral function defined as RGBA colours
@@ -153,10 +309,10 @@ class UnfoldPlotter:
         :param ylim: Plotting limit for the y-axis, with respect to `eref`.
         :param dpi: DPI of the generated graph.
         :param save: The file where the generated figure is saved.
-        :param ax: An existing plotting axis to be be used.
+        :param ax: An existing plotting axis to be used.
         :param vmin: Lower bound for constructing the alpha channel.
         :param vmax: Upper bound for constructing the alpha channel.
-        :param intensity: Scaling factor for the alpha channel.
+        :param vscale: Scaling factor for the alpha channel.
         :param title: Title for the plot.
 
         :returns: the figure generated containing the spectral function.
@@ -188,19 +344,20 @@ class UnfoldPlotter:
 
         # Clip the alpha range
         alpha = sf[:, :, :, 3]
-        alpha = (alpha - vmin) / (vmax - vmin) * intensity
+        alpha = ((alpha - vmin) / (vmax - vmin)) * (intensity / vscale)  # vscale & intensity have equal opposite effects
         alpha = np.clip(alpha, 0, 1)
         sf[:, :, :, 3] = alpha
 
         for ispin, ax_ in zip(range(nspin), axes):
-            # plt.imshow's pixel coordinates are not at the center of the pixel
-            # Hence, the `extent`` need to update so teh center of the pixel is aligned with the coordinates.
+            # plt.imshow's pixel coordinates are not at the centre of the pixel
+            # Hence, the `extent`` needs to be updated so the centre of the pixel is aligned with the coordinates:
             extent = np.array([0, sf.shape[2], max(engs) - eref, min(engs) - eref])
             ebin = (max(engs) - min(engs)) / sf.shape[1]
             extent[:2] -= 0.5
             extent[2:] -= ebin * 0.5
             ax_.imshow(sf[ispin], extent=extent, aspect='auto', origin='upper')
             ax_.set_ylim(ylim)
+            ax_.set_xlim(0, sf.shape[2])
             ax_.set_ylabel('Energy (eV)', labelpad=5)
             ax_.set_title(title)
             self._add_kpoint_labels(ax_, x_is_kidx=True)
@@ -329,7 +486,7 @@ class UnfoldPlotter:
         :param dpi: DPI of the generated graph.
         :param alpha: Alpha for the markers.
         :param save: Name of the file where the generated figure is saved.
-        :param ax: Existing plotting axes to be be used (list if having two spin channels).
+        :param ax: Existing plotting axes to be used (list if having two spin channels).
         :param factor: Scaling factor for the marker size.
         :param color: Color of the markers.
         :param title: Title for the generated plot.
@@ -402,7 +559,11 @@ class UnfoldPlotter:
 
     def plot_projected(
             self,
-            procar: Union[str, list],
+            procar: Union[str, list] = 'PROCAR',
+            dos_plotter=None,
+            dos_label=None,
+            dos_options=None,
+            zero_line=False,
             eref=None,
             gamma=False,
             npoints=2000,
@@ -410,24 +571,24 @@ class UnfoldPlotter:
             ncl=False,
             symm_average=True,
             figsize=(4, 3),
-            ylim=(-3, 3),
-            dpi=150,
+            ylim=(-5, 5),
+            dpi=300,
             vscale=1.0,
             contour_plot=False,
             alpha=1.0,
             save=False,
             ax=None,
-            vmin=None,
-            vmax=None,
             cmap='PuRd',
             show=False,
             title=None,
+            atoms=None,
+            poscar='POSCAR',
             atoms_idx=None,
             orbitals=None,
-            intensity=1.0,
             use_subplot=False,
-            colors=('r', 'g', 'b', 'purple'),
+            colours=('r', 'g', 'b', 'purple'),
             colorspace='lab',
+            intensity=1.0,
     ):
         """
         Plot projected spectral function onto multiple subplots or a single plot with color mapping.
@@ -439,12 +600,17 @@ class UnfoldPlotter:
 
         :returns: Generated plot.
         """
-
         unfoldset = self.unfold
         unfoldset.load_procar(procar)
-        nspins = unfoldset.calculated_quantities['spectral_weights_per_set'][0].shape[0]
+        nspin = unfoldset.calculated_quantities['spectral_weights_per_set'][0].shape[0]
 
-        atoms_idx_subplots = atoms_idx.split('|')
+        if atoms_idx is not None:
+            atoms_idx_subplots = atoms_idx.split('|')  # list of strings
+
+        else:  # parse atoms
+            atoms, atoms_idx_subplots, _ = parse_atoms(atoms, orbitals, poscar)
+            # atoms as a list, atoms_idx_subplots as a list of lists
+
         if orbitals is not None:
             orbitals_subplots = orbitals.split('|')
 
@@ -471,7 +637,12 @@ class UnfoldPlotter:
         # Collect spectral functions and scale
         for this_idx, this_orbitals in zip(atoms_idx_subplots, orbitals_subplots):
             # Setup the atoms_idx and orbitals
-            this_idx, this_orbitals = process_projection_options(this_idx, this_orbitals)
+            if isinstance(this_idx, str):
+                this_idx, this_orbitals = process_projection_options(this_idx, this_orbitals)
+            else:  # list of integers; pre-processed by specifying atoms
+                if this_orbitals != 'all':
+                    this_orbitals = [token.strip() for token in this_orbitals.split(',')]
+
             eng, spectral_function = unfoldset.get_spectral_function(gamma=gamma,
                                                                      npoints=npoints,
                                                                      sigma=sigma,
@@ -486,7 +657,7 @@ class UnfoldPlotter:
             mask = (eng < (emax + eref)) & (eng > (emin + eref))
             vmin = spectral_function[:, mask, :].min()
             vmax = spectral_function[:, mask, :].max()
-            vmax = (vmax - vmin) * vscale + vmin
+            vmax = (vmax - vmin) * (vscale / intensity) + vmin  # vscale & intensity have equal opposite effects
             vmaxs.append(vmax)
 
         # Workout the vmax and vmin
@@ -494,9 +665,16 @@ class UnfoldPlotter:
         vmin = 0.
 
         if use_subplot:
-            fig, axs = plt.subplots(nspins, len(atoms_idx_subplots), sharex=True, sharey=True, squeeze=False, figsize=(3.0 * nsub, 4.0))
+            if dos_plotter:
+                warnings.warn('DOS plotter is not supported for projected subplots. Use `--combined` if '
+                              'you want to plot the DOS along with the projected band structure!')
+            fig, axs = plt.subplots(nspin, len(atoms_idx_subplots), sharex=True, sharey=True, squeeze=False, figsize=(3.0 * nsub, 4.0))
             # Plot the spectral function with constant colour scales
             for spectral_function, i in zip(all_sf, range(len(atoms_idx_subplots))):
+                if (title is None or any(atom == title for atom in atoms)) and atoms is not None:
+                    # use atoms as titles (checks if atom == title from previous subplot)
+                    title = atoms[i]
+
                 plotter = UnfoldPlotter(unfoldset)
                 plotter.plot_spectral_function(
                     eng,
@@ -515,21 +693,38 @@ class UnfoldPlotter:
                     alpha=alpha,
                     dpi=dpi,
                     ylim=ylim,
+                    intensity=intensity,
                 )
         else:
             # Make a combined plot
             sf_size = all_sf[0].shape
             stacked_sf = np.stack(all_sf, axis=-1).reshape(np.prod(sf_size), len(all_sf))
 
-            # Construct the color basis
-            colors = colors[:len(all_sf)]
+            # Construct the colour basis
+            colours = colours[:len(all_sf)]
             # Compute spectral weight data with RGB reshape it back into the shape (nengs, nk, 3)
-            sf_rgb = interpolate_colors(colors, stacked_sf, colorspace, normalize=True).reshape(sf_size + (3,))
+            sf_rgb = interpolate_colors(colours, stacked_sf, colorspace, normalize=True).reshape(sf_size + (3,))
             sf_sum = np.sum(all_sf, axis=0)[:, :, :, None]
             sf_rgba = np.concatenate([sf_rgb, sf_sum], axis=-1)
 
-            if ax is None:
-                fig, axs = plt.subplots(1, nspins, figsize=figsize, squeeze=True)
+            if dos_plotter:
+                fig, axes = plt.subplots(1,
+                                         2,
+                                         facecolor='w',
+                                         gridspec_kw={
+                                             'width_ratios': [3, 1],
+                                             'wspace': 0
+                                         },
+                                         figsize=figsize,
+                                         dpi=dpi,
+                                         squeeze=True)
+                ax = axes[0]
+                if nspin > 1:
+                    warnings.warn('DOS plotter is not supported for spin-separated plots. Reverting to non spin-polarised plotting.')
+                    nspin = 1
+
+            elif ax is None:
+                fig, ax = plt.subplots(1, nspin, figsize=figsize, squeeze=True)
 
             self._plot_spectral_function_rgba(
                 eng,
@@ -537,13 +732,40 @@ class UnfoldPlotter:
                 eref=eref,
                 save=save,
                 title=title,
-                intensity=intensity,
-                ax=axs,
+                vscale=vscale,
+                ax=ax,
                 figsize=figsize,
                 show=show,
                 dpi=dpi,
                 ylim=ylim,
+                intensity=intensity,
             )
+
+            if dos_plotter:
+                ax = fig.axes[1]
+                ax = self.plot_dos(ax, dos_plotter, dos_label, dos_options, ylim, eref, atoms, colours, orbitals_subplots)
+
+            if zero_line:
+                try:
+                    from sumo.plotting import draw_themed_line
+                    if dos_plotter:
+                        try:
+                            draw_themed_line(0, axes[0], zorder=10)  # bump zorder to put on top of pcolormesh
+                        except TypeError:  # old sumo
+                            draw_themed_line(0, axes[0])
+                        draw_themed_line(0, axes[1])
+                    else:
+                        draw_themed_line(0, ax)
+
+                except ImportError:
+                    warnings.warn('zero_line option requires sumo to be installed!')
+
+            if atoms is not None:  # add figure legend with atoms and colors
+                legend_elements = []
+                for i, atom in enumerate(atoms):
+                    legend_elements.append(Patch(facecolor=colours[i], label=atom, alpha=0.7))
+                fig.axes[0].legend(handles=legend_elements, bbox_to_anchor=(1.025, 1), fontsize=9)
+                fig.subplots_adjust(right=0.78)  # ensure legend is not cut off
 
         return fig
 
@@ -584,17 +806,17 @@ class UnfoldPlotter:
         return fig
 
 
-def interpolate_colors(colors: Sequence, weights: list, colorspace='lab', normalize=True):
+def interpolate_colors(colours: Sequence, weights: list, colorspace='lab', normalize=True):
     """
-    Interpolate colors at a number of points within a colorspace.
+    Interpolate colours at a number of points within a colorspace.
 
-    :param colors: A list of colors specified in any way supported by matplotlib.
+    :param colours: A list of colours specified in any way supported by matplotlib.
     :param weights: A list of weights with the shape (n, N). Where the N values of
-      the last axis give the amount of N colors supplied in `colors`.
+      the last axis give the amount of N colours supplied in `colours`.
     :param colorspace: The colorspace in which to perform the interpolation. The
             allowed values are rgb, hsv, lab, luvlc, lablch, and xyz.
 
-    :returns: A list of colors, specified in the rgb format as a (n, 3) array.
+    :returns: A list of colours, specified in the rgb format as a (n, 3) array.
     """
 
     # Set up and check the color spaces
@@ -613,7 +835,7 @@ def interpolate_colors(colors: Sequence, weights: list, colorspace='lab', normal
     colorspace = colorspace_mapping[colorspace]
 
     # Convert matplotlib color specification to colormath sRGB
-    colors_srgb = [sRGBColor(*to_rgb(c)) for c in colors]
+    colors_srgb = [sRGBColor(*to_rgb(c)) for c in colours]
 
     colors_basis = [np.array(convert_color(srgb, colorspace, target_illuminant='d50').get_value_tuple()) for srgb in colors_srgb]
 
@@ -636,3 +858,23 @@ def interpolate_colors(colors: Sequence, weights: list, colorspace='lab', normal
     # ensure all rgb values are less than 1 (sometimes issues in interpolation gives
     np.clip(rgb_colors, 0, 1, rgb_colors)
     return rgb_colors
+
+
+def adjust_lightness(color, amount=0.5):
+    """
+    Lightens the given color by multiplying (1-luminosity) by the given amount.
+    Input can be matplotlib color string, hex string, or RGB tuple.
+
+    Examples:
+    >> adjust_lightness('g', 1.1)  # slightly lighter
+    >> adjust_lightness('r', 0.6)  # significantly darker
+    >> adjust_lightness('#F034A3', 0.6)  # slightly darker
+    >> adjust_lightness((.3,.55,.1), 1.2)  # slightly lighter
+    """
+
+    try:
+        col = cnames[color]
+    except KeyError:
+        col = color
+    col = colorsys.rgb_to_hls(*to_rgb(col))
+    return colorsys.hls_to_rgb(col[0], 1 - amount * (1 - col[1]), col[2])
