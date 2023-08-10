@@ -6,15 +6,21 @@ from pathlib import Path
 import re
 import numpy as np
 
+from monty.json import MSONable, MontyDecoder
 
-class Procar:
+from easyunfold import __version__
+
+# pylint:disable=too-many-locals,
+
+
+class Procar(MSONable):
     """Reader for PROCAR file"""
 
-    def __init__(self, fobj_or_path=None, is_soc=False):
+    def __init__(self, fobjs_or_paths=None, is_soc=False):
         """
         Read the PROCAR file from a handle or path
 
-        :param fobj_or_path:  A file-like obj or a path
+        :param fobjs_or_paths:  Either a string or list of file-like objs or paths
         :param is_soc: Whether the PROCAR is from a calculation with spin-orbit coupling
         """
         self._is_soc = is_soc
@@ -32,85 +38,197 @@ class Procar:
         self.proj_xyz = None
 
         # Read the PROCAR
-        if isinstance(fobj_or_path, (str, Path)):
-            with open(fobj_or_path, encoding='utf-8') as fhandle:
-                self._read(fhandle)
-        else:
-            self._read(fobj_or_path)
+        if isinstance(fobjs_or_paths, (str, Path)):
+            fobjs_or_paths = [fobjs_or_paths]
+        self.read(fobjs_or_paths)
 
-    def _read(self, fobj):
+    def _read(self, fobj, parsed_kpoints=None):
         """Main function for reading in the data"""
+        if parsed_kpoints is None:
+            parsed_kpoints = set()
 
-        # First sweep - found the number of kpoints and the number of bands
+        # First sweep - find the number of kpoints and the number of bands
         fobj.seek(0)
-        self.header = fobj.readline()
+        _header = fobj.readline()
         # Read the NK, NB and NIONS that are integers
-        self.nkpts, self.nbands, self.nion = [int(token) for token in re.sub(r'[^0-9]', ' ', fobj.readline()).split()]
-        # Number of projects and their names
-        nproj = None
-        self.proj_names = None
-
-        for line in fobj:
-            if re.match(r'^ion.*tot', line):  # only the first "ion" line, in case of LORBIT >= 12
-                nproj = len(line.strip().split()) - 2
-                self.proj_names = line.strip().split()[1:-1]
-                break
+        _total_nkpts, nbands, nion = [int(token) for token in re.sub(r'[^0-9]', ' ', fobj.readline()).split()]
+        if nion != self.nion:
+            raise ValueError(f'Mismatch in number of ions in PROCARs supplied: ({nion} vs {self.nion})!')
 
         # Count the number of data lines, these lines do not have any alphabets
-        proj_data = []
-        energies = []
-        occs = []
-        kvecs = []
-        kweights = []
+        proj_data, energies, kvecs, kweights, occs = [], [], [], [], []
+        tot_count = 0  # count the instances of lines starting with "tot" -> (4 + 1) * nbands * nkpts for SOC calcs
         fobj.seek(0)
-        for line in fobj:
-            if not re.search(r'[a-zA-Z]', line) and line.strip() and len(line.strip().split()) - 2 == nproj:
-                # only parse data if nproj is expected length, in case of LORBIT >= 12
+
+        line = fobj.readline()
+        while line:
+            if line.startswith(' k-point'):
+                line = re.sub(r'(\d)-', r'\1 -', line)
+                tokens = line.strip().split()
+                kvec = tuple(round(float(val), 5) for val in  # tuple to make it hashable
+                             tokens[-6:-3])  # round to 5 decimal places to ensure proper kpoint matching
+                if kvec not in parsed_kpoints:
+                    parsed_kpoints.add(kvec)
+                    kvecs.append(list(kvec))
+                    kweights.append(float(tokens[-1]))
+                else:
+                    # skip ahead to the next instance of two blank lines in a row
+                    while line.strip() or fobj.readline().strip():
+                        line = fobj.readline()
+                    continue
+
+            elif not re.search(r'[a-zA-Z]', line) and line.strip() and len(line.strip().split()) - 2 == len(self.proj_names):
+                # only parse data if line is expected length, in case of LORBIT >= 12
                 proj_data.append([float(token) for token in line.strip().split()[1:-1]])
+
             elif line.startswith('band'):
                 tokens = line.strip().split()
                 energies.append(float(tokens[4]))
                 occs.append(float(tokens[-1]))
-            elif line.startswith(' k-point'):
-                line = re.sub(r'(\d)-', r'\1 -', line)
-                tokens = line.strip().split()
-                kvecs.append([float(val) for val in tokens[-6:-3]])
-                kweights.append(float(tokens[-1]))
-        self.occs = np.array(occs)
-        self.kvecs = np.array(kvecs)
-        self.kweights = np.array(kweights)
-        self.eigenvalues = np.array(energies)
+
+            elif line.startswith('tot'):
+                tot_count += 1
+
+            line = fobj.readline()
+
+        # dynamically determine whether PROCARs are SOC or not
+        if tot_count == 4 * len(occs):
+            self._is_soc = True
+        elif tot_count == len(occs):
+            self._is_soc = False
+        else:
+            raise ValueError(f"Number of lines starting with 'tot' ({tot_count}) in PROCAR does not match expected "
+                             f'values ({4*len(occs)} or {len(occs)})!')
+
+        occs = np.array(occs)
+        kvecs = np.array(kvecs)
+        kweights = np.array(kweights)
+        eigenvalues = np.array(energies)
 
         proj_data = np.array(proj_data, dtype=float)
 
-        self.nspins = proj_data.shape[0] // (self.nion * self.nbands * self.nkpts)
+        # redetermine nkpts in case some were skipped due to already being parsed
+        nkpts = len(kvecs)
+
+        self.nspins = proj_data.shape[0] // (self.nion * nbands * nkpts)
         self.nspins //= 4 if self._is_soc else 1
 
         # Reshape
-        self.occs.resize((self.nspins, self.nkpts, self.nbands))
-        self.kvecs.resize((self.nspins, self.nkpts, 3))
-        self.kweights.resize((self.nspins, self.nkpts))
-        self.eigenvalues.resize((self.nspins, self.nkpts, self.nbands))
+        occs.resize((self.nspins, nkpts, nbands))
+        kvecs.resize((self.nspins, nkpts, 3))
+        kweights.resize((self.nspins, nkpts))
+        eigenvalues.resize((self.nspins, nkpts, nbands))
 
         # Reshape the array
         if self._is_soc is False:
-            self.proj_data = proj_data.reshape((self.nspins, self.nkpts, self.nbands, self.nion, nproj))
+            proj_data = proj_data.reshape((self.nspins, nkpts, nbands, self.nion, len(self.proj_names)))
+            proj_xyz = None
         else:
-            self.proj_data = proj_data.reshape((self.nspins, self.nkpts, self.nbands, 4, self.nion, nproj))
+            proj_data = proj_data.reshape((self.nspins, nkpts, nbands, 4, self.nion, len(self.proj_names)))
             # Split the data into xyz projection and total
-            self.proj_xyz = self.proj_data[:, :, :, 1:, :, :]
-            self.proj_data = self.proj_data[:, :, :, 0, :, :]
+            proj_xyz = proj_data[:, :, :, 1:, :, :]
+            proj_data = proj_data[:, :, :, 0, :, :]
+
+        # normalise: (for each nspin, nkpt, nband, the sum of the projections over nion and proj_names should be 1)
+        proj_sum = np.sum(proj_data, axis=(-2, -1), keepdims=True)
+        proj_sum[proj_sum == 0] = 1  # just in case, avoid division by zero
+        proj_data /= proj_sum
+
+        if proj_xyz is not None:
+            proj_sum = np.sum(proj_xyz, axis=(-3, -2, -1), keepdims=True)
+            proj_sum[proj_sum == 0] = 1
+            proj_xyz /= proj_sum
+
+        return self.nspins, occs, kvecs, kweights, eigenvalues, proj_data, proj_xyz, parsed_kpoints
+
+    def _read_header_nion_proj_names(self, fobj):
+        """Read the header, nion and proj_names from the PROCAR"""
+        fobj.seek(0)
+        self.header = fobj.readline()
+        # Read the NK, NB and NIONS that are integers
+        _nkpts, _nbands, self.nion = [int(token) for token in re.sub(r'[^0-9]', ' ', fobj.readline()).split()]
+        self.proj_names = None  # projection names
+
+        for line in fobj:
+            if re.match(r'^ion.*tot', line):  # only the first "ion" line, in case of LORBIT >= 12
+                self.proj_names = line.strip().split()[1:-1]
+                break
+
+    def read(self, fobjs_or_paths):
+        """Read and amalgamate the data from a list of PROCARs"""
+
+        def open_file(fobj_or_path):
+            if isinstance(fobj_or_path, (str, Path)):
+                return open(fobj_or_path, encoding='utf-8')  # closed later
+            return fobj_or_path  # already a file-like object, just return it
+
+        parsed_kpoints = None
+        occs_list, kvecs_list, kweights_list = [], [], []
+        eigenvalues_list, proj_data_list, proj_xyz_list = [], [], []
+        for i, fobj_or_path in enumerate(fobjs_or_paths):
+            # Note: If PROCAR parsing becomes a significant bottleneck for people (e.g. with several HSE06+SOC PROCARs),
+            # this could be parallelized (somewhat) with multiprocessing. The actual file parsing in _read() is currently
+            # serial so no easy wins there, but could at least parallelise over the list of PROCARs
+            fobj = open_file(fobj_or_path)
+            if self.header is None:  # first file; read header, nion, proj_names
+                self._read_header_nion_proj_names(fobj)
+
+            current_nspins = self.nspins  # check spin consistency between PROCARs
+            nspins, occs, kvecs, kweights, eigenvalues, proj_data, proj_xyz, parsed_kpoints = self._read(fobj,
+                                                                                                         parsed_kpoints=parsed_kpoints)
+            if current_nspins is not None and current_nspins != nspins:
+                raise ValueError(f'Mismatch in number of spins in PROCARs supplied: ({nspins} vs {current_nspins})!')
+
+            if isinstance(fobj_or_path, (str, Path)):
+                fobj.close()  # if file was opened in this loop, close it
+
+            # Append to respective lists
+            occs_list.append(occs)
+            kvecs_list.append(kvecs)
+            kweights_list.append(kweights)
+            eigenvalues_list.append(eigenvalues)
+            proj_data_list.append(proj_data)
+            proj_xyz_list.append(proj_xyz)
+            if len(fobjs_or_paths) > 1:  # print progress if reading multiple files
+                print(f'Finished parsing PROCAR {i + 1}/{len(fobjs_or_paths)}')
+
+        # Combine along the nkpts axis:
+        # for occs, eigenvalues, proj_data and proj_xyz, nbands (axis = 2) could differ, so set missing values to zero:
+        max_nbands = max(arr.shape[2] for arr in eigenvalues_list)
+        for array_list in [occs_list, eigenvalues_list, proj_data_list, proj_xyz_list]:
+            for i, arr in enumerate(array_list):
+                if arr is not None and arr.shape[2] < max_nbands:
+                    if len(arr.shape) == 3:  # occs_list, eigenvalues_list
+                        array_list[i] = np.pad(arr, ((0, 0), (0, 0), (0, max_nbands - arr.shape[2])), mode='constant')
+                    elif len(arr.shape) == 5:  # proj_xyz_list
+                        array_list[i] = np.pad(arr, ((0, 0), (0, 0), (0, max_nbands - arr.shape[2]), (0, 0), (0, 0)), mode='constant')
+                    elif len(arr.shape) == 6:  # proj_xyz_list
+                        array_list[i] = np.pad(arr, ((0, 0), (0, 0), (0, max_nbands - arr.shape[2]), (0, 0), (0, 0), (0, 0)),
+                                               mode='constant')
+                    else:
+                        raise ValueError('Unexpected array shape encountered!')
+
+        self.nbands = max_nbands
+        self.occs = np.concatenate(occs_list, axis=1)
+        self.eigenvalues = np.concatenate(eigenvalues_list, axis=1)
+        self.kvecs = np.concatenate(kvecs_list, axis=1)
+        self.kweights = np.concatenate(kweights_list, axis=1)
+        self.proj_data = np.concatenate(proj_data_list, axis=1)
+        if all(arr is not None for arr in proj_xyz_list):
+            self.proj_xyz = np.concatenate(proj_xyz_list, axis=1)
+
+        self.nkpts = self.kvecs.shape[1]
 
     def get_projection(self, atom_idx: List[int], proj: Union[List[str], str], weight_by_k=False):
         """
-        Get project for specific atoms and specific projectors
+        Get projection for specific atoms and specific projectors
 
 
         :param atom_idx: A list of index of the atoms to be selected
         :param proj: A list of the projector names to be selected
         :param weight_by_k: Apply k weighting or not.
 
-        :returns: The project summed over the selected atoms and the projectors
+        :returns: The projection summed over the selected atoms and the projectors
         """
         atom_mask = [iatom in atom_idx for iatom in range(self.nion)]
         assert any(atom_mask)
@@ -143,3 +261,41 @@ class Procar:
             for kidx in range(self.nkpts):
                 out[:, kidx, :] *= self.kweights[kidx]
         return out
+
+    def as_dict(self) -> dict:
+        """Convert the object into a dictionary representation (so it can be saved to json)"""
+        output = {'@module': self.__class__.__module__, '@class': self.__class__.__name__, '@version': __version__}
+        for key in [
+                '_is_soc', 'eigenvalues', 'kvecs', 'kweights', 'nbands', 'nkpts', 'nspins', 'nion', 'occs', 'proj_names', 'proj_data',
+                'header', 'proj_xyz'
+        ]:
+            output[key] = getattr(self, key)
+        return output
+
+    @classmethod
+    def from_dict(cls, d):
+        """
+        Reconstructs Procar object from a dict representation, without calling __init__().
+
+        Args:
+            d (dict): dict representation of Procar
+
+        Returns:
+            Procar object
+        """
+
+        def decode_dict(subdict):
+            if isinstance(subdict, dict) and '@module' in subdict:
+                return MontyDecoder().process_decoded(subdict)
+            return subdict
+
+        instance = cls.__new__(cls)  # create a new instance without calling __init__()
+        d_decoded = {k: decode_dict(v) for k, v in d.items()}
+
+        # set the instance variables directly from the dictionary
+        for key, value in d_decoded.items():
+            if key in ['@module', '@class', '@version']:
+                continue
+            setattr(instance, key, value)
+
+        return instance

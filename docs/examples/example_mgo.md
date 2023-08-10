@@ -38,9 +38,15 @@ easyunfold unfold plot-projections --procar MgO_super/PROCAR --atoms="Mg,O" --co
 
 Note that the path of the `PROCAR` is passed along with the desired atom projections (`Mg` and `O` here). 
 
+:::{tip}
+If the _k_-points have been split into multiple calculations (e.g. hybrid DFT band structures), the `--procar` option 
+should be passed multiple times to specify the path to each split `PROCAR` file (i.e. 
+`--procar calc1/PROCAR --procar cal2/PROCAR ...`).
+:::
+
 :::{note}
-The atomic projections are not stored in the `easyunfold.json` data file, so the `PROCAR` file should be 
-kept for replotting in the future.
+The atomic projections are not stored in the `easyunfold.json` data file, so the `PROCAR` file(s) should be kept for 
+replotting in the future.
 :::
 
 The `--combined` option creates a combined plot with different colour maps for each atomic grouping.
@@ -97,3 +103,8 @@ easyunfold unfold plot-projections --procar MgO_super/PROCAR --atoms="Mg,O" --em
 
 Unfolded MgO band structure with atomic projections plotted separately.
 ```
+
+:::{tip}
+There are _many_ customisation options available for the plotting functions in `easyunfold`. See `easyunfold plot -h` or 
+`easyunfold unfold plot-projections -h` for more details!
+:::
