@@ -40,47 +40,48 @@ materials. Obtaining the band structure for an ideal crystal through first-princ
 density functional theory calculation is a well-established routine operation.
 However, the materials of interest are often complex and the simulation cells may contain multiple  primitive
 cells of the archetypal structure - when modelling disordered materials or defective structures, for example.
-In generating supercells for these calculations, the corresponding reciprocal lattice is (inversely) folded, as illustrated in \autoref{fig:figure1},
-inhibiting the interpretation and analysis of the resulting band structures.
+Repeating the unit cell in the real space result in folded band structures, as illustrated in \autoref{fig:figure1}, which complicates its interpretation and analysis.
 Band structure unfolding maps the electronic structure from supercell calculations back to the reciprocal lattice of the primitive cell,
 thereby enabling researchers to understand structure-property and compare the effect of various crystal imperfections on an equal footing.
-With `easyunfold`, we provide a simple yet powerful tool that helps from input file generation to final plotting when carrying out band structure unfolding using plane wave density functional theory codes.
+With `easyunfold`, we provide a simple, easy to use, yet powerful and flexible tool which helps from input file generation to publication-quality plotting for band structure unfolding using plane wave density functional theory codes.
 
 ![Schematics of band folding in a 2D lattice: (a) The primitive cell in the real space; (b) The $2\times2$ supercell in the real space. (c) A slice of the band structure in primitive cell's Brillouin zone; (d) The same slice in the supercell. \label{fig:figure1}](figure1.png){width=100mm}
 
 # Statement of need
 
-There are existing packages that provide similar band structure unfolding capabilities, such as `BandUp`
+There are existing packages that provide band structure unfolding capabilities, such as `BandUp`
 [@bandup], and `VaspBandUnfolding` [@vaspbandunfolding].
-`easyunfold` is written in Python with a focus of easy-to-use, data provenance and reproducibility.
-It also includes plotting functionalities and can generate publication-ready figures.
+`easyunfold` is written in Python with a focus of easy-to-use, data provenance, reproducibility, and generating publication-quality figures.
 An example output of the effective band structure produced is shown in Figure \autoref{fig:figure2} for a $2\times2\times2$ $\mathrm{MgO}$ supercell containing a charged oxygen vacancy.
 \autoref{fig:figure3} shows the effective band structure of an disordered $\mathrm{NaBiS_2}$ structure, which each projected atomic channel plotted separately.
 A key feature of `easyunfold` is to provide data serialization complying the FAIR principle [@wilkinson:2016].
-Both the input settings and calculated spectral weights are stored as a single JSON file.
+Both the input settings and calculated outputs are stored in a single JSON file.
 This enables the unfolded band structure to be re-plotted and further analysed without reprocessing the wave function data, which can be time-consuming and require large storage space.
-In addition, multi-file wave function support allows DFT calculations to be performed in a flexible way,
-which is essential for improving parallel efficiency using resource-hungry hybrid functional.
+The package is designed with flexibility in mind.
+`easyunfold` can split the supercell calculations in to multiple runs, each calculation a sub-set of requested k points.
+This functionality is essential for compute-heavy hybrid functional calculations, particularly if spin-orbit couple is used, where the required resources (number of nodes and wall-time) can quickly exceed the limit.
+
+Upon completion of all calculations, their wave functions can be collected to generated a single effective band structure.
+The atomic projections can be used to color the effective band structure which can greatly help identify underlying structure-property relationships.
 
 We chose Python as the programming language due to its low entry-barrier, flexibility and popularity in the materials modelling field.
 An object-oriented approach is used when designing the package to allow abstractions when reading and processing wave function data.
-The code current supports two DFT codes, VASP and CASTEP, and others can be added with a small amount of coding effort.
+The code current supports two of the most popular DFT codes, VASP and CASTEP, and others can be added with a small amount of coding effort.
 `easyunfold` depends on common scientific computing packages such as `numpy` [@numpy] and `matplotlib` [@matplotlib].
 The Atomic Simulation Environment (`ase`) [@ase] is used for reading input crystal structures from a wide range of formats.
 
 `easyunfold` is designed for researchers with or without prior knowledge of Python.
 A command-line interface is provided as the primary way of using the package.
-Although users may want to utilise the Python
-API directly for advanced analysis and integration with workflow engines such as `AiiDA` [@huber:2020] and `atomate` [@mathew:2017],
-and modelling codes such as `icet` [@icet] and `doped` [@doped].
+Thanks to the Python API, `easyunfold` can be easily integrated with workflow engines such as `AiiDA` [@huber:2020] and `atomate` [@mathew:2017]
+as well as disordering/defect modelling codes such as `icet` [@icet] and `doped` [@doped].
 `easyunfold` has been used in several scientific publications [@nicolson:2023; @wang:2022; @huang:2022] and graduate student research projects.
 
 The combination of easy-of-use, flexibility, and efficiency will improve the accessibility of
 band structure unfolding for materials modelling and help train new researchers.
 
-![Projected effective band structure of a $2\times2\times2$ MgO supercell showing an localised defect state (2.5 eV from the VBM) resulting from a 2+ charged oxygen vacancy. Red: O, Green: Mg \label{fig:figure2}](mgo_unfold_project.png){width=80mm}
+![Projected effective band structure of a $2\times2\times2$ MgO supercell showing an localised defect state (2.5 eV from the VBM) resulting from a $\mathrm{2^+}$ charged oxygen vacancy. Red: O, Green: Mg \label{fig:figure2}](mgo_unfold_project.png){width=80mm}
 
-![Projected effective band structure of a disordered $\mathrm{NaBiS_2}$ in separate plots (from left to right): Na, Bi, S.  \label{fig:figure3}](./NaBiS2_unfold-plot_proj_sep.png){width=130mm}
+![Projected effective band structure of a $\mathrm{Cs_2(Sn,Ti)Br_6}$ vacancy-ordered perovskite alloy \label{fig:figure3}](Cs2SnTiBr6.png){width=130mm}
 
 
 # Theory
@@ -105,7 +106,7 @@ $$
 
 where $\vec{k}_i$ is a set of $N$ kpoints in the reciprocal lattice of the primitive cell,
 and $N$ is the number of primitive cells that the supercell includes in the real space.
-For a given $\vec{k}$, there is a unique $\vec{K}$ that it folds to, as the first equation can be seem as to *wrap* the $\vec{k}$ back to the reciprocal unit cell of the supercell.
+For a given $\vec{k}$, there is a unique $\vec{K}$ that it folds to, as the first equation can be seen as to *wrap* the $\vec{k}$ back to the reciprocal unit cell of the supercell.
 On the other hand, a single $\vec{K}$ may map to multiple $\vec{k}_i$s,
 as different points $\vec{k}$ in the Brillouin zone of the primitive cell (\autoref{fig:figure1}c) can fold onto the same point in that of the supercell (\autoref{fig:figure1}d).
 
@@ -118,7 +119,7 @@ $$
 where $P$ represents the probability of finding a set of primitive cell states $\langle \vec{k}_in$ contributing to the supercell state $\langle \vec{K}m |$,
 or the amount of Bloch character $\vec{k}_i$ preserved in $\langle \vec{K}m \rangle$ at the same energy.
 
-Presenting the spectral functions directly in two-dimensional plots can be problematic due to the existence of states ($m$) with degenerate or closed spaced energies.
+Presenting the spectral weights directly in two-dimensional plots can be problematic due to the existence of states ($m$) with degenerate or closed spaced energies.
 A more interpretable representation of the effective band structure is the spectral function, defined as:
 
 $$
