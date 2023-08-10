@@ -232,7 +232,7 @@ def test_unfold_projection(si_project_dir, tag, nspin, ncl, nbands_expected):
 
     assert unfolder.is_calculated
 
-    unfolder.load_procar(si_project_dir / f'{folder_name}/PROCAR')
+    unfolder.load_procars(si_project_dir / f'{folder_name}/PROCAR')
     assert 'procars' in unfolder.transient_quantities
     assert 'procars_kmap' in unfolder.transient_quantities
 

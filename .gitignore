@@ -47,3 +47,5 @@ KPOINTS
 PROCAR
 *.json
 *.DS_Store
+
+local_tests/

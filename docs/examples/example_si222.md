@@ -131,7 +131,6 @@ customising and prettifying the unfolded band structure plot. Here we have also 
 option to increase the spectral function intensity.
 :::
 
-
 Note the appearance of extra branches compared to the band structure of the primitive cell (below), due 
 to symmetry breaking from the displaced atom.
 
