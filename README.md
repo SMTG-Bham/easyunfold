@@ -105,6 +105,7 @@ dependencies for using pre-commit hooks (`pre-commit`).
 
 We'll add papers that use `easyunfold` to this list as they come out!
 
+- S. M. Liga & S. R. Kavanagh, A. Walsh, D. O. Scanlon and G. Konstantatos [_ChemRxiv_](https://chemrxiv.org/engage/chemrxiv/article-details/64f8f2c279853bbd783ef2b7) 2023
 - Y. T. Huang & S. R. Kavanagh et al. [_Nature Communications_](https://www.nature.com/articles/s41467-022-32669-3) 2022
 - A. T. J. Nicolson et al. [_Journal of the Americal Chemical Society_](https://doi.org/10.1021/jacs.2c13336) 2023
 - Y. Wang & S. R. Kavanagh et al. [_Nature Photonics_](https://www.nature.com/articles/s41566-021-00950-4) 2022 (early version)
