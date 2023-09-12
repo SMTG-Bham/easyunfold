@@ -52,8 +52,8 @@ With `easyunfold`, we provide a simple, easy to use, yet powerful and flexible t
 There are existing packages that provide band structure unfolding capabilities, such as `BandUp`
 [@bandup], and `VaspBandUnfolding` [@vaspbandunfolding].
 `easyunfold` is written in Python with a focus of easy-to-use, data provenance, reproducibility, and generating publication-quality figures.
-An example output of the effective band structure produced is shown in Figure \autoref{fig:figure2} for a $2\times2\times2$ $\mathrm{MgO}$ supercell containing a charged oxygen vacancy.
-\autoref{fig:figure3} shows the effective band structure of an disordered $\mathrm{NaBiS_2}$ structure, which each projected atomic channel plotted separately.
+An example output of the effective band structure produced is shown in Figure \autoref{fig:figure2} for a $2\times2\times2$ $\mathrm{MgO}$ supercell containing a neutral oxygen vacancy.
+\autoref{fig:figure3} shows the effective band structure of a disordered $\mathrm{NaBiS_2}$ structure, which each projected atomic channel plotted separately.
 A key feature of `easyunfold` is to provide data serialization complying the FAIR principle [@wilkinson:2016].
 Both the input settings and calculated outputs are stored in a single JSON file.
 This enables the unfolded band structure to be re-plotted and further analysed without reprocessing the wave function data, which can be time-consuming and require large storage space.
@@ -79,7 +79,7 @@ as well as disordering/defect modelling codes such as `icet` [@icet] and `doped`
 The combination of easy-of-use, flexibility, and efficiency will improve the accessibility of
 band structure unfolding for materials modelling and help train new researchers.
 
-![Projected effective band structure of a $2\times2\times2$ MgO supercell showing an localised defect state (2.5 eV from the VBM) resulting from a $\mathrm{2^+}$ charged oxygen vacancy. Red: O, Green: Mg \label{fig:figure2}](mgo_unfold_project.png){width=80mm}
+![Projected effective band structure of a $2\times2\times2$ MgO supercell showing an localised mid-gap state resulting from a neutral oxygen vacancy (using a relatively small supercell containing 63 atoms). \label{fig:figure2}](mgo_unfold_project.png){width=130mm}
 
 ![Projected effective band structure of a $\mathrm{Cs_2(Sn,Ti)Br_6}$ vacancy-ordered perovskite alloy \label{fig:figure3}](Cs2SnTiBr6.png){width=130mm}
 
