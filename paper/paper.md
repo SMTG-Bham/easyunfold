@@ -58,11 +58,11 @@ A key feature of `easyunfold` is to provide data serialization complying the FAI
 Both the input settings and calculated outputs are stored in a single JSON file.
 This enables the unfolded band structure to be re-plotted and further analysed without reprocessing the wave function data, which can be time-consuming and require large storage space.
 The package is designed with flexibility in mind.
-`easyunfold` can split the supercell calculations in to multiple runs, each calculation a sub-set of requested k points.
+`easyunfold` can split the supercell calculations in to multiple runs, each works on a sub-set of requested k points.
 This functionality is essential for compute-heavy hybrid functional calculations, particularly if spin-orbit couple is used, where the required resources (number of nodes and wall-time) can quickly exceed the limit.
 
 Upon completion of all calculations, their wave functions can be collected to generated a single effective band structure.
-The atomic projections can be used to color the effective band structure which can greatly help identify underlying structure-property relationships.
+The atomic projections can be used to color the effective band structure which helps identify the underlying structure-property relationships.
 
 We chose Python as the programming language due to its low entry-barrier, flexibility and popularity in the materials modelling field.
 An object-oriented approach is used when designing the package to allow abstractions when reading and processing wave function data.
@@ -76,10 +76,10 @@ Thanks to the Python API, `easyunfold` can be easily integrated with workflow en
 as well as disordering/defect modelling codes such as `icet` [@icet] and `doped` [@doped].
 `easyunfold` has been used in several scientific publications [@nicolson:2023; @wang:2022; @huang:2022] and graduate student research projects.
 
-The combination of easy-of-use, flexibility, and efficiency will improve the accessibility of
-band structure unfolding for materials modelling and help train new researchers.
+The combination of ease-of-use, flexibility, and efficiency will improve the accessibility of
+band structure unfolding and help train new researchers.
 
-![Projected effective band structure of a $2\times2\times2$ MgO supercell showing an localised mid-gap state resulting from a neutral oxygen vacancy (using a relatively small supercell containing 63 atoms). \label{fig:figure2}](mgo_unfold_project.png){width=130mm}
+![Projected effective band structure of a $2\times2\times2$ MgO supercell showing a localised mid-gap state resulting from a neutral oxygen vacancy (using a relatively small supercell containing 63 atoms). \label{fig:figure2}](mgo_unfold_project.png){width=130mm}
 
 ![Projected effective band structure of a $\mathrm{Cs_2(Sn,Ti)Br_6}$ vacancy-ordered perovskite alloy \label{fig:figure3}](Cs2SnTiBr6.png){width=130mm}
 
@@ -117,7 +117,7 @@ P_{\vec{K}m}(\vec{k}_i) = \sum_n |\langle \vec{K}m |\vec{k}_i n \rangle |^2.
 $$
 
 where $P$ represents the probability of finding a set of primitive cell states $\langle \vec{k}_in$ contributing to the supercell state $\langle \vec{K}m |$,
-or the amount of Bloch character $\vec{k}_i$ preserved in $\langle \vec{K}m \rangle$ at the same energy.
+or the amount of Bloch character $\vec{k}_i$ preserved in $\langle \vec{K}m |$ at the same energy.
 
 Presenting the spectral weights directly in two-dimensional plots can be problematic due to the existence of states ($m$) with degenerate or closed spaced energies.
 A more interpretable representation of the effective band structure is the spectral function, defined as:
