@@ -19,7 +19,7 @@
 
 project = 'easyunfold'
 copyright = '2023, Bonan Zhu'
-author = 'Bonan Zhu'
+author = 'Bonan Zhu, Seán Kavanagh'
 
 
 # -- General configuration ---------------------------------------------------
