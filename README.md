@@ -17,7 +17,7 @@ additional _k_-points and averaging accordingly. Documentation site
 
 Our goal is to implement the band structure unfolding workflow in a robust and user-friendly software
 package.
-Typical applications of band structure unfolding are the electronic structure analysis of defects, disorder, alloys, surfaces (and more), as illustrated in the example outputs below and [docs examples](https://smtg-ucl.github.io/easyunfold/examples.html). 
+Typical applications of band structure unfolding are the electronic structure analysis of defects, disorder, alloys, surfaces (and more), as illustrated in the example outputs below and [docs examples](https://smtg-ucl.github.io/easyunfold/examples.html).
 
 For the methodology of supercell band unfolding, see
 [here](https://link.aps.org/doi/10.1103/PhysRevB.85.085201).
