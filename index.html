@@ -179,15 +179,15 @@
 <li class="toctree-l1"><a class="reference internal" href="cli.html">CLI Reference</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/index.html">API Reference</a><input checked class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="apidocs/easyunfold/easyunfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.vasp_constant.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.vasp_constant</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.wavecar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavecar</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.plotting.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.plotting</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.unfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.unfold</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.vasp_constant.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.vasp_constant</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.effective_mass.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.effective_mass</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.wavefun.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavefun</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.plotting.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.plotting</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.wavecar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavecar</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.cli.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.cli</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.procar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.procar</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.utils</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.cli.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.cli</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -388,7 +388,8 @@ svg)](https://doi.org/10.21105/joss.)--->
 path of the primitive cell. It was originally based on
 <a class="reference external" href="https://github.com/QijingZheng/VaspBandUnfolding">PyVaspwfc</a> for reading VASP wavefunction outputs,
 with a notable improvement being that symmetry-breaking is properly accounted for by sampling necessary
-additional <em>k</em>-points and averaging accordingly.</p>
+additional <em>k</em>-points and averaging accordingly.
+Typical applications of band structure unfolding are the electronic structure analysis of defects, disorder, alloys, surfaces (and more), as illustrated in the example outputs below and <a class="reference external" href="https://smtg-ucl.github.io/easyunfold/examples.html">docs examples</a>.</p>
 <p>Our goal is to implement the band structure unfolding workflow in a robust and user-friendly software
 package.</p>
 <p>For the methodology of supercell band unfolding, see
@@ -432,12 +433,13 @@ required to be sampled for the supercell, and the extracted spectral weights nee
 averaged to obtain the correct effective band structure (EBS). See the docs
 <a class="reference external" href="https://smtg-ucl.github.io/easyunfold/theory.html">Theory</a> page for more details.</p>
 <!-- when JOSS submitted, add link to paper (discussion of theory) here! -->
-<!--- When JOSS submitted, add 'License and Citation' section here --->
+<!--- When JOSS submitted, add 'Citation' section here, and CITATION.cff --->
 </section>
 <section id="studies-using-easyunfold">
 <h2>Studies using <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code><a class="headerlink" href="#studies-using-easyunfold" title="Permalink to this heading">#</a></h2>
 <p>We’ll add papers that use <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code> to this list as they come out!</p>
 <ul class="simple">
+<li><p>S. M. Liga &amp; S. R. Kavanagh, A. Walsh, D. O. Scanlon and G. Konstantatos <a class="reference external" href="https://chemrxiv.org/engage/chemrxiv/article-details/64f8f2c279853bbd783ef2b7"><em>ChemRxiv</em></a> 2023</p></li>
 <li><p>Y. T. Huang &amp; S. R. Kavanagh et al. <a class="reference external" href="https://www.nature.com/articles/s41467-022-32669-3"><em>Nature Communications</em></a> 2022</p></li>
 <li><p>A. T. J. Nicolson et al. <a class="reference external" href="https://doi.org/10.1021/jacs.2c13336"><em>Journal of the Americal Chemical Society</em></a> 2023</p></li>
 <li><p>Y. Wang &amp; S. R. Kavanagh et al. <a class="reference external" href="https://www.nature.com/articles/s41566-021-00950-4"><em>Nature Photonics</em></a> 2022 (early version)</p></li>

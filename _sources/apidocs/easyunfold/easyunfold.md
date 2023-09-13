@@ -13,15 +13,15 @@
 :titlesonly:
 :maxdepth: 1
 
-easyunfold.vasp_constant
+easyunfold.wavecar
+easyunfold.plotting
 easyunfold.unfold
+easyunfold.vasp_constant
 easyunfold.effective_mass
 easyunfold.wavefun
-easyunfold.plotting
-easyunfold.wavecar
+easyunfold.cli
 easyunfold.procar
 easyunfold.utils
-easyunfold.cli
 ```
 
 ## Package Contents

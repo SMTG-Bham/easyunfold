@@ -182,15 +182,15 @@
 <li class="toctree-l1"><a class="reference internal" href="cli.html">CLI Reference</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/index.html">API Reference</a><input checked class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="apidocs/easyunfold/easyunfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.vasp_constant.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.vasp_constant</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.wavecar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavecar</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.plotting.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.plotting</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.unfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.unfold</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.vasp_constant.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.vasp_constant</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.effective_mass.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.effective_mass</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.wavefun.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavefun</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.plotting.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.plotting</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.wavecar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavecar</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.cli.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.cli</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.procar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.procar</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.utils</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.cli.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.cli</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -384,10 +384,10 @@ Naturally, each <span class="math notranslate nohighlight">\(\vec{K}\)</span> in
 \[
 \vec{k_i} = \vec{K} + \vec{G}_i\  ; \  i=1,...,N_{\vec{K}}
 \]</div>
-<p>The key implication is that for a given <span class="math notranslate nohighlight">\(\vec{k}\)</span>, there is a unique <span class="math notranslate nohighlight">\(\vec{K}\)</span> that it folds to.</p>
+<p>The key implication is that for a given <span class="math notranslate nohighlight">\(\vec{k}_i\)</span>, there is a unique <span class="math notranslate nohighlight">\(\vec{K}\)</span> that it folds to.</p>
 <p>The goal of the band folding procedure is to obtain the <span class="math notranslate nohighlight">\(E(\vec{k})\)</span> from the complicated <span class="math notranslate nohighlight">\(E(\vec{K})\)</span>,
-where E is the energy/eigenvalue of the Kohn-Sham electronic states.
-This can be achieved by projecting <span class="math notranslate nohighlight">\(\ket{\vec{K}m}\)</span> on all of the primitive cell Block states
+where <span class="math notranslate nohighlight">\(E(\vec{k})\)</span> is the energy/eigenvalue of the Kohn-Sham electronic states at <span class="math notranslate nohighlight">\(\vec{k}\)</span> in the Brillouin zone of the primitive cell.
+This can be achieved by projecting <span class="math notranslate nohighlight">\(\ket{\vec{K}m}\)</span> on all of the primitive cell Bloch states
 <span class="math notranslate nohighlight">\(\ket{\vec{k}_i n}\)</span> of a fixed <span class="math notranslate nohighlight">\(\vec{k}_i\)</span>, where <span class="math notranslate nohighlight">\(m\)</span> and <span class="math notranslate nohighlight">\(n\)</span> are band indices in the supercell and
 primitive cell respectively, and compute the spectral weight:</p>
 <div class="math notranslate nohighlight">
@@ -397,15 +397,14 @@ P_{\vec{K}m}(\vec{k}_i) = \sum_n |\braket{\vec{K}m |\vec{k}_i n}|^2.
 <p>where <span class="math notranslate nohighlight">\(P\)</span> represents the probability of finding a set of primitive cell states <span class="math notranslate nohighlight">\(\ket{\vec{k}_i n}\)</span>
 contributing to the supercell state <span class="math notranslate nohighlight">\(\ket{\vec{K}m}\)</span>, or the amount of Bloch character <span class="math notranslate nohighlight">\(\vec{k}_i\)</span>
 preserved in <span class="math notranslate nohighlight">\(\ket{\vec{K}m}\)</span> at the same energy.</p>
-<p>Based on this, one can further derive the spectral function of <span class="math notranslate nohighlight">\(E\)</span>, which represents the probability of
+<p>Based on this, one can further derive the spectral function <span class="math notranslate nohighlight">\(A(\vec{k}_i, E)\)</span>, which represents the probability of
 an electronic state with energy <span class="math notranslate nohighlight">\(E\)</span> at <span class="math notranslate nohighlight">\(\vec{k}_i\)</span> (i.e. a ‘band structure density’):</p>
 <div class="math notranslate nohighlight">
 \[
 A(\vec{k}_i, E) = \sum_m P_{\vec{K}m}(\vec{k}_i)\delta(E_m - E).
 \]</div>
-<p>In practice, the <span class="math notranslate nohighlight">\(\delta\)</span> function is replaced with a Gaussian or Lorentzian function to smear the
-contribution with discretised <span class="math notranslate nohighlight">\(E\)</span>.</p>
-<p>Hence, the central quantity to be calculated is the <span class="math notranslate nohighlight">\(P_{\vec{K}m}(\vec{k}_i)\)</span>.
+<p>In practice, the <span class="math notranslate nohighlight">\(\delta\)</span> function is replaced with a Gaussian or Lorentzian function to smear the contribution over a discretised energy grid.</p>
+<p>Hence, the central quantity to be calculated is <span class="math notranslate nohighlight">\(P_{\vec{K}m}(\vec{k}_i)\)</span>.
 For a plane-wave basis, it can be shown that (equation 15 in Popescu et al.<a class="footnote-reference brackets" href="#id5" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>):</p>
 <div class="math notranslate nohighlight">
 \[

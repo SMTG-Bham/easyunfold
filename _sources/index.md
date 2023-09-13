@@ -13,6 +13,7 @@ path of the primitive cell. It was originally based on
 [PyVaspwfc](https://github.com/QijingZheng/VaspBandUnfolding) for reading VASP wavefunction outputs, 
 with a notable improvement being that symmetry-breaking is properly accounted for by sampling necessary 
 additional _k_-points and averaging accordingly.
+Typical applications of band structure unfolding are the electronic structure analysis of defects, disorder, alloys, surfaces (and more), as illustrated in the example outputs below and [docs examples](https://smtg-ucl.github.io/easyunfold/examples.html).
 
 Our goal is to implement the band structure unfolding workflow in a robust and user-friendly software 
 package.
@@ -50,12 +51,13 @@ required to be sampled for the supercell, and the extracted spectral weights nee
 averaged to obtain the correct effective band structure (EBS). See the docs 
 [Theory](https://smtg-ucl.github.io/easyunfold/theory.html) page for more details.
 <!-- when JOSS submitted, add link to paper (discussion of theory) here! -->
-<!--- When JOSS submitted, add 'License and Citation' section here --->
+<!--- When JOSS submitted, add 'Citation' section here, and CITATION.cff --->
 
 ## Studies using `easyunfold`
 
 We'll add papers that use `easyunfold` to this list as they come out!
 
+- S. M. Liga & S. R. Kavanagh, A. Walsh, D. O. Scanlon and G. Konstantatos [_ChemRxiv_](https://chemrxiv.org/engage/chemrxiv/article-details/64f8f2c279853bbd783ef2b7) 2023
 - Y. T. Huang & S. R. Kavanagh et al. [_Nature Communications_](https://www.nature.com/articles/s41467-022-32669-3) 2022
 - A. T. J. Nicolson et al. [_Journal of the Americal Chemical Society_](https://doi.org/10.1021/jacs.2c13336) 2023
 - Y. Wang & S. R. Kavanagh et al. [_Nature Photonics_](https://www.nature.com/articles/s41566-021-00950-4) 2022 (early version)
