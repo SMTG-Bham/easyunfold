@@ -13,6 +13,7 @@ path of the primitive cell. It was originally based on
 [PyVaspwfc](https://github.com/QijingZheng/VaspBandUnfolding) for reading VASP wavefunction outputs, 
 with a notable improvement being that symmetry-breaking is properly accounted for by sampling necessary 
 additional _k_-points and averaging accordingly.
+Typical applications of band structure unfolding are the electronic structure analysis of defects, disorder, alloys, surfaces (and more), as illustrated in the example outputs below and [docs examples](https://smtg-ucl.github.io/easyunfold/examples.html).
 
 Our goal is to implement the band structure unfolding workflow in a robust and user-friendly software 
 package.
@@ -50,7 +51,7 @@ required to be sampled for the supercell, and the extracted spectral weights nee
 averaged to obtain the correct effective band structure (EBS). See the docs 
 [Theory](https://smtg-ucl.github.io/easyunfold/theory.html) page for more details.
 <!-- when JOSS submitted, add link to paper (discussion of theory) here! -->
-<!--- When JOSS submitted, add 'License and Citation' section here --->
+<!--- When JOSS submitted, add 'Citation' section here, and CITATION.cff --->
 
 ## Studies using `easyunfold`
 

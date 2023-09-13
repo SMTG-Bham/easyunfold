@@ -18,11 +18,11 @@ $$
 \vec{k_i} = \vec{K} + \vec{G}_i\  ; \  i=1,...,N_{\vec{K}}
 $$
 
-The key implication is that for a given $\vec{k}$, there is a unique $\vec{K}$ that it folds to.
+The key implication is that for a given $\vec{k}_i$, there is a unique $\vec{K}$ that it folds to.
 
 The goal of the band folding procedure is to obtain the $E(\vec{k})$ from the complicated $E(\vec{K})$, 
-where E is the energy/eigenvalue of the Kohn-Sham electronic states. 
-This can be achieved by projecting $\ket{\vec{K}m}$ on all of the primitive cell Block states 
+where $E(\vec{k})$ is the energy/eigenvalue of the Kohn-Sham electronic states at $\vec{k}$ in the Brillouin zone of the primitive cell. 
+This can be achieved by projecting $\ket{\vec{K}m}$ on all of the primitive cell Bloch states 
 $\ket{\vec{k}_i n}$ of a fixed $\vec{k}_i$, where $m$ and $n$ are band indices in the supercell and 
 primitive cell respectively, and compute the spectral weight:
 
@@ -34,17 +34,16 @@ where $P$ represents the probability of finding a set of primitive cell states $
 contributing to the supercell state $\ket{\vec{K}m}$, or the amount of Bloch character $\vec{k}_i$ 
 preserved in $\ket{\vec{K}m}$ at the same energy. 
 
-Based on this, one can further derive the spectral function of $E$, which represents the probability of 
+Based on this, one can further derive the spectral function $A(\vec{k}_i, E)$, which represents the probability of 
 an electronic state with energy $E$ at $\vec{k}_i$ (i.e. a 'band structure density'):
 
 $$
 A(\vec{k}_i, E) = \sum_m P_{\vec{K}m}(\vec{k}_i)\delta(E_m - E).
 $$
 
-In practice, the $\delta$ function is replaced with a Gaussian or Lorentzian function to smear the 
-contribution with discretised $E$. 
+In practice, the $\delta$ function is replaced with a Gaussian or Lorentzian function to smear the contribution over a discretised energy grid. 
 
-Hence, the central quantity to be calculated is the $P_{\vec{K}m}(\vec{k}_i)$.
+Hence, the central quantity to be calculated is $P_{\vec{K}m}(\vec{k}_i)$.
 For a plane-wave basis, it can be shown that (equation 15 in Popescu et al.[^2]):
 
 $$
