@@ -16,12 +16,13 @@ from easyunfold import __version__
 class Procar(MSONable):
     """Reader for PROCAR file"""
 
-    def __init__(self, fobjs_or_paths=None, is_soc=False):
+    def __init__(self, fobjs_or_paths=None, is_soc=False, normalise=False):
         """
         Read the PROCAR file from a handle or path
 
         :param fobjs_or_paths:  Either a string or list of file-like objs or paths
         :param is_soc: Whether the PROCAR is from a calculation with spin-orbit coupling
+        :param normalise: Whether normalise the projection for every band or not
         """
         self._is_soc = is_soc
         self.eigenvalues = None
@@ -36,6 +37,7 @@ class Procar(MSONable):
         self.proj_data = None
         self.header = None
         self.proj_xyz = None
+        self.normalise = normalise
 
         # Read the PROCAR
         if isinstance(fobjs_or_paths, (str, Path)):
@@ -56,19 +58,31 @@ class Procar(MSONable):
             raise ValueError(f'Mismatch in number of ions in PROCARs supplied: ({nion} vs {self.nion})!')
 
         # Count the number of data lines, these lines do not have any alphabets
-        proj_data, energies, kvecs, kweights, occs = [], [], [], [], []
+        proj_data, energies, kidx_internal, kvecs, kweights, occs = [], [], [], [], [], []
         tot_count = 0  # count the instances of lines starting with "tot" -> (4 + 1) * nbands * nkpts for SOC calcs
         fobj.seek(0)
 
         line = fobj.readline()
+        # Counter for the number of sections in the PROCAR
+        section_counter = 1
+        _last_kid = 0
+        this_procar_parsed_kpoints = set()
         while line:
             if line.startswith(' k-point'):
                 line = re.sub(r'(\d)-', r'\1 -', line)
                 tokens = line.strip().split()
+                _kid = int(tokens[1])
+                kidx_internal.append(_kid)
+
+                # Check if the internal k index counter decreases - if so we have entered a second section
+                if _kid < _last_kid:
+                    section_counter += 1
+                _last_kid = _kid
+
                 kvec = tuple(round(float(val), 5) for val in  # tuple to make it hashable
                              tokens[-6:-3])  # round to 5 decimal places to ensure proper kpoint matching
                 if kvec not in parsed_kpoints:
-                    parsed_kpoints.add(kvec)
+                    this_procar_parsed_kpoints.add(kvec)
                     kvecs.append(list(kvec))
                     kweights.append(float(tokens[-1]))
                 else:
@@ -107,21 +121,21 @@ class Procar(MSONable):
 
         proj_data = np.array(proj_data, dtype=float)
 
-        # redetermine nkpts in case some were skipped due to already being parsed
         nkpts = len(kvecs)
 
-        self.nspins = proj_data.shape[0] // (self.nion * nbands * nkpts)
-        self.nspins //= 4 if self._is_soc else 1
+        # When there are multiple spins, the data from the second spin are located after that of the first spin
+        # Hence, the number of spins is simply the number of sections
+        self.nspins = section_counter
 
         # Reshape
-        occs.resize((self.nspins, nkpts, nbands))
-        kvecs.resize((self.nspins, nkpts, 3))
-        kweights.resize((self.nspins, nkpts))
-        eigenvalues.resize((self.nspins, nkpts, nbands))
+        occs.resize((self.nspins, nkpts // self.nspins, nbands))
+        kvecs.resize((self.nspins, nkpts // self.nspins, 3))
+        kweights.resize((self.nspins, nkpts // self.nspins))
+        eigenvalues.resize((self.nspins, nkpts // self.nspins, nbands))
 
         # Reshape the array
         if self._is_soc is False:
-            proj_data = proj_data.reshape((self.nspins, nkpts, nbands, self.nion, len(self.proj_names)))
+            proj_data = proj_data.reshape((self.nspins, nkpts // self.nspins, nbands, self.nion, len(self.proj_names)))
             proj_xyz = None
         else:
             proj_data = proj_data.reshape((self.nspins, nkpts, nbands, 4, self.nion, len(self.proj_names)))
@@ -129,17 +143,31 @@ class Procar(MSONable):
             proj_xyz = proj_data[:, :, :, 1:, :, :]
             proj_data = proj_data[:, :, :, 0, :, :]
 
-        # normalise: (for each nspin, nkpt, nband, the sum of the projections over nion and proj_names should be 1)
-        proj_sum = np.sum(proj_data, axis=(-2, -1), keepdims=True)
-        proj_sum[proj_sum == 0] = 1  # just in case, avoid division by zero
-        proj_data /= proj_sum
+        if self.normalise:
+            self.normalise_projs(proj_data)
 
         if proj_xyz is not None:
             proj_sum = np.sum(proj_xyz, axis=(-3, -2, -1), keepdims=True)
             proj_sum[proj_sum == 0] = 1
             proj_xyz /= proj_sum
 
+        # Update the parsed kpoints
+        parsed_kpoints.update(this_procar_parsed_kpoints)
+
         return self.nspins, occs, kvecs, kweights, eigenvalues, proj_data, proj_xyz, parsed_kpoints
+
+    def normalise_projs(self, proj_data):
+        """
+        Normalise the projections
+
+        For each nspin, nkpt, nband, the sum of the projections over nion and proj_names should be 1.
+        Note that this is Not necessarily right as projections does not sum to 1 in most cases due to only those
+        fall inside atomic radii are counted.
+        """
+        proj_sum = np.sum(proj_data, axis=(-2, -1), keepdims=True)
+        proj_sum[proj_sum == 0] = 1  # just in case, avoid division by zero
+        proj_data /= proj_sum
+        self.normalise = True
 
     def _read_header_nion_proj_names(self, fobj):
         """Read the header, nion and proj_names from the PROCAR"""
