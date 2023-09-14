@@ -66,7 +66,7 @@ class Procar(MSONable):
         # Counter for the number of sections in the PROCAR
         section_counter = 1
         _last_kid = 0
-        this_procar_parsed_kpoints = set()
+        this_procar_parsed_kpoints = set()  # set with tuples of parsed (kvec tuple, section_counter) for this PROCAR
         while line:
             if line.startswith(' k-point'):
                 line = re.sub(r'(\d)-', r'\1 -', line)
@@ -78,10 +78,10 @@ class Procar(MSONable):
                     section_counter += 1
                 _last_kid = _kid
 
-                kvec = tuple(round(float(val), 5) for val in  # tuple to make it hashable
-                             tokens[-6:-3])  # round to 5 decimal places to ensure proper kpoint matching
-                if kvec not in parsed_kpoints:
-                    this_procar_parsed_kpoints.add(kvec)
+                kvec = tuple(round(float(val), 5) for val in tokens[-6:-3]  # tuple to make it hashable
+                            )  # round to 5 decimal places to ensure proper kpoint matching
+                if (kvec not in parsed_kpoints and (kvec, section_counter) not in this_procar_parsed_kpoints):
+                    this_procar_parsed_kpoints.add((kvec, section_counter))
                     kvecs.append(list(kvec))
                     kweights.append(float(tokens[-1]))
                 else:
@@ -90,7 +90,7 @@ class Procar(MSONable):
                         line = fobj.readline()
                     continue
 
-            elif not re.search(r'[a-zA-Z]', line) and line.strip() and len(line.strip().split()) - 2 == len(self.proj_names):
+            elif (not re.search(r'[a-zA-Z]', line) and line.strip() and len(line.strip().split()) - 2 == len(self.proj_names)):
                 # only parse data if line is expected length, in case of LORBIT >= 12
                 proj_data.append([float(token) for token in line.strip().split()[1:-1]])
 
@@ -134,7 +134,13 @@ class Procar(MSONable):
 
         # Reshape the array
         if self._is_soc is False:
-            proj_data = proj_data.reshape((self.nspins, nkpts // self.nspins, nbands, self.nion, len(self.proj_names)))
+            proj_data = proj_data.reshape((
+                self.nspins,
+                nkpts // self.nspins,
+                nbands,
+                self.nion,
+                len(self.proj_names),
+            ))
             proj_xyz = None
         else:
             proj_data = proj_data.reshape((self.nspins, nkpts, nbands, 4, self.nion, len(self.proj_names)))
@@ -151,9 +157,18 @@ class Procar(MSONable):
             proj_xyz /= proj_sum
 
         # Update the parsed kpoints
-        parsed_kpoints.update(this_procar_parsed_kpoints)
+        parsed_kpoints.update({kvec_section_counter_tuple[0] for kvec_section_counter_tuple in this_procar_parsed_kpoints})
 
-        return self.nspins, occs, kvecs, kweights, eigenvalues, proj_data, proj_xyz, parsed_kpoints
+        return (
+            self.nspins,
+            occs,
+            kvecs,
+            kweights,
+            eigenvalues,
+            proj_data,
+            proj_xyz,
+            parsed_kpoints,
+        )
 
     def normalise_projs(self, proj_data):
         """
@@ -201,8 +216,16 @@ class Procar(MSONable):
                 self._read_header_nion_proj_names(fobj)
 
             current_nspins = self.nspins  # check spin consistency between PROCARs
-            nspins, occs, kvecs, kweights, eigenvalues, proj_data, proj_xyz, parsed_kpoints = self._read(fobj,
-                                                                                                         parsed_kpoints=parsed_kpoints)
+            (
+                nspins,
+                occs,
+                kvecs,
+                kweights,
+                eigenvalues,
+                proj_data,
+                proj_xyz,
+                parsed_kpoints,
+            ) = self._read(fobj, parsed_kpoints=parsed_kpoints)
             if current_nspins is not None and current_nspins != nspins:
                 raise ValueError(f'Mismatch in number of spins in PROCARs supplied: ({nspins} vs {current_nspins})!')
 
@@ -226,12 +249,36 @@ class Procar(MSONable):
             for i, arr in enumerate(array_list):
                 if arr is not None and arr.shape[2] < max_nbands:
                     if len(arr.shape) == 3:  # occs_list, eigenvalues_list
-                        array_list[i] = np.pad(arr, ((0, 0), (0, 0), (0, max_nbands - arr.shape[2])), mode='constant')
+                        array_list[i] = np.pad(
+                            arr,
+                            ((0, 0), (0, 0), (0, max_nbands - arr.shape[2])),
+                            mode='constant',
+                        )
                     elif len(arr.shape) == 5:  # proj_xyz_list
-                        array_list[i] = np.pad(arr, ((0, 0), (0, 0), (0, max_nbands - arr.shape[2]), (0, 0), (0, 0)), mode='constant')
+                        array_list[i] = np.pad(
+                            arr,
+                            (
+                                (0, 0),
+                                (0, 0),
+                                (0, max_nbands - arr.shape[2]),
+                                (0, 0),
+                                (0, 0),
+                            ),
+                            mode='constant',
+                        )
                     elif len(arr.shape) == 6:  # proj_xyz_list
-                        array_list[i] = np.pad(arr, ((0, 0), (0, 0), (0, max_nbands - arr.shape[2]), (0, 0), (0, 0), (0, 0)),
-                                               mode='constant')
+                        array_list[i] = np.pad(
+                            arr,
+                            (
+                                (0, 0),
+                                (0, 0),
+                                (0, max_nbands - arr.shape[2]),
+                                (0, 0),
+                                (0, 0),
+                                (0, 0),
+                            ),
+                            mode='constant',
+                        )
                     else:
                         raise ValueError('Unexpected array shape encountered!')
 
@@ -266,12 +313,19 @@ class Procar(MSONable):
                 proj = [
                     proj,
                 ]
+
             # replace any instance of "p" with "px,py,pz" and "d" with "dxy,dyz,dz2,dxz,dx2-y2"
             def _replace_p_d(single_proj):
                 if single_proj == 'p':
                     return ['px', 'py', 'pz']
                 if single_proj == 'd':
-                    return ['dxy', 'dyz', 'dz2', 'dxz', 'x2-y2']  # dx2-y2 labelled differently in VASP
+                    return [
+                        'dxy',
+                        'dyz',
+                        'dz2',
+                        'dxz',
+                        'x2-y2',
+                    ]  # dx2-y2 labelled differently in VASP
                     # PROCAR
 
                 return [single_proj]
@@ -291,10 +345,26 @@ class Procar(MSONable):
 
     def as_dict(self) -> dict:
         """Convert the object into a dictionary representation (so it can be saved to json)"""
-        output = {'@module': self.__class__.__module__, '@class': self.__class__.__name__, '@version': __version__}
+        output = {
+            '@module': self.__class__.__module__,
+            '@class': self.__class__.__name__,
+            '@version': __version__,
+        }
         for key in [
-                '_is_soc', 'eigenvalues', 'kvecs', 'kweights', 'nbands', 'nkpts', 'nspins', 'nion', 'occs', 'proj_names', 'proj_data',
-                'header', 'proj_xyz', 'normalise'
+                '_is_soc',
+                'eigenvalues',
+                'kvecs',
+                'kweights',
+                'nbands',
+                'nkpts',
+                'nspins',
+                'nion',
+                'occs',
+                'proj_names',
+                'proj_data',
+                'header',
+                'proj_xyz',
+                'normalise',
         ]:
             output[key] = getattr(self, key)
         return output
