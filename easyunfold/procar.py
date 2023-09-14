@@ -16,7 +16,7 @@ from easyunfold import __version__
 class Procar(MSONable):
     """Reader for PROCAR file"""
 
-    def __init__(self, fobjs_or_paths=None, is_soc=False, normalise=False):
+    def __init__(self, fobjs_or_paths=None, is_soc=False, normalise=True):
         """
         Read the PROCAR file from a handle or path
 
@@ -295,7 +295,7 @@ class Procar(MSONable):
         output = {'@module': self.__class__.__module__, '@class': self.__class__.__name__, '@version': __version__}
         for key in [
                 '_is_soc', 'eigenvalues', 'kvecs', 'kweights', 'nbands', 'nkpts', 'nspins', 'nion', 'occs', 'proj_names', 'proj_data',
-                'header', 'proj_xyz'
+                'header', 'proj_xyz', 'normalise'
         ]:
             output[key] = getattr(self, key)
         return output
