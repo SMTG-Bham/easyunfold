@@ -22,7 +22,7 @@ class Procar(MSONable):
 
         :param fobjs_or_paths:  Either a string or list of file-like objs or paths
         :param is_soc: Whether the PROCAR is from a calculation with spin-orbit coupling
-        :param normalise: Whether normalise the projection for every band or not
+        :param normalise: Whether to normalise the projection for every band or not
         """
         self._is_soc = is_soc
         self.eigenvalues = None
@@ -58,7 +58,7 @@ class Procar(MSONable):
             raise ValueError(f'Mismatch in number of ions in PROCARs supplied: ({nion} vs {self.nion})!')
 
         # Count the number of data lines, these lines do not have any alphabets
-        proj_data, energies, kidx_internal, kvecs, kweights, occs = [], [], [], [], [], []
+        proj_data, energies, kidxs_internal, kvecs, kweights, occs = [], [], [], [], [], []
         tot_count = 0  # count the instances of lines starting with "tot" -> (4 + 1) * nbands * nkpts for SOC calcs
         fobj.seek(0)
 
@@ -72,9 +72,9 @@ class Procar(MSONable):
                 line = re.sub(r'(\d)-', r'\1 -', line)
                 tokens = line.strip().split()
                 _kid = int(tokens[1])
-                kidx_internal.append(_kid)
+                kidxs_internal.append(_kid)
 
-                # Check if the internal k index counter decreases - if so we have entered a second section
+                # Check if the VASP PROCAR k index decreases – if so we have entered a second section
                 if _kid < _last_kid:
                     section_counter += 1
                 _last_kid = _kid
@@ -121,9 +121,9 @@ class Procar(MSONable):
 
         proj_data = np.array(proj_data, dtype=float)
 
-        nkpts = len(kvecs)
+        nkpts = len(kvecs)  # redetermine nkpts in case some were skipped due to already being parsed
 
-        # When there are multiple spins, the data from the second spin are located after that of the first spin
+        # For spin-polarised calcs, the data from the second (down) spin are located after that of the first (up) spin
         # Hence, the number of spins is simply the number of sections
         self.nspins = section_counter
 
@@ -160,9 +160,9 @@ class Procar(MSONable):
         """
         Normalise the projections
 
-        For each nspin, nkpt, nband, the sum of the projections over nion and proj_names should be 1.
-        Note that this is Not necessarily right as projections does not sum to 1 in most cases due to only those
-        fall inside atomic radii are counted.
+        For each nspin, nkpt, nband, normalise the sum of projections over nion and proj_names to be 1.
+        Atomic & orbital projections do not sum to 1 in most cases in VASP, as only those falling inside
+        the atomic radii and overlapping with spd spherical harmonics are counted.
         """
         proj_sum = np.sum(proj_data, axis=(-2, -1), keepdims=True)
         proj_sum[proj_sum == 0] = 1  # just in case, avoid division by zero
