@@ -58,7 +58,7 @@ class Procar(MSONable):
             raise ValueError(f'Mismatch in number of ions in PROCARs supplied: ({nion} vs {self.nion})!')
 
         # Count the number of data lines, these lines do not have any alphabets
-        proj_data, energies, kidxs_internal, kvecs, kweights, occs = [], [], [], [], [], []
+        proj_data, energies, kvecs, kweights, occs = [], [], [], [], []
         tot_count = 0  # count the instances of lines starting with "tot" -> (4 + 1) * nbands * nkpts for SOC calcs
         fobj.seek(0)
 
@@ -72,7 +72,6 @@ class Procar(MSONable):
                 line = re.sub(r'(\d)-', r'\1 -', line)
                 tokens = line.strip().split()
                 _kid = int(tokens[1])
-                kidxs_internal.append(_kid)
 
                 # Check if the VASP PROCAR k index decreases – if so we have entered a second section
                 if _kid < _last_kid:
