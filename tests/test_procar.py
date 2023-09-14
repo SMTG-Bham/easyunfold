@@ -76,8 +76,14 @@ def test_procar():
         procar.nbands * procar.nkpts * procar.nspins,
     )
 
-    # TODO: Fix this:
-    # print(procar.get_projection([0], 'all', weight_by_k=True).sum())
+    # test weight_by_k:
+    assert np.isclose(
+        procar.get_projection(list(range(procar.nion)), 'all', weight_by_k=True).sum() *
+        (48 / 47)  # because Gamma duplicated in this calc, so reduced to 47 of orig 48 kpoints. Either way, weights
+        # not meaningful in this case as it's a non-SCF BS calc, just testing weighting runs as expected
+        + num_zero / procar.nkpts,
+        procar.nbands * procar.nspins,
+    )
 
 
 def test_procar_soc():

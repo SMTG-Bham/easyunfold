@@ -340,7 +340,7 @@ class Procar(MSONable):
 
         if weight_by_k:
             for kidx in range(self.nkpts):
-                out[:, kidx, :] *= self.kweights[kidx]
+                out[:, kidx, :] *= self.kweights[:, kidx]
         return out
 
     def as_dict(self) -> dict:
