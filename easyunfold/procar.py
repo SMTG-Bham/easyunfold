@@ -16,12 +16,13 @@ from easyunfold import __version__
 class Procar(MSONable):
     """Reader for PROCAR file"""
 
-    def __init__(self, fobjs_or_paths=None, is_soc=False):
+    def __init__(self, fobjs_or_paths=None, is_soc=False, normalise=True):
         """
         Read the PROCAR file from a handle or path
 
         :param fobjs_or_paths:  Either a string or list of file-like objs or paths
         :param is_soc: Whether the PROCAR is from a calculation with spin-orbit coupling
+        :param normalise: Whether to normalise the projection for every band or not
         """
         self._is_soc = is_soc
         self.eigenvalues = None
@@ -36,6 +37,7 @@ class Procar(MSONable):
         self.proj_data = None
         self.header = None
         self.proj_xyz = None
+        self.normalise = normalise
 
         # Read the PROCAR
         if isinstance(fobjs_or_paths, (str, Path)):
@@ -61,14 +63,25 @@ class Procar(MSONable):
         fobj.seek(0)
 
         line = fobj.readline()
+        # Counter for the number of sections in the PROCAR
+        section_counter = 1
+        _last_kid = 0
+        this_procar_parsed_kpoints = set()  # set with tuples of parsed (kvec tuple, section_counter) for this PROCAR
         while line:
             if line.startswith(' k-point'):
                 line = re.sub(r'(\d)-', r'\1 -', line)
                 tokens = line.strip().split()
-                kvec = tuple(round(float(val), 5) for val in  # tuple to make it hashable
-                             tokens[-6:-3])  # round to 5 decimal places to ensure proper kpoint matching
-                if kvec not in parsed_kpoints:
-                    parsed_kpoints.add(kvec)
+                _kid = int(tokens[1])
+
+                # Check if the VASP PROCAR k index decreases – if so we have entered a second section
+                if _kid < _last_kid:
+                    section_counter += 1
+                _last_kid = _kid
+
+                kvec = tuple(round(float(val), 5) for val in tokens[-6:-3]  # tuple to make it hashable
+                            )  # round to 5 decimal places to ensure proper kpoint matching
+                if (kvec not in parsed_kpoints and (kvec, section_counter) not in this_procar_parsed_kpoints):
+                    this_procar_parsed_kpoints.add((kvec, section_counter))
                     kvecs.append(list(kvec))
                     kweights.append(float(tokens[-1]))
                 else:
@@ -77,7 +90,7 @@ class Procar(MSONable):
                         line = fobj.readline()
                     continue
 
-            elif not re.search(r'[a-zA-Z]', line) and line.strip() and len(line.strip().split()) - 2 == len(self.proj_names):
+            elif (not re.search(r'[a-zA-Z]', line) and line.strip() and len(line.strip().split()) - 2 == len(self.proj_names)):
                 # only parse data if line is expected length, in case of LORBIT >= 12
                 proj_data.append([float(token) for token in line.strip().split()[1:-1]])
 
@@ -107,21 +120,27 @@ class Procar(MSONable):
 
         proj_data = np.array(proj_data, dtype=float)
 
-        # redetermine nkpts in case some were skipped due to already being parsed
-        nkpts = len(kvecs)
+        nkpts = len(kvecs)  # redetermine nkpts in case some were skipped due to already being parsed
 
-        self.nspins = proj_data.shape[0] // (self.nion * nbands * nkpts)
-        self.nspins //= 4 if self._is_soc else 1
+        # For spin-polarised calcs, the data from the second (down) spin are located after that of the first (up) spin
+        # Hence, the number of spins is simply the number of sections
+        self.nspins = section_counter
 
         # Reshape
-        occs.resize((self.nspins, nkpts, nbands))
-        kvecs.resize((self.nspins, nkpts, 3))
-        kweights.resize((self.nspins, nkpts))
-        eigenvalues.resize((self.nspins, nkpts, nbands))
+        occs.resize((self.nspins, nkpts // self.nspins, nbands))
+        kvecs.resize((self.nspins, nkpts // self.nspins, 3))
+        kweights.resize((self.nspins, nkpts // self.nspins))
+        eigenvalues.resize((self.nspins, nkpts // self.nspins, nbands))
 
         # Reshape the array
         if self._is_soc is False:
-            proj_data = proj_data.reshape((self.nspins, nkpts, nbands, self.nion, len(self.proj_names)))
+            proj_data = proj_data.reshape((
+                self.nspins,
+                nkpts // self.nspins,
+                nbands,
+                self.nion,
+                len(self.proj_names),
+            ))
             proj_xyz = None
         else:
             proj_data = proj_data.reshape((self.nspins, nkpts, nbands, 4, self.nion, len(self.proj_names)))
@@ -129,17 +148,40 @@ class Procar(MSONable):
             proj_xyz = proj_data[:, :, :, 1:, :, :]
             proj_data = proj_data[:, :, :, 0, :, :]
 
-        # normalise: (for each nspin, nkpt, nband, the sum of the projections over nion and proj_names should be 1)
-        proj_sum = np.sum(proj_data, axis=(-2, -1), keepdims=True)
-        proj_sum[proj_sum == 0] = 1  # just in case, avoid division by zero
-        proj_data /= proj_sum
+        if self.normalise:
+            self.normalise_projs(proj_data)
 
         if proj_xyz is not None:
             proj_sum = np.sum(proj_xyz, axis=(-3, -2, -1), keepdims=True)
             proj_sum[proj_sum == 0] = 1
             proj_xyz /= proj_sum
 
-        return self.nspins, occs, kvecs, kweights, eigenvalues, proj_data, proj_xyz, parsed_kpoints
+        # Update the parsed kpoints
+        parsed_kpoints.update({kvec_section_counter_tuple[0] for kvec_section_counter_tuple in this_procar_parsed_kpoints})
+
+        return (
+            self.nspins,
+            occs,
+            kvecs,
+            kweights,
+            eigenvalues,
+            proj_data,
+            proj_xyz,
+            parsed_kpoints,
+        )
+
+    def normalise_projs(self, proj_data):
+        """
+        Normalise the projections
+
+        For each nspin, nkpt, nband, normalise the sum of projections over nion and proj_names to be 1.
+        Atomic & orbital projections do not sum to 1 in most cases in VASP, as only those falling inside
+        the atomic radii and overlapping with spd spherical harmonics are counted.
+        """
+        proj_sum = np.sum(proj_data, axis=(-2, -1), keepdims=True)
+        proj_sum[proj_sum == 0] = 1  # just in case, avoid division by zero
+        proj_data /= proj_sum
+        self.normalise = True
 
     def _read_header_nion_proj_names(self, fobj):
         """Read the header, nion and proj_names from the PROCAR"""
@@ -174,8 +216,16 @@ class Procar(MSONable):
                 self._read_header_nion_proj_names(fobj)
 
             current_nspins = self.nspins  # check spin consistency between PROCARs
-            nspins, occs, kvecs, kweights, eigenvalues, proj_data, proj_xyz, parsed_kpoints = self._read(fobj,
-                                                                                                         parsed_kpoints=parsed_kpoints)
+            (
+                nspins,
+                occs,
+                kvecs,
+                kweights,
+                eigenvalues,
+                proj_data,
+                proj_xyz,
+                parsed_kpoints,
+            ) = self._read(fobj, parsed_kpoints=parsed_kpoints)
             if current_nspins is not None and current_nspins != nspins:
                 raise ValueError(f'Mismatch in number of spins in PROCARs supplied: ({nspins} vs {current_nspins})!')
 
@@ -199,12 +249,36 @@ class Procar(MSONable):
             for i, arr in enumerate(array_list):
                 if arr is not None and arr.shape[2] < max_nbands:
                     if len(arr.shape) == 3:  # occs_list, eigenvalues_list
-                        array_list[i] = np.pad(arr, ((0, 0), (0, 0), (0, max_nbands - arr.shape[2])), mode='constant')
+                        array_list[i] = np.pad(
+                            arr,
+                            ((0, 0), (0, 0), (0, max_nbands - arr.shape[2])),
+                            mode='constant',
+                        )
                     elif len(arr.shape) == 5:  # proj_xyz_list
-                        array_list[i] = np.pad(arr, ((0, 0), (0, 0), (0, max_nbands - arr.shape[2]), (0, 0), (0, 0)), mode='constant')
+                        array_list[i] = np.pad(
+                            arr,
+                            (
+                                (0, 0),
+                                (0, 0),
+                                (0, max_nbands - arr.shape[2]),
+                                (0, 0),
+                                (0, 0),
+                            ),
+                            mode='constant',
+                        )
                     elif len(arr.shape) == 6:  # proj_xyz_list
-                        array_list[i] = np.pad(arr, ((0, 0), (0, 0), (0, max_nbands - arr.shape[2]), (0, 0), (0, 0), (0, 0)),
-                                               mode='constant')
+                        array_list[i] = np.pad(
+                            arr,
+                            (
+                                (0, 0),
+                                (0, 0),
+                                (0, max_nbands - arr.shape[2]),
+                                (0, 0),
+                                (0, 0),
+                                (0, 0),
+                            ),
+                            mode='constant',
+                        )
                     else:
                         raise ValueError('Unexpected array shape encountered!')
 
@@ -239,12 +313,19 @@ class Procar(MSONable):
                 proj = [
                     proj,
                 ]
+
             # replace any instance of "p" with "px,py,pz" and "d" with "dxy,dyz,dz2,dxz,dx2-y2"
             def _replace_p_d(single_proj):
                 if single_proj == 'p':
                     return ['px', 'py', 'pz']
                 if single_proj == 'd':
-                    return ['dxy', 'dyz', 'dz2', 'dxz', 'x2-y2']  # dx2-y2 labelled differently in VASP
+                    return [
+                        'dxy',
+                        'dyz',
+                        'dz2',
+                        'dxz',
+                        'x2-y2',
+                    ]  # dx2-y2 labelled differently in VASP
                     # PROCAR
 
                 return [single_proj]
@@ -259,15 +340,31 @@ class Procar(MSONable):
 
         if weight_by_k:
             for kidx in range(self.nkpts):
-                out[:, kidx, :] *= self.kweights[kidx]
+                out[:, kidx, :] *= self.kweights[:, kidx]
         return out
 
     def as_dict(self) -> dict:
         """Convert the object into a dictionary representation (so it can be saved to json)"""
-        output = {'@module': self.__class__.__module__, '@class': self.__class__.__name__, '@version': __version__}
+        output = {
+            '@module': self.__class__.__module__,
+            '@class': self.__class__.__name__,
+            '@version': __version__,
+        }
         for key in [
-                '_is_soc', 'eigenvalues', 'kvecs', 'kweights', 'nbands', 'nkpts', 'nspins', 'nion', 'occs', 'proj_names', 'proj_data',
-                'header', 'proj_xyz'
+                '_is_soc',
+                'eigenvalues',
+                'kvecs',
+                'kweights',
+                'nbands',
+                'nkpts',
+                'nspins',
+                'nion',
+                'occs',
+                'proj_names',
+                'proj_data',
+                'header',
+                'proj_xyz',
+                'normalise',
         ]:
             output[key] = getattr(self, key)
         return output
