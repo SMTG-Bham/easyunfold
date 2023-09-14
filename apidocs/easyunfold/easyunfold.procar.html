@@ -359,6 +359,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api">API</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.procar.Procar"><code class="docutils literal notranslate"><span class="pre">Procar</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.procar.Procar._read"><code class="docutils literal notranslate"><span class="pre">Procar._read()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.procar.Procar.normalise_projs"><code class="docutils literal notranslate"><span class="pre">Procar.normalise_projs()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.procar.Procar._read_header_nion_proj_names"><code class="docutils literal notranslate"><span class="pre">Procar._read_header_nion_proj_names()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.procar.Procar.read"><code class="docutils literal notranslate"><span class="pre">Procar.read()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.procar.Procar.get_projection"><code class="docutils literal notranslate"><span class="pre">Procar.get_projection()</span></code></a></li>
@@ -400,7 +401,7 @@ document.write(`
 <h3>API<a class="headerlink" href="#api" title="Permalink to this heading">#</a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="easyunfold.procar.Procar">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">easyunfold.procar.</span></span><span class="sig-name descname"><span class="pre">Procar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fobjs_or_paths</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_soc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.procar.Procar" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">easyunfold.procar.</span></span><span class="sig-name descname"><span class="pre">Procar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fobjs_or_paths</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_soc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normalise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.procar.Procar" title="Permalink to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">monty.json.MSONable</span></code></p>
 <p>Reader for PROCAR file</p>
 <p class="rubric">Initialization</p>
@@ -410,6 +411,7 @@ document.write(`
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>fobjs_or_paths</strong> – Either a string or list of file-like objs or paths</p></li>
 <li><p><strong>is_soc</strong> – Whether the PROCAR is from a calculation with spin-orbit coupling</p></li>
+<li><p><strong>normalise</strong> – Whether to normalise the projection for every band or not</p></li>
 </ul>
 </dd>
 </dl>
@@ -417,6 +419,15 @@ document.write(`
 <dt class="sig sig-object py" id="easyunfold.procar.Procar._read">
 <span class="sig-name descname"><span class="pre">_read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fobj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parsed_kpoints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.procar.Procar._read" title="Permalink to this definition">#</a></dt>
 <dd><p>Main function for reading in the data</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="easyunfold.procar.Procar.normalise_projs">
+<span class="sig-name descname"><span class="pre">normalise_projs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proj_data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.procar.Procar.normalise_projs" title="Permalink to this definition">#</a></dt>
+<dd><p>Normalise the projections</p>
+<p>For each nspin, nkpt, nband, normalise the sum of projections over nion and proj_names to be 1.
+Atomic &amp; orbital projections do not sum to 1 in most cases in VASP, as only those falling inside
+the atomic radii and overlapping with spd spherical harmonics are counted.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -524,6 +535,7 @@ Procar object</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api">API</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.procar.Procar"><code class="docutils literal notranslate"><span class="pre">Procar</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.procar.Procar._read"><code class="docutils literal notranslate"><span class="pre">Procar._read()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.procar.Procar.normalise_projs"><code class="docutils literal notranslate"><span class="pre">Procar.normalise_projs()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.procar.Procar._read_header_nion_proj_names"><code class="docutils literal notranslate"><span class="pre">Procar._read_header_nion_proj_names()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.procar.Procar.read"><code class="docutils literal notranslate"><span class="pre">Procar.read()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.procar.Procar.get_projection"><code class="docutils literal notranslate"><span class="pre">Procar.get_projection()</span></code></a></li>

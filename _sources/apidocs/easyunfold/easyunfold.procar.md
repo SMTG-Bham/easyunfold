@@ -23,7 +23,7 @@
 
 ### API
 
-`````{py:class} Procar(fobjs_or_paths=None, is_soc=False)
+`````{py:class} Procar(fobjs_or_paths=None, is_soc=False, normalise=True)
 :canonical: easyunfold.procar.Procar
 
 Bases: {py:obj}`monty.json.MSONable`
@@ -41,6 +41,14 @@ Bases: {py:obj}`monty.json.MSONable`
 :canonical: easyunfold.procar.Procar._read
 
 ```{autodoc2-docstring} easyunfold.procar.Procar._read
+```
+
+````
+
+````{py:method} normalise_projs(proj_data)
+:canonical: easyunfold.procar.Procar.normalise_projs
+
+```{autodoc2-docstring} easyunfold.procar.Procar.normalise_projs
 ```
 
 ````
