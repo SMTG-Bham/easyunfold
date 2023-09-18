@@ -13,11 +13,11 @@ path of the primitive cell. It was originally based on
 [PyVaspwfc](https://github.com/QijingZheng/VaspBandUnfolding) for reading VASP wavefunction outputs,
 with a notable improvement being that symmetry-breaking is properly accounted for by sampling necessary
 additional _k_-points and averaging accordingly. Documentation site
-[here](https://smtg-ucl.github.io/easyunfold/)!
+[here](https://smtg-bham.github.io/easyunfold/)!
 
 Our goal is to implement the band structure unfolding workflow in a robust and user-friendly software
 package.
-Typical applications of band structure unfolding are the electronic structure analysis of defects, disorder, alloys, surfaces (and more), as illustrated in the example outputs below and [docs examples](https://smtg-ucl.github.io/easyunfold/examples.html).
+Typical applications of band structure unfolding are the electronic structure analysis of defects, disorder, alloys, surfaces (and more), as illustrated in the example outputs below and [docs examples](https://smtg-bham.github.io/easyunfold/examples.html).
 
 For the methodology of supercell band unfolding, see
 [here](https://link.aps.org/doi/10.1103/PhysRevB.85.085201).
@@ -50,11 +50,11 @@ In all cases, the supercell symmetry is lowered compared to the pristine primiti
 Hence, for a given _k_-point path in the primitive cell Brillouin Zone, additional _k_-points are
 required to be sampled for the supercell, and the extracted spectral weights need to be appropriately
 averaged to obtain the correct effective band structure (EBS). See the docs
-[Theory](https://smtg-ucl.github.io/easyunfold/theory.html) page for more details.
+[Theory](https://smtg-bham.github.io/easyunfold/theory.html) page for more details.
 <!-- when JOSS submitted, add link to paper (discussion of theory) here! -->
 <!--- When JOSS submitted, add 'License and Citation' section here, and `CITATION.cff` file --->
 
-Please see the [documentation](https://smtg-ucl.github.io/easyunfold/) for guides and examples.
+Please see the [documentation](https://smtg-bham.github.io/easyunfold/) for guides and examples.
 
 ## Installation
 
