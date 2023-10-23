@@ -23,7 +23,7 @@ For the methodology of supercell band unfolding, see
 [here](https://link.aps.org/doi/10.1103/PhysRevB.85.085201).
 
 ### Example Outputs
-Cs₂(Sn/Ti)Br₆ Vacancy-Ordered Perovskite Alloys |     Oxygen Vacancy (*V*ₒ⁰) in MgO
+[Cs₂(Sn/Ti)Br₆ Vacancy-Ordered Perovskite Alloys](https://doi.org/10.1021/acs.jpcc.3c05204) |     Oxygen Vacancy (*V*ₒ⁰) in MgO
 :-------------------------:|:------------------------------------:
 <img src="docs/img/CSTB_easyunfold.gif" height="400"/> | <img src="examples/MgO/unfold_project_MgO_v_O_0_tall.png" height="400"/>
 
@@ -106,7 +106,7 @@ dependencies for using pre-commit hooks (`pre-commit`).
 
 We'll add papers that use `easyunfold` to this list as they come out!
 
-- S. M. Liga & S. R. Kavanagh, A. Walsh, D. O. Scanlon and G. Konstantatos [_ChemRxiv_](https://chemrxiv.org/engage/chemrxiv/article-details/64f8f2c279853bbd783ef2b7) 2023
+- S. M. Liga & S. R. Kavanagh, A. Walsh, D. O. Scanlon and G. Konstantatos [_Journal of Physical Chemistry C_](https://doi.org/10.1021/acs.jpcc.3c05204) 2023
 - Y. T. Huang & S. R. Kavanagh et al. [_Nature Communications_](https://www.nature.com/articles/s41467-022-32669-3) 2022
 - A. T. J. Nicolson et al. [_Journal of the Americal Chemical Society_](https://doi.org/10.1021/jacs.2c13336) 2023
 - Y. Wang & S. R. Kavanagh et al. [_Nature Photonics_](https://www.nature.com/articles/s41566-021-00950-4) 2022 (early version)
