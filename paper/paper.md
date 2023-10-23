@@ -53,7 +53,7 @@ There are existing packages that provide band structure unfolding capabilities, 
 [@bandup], and `VaspBandUnfolding` [@vaspbandunfolding].
 `easyunfold` is written in Python with a focus on user-friendliness, data provenance, reproducibility, and publication-quality figure generation.
 An example output of the effective band structure produced is shown in \autoref{fig:figure2} for a $2\times2\times2$ $\mathrm{MgO}$ supercell containing a neutral oxygen vacancy.
-\autoref{fig:figure3} shows the orbital-projected effective band structure of a $\mathrm{Cs_2(Sn_{0.5},Ti_{0.5})Br_6}$ vacancy-ordered perovskite alloy [@kavanagh_frenkel_2022], in the Brillouin zone of the primitive $Fm\bar{3}m$ unit cell.
+\autoref{fig:figure3} shows the orbital-projected effective band structure of a $\mathrm{Cs_2(Sn_{0.5},Ti_{0.5})Br_6}$ vacancy-ordered perovskite alloy [@kavanagh_frenkel_2022; @liga_mixed-cation_2023], in the Brillouin zone of the primitive $Fm\bar{3}m$ unit cell.
 A key feature of `easyunfold` is to provide data serialization compliant with the FAIR principles [@wilkinson:2016].
 Both the input settings and calculated outputs are stored in a single JSON file.
 This enables the unfolded band structure to be re-plotted and further analysed without reprocessing the wave function data, which can be time-consuming and require large storage space.
@@ -81,7 +81,7 @@ band structure unfolding and help train new researchers.
 
 ![Atom-projected effective band structure of a $2\times2\times2$ MgO supercell showing a localised mid-gap state resulting from a neutral oxygen vacancy (using a relatively small supercell containing 63 atoms). \label{fig:figure2}](mgo_unfold_project.png){width=130mm}
 
-![Orbital-projected effective band structure of a disordered $\mathrm{Cs_2(Sn,Ti)Br_6}$ vacancy-ordered perovskite alloy [@kavanagh_frenkel_2022]. \label{fig:figure3}](Cs2SnTiBr6.png){width=130mm}
+![Orbital-projected effective band structure of a disordered $\mathrm{Cs_2(Sn,Ti)Br_6}$ vacancy-ordered perovskite alloy [@kavanagh_frenkel_2022; @liga_mixed-cation_2023]. \label{fig:figure3}](Cs2SnTiBr6.png){width=130mm}
 
 
 # Theory
