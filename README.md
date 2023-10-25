@@ -13,18 +13,19 @@ path of the primitive cell. It was originally based on
 [PyVaspwfc](https://github.com/QijingZheng/VaspBandUnfolding) for reading VASP wavefunction outputs,
 with a notable improvement being that symmetry-breaking is properly accounted for by sampling necessary
 additional _k_-points and averaging accordingly. Documentation site
-[here](https://smtg-ucl.github.io/easyunfold/)!
+[here](https://smtg-bham.github.io/easyunfold/)!
 
 Our goal is to implement the band structure unfolding workflow in a robust and user-friendly software
 package.
+Typical applications of band structure unfolding are the electronic structure analysis of defects, disorder, alloys, surfaces (and more), as illustrated in the example outputs below and [docs examples](https://smtg-bham.github.io/easyunfold/examples.html).
 
 For the methodology of supercell band unfolding, see
 [here](https://link.aps.org/doi/10.1103/PhysRevB.85.085201).
 
 ### Example Outputs
-Cs₂(Sn/Ti)Br₆ Vacancy-Ordered Perovskite Alloys |     Symmetry-broken Si Supercell
+[Cs₂(Sn/Ti)Br₆ Vacancy-Ordered Perovskite Alloys](https://doi.org/10.1021/acs.jpcc.3c05204) |     Oxygen Vacancy (*V*ₒ⁰) in MgO
 :-------------------------:|:------------------------------------:
-<img src="docs/img/CSTB_easyunfold.gif" height="400"/> | <img src="examples/Si222/unfold_tall.png" height="400"/>
+<img src="docs/img/CSTB_easyunfold.gif" height="400"/> | <img src="examples/MgO/unfold_project_MgO_v_O_0_tall.png" height="400"/>
 
 ## Usage
 
@@ -49,11 +50,11 @@ In all cases, the supercell symmetry is lowered compared to the pristine primiti
 Hence, for a given _k_-point path in the primitive cell Brillouin Zone, additional _k_-points are
 required to be sampled for the supercell, and the extracted spectral weights need to be appropriately
 averaged to obtain the correct effective band structure (EBS). See the docs
-[Theory](https://smtg-ucl.github.io/easyunfold/theory.html) page for more details.
+[Theory](https://smtg-bham.github.io/easyunfold/theory.html) page for more details.
 <!-- when JOSS submitted, add link to paper (discussion of theory) here! -->
 <!--- When JOSS submitted, add 'License and Citation' section here, and `CITATION.cff` file --->
 
-Please see the [documentation](https://smtg-ucl.github.io/easyunfold/) for guides and examples.
+Please see the [documentation](https://smtg-bham.github.io/easyunfold/) for guides and examples.
 
 ## Installation
 
@@ -105,6 +106,7 @@ dependencies for using pre-commit hooks (`pre-commit`).
 
 We'll add papers that use `easyunfold` to this list as they come out!
 
+- S. M. Liga & S. R. Kavanagh, A. Walsh, D. O. Scanlon and G. Konstantatos [_Journal of Physical Chemistry C_](https://doi.org/10.1021/acs.jpcc.3c05204) 2023
 - Y. T. Huang & S. R. Kavanagh et al. [_Nature Communications_](https://www.nature.com/articles/s41467-022-32669-3) 2022
 - A. T. J. Nicolson et al. [_Journal of the Americal Chemical Society_](https://doi.org/10.1021/jacs.2c13336) 2023
 - Y. Wang & S. R. Kavanagh et al. [_Nature Photonics_](https://www.nature.com/articles/s41566-021-00950-4) 2022 (early version)

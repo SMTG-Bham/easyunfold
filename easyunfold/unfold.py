@@ -420,7 +420,7 @@ class UnfoldKSet(MSONable):
 
         # Load the procars
         # Note that this method should be generalised for non-VASP as well.
-        self.transient_quantities['procars'] = Procar(procars)
+        self.transient_quantities['procars'] = Procar(procars, normalise=True)
         # Construct mapping from the primitive cell kpoints to those in the PROCAR
         self.transient_quantities['procars_kmap'] = self._construct_procar_kmap()
 
@@ -508,10 +508,12 @@ class UnfoldKSet(MSONable):
             return sws, e0, spectral_function
         return sws
 
-    def get_band_weight_sets(self,
-                             atoms_idx: List[int],
-                             orbitals: List[Union[List[str], str]],
-                             procars: Union[None, List[str], str] = None) -> list:
+    def get_band_weight_sets(
+        self,
+        atoms_idx: List[int],
+        orbitals: List[Union[List[str], str]],
+        procars: Union[None, List[str], str] = None,
+    ) -> list:
         """
         Get weights array sets for bands
 

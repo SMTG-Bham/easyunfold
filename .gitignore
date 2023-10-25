@@ -44,7 +44,6 @@ POTCAR
 *.check
 *.cst_esp
 KPOINTS
-PROCAR
 *.json
 *.DS_Store
 

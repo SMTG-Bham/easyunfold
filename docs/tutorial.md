@@ -32,6 +32,12 @@ Below is a guide for performing band structure unfolding when using VASP.
 
 ## Step 1 - Generate the _k_-point path for the primitive cell
 
+In this step, we first generate the band structure _k_-point path we want to calculate. To do this, we use the prototype _high-symmetry primitive_ structure to get the corresponding _k_-point path. 
+
+:::{note}
+For disordered materials, this primitive cell should be the idealised primitive cell of the material (i.e. the primitive structure where all disordered sites have been set equal), not the SQS cell, and for defect supercells this should be the _primitive_ cell of the host compound, not the bulk supercell.
+:::
+
 This can be done by well-established packages such as 
 [seekpath](https://www.materialscloud.org/work/tools/seekpath) or 
 [sumo](https://github.com/SMTG-UCL/sumo).
