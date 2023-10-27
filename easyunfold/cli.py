@@ -48,7 +48,11 @@ def easyunfold():
     type=click.Choice(SUPPORTED_DFT_CODES),
     show_default=True,
 )
-@click.option('--matrix', '-m', help='Transformation matrix')
+@click.option('--matrix',
+              '-m',
+              help='Transformation matrix, in the form "x y z" for a diagonal matrix, '
+              'or "x1 y1 z1, x2 y2 z2, x3 y3 z3" for a 3x3 matrix. Automatically guessed if not '
+              'provided.')
 @click.option('--symprec', help='Tolerance for determining the symmetry', type=float, default=1e-5, show_default=True)
 @click.option('--out-file', '-o', default='easyunfold.json', help='Name of the output file')
 @click.option('--no-expand', help='Do not expand the kpoints by symmetry', default=False, is_flag=True)
@@ -80,18 +84,38 @@ def generate(pc_file, code, sc_file, matrix, kpoints, time_reversal, out_file, n
 
     primitive = read(pc_file)
     supercell = read(sc_file)
+    _quantitative_inaccuracy_warning = (
+        'Warning: There is a lattice parameter mismatch in the range 2-5% between the primitive (multiplied by the '
+        'transformation matrix) and the supercell. This will lead to some quantitative inaccuracies in the Brillouin '
+        'Zone spacing (and thus effective masses) of the unfolded band structures.')
+    _incommensurate_warning = (
+        'Warning: the super cell and the primitive cell are not commensurate (lattice parameter difference >5%). This '
+        'will likely lead to severe inaccuracies in the results! You should double check the correct transformation '
+        'matrix, primitive and super cells have been provided.')
+
     if matrix:
         transform_matrix = matrix_from_string(matrix)
-        if not np.allclose(primitive.cell @ transform_matrix, supercell.cell):
-            click.echo('Warning: the super cell and the the primitive cell are not commensure.')
-            click.echo('Proceed with the assumed tranform matrix')
+        if not np.allclose(transform_matrix @ primitive.cell, supercell.cell, rtol=2e-2):  # 2% mismatch tolerance
+            if np.allclose(transform_matrix @ primitive.cell, supercell.cell, rtol=5e-2):  # 2-5% mismatch
+                click.echo(_quantitative_inaccuracy_warning)
+            else:
+                click.echo(_incommensurate_warning)
+                click.echo(f'Transform matrix x primitive cell:\n{transform_matrix @ primitive.cell}')
+                click.echo(f'Supercell cell:\n{supercell.cell}')
+            click.echo('Proceeding with the assumed transformation matrix.')
         click.echo(f'Transform matrix:\n{transform_matrix.tolist()}')
     else:
         tmp = supercell.cell @ np.linalg.inv(primitive.cell)
         transform_matrix = np.rint(tmp)
-        if not np.allclose(tmp, transform_matrix):
-            click.echo('The super cell and the the primitive cell are not commensure.')
-            raise click.Abort()
+        if not np.allclose(tmp, transform_matrix, rtol=2e-2):  # 2% mismatch tolerance
+            if np.allclose(transform_matrix @ primitive.cell, supercell.cell, rtol=5e-2):  # 2-5% mismatch
+                click.echo(_quantitative_inaccuracy_warning)
+            else:
+                click.echo(_incommensurate_warning)
+                click.echo(f'(Guessed) Transform matrix:\n{transform_matrix.tolist()}')
+                click.echo(f'Transform matrix x primitive cell:\n{transform_matrix @ primitive.cell}')
+                click.echo(f'Supercell cell:\n{supercell.cell}')
+                raise click.Abort()
 
         click.echo(f'(Guessed) Transform matrix:\n{transform_matrix.tolist()}')
 

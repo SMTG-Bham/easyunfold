@@ -41,6 +41,17 @@ def si_project_dir(datapath, tmp_path):
 
 
 @pytest.fixture
+def agsbte2_project_dir(datapath, tmp_path):
+    """Create a temporary directory containing AgSbTe2 inputs for testing"""
+
+    def _inner(tag=''):
+        shutil.copytree(datapath('AgSbTe2'), tmp_path / 'AgSbTe2')
+        return tmp_path / 'AgSbTe2'
+
+    return _inner
+
+
+@pytest.fixture
 def mgo_project_dir(datapath, tmp_path):
     shutil.copy2(datapath('mgo.json'), tmp_path / 'mgo.json')
     shutil.copy2(datapath('PROCAR.mgo'), tmp_path / 'PROCAR')

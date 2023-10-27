@@ -49,6 +49,66 @@ def test_generate(si_project_dir):
     assert len(kpts) == 96 + kpts_expected
 
 
+def test_generate_agsbte2(agsbte2_project_dir):
+    """
+    Test the generate function
+    """
+    runner = CliRunner()
+
+    tmp_dir = agsbte2_project_dir(None)
+    os.chdir(tmp_dir)
+
+    output = runner.invoke(
+        easyunfold,  # ~2.5% lattice mismatch in this case, print warning but continue fine
+        ['generate', 'POSCAR_prim', 'SQS_POSCAR', 'KPOINTS_band', '--out-file', 'test'])
+    assert output.exit_code == 0
+
+    assert ('Warning: There is a lattice parameter mismatch in the range 2-5% between the primitive (multiplied by the '
+            'transformation matrix) and the supercell. This will lead to some quantitative inaccuracies in the '
+            'Brillouin Zone spacing (and thus effective masses) of the unfolded band structures.' in output.output)
+    assert '(Guessed) Transform matrix:\n[[1.0, -0.0, 0.0], [1.0, -3.0, 1.0], [1.0, 1.0, -3.0]]' in output.output
+    assert '194 kpoints specified along the path' in output.output
+    for i in [
+            'Supercell cell information:', 'Space group number: 6', 'International symbol: Pm', 'Point group: m',
+            'Primitive cell information:', 'Space group number: 225', 'International symbol: Fm-3m', 'Point group: m-3m'
+    ]:
+        assert i in output.output
+    assert 'Supercell kpoints written to KPOINTS_test' in output.output
+    assert 'Unfolding settings written to test' in output.output
+
+    kpts = read_kpoints('KPOINTS_test')[0]
+    kpts_expected = 1023
+    assert len(kpts) == kpts_expected
+
+    # test with also specifying transformation matrix:
+    os.remove('KPOINTS_test')
+    os.remove('test')
+    output = runner.invoke(
+        easyunfold,  # ~2.5% lattice mismatch in this case, print warning but continue fine
+        ['generate', 'POSCAR_prim', 'SQS_POSCAR', 'KPOINTS_band', '--out-file', 'test', '-m', '1 0 0 1 -3 1 1 1 -3'])
+    print(output.output)
+    print(output.stdout)
+    assert output.exit_code == 0
+
+    assert ('Warning: There is a lattice parameter mismatch in the range 2-5% between the primitive (multiplied by the '
+            'transformation matrix) and the supercell. This will lead to some quantitative inaccuracies in the '
+            'Brillouin Zone spacing (and thus effective masses) of the unfolded band structures.' in output.output)
+    assert 'Proceeding with the assumed transformation matrix.' in output.output
+    assert 'Transform matrix:\n[[1.0, 0.0, 0.0], [1.0, -3.0, 1.0], [1.0, 1.0, -3.0]]' in output.output
+    assert '194 kpoints specified along the path' in output.output
+    for i in [
+            'Supercell cell information:', 'Space group number: 6', 'International symbol: Pm', 'Point group: m',
+            'Primitive cell information:', 'Space group number: 225', 'International symbol: Fm-3m', 'Point group: m-3m'
+    ]:
+        assert i in output.output
+    assert 'Supercell kpoints written to KPOINTS_test' in output.output
+    assert 'Unfolding settings written to test' in output.output
+
+    kpts = read_kpoints('KPOINTS_test')[0]
+    kpts_expected = 1023
+    assert len(kpts) == kpts_expected
+
+
 @pytest.mark.parametrize('tag', ['', '_spin', '_soc'])
 def test_unfold(si_project_dir, tag):
     """
