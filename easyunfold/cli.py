@@ -48,7 +48,11 @@ def easyunfold():
     type=click.Choice(SUPPORTED_DFT_CODES),
     show_default=True,
 )
-@click.option('--matrix', '-m', help='Transformation matrix')
+@click.option('--matrix',
+              '-m',
+              help='Transformation matrix, in the form "x y z" for a diagonal matrix, '
+              'or "x1 y1 z1, x2 y2 z2, x3 y3 z3" for a 3x3 matrix. Automatically guessed if not '
+              'provided.')
 @click.option('--symprec', help='Tolerance for determining the symmetry', type=float, default=1e-5, show_default=True)
 @click.option('--out-file', '-o', default='easyunfold.json', help='Name of the output file')
 @click.option('--no-expand', help='Do not expand the kpoints by symmetry', default=False, is_flag=True)
