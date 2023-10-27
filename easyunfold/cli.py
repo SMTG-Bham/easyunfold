@@ -96,6 +96,8 @@ def generate(pc_file, code, sc_file, matrix, kpoints, time_reversal, out_file, n
                 click.echo(_quantitative_inaccuracy_warning)
             else:
                 click.echo(_incommensurate_warning)
+                click.echo(f'Transform matrix x primitive cell:\n{transform_matrix @ primitive.cell}')
+                click.echo(f'Supercell cell:\n{supercell.cell}')
             click.echo('Proceeding with the assumed transformation matrix.')
         click.echo(f'Transform matrix:\n{transform_matrix.tolist()}')
     else:
@@ -106,6 +108,9 @@ def generate(pc_file, code, sc_file, matrix, kpoints, time_reversal, out_file, n
                 click.echo(_quantitative_inaccuracy_warning)
             else:
                 click.echo(_incommensurate_warning)
+                click.echo(f'(Guessed) Transform matrix:\n{transform_matrix.tolist()}')
+                click.echo(f'Transform matrix x primitive cell:\n{transform_matrix @ primitive.cell}')
+                click.echo(f'Supercell cell:\n{supercell.cell}')
                 raise click.Abort()
 
         click.echo(f'(Guessed) Transform matrix:\n{transform_matrix.tolist()}')
