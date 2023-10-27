@@ -91,8 +91,8 @@ def generate(pc_file, code, sc_file, matrix, kpoints, time_reversal, out_file, n
 
     if matrix:
         transform_matrix = matrix_from_string(matrix)
-        if not np.allclose(primitive.cell @ transform_matrix, supercell.cell, rtol=2e-2):  # 2% mismatch tolerance
-            if np.allclose(primitive.cell @ transform_matrix, supercell.cell, rtol=5e-2):  # 2-5% mismatch
+        if not np.allclose(transform_matrix @ primitive.cell, supercell.cell, rtol=2e-2):  # 2% mismatch tolerance
+            if np.allclose(transform_matrix @ primitive.cell, supercell.cell, rtol=5e-2):  # 2-5% mismatch
                 click.echo(_quantitative_inaccuracy_warning)
             else:
                 click.echo(_incommensurate_warning)
@@ -102,7 +102,7 @@ def generate(pc_file, code, sc_file, matrix, kpoints, time_reversal, out_file, n
         tmp = supercell.cell @ np.linalg.inv(primitive.cell)
         transform_matrix = np.rint(tmp)
         if not np.allclose(tmp, transform_matrix, rtol=2e-2):  # 2% mismatch tolerance
-            if np.allclose(primitive.cell @ transform_matrix, supercell.cell, rtol=5e-2):  # 2-5% mismatch
+            if np.allclose(transform_matrix @ primitive.cell, supercell.cell, rtol=5e-2):  # 2-5% mismatch
                 click.echo(_quantitative_inaccuracy_warning)
             else:
                 click.echo(_incommensurate_warning)
