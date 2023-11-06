@@ -77,7 +77,7 @@ def test_generate_agsbte2(agsbte2_project_dir):
     assert 'Unfolding settings written to test' in output.output
 
     kpts = read_kpoints('KPOINTS_test')[0]
-    kpts_expected = 1023
+    kpts_expected = 993
     assert len(kpts) == kpts_expected
 
     # test with also specifying transformation matrix:
@@ -105,7 +105,7 @@ def test_generate_agsbte2(agsbte2_project_dir):
     assert 'Unfolding settings written to test' in output.output
 
     kpts = read_kpoints('KPOINTS_test')[0]
-    kpts_expected = 1023
+    kpts_expected = 993
     assert len(kpts) == kpts_expected
 
 
