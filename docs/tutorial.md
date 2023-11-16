@@ -23,7 +23,7 @@ In all cases, the supercell symmetry is lowered compared to the pristine primiti
 Hence, for a given _k_-point path in the primitive cell Brillouin Zone, additional _k_-points are 
 required to be sampled for the supercell, and the extracted spectral weights need to be appropriately 
 averaged to obtain the correct effective band structure (EBS). See the docs 
-[Theory](https://smtg-ucl.github.io/easyunfold/theory.html) page for more details.
+[Theory](https://smtg-Bham.github.io/easyunfold/theory.html) page for more details.
 
 At the moment, two plane-wave DFT codes, VASP[^vasp] and CASTEP[^castep], are supported. In principle, 
 support can be easily added for other plane-wave codes if the wavefunction can be read in.
@@ -40,10 +40,10 @@ For disordered materials, this primitive cell should be the idealised primitive 
 
 This can be done by well-established packages such as 
 [seekpath](https://www.materialscloud.org/work/tools/seekpath) or 
-[sumo](https://github.com/SMTG-UCL/sumo).
+[sumo](https://github.com/SMTG-Bham/sumo).
 Note that the "standardised" primitive cell may be different from your input structure,
 and the generated path is correct for the standard primitive cell only.
-We recommend using [sumo](https://github.com/SMTG-UCL/sumo) for generating the _k_-points, which provides 
+We recommend using [sumo](https://github.com/SMTG-Bham/sumo) for generating the _k_-points, which provides 
 a nice command line interface, and automatically informs you if your input structure is not the required 
 'standardised' primitive cell:
 

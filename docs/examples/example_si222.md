@@ -7,7 +7,7 @@ crystalline silicon (Si) which contains a displaced atom, breaking symmetry.
 
 :::{note} 
 The files needed for this example are provided in the 
-[examples/Si222](https://github.com/SMTG-UCL/easyunfold/tree/main/examples/Si222) folder. This 
+[examples/Si222](https://github.com/SMTG-Bham/easyunfold/tree/main/examples/Si222) folder. This 
 guide assumes the current working directory is located at the root of that folder.
 :::
 
@@ -19,7 +19,7 @@ easyunfold generate Si/POSCAR Si_super_deformed/POSCAR Si/KPOINTS_band
 
 Here, `KPOINTS_band` is the `KPOINTS` file corresponding to the band structure path for the primitive 
 unit cell, which in this case was generated using `sumo-kgen` (see [Step 1](
-https://smtg-ucl.github.io/easyunfold/guide.html#step-1-generate-the-kpoints-path-of-the-primitive-cell) 
+https://smtg-Bham.github.io/easyunfold/guide.html#step-1-generate-the-kpoints-path-of-the-primitive-cell) 
 of the tutorial docs page).
 
 This generates an  `easyunfold.json` file in the current direction containing information about the 
@@ -88,7 +88,7 @@ mpirun -np 4 vasp_std  # run the calculation
 ```
 
 Alternatively, there is a `run.sh` script in the 
-[examples/Si222/Si_super_deformed](https://github.com/SMTG-UCL/easyunfold/tree/main/examples/Si222/Si_super_deformed) 
+[examples/Si222/Si_super_deformed](https://github.com/SMTG-Bham/easyunfold/tree/main/examples/Si222/Si_super_deformed) 
 folder that can be used to perform these two steps above.
 
 ## Perform band unfolding
@@ -126,7 +126,7 @@ Spectral function of the unfolded bands.
 ```
 
 :::{tip} 
-See the [NaBiS<sub>2</sub> example](https://smtg-ucl.github.io/easyunfold/examples/example_nabis2.html) for tips on 
+See the [NaBiS<sub>2</sub> example](https://smtg-Bham.github.io/easyunfold/examples/example_nabis2.html) for tips on 
 customising and prettifying the unfolded band structure plot. Here we have also actually used the `--intensity 3.5` 
 option to increase the spectral function intensity.
 :::

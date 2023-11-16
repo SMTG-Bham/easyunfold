@@ -60,7 +60,7 @@ jobs:
   publish-pypi:
 
     needs: [build]
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags') && (github.repository == 'SMTG-UCL/easyunfold')
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags') && (github.repository == 'SMTG-Bham/easyunfold')
     name: Build and publish Python 🐍 distributions 📦 to PyPI and TestPyPI
     runs-on: ubuntu-latest
     steps:
