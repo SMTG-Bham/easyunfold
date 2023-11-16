@@ -1,0 +1,622 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>easyunfold Documentation &#8212; easyunfold</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=365ca57ee442770a23c6" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=365ca57ee442770a23c6" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=365ca57ee442770a23c6"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installation" href="installation.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="#">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.svg" class="logo__image only-light" alt="easyunfold - Home"/>
+    <script>document.write(`<img src="_static/logo.svg" class="logo__image only-dark" alt="easyunfold - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/SMTG-Bham/easyunfold" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/easyunfold/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/pypi/v/easyunfold" class="icon-link-image" alt="PyPI"/></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1 current active">
+                <a class="reference internal" href="#">
+                    easyunfold Documentation
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="examples.html">Examples</a><input checked class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples/example_si222.html">Si supercell with a displaced atom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/example_mgo.html">MgO with atomic projections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/example_nabis2.html">Disordered NaBiS<sub>2</sub> with atomic/orbital projections &amp; DOS plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/example_si211_castep.html">Si supercell using CASTEP</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Band Unfolding Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">CLI Reference</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/index.html">API Reference</a><input checked class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="apidocs/easyunfold/easyunfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.wavefun.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavefun</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.utils</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.vasp_constant.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.vasp_constant</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.effective_mass.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.effective_mass</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.wavecar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavecar</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.cli.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.cli</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.plotting.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.plotting</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.procar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.procar</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.unfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.unfold</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/SMTG-Bham/easyunfold" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/index.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>easyunfold Documentation</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-outputs">Example Outputs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#studies-using-easyunfold">Studies using <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dft-code-support">DFT code support</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#code-compatibility-notes">Code Compatibility Notes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contributors">Contributors</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contributing">Contributing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bugs-reports-and-feature-requests">Bugs reports and feature requests</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-contributions">Code contributions</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="easyunfold-documentation">
+<h1><code class="docutils literal notranslate"><span class="pre">easyunfold</span></code> Documentation<a class="headerlink" href="#easyunfold-documentation" title="Permalink to this heading">#</a></h1>
+<p><img alt="build" src="https://github.com/SMTG-Bham/easyunfold/actions/workflows/ci.yaml/badge.svg" />
+<a class="reference external" href="https://smtg-Bham.github.io/easyunfold/"><img alt="docs" src="https://github.com/SMTG-Bham/easyunfold/actions/workflows/docs.yaml/badge.svg" /></a>
+<a class="reference external" href="https://codecov.io/gh/SMTG-Bham/easyunfold"><img alt="codecov" src="https://codecov.io/gh/SMTG-Bham/easyunfold/branch/main/graph/badge.svg?token=XLLWWU5UM2" /></a>
+<a class="reference external" href="https://pypi.org/project/easyunfold"><img alt="PyPI" src="https://img.shields.io/pypi/v/easyunfold" /></a>
+<a class="reference external" href="https://smtg-Bham.github.io/easyunfold/"><img alt="Downloads" src="https://img.shields.io/pypi/dm/easyunfold" /></a></p>
+<!--- When JOSS submitted, add this: [![JOSS](https://joss.theoj.org/papers/10.21105/joss.04817/status.
+svg)](https://doi.org/10.21105/joss.)--->
+<p>This package is intended for obtaining the effective band structure of a supercell for a certain <em>k</em>-point
+path of the primitive cell. It was originally based on
+<a class="reference external" href="https://github.com/QijingZheng/VaspBandUnfolding">PyVaspwfc</a> for reading VASP wavefunction outputs,
+with a notable improvement being that symmetry-breaking is properly accounted for by sampling necessary
+additional <em>k</em>-points and averaging accordingly.
+Typical applications of band structure unfolding are the electronic structure analysis of defects, disorder, alloys, surfaces (and more), as illustrated in the example outputs below and <a class="reference external" href="https://smtg-Bham.github.io/easyunfold/examples.html">docs examples</a>.</p>
+<p>Our goal is to implement the band structure unfolding workflow in a robust and user-friendly software
+package.</p>
+<p>For the methodology of supercell band unfolding, see
+<a class="reference external" href="https://link.aps.org/doi/10.1103/PhysRevB.85.085201">here</a>.</p>
+<section id="example-outputs">
+<h2>Example Outputs<a class="headerlink" href="#example-outputs" title="Permalink to this heading">#</a></h2>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p><a class="reference external" href="https://doi.org/10.1021/acs.jpcc.3c05204">Cs₂(Sn/Ti)Br₆ Vacancy-Ordered Perovskite Alloys</a></p></th>
+<th class="head text-center"><p>Oxygen Vacancy (<em>V</em>ₒ⁰) in MgO</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p><a class="reference internal" href="_images/CSTB_easyunfold.gif"><img alt="_images/CSTB_easyunfold.gif" src="_images/CSTB_easyunfold.gif" style="height: 400px;" /></a></p></td>
+<td class="text-center"><p><a class="reference internal" href="_images/unfold_project_MgO_v_O_0_tall.png"><img alt="_images/unfold_project_MgO_v_O_0_tall.png" src="_images/unfold_project_MgO_v_O_0_tall.png" style="height: 400px;" /></a></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this heading">#</a></h2>
+<p>To generate an unfolded band structure, one typically needs to perform the following steps:</p>
+<ol class="arabic simple">
+<li><p>Create a primitive unit cell, and generate a band structure <em>k</em>-point path corresponding to this
+primitive cell.</p></li>
+<li><p>Create a supercell (e.g. disordered, defective, surface slab etc.), and obtain its optimised structure.</p></li>
+<li><p>Generate a series of <em>k</em>-points for the supercell to be calculated.</p></li>
+<li><p>Perform a band structure calculation with the supercell, and save its wavefunction output to file.</p></li>
+<li><p>Post-process the supercell wavefunction to obtain the unfolded band structure in the <em>k</em>-point path
+of the primitive unit cell.</p></li>
+</ol>
+<p>These generation and analysis steps are automated in <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code>, with only the primitive unit cell and
+supercell structures required as inputs from the user.</p>
+<p>Typically, the supercell comprises some form of symmetry-breaking relative to the primitive cell, such
+as defects, disorder (e.g. special quasi-random structures (SQS) for site disorder – other forms of
+disorder such as magnetic, dynamic/vibrational, polar, elastic etc. also possible), or a surface/interface
+slab.
+In all cases, the supercell symmetry is lowered compared to the pristine primitive cell.
+Hence, for a given <em>k</em>-point path in the primitive cell Brillouin Zone, additional <em>k</em>-points are
+required to be sampled for the supercell, and the extracted spectral weights need to be appropriately
+averaged to obtain the correct effective band structure (EBS). See the docs
+<a class="reference external" href="https://smtg-Bham.github.io/easyunfold/theory.html">Theory</a> page for more details.</p>
+<!-- when JOSS submitted, add link to paper (discussion of theory) here! -->
+<!--- When JOSS submitted, add 'Citation' section here, and CITATION.cff --->
+</section>
+<section id="studies-using-easyunfold">
+<h2>Studies using <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code><a class="headerlink" href="#studies-using-easyunfold" title="Permalink to this heading">#</a></h2>
+<p>We’ll add papers that use <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code> to this list as they come out!</p>
+<ul class="simple">
+<li><p>S. M. Liga &amp; S. R. Kavanagh, A. Walsh, D. O. Scanlon and G. Konstantatos <a class="reference external" href="https://doi.org/10.1021/acs.jpcc.3c05204"><em>Journal of Physical Chemistry C</em></a> 2023</p></li>
+<li><p>Y. T. Huang &amp; S. R. Kavanagh et al. <a class="reference external" href="https://www.nature.com/articles/s41467-022-32669-3"><em>Nature Communications</em></a> 2022</p></li>
+<li><p>A. T. J. Nicolson et al. <a class="reference external" href="https://doi.org/10.1021/jacs.2c13336"><em>Journal of the Americal Chemical Society</em></a> 2023</p></li>
+<li><p>Y. Wang &amp; S. R. Kavanagh et al. <a class="reference external" href="https://www.nature.com/articles/s41566-021-00950-4"><em>Nature Photonics</em></a> 2022 (early version)</p></li>
+</ul>
+</section>
+<section id="dft-code-support">
+<h2>DFT code support<a class="headerlink" href="#dft-code-support" title="Permalink to this heading">#</a></h2>
+<p>At the moment, easyunfold supports <a class="reference external" href="https://www.vasp.at">VASP</a> and <a class="reference external" href="http://www.castep.org">CASTEP</a>, but most of the routines are abstracted from the code specific details.
+In principle, support for other plane wave DFT code can be added by:</p>
+<ul class="simple">
+<li><p>Implementing a subclass of <code class="docutils literal notranslate"><span class="pre">WaveFunction</span></code> that handles reading the wave function output.</p></li>
+<li><p>Implementing functions for reading/writing <em>k</em>-points.</p></li>
+<li><p>Adding branches for dispatching based on the <code class="docutils literal notranslate"><span class="pre">dft_code</span></code> attribute of the <code class="docutils literal notranslate"><span class="pre">UnfoldKSet</span></code> object in
+various places within the code.</p></li>
+</ul>
+<p>The Atomic Simulation Environment (<a class="reference external" href="https://wiki.fysik.dtu.dk/ase/">ASE</a>) is used by <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code> for
+reading in structures, so structure file IO is natively supported for essentially all public DFT codes.</p>
+<section id="code-compatibility-notes">
+<h3>Code Compatibility Notes<a class="headerlink" href="#code-compatibility-notes" title="Permalink to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Atom-projected band structures are currently only supported for <code class="docutils literal notranslate"><span class="pre">VASP</span></code> calculation outputs.</p></li>
+<li><p>Gamma-only and non-collinear spin calculations are not supported for <code class="docutils literal notranslate"><span class="pre">CASTEP</span></code>.</p></li>
+</ul>
+</section>
+</section>
+<section id="contributors">
+<h2>Contributors<a class="headerlink" href="#contributors" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/zhubonan">Bonan Zhu</a></p></li>
+<li><p><a class="reference external" href="https://github.com/kavanase">Seán Kavanagh</a></p></li>
+<li><p><a class="reference external" href="https://github.com/adair-nicolson">Adair Nicolson</a></p></li>
+</ul>
+<p>And those who helped in the development:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/joebesity">Joe Willis</a></p></li>
+<li><p><a class="reference external" href="http://davidscanlon.com/?page_id=5">David O. Scanlon</a></p></li>
+</ul>
+</section>
+<section id="contributing">
+<h2>Contributing<a class="headerlink" href="#contributing" title="Permalink to this heading">#</a></h2>
+</section>
+<section id="bugs-reports-and-feature-requests">
+<h2>Bugs reports and feature requests<a class="headerlink" href="#bugs-reports-and-feature-requests" title="Permalink to this heading">#</a></h2>
+<p>Bug reports and feature requests are well come.
+If you found any bug or missing features please report it on the
+<a class="reference external" href="https://github.com/SMTG-Bham/easyunfold/issues">Issue Tracker</a>.</p>
+</section>
+<section id="code-contributions">
+<h2>Code contributions<a class="headerlink" href="#code-contributions" title="Permalink to this heading">#</a></h2>
+<p>We welcome your help in improving and extending the package with your
+own contributions. This is managed through GitHub pull requests;
+for external contributions, we prefer the
+<a class="reference external" href="https://guides.github.com/activities/forking/">fork and pull</a>
+workflow while core developers use branches in the main repository:</p>
+<ol class="arabic simple">
+<li><p>First open an <a class="reference external" href="https://github.com/SMTG-Bham/easyunfold/issues">Issue</a> to discuss the proposed
+contribution. This discussion might include how the changes fit <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code>’s scope and a
+general technical approach.</p></li>
+<li><p>Make your own project fork and implement the changes
+there. Please keep your code style compliant and use the <code class="docutils literal notranslate"><span class="pre">pre-commit</span></code> hooks.</p></li>
+<li><p>Open a pull request to merge the changes into the main
+project. A more detailed discussion can take place there before
+the changes are accepted.</p></li>
+</ol>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="right-next"
+       href="installation.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Installation</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-outputs">Example Outputs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#studies-using-easyunfold">Studies using <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dft-code-support">DFT code support</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#code-compatibility-notes">Code Compatibility Notes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contributors">Contributors</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contributing">Contributing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bugs-reports-and-feature-requests">Bugs reports and feature requests</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-contributions">Code contributions</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Bonan Zhu, Seán Kavanagh
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2023, Bonan Zhu.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=365ca57ee442770a23c6"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=365ca57ee442770a23c6"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

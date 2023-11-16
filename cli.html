@@ -1,0 +1,1389 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>CLI Reference &#8212; easyunfold</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=365ca57ee442770a23c6" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=365ca57ee442770a23c6" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=365ca57ee442770a23c6"></script>
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'cli';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Reference" href="apidocs/index.html" />
+    <link rel="prev" title="Publications" href="publications.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.svg" class="logo__image only-light" alt="easyunfold - Home"/>
+    <script>document.write(`<img src="_static/logo.svg" class="logo__image only-dark" alt="easyunfold - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/SMTG-Bham/easyunfold" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/easyunfold/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/pypi/v/easyunfold" class="icon-link-image" alt="PyPI"/></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="index.html">
+                    easyunfold Documentation
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="examples.html">Examples</a><input checked class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples/example_si222.html">Si supercell with a displaced atom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/example_mgo.html">MgO with atomic projections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/example_nabis2.html">Disordered NaBiS<sub>2</sub> with atomic/orbital projections &amp; DOS plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/example_si211_castep.html">Si supercell using CASTEP</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Band Unfolding Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="publications.html">Publications</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">CLI Reference</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/index.html">API Reference</a><input checked class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="apidocs/easyunfold/easyunfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.wavefun.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavefun</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.utils</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.vasp_constant.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.vasp_constant</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.effective_mass.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.effective_mass</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.wavecar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavecar</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.cli.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.cli</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.plotting.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.plotting</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.procar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.procar</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.unfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.unfold</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/SMTG-Bham/easyunfold" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/cli.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>CLI Reference</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold">easyunfold</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold-generate">generate</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold-unfold">unfold</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold-unfold-calculate">calculate</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold-unfold-effective-mass">effective-mass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold-unfold-plot">plot</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold-unfold-plot-projections">plot-projections</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold-unfold-status">status</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="cli-reference">
+<h1>CLI Reference<a class="headerlink" href="#cli-reference" title="Permalink to this heading">#</a></h1>
+<p>This page provides documentation for our command line tools.</p>
+<section id="easyunfold">
+<h2>easyunfold<a class="headerlink" href="#easyunfold" title="Permalink to this heading">#</a></h2>
+<p>Tool for performing band unfolding</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
+</pre></div>
+</div>
+<section id="easyunfold-generate">
+<h3>generate<a class="headerlink" href="#easyunfold-generate" title="Permalink to this heading">#</a></h3>
+<p>Generate the kpoints for performing supercell calculations.</p>
+<p>There are two modes of running supercell calculations:</p>
+<ol class="arabic simple">
+<li><p>Use the generated kpoints for unfolding for non-SCF calculations, e.g. with a fixed charged density from the SCF calculation.</p></li>
+<li><p>Include the generated kpoints in SCF calculation but set their weights to zeros.</p></li>
+</ol>
+<p>In both cases, the kpoints can be split into multiple calculations.</p>
+<p>This command defaults to go down the first route where the kpoints generated are only
+those needed for the unfolding, all kpoints and written into the same file, but the user
+is free to manually split them into multiple calculations.
+The second approach can be activated with the <code class="docutils literal notranslate"><span class="pre">--nk-per-split</span></code> option and in the same
+time provide the <code class="docutils literal notranslate"><span class="pre">--scf-kpoints</span></code>. This will generate a serial of kpoints files containing
+the SCF kpoints followed by the actual kpoints needed for unfolding with zero weights.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>generate<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>PC_FILE<span class="w"> </span>SC_FILE<span class="w"> </span>KPOINTS
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-generate-time-reversal">
+<span id="cmdoption-easyunfold-generate-no-time-reversal"></span><span class="sig-name descname"><span class="pre">--time-reversal</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--no-time-reversal</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-easyunfold-generate-time-reversal" title="Permalink to this definition">#</a></dt>
+<dd><p>Whether to assume time-reversal symmetry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">True</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-generate-c">
+<span id="cmdoption-easyunfold-generate-code"></span><span class="sig-name descname"><span class="pre">-c</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--code</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;code&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-generate-c" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the DFT code that the kpoints should be formatted to.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">vasp</span></code></p>
+</dd>
+<dt class="field-even">Options<span class="colon">:</span></dt>
+<dd class="field-even"><p>vasp | castep</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-generate-m">
+<span id="cmdoption-easyunfold-generate-matrix"></span><span class="sig-name descname"><span class="pre">-m</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--matrix</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;matrix&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-generate-m" title="Permalink to this definition">#</a></dt>
+<dd><p>Transformation matrix, in the form “x y z” for a diagonal matrix, or “x1 y1 z1, x2 y2 z2, x3 y3 z3” for a 3x3 matrix. Automatically guessed if not provided.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-generate-symprec">
+<span class="sig-name descname"><span class="pre">--symprec</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;symprec&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-generate-symprec" title="Permalink to this definition">#</a></dt>
+<dd><p>Tolerance for determining the symmetry</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">1e-05</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-generate-o">
+<span id="cmdoption-easyunfold-generate-out-file"></span><span class="sig-name descname"><span class="pre">-o</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--out-file</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;out_file&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-generate-o" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the output file</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-generate-no-expand">
+<span class="sig-name descname"><span class="pre">--no-expand</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-easyunfold-generate-no-expand" title="Permalink to this definition">#</a></dt>
+<dd><p>Do not expand the kpoints by symmetry</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-generate-nk-per-split">
+<span class="sig-name descname"><span class="pre">--nk-per-split</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;nk_per_split&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-generate-nk-per-split" title="Permalink to this definition">#</a></dt>
+<dd><p>Number of band structure kpoints per split.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-generate-scf-kpoints">
+<span class="sig-name descname"><span class="pre">--scf-kpoints</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;scf_kpoints&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-generate-scf-kpoints" title="Permalink to this definition">#</a></dt>
+<dd><p>File (IBZKPT) to provide SCF kpoints for self-consistent calculations. Needed for hybrid functional calculations.</p>
+</dd></dl>
+
+<p class="rubric">Arguments</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-generate-arg-PC_FILE">
+<span id="cmdoption-easyunfold-generate-arg-pc-file"></span><span class="sig-name descname"><span class="pre">PC_FILE</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-easyunfold-generate-arg-PC_FILE" title="Permalink to this definition">#</a></dt>
+<dd><p>Required argument</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-generate-arg-SC_FILE">
+<span id="cmdoption-easyunfold-generate-arg-sc-file"></span><span class="sig-name descname"><span class="pre">SC_FILE</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-easyunfold-generate-arg-SC_FILE" title="Permalink to this definition">#</a></dt>
+<dd><p>Required argument</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-generate-arg-KPOINTS">
+<span id="cmdoption-easyunfold-generate-arg-kpoints"></span><span class="sig-name descname"><span class="pre">KPOINTS</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-easyunfold-generate-arg-KPOINTS" title="Permalink to this definition">#</a></dt>
+<dd><p>Required argument</p>
+</dd></dl>
+
+</section>
+<section id="easyunfold-unfold">
+<h3>unfold<a class="headerlink" href="#easyunfold-unfold" title="Permalink to this heading">#</a></h3>
+<p>Perform unfolding and plotting</p>
+<p>There are multiple sub-command available under this command group.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span>COMMAND<span class="w"> </span><span class="o">[</span>ARGS<span class="o">]</span>...
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-d">
+<span id="cmdoption-easyunfold-unfold-data-file"></span><span class="sig-name descname"><span class="pre">-d</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--data-file</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;data_file&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-d" title="Permalink to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">easyunfold.json</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<section id="easyunfold-unfold-calculate">
+<h4>calculate<a class="headerlink" href="#easyunfold-unfold-calculate" title="Permalink to this heading">#</a></h4>
+<p>Perform the unfolding</p>
+<p>Multiple wave function (e.g. the WAVECAR file if using VASP) files can be supplied for
+split-path calculations.
+Once the calculation is done, the wave function data are not longer needed as the
+spectral weights will be stored in the outputs <code class="docutils literal notranslate"><span class="pre">json</span></code> file.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>calculate<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span><span class="w"> </span><span class="o">[</span>WAVEFUNC<span class="o">]</span>...
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-calculate-save-as">
+<span class="sig-name descname"><span class="pre">--save-as</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;save_as&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-calculate-save-as" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-calculate-gamma">
+<span class="sig-name descname"><span class="pre">--gamma</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-calculate-gamma" title="Permalink to this definition">#</a></dt>
+<dd><p>If the calculation is $Gamma$-only</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-calculate-ncl">
+<span class="sig-name descname"><span class="pre">--ncl</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-calculate-ncl" title="Permalink to this definition">#</a></dt>
+<dd><p>If the calculation has non-collinear spins.</p>
+</dd></dl>
+
+<p class="rubric">Arguments</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-calculate-arg-WAVEFUNC">
+<span id="cmdoption-easyunfold-unfold-calculate-arg-wavefunc"></span><span class="sig-name descname"><span class="pre">WAVEFUNC</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-calculate-arg-WAVEFUNC" title="Permalink to this definition">#</a></dt>
+<dd><p>Optional argument(s)</p>
+</dd></dl>
+
+</section>
+<section id="easyunfold-unfold-effective-mass">
+<h4>effective-mass<a class="headerlink" href="#easyunfold-unfold-effective-mass" title="Permalink to this heading">#</a></h4>
+<p>Compute and print effective masses by tracing the unfolded weights.</p>
+<p>Note that this functionality only works for simple unfolded band structures,
+and it is likely to fail for complex cases.</p>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">--plot-fit</span></code> flag to generate the detected band edge verses the parabolic fit
+for visual confirmation if unsure.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>effective-mass<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-effective-mass-m">
+<span id="cmdoption-easyunfold-unfold-effective-mass-mpl-style-file"></span><span class="sig-name descname"><span class="pre">-m</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--mpl-style-file</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;mpl_style_file&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-effective-mass-m" title="Permalink to this definition">#</a></dt>
+<dd><p>Specify custom plotting mplstyle file</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-effective-mass-intensity-threshold">
+<span class="sig-name descname"><span class="pre">--intensity-threshold</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;intensity_threshold&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-effective-mass-intensity-threshold" title="Permalink to this definition">#</a></dt>
+<dd><p>Intensity threshold for detecting valid bands.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">0.1</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-effective-mass-spin">
+<span class="sig-name descname"><span class="pre">--spin</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;spin&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-effective-mass-spin" title="Permalink to this definition">#</a></dt>
+<dd><p>Index of the spin channel.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-effective-mass-npoints">
+<span class="sig-name descname"><span class="pre">--npoints</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;npoints&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-effective-mass-npoints" title="Permalink to this definition">#</a></dt>
+<dd><p>Number of kpoints used for fitting from the extrema.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">3</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-effective-mass-extrema-detect-tol">
+<span class="sig-name descname"><span class="pre">--extrema-detect-tol</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;extrema_detect_tol&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-effective-mass-extrema-detect-tol" title="Permalink to this definition">#</a></dt>
+<dd><p>Tolerance for band extrema detection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">0.01</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-effective-mass-degeneracy-detect-tol">
+<span class="sig-name descname"><span class="pre">--degeneracy-detect-tol</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;degeneracy_detect_tol&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-effective-mass-degeneracy-detect-tol" title="Permalink to this definition">#</a></dt>
+<dd><p>Tolerance for band degeneracy detection at extrema.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">0.01</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-effective-mass-nocc">
+<span class="sig-name descname"><span class="pre">--nocc</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;nocc&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-effective-mass-nocc" title="Permalink to this definition">#</a></dt>
+<dd><p>DEV: Use this band as the extrema at all kpoints.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-effective-mass-plot">
+<span class="sig-name descname"><span class="pre">--plot</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-effective-mass-plot" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-effective-mass-plot-fit">
+<span class="sig-name descname"><span class="pre">--plot-fit</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-effective-mass-plot-fit" title="Permalink to this definition">#</a></dt>
+<dd><p>Generate plots of the band edge and parabolic fits.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-effective-mass-fit-label">
+<span class="sig-name descname"><span class="pre">--fit-label</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;fit_label&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-effective-mass-fit-label" title="Permalink to this definition">#</a></dt>
+<dd><p>Which branch to use for plot fitting. e.g. electrons:0</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">electrons:0</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-effective-mass-band-filter">
+<span class="sig-name descname"><span class="pre">--band-filter</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;band_filter&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-effective-mass-band-filter" title="Permalink to this definition">#</a></dt>
+<dd><p>Only displace information for this band.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-effective-mass-o">
+<span id="cmdoption-easyunfold-unfold-effective-mass-out-file"></span><span class="sig-name descname"><span class="pre">-o</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--out-file</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;out_file&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-effective-mass-o" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the output file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">unfold-effective-mass.png</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="easyunfold-unfold-plot">
+<h4>plot<a class="headerlink" href="#easyunfold-unfold-plot" title="Permalink to this heading">#</a></h4>
+<p>Plot the spectral function</p>
+<p>This command uses the stored unfolding data to plot the effective bands structure (EBS) using the spectral function.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-dpi">
+<span class="sig-name descname"><span class="pre">--dpi</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;dpi&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-dpi" title="Permalink to this definition">#</a></dt>
+<dd><p>DPI for the figure when saved as raster image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">300</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-height">
+<span class="sig-name descname"><span class="pre">--height</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;height&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-height" title="Permalink to this definition">#</a></dt>
+<dd><p>Height of the figure</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">3.0</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-width">
+<span class="sig-name descname"><span class="pre">--width</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;width&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-width" title="Permalink to this definition">#</a></dt>
+<dd><p>Width of the figure</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">4.0</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-title">
+<span class="sig-name descname"><span class="pre">--title</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;title&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-title" title="Permalink to this definition">#</a></dt>
+<dd><p>Title to be used</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-orbitals">
+<span class="sig-name descname"><span class="pre">--orbitals</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;orbitals&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-orbitals" title="Permalink to this definition">#</a></dt>
+<dd><p>Orbitals to be used for weighting, comma-separated (e.g. “s,p”). If different for different atom groups (specified with <cite>–atoms</cite>/<cite>–atoms-idx</cite>, then different groups should be separated by “|” (e.g. “px,py|s|p,d”).</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-atoms-idx">
+<span class="sig-name descname"><span class="pre">--atoms-idx</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;atoms_idx&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-atoms-idx" title="Permalink to this definition">#</a></dt>
+<dd><p>Recommended to use <cite>–atoms</cite> if possible, otherwise use this. Indices of the atoms to be used for weighting (1-indexed), comma-separated and “-” can be used to define ranges (e.g. “1-20,21,22,23”). If using with plot-projections, different groups (i.e. colour projections) should be separated by “|” (e.g. “1-20|21,22,23|36”).</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-poscar">
+<span class="sig-name descname"><span class="pre">--poscar</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;poscar&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-poscar" title="Permalink to this definition">#</a></dt>
+<dd><p>Path to POSCAR or CONTCAR file from which to read atom indices for weighting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">POSCAR</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-atoms">
+<span class="sig-name descname"><span class="pre">--atoms</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;atoms&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-atoms" title="Permalink to this definition">#</a></dt>
+<dd><p>Atoms to be used for weighting, as a comma-separated list (e.g. “Na,Bi,S”). The POSCAR or CONTCAR file (matching <cite>–poscar</cite>) must be present, otherwise use <cite>–atoms-idx</cite>.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-procar">
+<span class="sig-name descname"><span class="pre">--procar</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;procar&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-procar" title="Permalink to this definition">#</a></dt>
+<dd><p>PROCAR file(s) for atomic weighting, can be passed multiple times if more than one PROCAR should be used. Default is to read PROCAR in current directory</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-total-only">
+<span class="sig-name descname"><span class="pre">--total-only</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-total-only" title="Permalink to this definition">#</a></dt>
+<dd><p>Only plot the total density of states.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-no-total">
+<span class="sig-name descname"><span class="pre">--no-total</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-no-total" title="Permalink to this definition">#</a></dt>
+<dd><p>Don’t plot the total density of states.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-scale">
+<span class="sig-name descname"><span class="pre">--scale</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;scale&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-scale" title="Permalink to this definition">#</a></dt>
+<dd><p>Scaling factor for the DOS plot.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-gaussian">
+<span class="sig-name descname"><span class="pre">--gaussian</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;gaussian&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-gaussian" title="Permalink to this definition">#</a></dt>
+<dd><p>Standard deviation of DOS gaussian broadening in eV.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">0.05</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-legend-cutoff">
+<span class="sig-name descname"><span class="pre">--legend-cutoff</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;legend_cutoff&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-legend-cutoff" title="Permalink to this definition">#</a></dt>
+<dd><p>Cut-off in % of total DOS that determines if a line is given a label.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">3</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-dos-atoms">
+<span class="sig-name descname"><span class="pre">--dos-atoms</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;dos_atoms&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-dos-atoms" title="Permalink to this definition">#</a></dt>
+<dd><p>Atoms to include (e.g. “O.1.2.3,Ru.1.2.3”) for DOS if included.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-dos-orbitals">
+<span class="sig-name descname"><span class="pre">--dos-orbitals</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;dos_orbitals&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-dos-orbitals" title="Permalink to this definition">#</a></dt>
+<dd><p>Orbitals to split into lm-decomposed (e.g. p -&gt; px, py, pz) contributions (e.g. “S.p”) for DOS if included.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-dos-elements">
+<span class="sig-name descname"><span class="pre">--dos-elements</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;dos_elements&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-dos-elements" title="Permalink to this definition">#</a></dt>
+<dd><p>Elemental orbitals to plot (e.g. “C.s.p,O”) for DOS if included. If not specified, will be set to the orbitals of <cite>–atoms</cite> (if specified)</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-zero-line">
+<span class="sig-name descname"><span class="pre">--zero-line</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-zero-line" title="Permalink to this definition">#</a></dt>
+<dd><p>Plot horizontal line at zero energy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-dos-label">
+<span class="sig-name descname"><span class="pre">--dos-label</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;dos_label&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-dos-label" title="Permalink to this definition">#</a></dt>
+<dd><p>Axis label for DOS if included.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-dos">
+<span class="sig-name descname"><span class="pre">--dos</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;dos&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-dos" title="Permalink to this definition">#</a></dt>
+<dd><p>Path to vasprun.xml(.gz) file from which to read the density of states (DOS) information. If set, the density of states will be plotted alongside the unfolded bandstructure. For GGA bandstructures, this should not be the vasprun.xml(.gz) from the bandstructure calculation (-&gt; non-uniform kpoint mesh), but rather the preceding SCF or separate DOS calculation.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-no-symm-average">
+<span class="sig-name descname"><span class="pre">--no-symm-average</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-no-symm-average" title="Permalink to this definition">#</a></dt>
+<dd><p>Do not include symmetry related kpoints for averaging.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-show">
+<span class="sig-name descname"><span class="pre">--show</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-show" title="Permalink to this definition">#</a></dt>
+<dd><p>Show the plot interactively.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-cmap">
+<span class="sig-name descname"><span class="pre">--cmap</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;cmap&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-cmap" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the colour map to use.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">PuRd</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-o">
+<span id="cmdoption-easyunfold-unfold-plot-out-file"></span><span class="sig-name descname"><span class="pre">-o</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--out-file</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;out_file&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-o" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the output file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">unfold.png</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-vscale">
+<span class="sig-name descname"><span class="pre">--vscale</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;vscale&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-vscale" title="Permalink to this definition">#</a></dt>
+<dd><p>A normalisation/scaling factor for the colour mapping. Equivalent to (1/intensity). Will be deprecated in future versions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">1.0</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-intensity">
+<span class="sig-name descname"><span class="pre">--intensity</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;intensity&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-intensity" title="Permalink to this definition">#</a></dt>
+<dd><p>Scaling factor for the colour intensity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">1.0</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-emax">
+<span class="sig-name descname"><span class="pre">--emax</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;emax&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-emax" title="Permalink to this definition">#</a></dt>
+<dd><p>Maximum energy in eV relative to the reference.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">5.0</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-emin">
+<span class="sig-name descname"><span class="pre">--emin</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;emin&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-emin" title="Permalink to this definition">#</a></dt>
+<dd><p>Minimum energy in eV relative to the reference.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">-5.0</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-eref">
+<span class="sig-name descname"><span class="pre">--eref</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;eref&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-eref" title="Permalink to this definition">#</a></dt>
+<dd><p>Reference energy in eV.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-sigma">
+<span class="sig-name descname"><span class="pre">--sigma</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;sigma&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-sigma" title="Permalink to this definition">#</a></dt>
+<dd><p>Smearing width for the energy in eV.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">0.02</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-npoints">
+<span class="sig-name descname"><span class="pre">--npoints</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;npoints&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-npoints" title="Permalink to this definition">#</a></dt>
+<dd><p>Number of bins for the energy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">2000</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-m">
+<span id="cmdoption-easyunfold-unfold-plot-mpl-style-file"></span><span class="sig-name descname"><span class="pre">-m</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--mpl-style-file</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;mpl_style_file&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-m" title="Permalink to this definition">#</a></dt>
+<dd><p>Specify custom plotting mplstyle file</p>
+</dd></dl>
+
+</section>
+<section id="easyunfold-unfold-plot-projections">
+<h4>plot-projections<a class="headerlink" href="#easyunfold-unfold-plot-projections" title="Permalink to this heading">#</a></h4>
+<p>Plot the effective band structure with atomic projections.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot-projections<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+<p class="rubric">Options</p>
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-projections-dpi">
+<span class="sig-name descname"><span class="pre">--dpi</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;dpi&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-projections-dpi" title="Permalink to this definition">#</a></dt>
+<dd><p>DPI for the figure when saved as raster image.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">300</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-projections-height">
+<span class="sig-name descname"><span class="pre">--height</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;height&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-projections-height" title="Permalink to this definition">#</a></dt>
+<dd><p>Height of the figure</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">3.0</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-projections-width">
+<span class="sig-name descname"><span class="pre">--width</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;width&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-projections-width" title="Permalink to this definition">#</a></dt>
+<dd><p>Width of the figure</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">4.0</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-projections-title">
+<span class="sig-name descname"><span class="pre">--title</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;title&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-projections-title" title="Permalink to this definition">#</a></dt>
+<dd><p>Title to be used</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-projections-orbitals">
+<span class="sig-name descname"><span class="pre">--orbitals</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;orbitals&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-projections-orbitals" title="Permalink to this definition">#</a></dt>
+<dd><p>Orbitals to be used for weighting, comma-separated (e.g. “s,p”). If different for different atom groups (specified with <cite>–atoms</cite>/<cite>–atoms-idx</cite>, then different groups should be separated by “|” (e.g. “px,py|s|p,d”).</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-projections-atoms-idx">
+<span class="sig-name descname"><span class="pre">--atoms-idx</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;atoms_idx&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-projections-atoms-idx" title="Permalink to this definition">#</a></dt>
+<dd><p>Recommended to use <cite>–atoms</cite> if possible, otherwise use this. Indices of the atoms to be used for weighting (1-indexed), comma-separated and “-” can be used to define ranges (e.g. “1-20,21,22,23”). If using with plot-projections, different groups (i.e. colour projections) should be separated by “|” (e.g. “1-20|21,22,23|36”).</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-projections-poscar">
+<span class="sig-name descname"><span class="pre">--poscar</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;poscar&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-projections-poscar" title="Permalink to this definition">#</a></dt>
+<dd><p>Path to POSCAR or CONTCAR file from which to read atom indices for weighting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">POSCAR</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-projections-atoms">
+<span class="sig-name descname"><span class="pre">--atoms</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;atoms&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-projections-atoms" title="Permalink to this definition">#</a></dt>
+<dd><p>Atoms to be used for weighting, as a comma-separated list (e.g. “Na,Bi,S”). The POSCAR or CONTCAR file (matching <cite>–poscar</cite>) must be present, otherwise use <cite>–atoms-idx</cite>.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-projections-procar">
+<span class="sig-name descname"><span class="pre">--procar</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;procar&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-projections-procar" title="Permalink to this definition">#</a></dt>
+<dd><p>PROCAR file(s) for atomic weighting, can be passed multiple times if more than one PROCAR should be used. Default is to read PROCAR in current directory</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-projections-total-only">
+<span class="sig-name descname"><span class="pre">--total-only</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-projections-total-only" title="Permalink to this definition">#</a></dt>
+<dd><p>Only plot the total density of states.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-projections-no-total">
+<span class="sig-name descname"><span class="pre">--no-total</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-projections-no-total" title="Permalink to this definition">#</a></dt>
+<dd><p>Don’t plot the total density of states.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-projections-scale">
+<span class="sig-name descname"><span class="pre">--scale</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;scale&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-projections-scale" title="Permalink to this definition">#</a></dt>
+<dd><p>Scaling factor for the DOS plot.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-projections-gaussian">
+<span class="sig-name descname"><span class="pre">--gaussian</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;gaussian&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-projections-gaussian" title="Permalink to this definition">#</a></dt>
+<dd><p>Standard deviation of DOS gaussian broadening in eV.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">0.05</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-projections-legend-cutoff">
+<span class="sig-name descname"><span class="pre">--legend-cutoff</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;legend_cutoff&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-projections-legend-cutoff" title="Permalink to this definition">#</a></dt>
+<dd><p>Cut-off in % of total DOS that determines if a line is given a label.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">3</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-projections-dos-atoms">
+<span class="sig-name descname"><span class="pre">--dos-atoms</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;dos_atoms&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-projections-dos-atoms" title="Permalink to this definition">#</a></dt>
+<dd><p>Atoms to include (e.g. “O.1.2.3,Ru.1.2.3”) for DOS if included.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-projections-dos-orbitals">
+<span class="sig-name descname"><span class="pre">--dos-orbitals</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;dos_orbitals&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-projections-dos-orbitals" title="Permalink to this definition">#</a></dt>
+<dd><p>Orbitals to split into lm-decomposed (e.g. p -&gt; px, py, pz) contributions (e.g. “S.p”) for DOS if included.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-projections-dos-elements">
+<span class="sig-name descname"><span class="pre">--dos-elements</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;dos_elements&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-projections-dos-elements" title="Permalink to this definition">#</a></dt>
+<dd><p>Elemental orbitals to plot (e.g. “C.s.p,O”) for DOS if included. If not specified, will be set to the orbitals of <cite>–atoms</cite> (if specified)</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-projections-zero-line">
+<span class="sig-name descname"><span class="pre">--zero-line</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-projections-zero-line" title="Permalink to this definition">#</a></dt>
+<dd><p>Plot horizontal line at zero energy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-projections-dos-label">
+<span class="sig-name descname"><span class="pre">--dos-label</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;dos_label&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-projections-dos-label" title="Permalink to this definition">#</a></dt>
+<dd><p>Axis label for DOS if included.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-projections-dos">
+<span class="sig-name descname"><span class="pre">--dos</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;dos&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-projections-dos" title="Permalink to this definition">#</a></dt>
+<dd><p>Path to vasprun.xml(.gz) file from which to read the density of states (DOS) information. If set, the density of states will be plotted alongside the unfolded bandstructure. For GGA bandstructures, this should not be the vasprun.xml(.gz) from the bandstructure calculation (-&gt; non-uniform kpoint mesh), but rather the preceding SCF or separate DOS calculation.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-projections-no-symm-average">
+<span class="sig-name descname"><span class="pre">--no-symm-average</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-projections-no-symm-average" title="Permalink to this definition">#</a></dt>
+<dd><p>Do not include symmetry related kpoints for averaging.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-projections-show">
+<span class="sig-name descname"><span class="pre">--show</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-projections-show" title="Permalink to this definition">#</a></dt>
+<dd><p>Show the plot interactively.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-projections-cmap">
+<span class="sig-name descname"><span class="pre">--cmap</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;cmap&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-projections-cmap" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the colour map to use.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">PuRd</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-projections-o">
+<span id="cmdoption-easyunfold-unfold-plot-projections-out-file"></span><span class="sig-name descname"><span class="pre">-o</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--out-file</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;out_file&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-projections-o" title="Permalink to this definition">#</a></dt>
+<dd><p>Name of the output file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">unfold.png</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-projections-vscale">
+<span class="sig-name descname"><span class="pre">--vscale</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;vscale&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-projections-vscale" title="Permalink to this definition">#</a></dt>
+<dd><p>A normalisation/scaling factor for the colour mapping. Equivalent to (1/intensity). Will be deprecated in future versions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">1.0</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-projections-intensity">
+<span class="sig-name descname"><span class="pre">--intensity</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;intensity&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-projections-intensity" title="Permalink to this definition">#</a></dt>
+<dd><p>Scaling factor for the colour intensity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">1.0</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-projections-emax">
+<span class="sig-name descname"><span class="pre">--emax</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;emax&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-projections-emax" title="Permalink to this definition">#</a></dt>
+<dd><p>Maximum energy in eV relative to the reference.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">5.0</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-projections-emin">
+<span class="sig-name descname"><span class="pre">--emin</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;emin&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-projections-emin" title="Permalink to this definition">#</a></dt>
+<dd><p>Minimum energy in eV relative to the reference.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">-5.0</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-projections-eref">
+<span class="sig-name descname"><span class="pre">--eref</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;eref&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-projections-eref" title="Permalink to this definition">#</a></dt>
+<dd><p>Reference energy in eV.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-projections-sigma">
+<span class="sig-name descname"><span class="pre">--sigma</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;sigma&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-projections-sigma" title="Permalink to this definition">#</a></dt>
+<dd><p>Smearing width for the energy in eV.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">0.02</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-projections-npoints">
+<span class="sig-name descname"><span class="pre">--npoints</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;npoints&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-projections-npoints" title="Permalink to this definition">#</a></dt>
+<dd><p>Number of bins for the energy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">2000</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-projections-m">
+<span id="cmdoption-easyunfold-unfold-plot-projections-mpl-style-file"></span><span class="sig-name descname"><span class="pre">-m</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--mpl-style-file</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;mpl_style_file&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-projections-m" title="Permalink to this definition">#</a></dt>
+<dd><p>Specify custom plotting mplstyle file</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-projections-combined">
+<span id="cmdoption-easyunfold-unfold-plot-projections-no-combined"></span><span class="sig-name descname"><span class="pre">--combined</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--no-combined</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-projections-combined" title="Permalink to this definition">#</a></dt>
+<dd><p>Plot all projections in a combined graph.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-projections-colours">
+<span class="sig-name descname"><span class="pre">--colours</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;colours&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-projections-colours" title="Permalink to this definition">#</a></dt>
+<dd><p>Colours to be used for combined plot, comma separated (e.g. “r,b,y”). Default is pastel red, green, blue if &lt;=3 projections, else red, green, blue, purple, orange, yellow.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-plot-projections-colourspace">
+<span class="sig-name descname"><span class="pre">--colourspace</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;colourspace&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-plot-projections-colourspace" title="Permalink to this definition">#</a></dt>
+<dd><p>Colourspace in which to perform interpolation for combined plot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">lab</span></code></p>
+</dd>
+<dt class="field-even">Options<span class="colon">:</span></dt>
+<dd class="field-even"><p>rgb | hsv | lab | luvlch | lablch | xyz</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="easyunfold-unfold-status">
+<h4>status<a class="headerlink" href="#easyunfold-unfold-status" title="Permalink to this heading">#</a></h4>
+<p>Print the status</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>status<span class="w"> </span><span class="o">[</span>OPTIONS<span class="o">]</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="publications.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Publications</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="apidocs/index.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">API Reference</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold">easyunfold</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold-generate">generate</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold-unfold">unfold</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold-unfold-calculate">calculate</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold-unfold-effective-mass">effective-mass</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold-unfold-plot">plot</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold-unfold-plot-projections">plot-projections</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold-unfold-status">status</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Bonan Zhu, Seán Kavanagh
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2023, Bonan Zhu.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=365ca57ee442770a23c6"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=365ca57ee442770a23c6"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

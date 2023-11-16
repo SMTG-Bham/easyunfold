@@ -1,0 +1,1209 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>easyunfold.unfold &#8212; easyunfold</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" href="../../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=365ca57ee442770a23c6" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=365ca57ee442770a23c6" />
+  <script src="../../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=365ca57ee442770a23c6"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'apidocs/easyunfold/easyunfold.unfold';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="easyunfold.procar" href="easyunfold.procar.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/logo.svg" class="logo__image only-light" alt="easyunfold - Home"/>
+    <script>document.write(`<img src="../../_static/logo.svg" class="logo__image only-dark" alt="easyunfold - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/SMTG-Bham/easyunfold" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/easyunfold/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/pypi/v/easyunfold" class="icon-link-image" alt="PyPI"/></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../index.html">
+                    easyunfold Documentation
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../examples.html">Examples</a><input checked class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/example_si222.html">Si supercell with a displaced atom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/example_mgo.html">MgO with atomic projections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/example_nabis2.html">Disordered NaBiS<sub>2</sub> with atomic/orbital projections &amp; DOS plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../examples/example_si211_castep.html">Si supercell using CASTEP</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../theory.html">Band Unfolding Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cli.html">CLI Reference</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Reference</a><input checked class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="easyunfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold</span></code></a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="easyunfold.wavefun.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavefun</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="easyunfold.utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.utils</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="easyunfold.vasp_constant.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.vasp_constant</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="easyunfold.effective_mass.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.effective_mass</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="easyunfold.wavecar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavecar</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="easyunfold.cli.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.cli</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="easyunfold.plotting.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.plotting</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="easyunfold.procar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.procar</span></code></a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.unfold</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/SMTG-Bham/easyunfold" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/apidocs/easyunfold/easyunfold.unfold.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>easyunfold.unfold</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">Module Contents</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#classes">Classes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#functions">Functions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api">API</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.get_symmetry_dataset"><code class="docutils literal notranslate"><span class="pre">get_symmetry_dataset()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.find_K_from_k"><code class="docutils literal notranslate"><span class="pre">find_K_from_k()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.rotate_kpt"><code class="docutils literal notranslate"><span class="pre">rotate_kpt()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.expand_K_by_symmetry"><code class="docutils literal notranslate"><span class="pre">expand_K_by_symmetry()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet._VERSION"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet._VERSION</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.check_version"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.check_version()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.is_calculated"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.is_calculated</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.has_averaged_spectral_weights"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.has_averaged_spectral_weights</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.from_atoms"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.from_atoms()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.from_file"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.from_file()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.expand_pc_kpoints"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.expand_pc_kpoints()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.__repr__"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.__repr__()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.nsymm_orig"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.nsymm_orig</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.nsymm_expand"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.nsymm_expand</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.nkpts_orig"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.nkpts_orig</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.nkpts_expand"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.nkpts_expand</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.generate_sc_kpoints"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.generate_sc_kpoints()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.write_sc_kpoints"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.write_sc_kpoints()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.write_pc_kpoints"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.write_pc_kpoints()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet._read_weights"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet._read_weights()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.load_procars"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.load_procars()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet._construct_procar_kmap"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet._construct_procar_kmap()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.procar"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.procar</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.procar_kmaps"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.procar_kmaps</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet._get_spectral_weights"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet._get_spectral_weights()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.get_band_weight_sets"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.get_band_weight_sets()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.get_spectral_function"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.get_spectral_function()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.get_spectral_weights"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.get_spectral_weights()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.as_dict"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.as_dict()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.get_kpoint_distances"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.get_kpoint_distances()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.LorentzSmearing"><code class="docutils literal notranslate"><span class="pre">LorentzSmearing()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.GaussianSmearing"><code class="docutils literal notranslate"><span class="pre">GaussianSmearing()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.make_kpath"><code class="docutils literal notranslate"><span class="pre">make_kpath()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.clean_latex_string"><code class="docutils literal notranslate"><span class="pre">clean_latex_string()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.spectral_function_from_weight_sets"><code class="docutils literal notranslate"><span class="pre">spectral_function_from_weight_sets()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.Unfold"><code class="docutils literal notranslate"><span class="pre">Unfold</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.Unfold.get_vbm_cbm"><code class="docutils literal notranslate"><span class="pre">Unfold.get_vbm_cbm()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.Unfold.get_ovlap_G"><code class="docutils literal notranslate"><span class="pre">Unfold.get_ovlap_G()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.Unfold.find_K_index"><code class="docutils literal notranslate"><span class="pre">Unfold.find_K_index()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.Unfold.spectral_weight_k"><code class="docutils literal notranslate"><span class="pre">Unfold.spectral_weight_k()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.Unfold.spectral_weight"><code class="docutils literal notranslate"><span class="pre">Unfold.spectral_weight()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.Unfold.spectral_function"><code class="docutils literal notranslate"><span class="pre">Unfold.spectral_function()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.spectral_weight_multiple_source"><code class="docutils literal notranslate"><span class="pre">spectral_weight_multiple_source()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.concatenate_scf_kpoints"><code class="docutils literal notranslate"><span class="pre">concatenate_scf_kpoints()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.create_white_colormap"><code class="docutils literal notranslate"><span class="pre">create_white_colormap()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.create_white_colormap_from_existing"><code class="docutils literal notranslate"><span class="pre">create_white_colormap_from_existing()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.parse_atoms_idx"><code class="docutils literal notranslate"><span class="pre">parse_atoms_idx()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.process_projection_options"><code class="docutils literal notranslate"><span class="pre">process_projection_options()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.read_poscar_contcar_if_present"><code class="docutils literal notranslate"><span class="pre">read_poscar_contcar_if_present()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.parse_atoms"><code class="docutils literal notranslate"><span class="pre">parse_atoms()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="module-easyunfold.unfold">
+<span id="easyunfold-unfold"></span><h1><a class="reference internal" href="#module-easyunfold.unfold" title="easyunfold.unfold"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.unfold</span></code></a><a class="headerlink" href="#module-easyunfold.unfold" title="Permalink to this heading">#</a></h1>
+<p>The main module for unfolding workflow and algorithm</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this heading">#</a></h2>
+<section id="classes">
+<h3>Classes<a class="headerlink" href="#classes" title="Permalink to this heading">#</a></h3>
+<table class="autosummary longtable table table-left">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#easyunfold.unfold.UnfoldKSet" title="easyunfold.unfold.UnfoldKSet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">UnfoldKSet</span></code></a></p></td>
+<td><p>High-level interface for unfolding and serialization.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#easyunfold.unfold.Unfold" title="easyunfold.unfold.Unfold"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Unfold</span></code></a></p></td>
+<td><p>Low level interface for performing unfolding related calculations.
+obtain the effective band structure (EBS).</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this heading">#</a></h3>
+<table class="autosummary longtable table table-left">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#easyunfold.unfold.get_symmetry_dataset" title="easyunfold.unfold.get_symmetry_dataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_symmetry_dataset</span></code></a></p></td>
+<td><p>Get the symmetry dataset using spglib</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#easyunfold.unfold.find_K_from_k" title="easyunfold.unfold.find_K_from_k"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_K_from_k</span></code></a></p></td>
+<td><p>Get the K vector of the supercell onto which the k vector of the primitive
+cell folds. The unfolding vector G, which satisfy the following equation,
+is also returned.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#easyunfold.unfold.rotate_kpt" title="easyunfold.unfold.rotate_kpt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rotate_kpt</span></code></a></p></td>
+<td><p>Apply rotation to a kpoint based on the rotations of the crystals (in the real space)</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#easyunfold.unfold.expand_K_by_symmetry" title="easyunfold.unfold.expand_K_by_symmetry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">expand_K_by_symmetry</span></code></a></p></td>
+<td><p>Expand the sampling of the PC kpoints due to symmetry breaking of the supercell cell.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#easyunfold.unfold.LorentzSmearing" title="easyunfold.unfold.LorentzSmearing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LorentzSmearing</span></code></a></p></td>
+<td><p>Simulate the Delta function by a Lorentzian shape function
+$<span class="math notranslate nohighlight">\(
+    \Delta(x) = \lim_{\sigma\to 0}  Lorentzian
+\)</span>$</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#easyunfold.unfold.GaussianSmearing" title="easyunfold.unfold.GaussianSmearing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GaussianSmearing</span></code></a></p></td>
+<td><p>Simulate the Delta function by a Lorentzian shape function
+$<span class="math notranslate nohighlight">\(
+    \Delta(x) = \lim_{\sigma\to 0} Gaussian
+\)</span>$</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#easyunfold.unfold.make_kpath" title="easyunfold.unfold.make_kpath"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_kpath</span></code></a></p></td>
+<td><p>Return a list of kpoints defining the path between the given kpoints.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#easyunfold.unfold.clean_latex_string" title="easyunfold.unfold.clean_latex_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clean_latex_string</span></code></a></p></td>
+<td><p>Clean up latex labels and convert if necessary</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#easyunfold.unfold.spectral_function_from_weight_sets" title="easyunfold.unfold.spectral_function_from_weight_sets"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spectral_function_from_weight_sets</span></code></a></p></td>
+<td><p>Generate the spectral function</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#easyunfold.unfold.spectral_weight_multiple_source" title="easyunfold.unfold.spectral_weight_multiple_source"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spectral_weight_multiple_source</span></code></a></p></td>
+<td><p>Calculate the spectral weight for a list of kpoints in the primitive BZ
+from a list of wave function files.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#easyunfold.unfold.concatenate_scf_kpoints" title="easyunfold.unfold.concatenate_scf_kpoints"><code class="xref py py-obj docutils literal notranslate"><span class="pre">concatenate_scf_kpoints</span></code></a></p></td>
+<td><p>Concatenate SCF kpoints (from IBZKPT) with zero-weighted kpoints</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#easyunfold.unfold.create_white_colormap" title="easyunfold.unfold.create_white_colormap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_white_colormap</span></code></a></p></td>
+<td><p>Create colormap from white to certain colour.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#easyunfold.unfold.create_white_colormap_from_existing" title="easyunfold.unfold.create_white_colormap_from_existing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_white_colormap_from_existing</span></code></a></p></td>
+<td><p>Create a white-based color map from an existing one.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#easyunfold.unfold.parse_atoms_idx" title="easyunfold.unfold.parse_atoms_idx"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_atoms_idx</span></code></a></p></td>
+<td><p>Expanding syntax like <code class="docutils literal notranslate"><span class="pre">1-2</span></code> (inclusive)</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#easyunfold.unfold.process_projection_options" title="easyunfold.unfold.process_projection_options"><code class="xref py py-obj docutils literal notranslate"><span class="pre">process_projection_options</span></code></a></p></td>
+<td><p>Process commandline-style specifications for project</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#easyunfold.unfold.read_poscar_contcar_if_present" title="easyunfold.unfold.read_poscar_contcar_if_present"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_poscar_contcar_if_present</span></code></a></p></td>
+<td><p>Return an ase Atoms() object of the POSCAR or CONTCAR file if present in the current directory.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#easyunfold.unfold.parse_atoms" title="easyunfold.unfold.parse_atoms"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_atoms</span></code></a></p></td>
+<td><p>Parse the specified atoms (and orbitals if set) from a comma-separated
+string (e.g. “Na,Bi”) into a list of strings (e.g. [“Na”, “Bi”]), as well
+as a list of the corresponding atom indices in the structure and the parse
+orbital projections.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="api">
+<h3>API<a class="headerlink" href="#api" title="Permalink to this heading">#</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="easyunfold.unfold.get_symmetry_dataset">
+<span class="sig-prename descclassname"><span class="pre">easyunfold.unfold.</span></span><span class="sig-name descname"><span class="pre">get_symmetry_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atoms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ase.Atoms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symprec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-05</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.unfold.get_symmetry_dataset" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the symmetry dataset using spglib</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="easyunfold.unfold.find_K_from_k">
+<span class="sig-prename descclassname"><span class="pre">easyunfold.unfold.</span></span><span class="sig-name descname"><span class="pre">find_K_from_k</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">M</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.unfold.find_K_from_k" title="Permalink to this definition">#</a></dt>
+<dd><p>Get the K vector of the supercell onto which the k vector of the primitive
+cell folds. The unfolding vector G, which satisfy the following equation,
+is also returned.</p>
+<div class="math notranslate nohighlight">
+\[
+    \vec{k} = \vec{K} + \vec{G}
+\]</div>
+<p>where G is a reciprocal space vector of supercell</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="easyunfold.unfold.rotate_kpt">
+<span class="sig-prename descclassname"><span class="pre">easyunfold.unfold.</span></span><span class="sig-name descname"><span class="pre">rotate_kpt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.unfold.rotate_kpt" title="Permalink to this definition">#</a></dt>
+<dd><p>Apply rotation to a kpoint based on the rotations of the crystals (in the real space)</p>
+<p>NOTE: The rotation matrix should be the one that act on fractional coordinates, e.g. from spglib.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="easyunfold.unfold.expand_K_by_symmetry">
+<span class="sig-prename descclassname"><span class="pre">easyunfold.unfold.</span></span><span class="sig-name descname"><span class="pre">expand_K_by_symmetry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kpt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opts_pc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opts_sc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_reversal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.unfold.expand_K_by_symmetry" title="Permalink to this definition">#</a></dt>
+<dd><p>Expand the sampling of the PC kpoints due to symmetry breaking of the supercell cell.</p>
+<dl class="myst field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Expanded kpoints and corresponding weights for each primitive cell kpoint.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="easyunfold.unfold.UnfoldKSet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">easyunfold.unfold.</span></span><span class="sig-name descname"><span class="pre">UnfoldKSet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">M</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kpts_pc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pc_latt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pc_opts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sc_opts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_reversal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expansion_results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calculated_quantities</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kpoint_labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dft_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'vasp'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.unfold.UnfoldKSet" title="Permalink to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">monty.json.MSONable</span></code></p>
+<p>High-level interface for unfolding and serialization.</p>
+<p class="rubric">Initialization</p>
+<p>Instantiate an <code class="docutils literal notranslate"><span class="pre">UnfoldKSet</span></code> object.</p>
+<dl class="myst field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>M</strong> – The supercell transformation matrix</p></li>
+<li><p><strong>kpts_pc</strong> – A list of kpoints in the PC</p></li>
+<li><p><strong>pc_latt</strong> – A 3x3 matrix of row lattice vectors of the primitive cell</p></li>
+<li><p><strong>pc_opts</strong> – Symmetry operations of the primitive cell</p></li>
+<li><p><strong>sc_opts</strong> – Symmetry operations of the supercell</p></li>
+<li><p><strong>time_reversal</strong> – Whether to assume time-reversal symmetry or not</p></li>
+<li><p><strong>expand</strong> – Whether to expand the kpoint to take account of broken symmetry or not</p></li>
+<li><p><strong>expansion_results</strong> – Using existing results of symmetry expansion</p></li>
+<li><p><strong>calculated_quantities</strong> – Existing calculated quantities</p></li>
+<li><p><strong>kpoint_labels</strong> – Labels of the kpoints as passed in <code class="docutils literal notranslate"><span class="pre">pc_latt</span></code> as a list of tuples <code class="docutils literal notranslate"><span class="pre">(&lt;idx&gt;,</span> <span class="pre">&lt;label&gt;)</span></code></p></li>
+<li><p><strong>dft_code</strong> – Name of the DFT code to be used.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="easyunfold.unfold.UnfoldKSet._VERSION">
+<span class="sig-name descname"><span class="pre">_VERSION</span></span><a class="headerlink" href="#easyunfold.unfold.UnfoldKSet._VERSION" title="Permalink to this definition">#</a></dt>
+<dd><p>‘0.1.0’</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="easyunfold.unfold.UnfoldKSet.check_version">
+<span class="sig-name descname"><span class="pre">check_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.unfold.UnfoldKSet.check_version" title="Permalink to this definition">#</a></dt>
+<dd><p>Check the version of the program</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="easyunfold.unfold.UnfoldKSet.is_calculated">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_calculated</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#easyunfold.unfold.UnfoldKSet.is_calculated" title="Permalink to this definition">#</a></dt>
+<dd><p>Show the status of the work</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="easyunfold.unfold.UnfoldKSet.has_averaged_spectral_weights">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">has_averaged_spectral_weights</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#easyunfold.unfold.UnfoldKSet.has_averaged_spectral_weights" title="Permalink to this definition">#</a></dt>
+<dd><p>Return True if the spectral weights stored is averaged</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="easyunfold.unfold.UnfoldKSet.from_atoms">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_atoms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">M</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kpts_pc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ase.Atoms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ase.Atoms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_reversal</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symprec</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dft_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'vasp'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.unfold.UnfoldKSet.from_atoms" title="Permalink to this definition">#</a></dt>
+<dd><p>Initialise from primitive cell and supercell atoms</p>
+<dl class="myst field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>M</strong> – The supercell transformation matrix</p></li>
+<li><p><strong>kpts_pc</strong> – A list of kpoints in the PC</p></li>
+<li><p><strong>pc</strong> – Primitive cell structure</p></li>
+<li><p><strong>sc</strong> – Supercell structure</p></li>
+<li><p><strong>time_reversal</strong> – Whether to assume time-reversal symmetry or not</p></li>
+<li><p><strong>expand</strong> – Whether to expand the kpoint to take account of broken symmetry or not</p></li>
+<li><p><strong>symprec</strong> – Symmetry detection precision</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="easyunfold.unfold.UnfoldKSet.from_file">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.unfold.UnfoldKSet.from_file" title="Permalink to this definition">#</a></dt>
+<dd><p>Load from a file</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="easyunfold.unfold.UnfoldKSet.expand_pc_kpoints">
+<span class="sig-name descname"><span class="pre">expand_pc_kpoints</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#easyunfold.unfold.UnfoldKSet.expand_pc_kpoints" title="Permalink to this definition">#</a></dt>
+<dd><p>Compute the pc kpoints to be unfolded into</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="easyunfold.unfold.UnfoldKSet.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#easyunfold.unfold.UnfoldKSet.__repr__" title="Permalink to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="easyunfold.unfold.UnfoldKSet.nsymm_orig">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nsymm_orig</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#easyunfold.unfold.UnfoldKSet.nsymm_orig" title="Permalink to this definition">#</a></dt>
+<dd><p>Number of symmetry operation in the original cell</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="easyunfold.unfold.UnfoldKSet.nsymm_expand">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nsymm_expand</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#easyunfold.unfold.UnfoldKSet.nsymm_expand" title="Permalink to this definition">#</a></dt>
+<dd><p>Number of symmetry operation in the original cell</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="easyunfold.unfold.UnfoldKSet.nkpts_orig">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nkpts_orig</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#easyunfold.unfold.UnfoldKSet.nkpts_orig" title="Permalink to this definition">#</a></dt>
+<dd><p>Total number of unexpanded kpoints</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="easyunfold.unfold.UnfoldKSet.nkpts_expand">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nkpts_expand</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#easyunfold.unfold.UnfoldKSet.nkpts_expand" title="Permalink to this definition">#</a></dt>
+<dd><p>Total number of expanded kpoints</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="easyunfold.unfold.UnfoldKSet.generate_sc_kpoints">
+<span class="sig-name descname"><span class="pre">generate_sc_kpoints</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#easyunfold.unfold.UnfoldKSet.generate_sc_kpoints" title="Permalink to this definition">#</a></dt>
+<dd><p>Generate the supercell kpoints to be calculated.
+Results are stored into <code class="docutils literal notranslate"><span class="pre">self.expansion_results</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="easyunfold.unfold.UnfoldKSet.write_sc_kpoints">
+<span class="sig-name descname"><span class="pre">write_sc_kpoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nk_per_split</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scf_kpoints_and_weights</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.unfold.UnfoldKSet.write_sc_kpoints" title="Permalink to this definition">#</a></dt>
+<dd><p>Write the supercell kpoints to a file.</p>
+<dl class="myst field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file</strong> – Name of the file</p></li>
+<li><p><strong>nk_per_split</strong> – Number of kpoints per split along the path</p></li>
+<li><p><strong>scf_kpoints_and_weights</strong> – SCF kpoint and their weights needed for split-path calculations</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="easyunfold.unfold.UnfoldKSet.write_pc_kpoints">
+<span class="sig-name descname"><span class="pre">write_pc_kpoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expanded</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.unfold.UnfoldKSet.write_pc_kpoints" title="Permalink to this definition">#</a></dt>
+<dd><p>Write the primitive cell kpoints</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="easyunfold.unfold.UnfoldKSet._read_weights">
+<span class="sig-name descname"><span class="pre">_read_weights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wavefunction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ncl</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_half</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.unfold.UnfoldKSet._read_weights" title="Permalink to this definition">#</a></dt>
+<dd><p>Read the weights from the wave function files for all kpoints</p>
+<p>Returns the averaged weights and the original weights per set of kpoints</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="easyunfold.unfold.UnfoldKSet.load_procars">
+<span class="sig-name descname"><span class="pre">load_procars</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">procars</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.unfold.UnfoldKSet.load_procars" title="Permalink to this definition">#</a></dt>
+<dd><p>Read in PROCAR for band-based projection</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="easyunfold.unfold.UnfoldKSet._construct_procar_kmap">
+<span class="sig-name descname"><span class="pre">_construct_procar_kmap</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#easyunfold.unfold.UnfoldKSet._construct_procar_kmap" title="Permalink to this definition">#</a></dt>
+<dd><p>Construct mapping from the set of kpoints to that in the PROCAR</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="easyunfold.unfold.UnfoldKSet.procar">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">procar</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="easyunfold.procar.html#easyunfold.procar.Procar" title="easyunfold.procar.Procar"><span class="pre">easyunfold.procar.Procar</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#easyunfold.unfold.UnfoldKSet.procar" title="Permalink to this definition">#</a></dt>
+<dd><p>Loaded PROCARS</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="easyunfold.unfold.UnfoldKSet.procar_kmaps">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">procar_kmaps</span></span><a class="headerlink" href="#easyunfold.unfold.UnfoldKSet.procar_kmaps" title="Permalink to this definition">#</a></dt>
+<dd><p>Loaded PROCAR kpoint mapping</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="easyunfold.unfold.UnfoldKSet._get_spectral_weights">
+<span class="sig-name descname"><span class="pre">_get_spectral_weights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wavefunction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">npoints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">emin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">emax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ncl</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_half</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'x'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">also_spectral_function</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atoms_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orbitals</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symm_average</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.unfold.UnfoldKSet._get_spectral_weights" title="Permalink to this definition">#</a></dt>
+<dd><p>Fetch spectral weights from a wavecar and compute spectral function is requested</p>
+<p>Args:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>atomic_projects (tuple): A tuple of atoms and orbitals whose projected weights should be used.
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="easyunfold.unfold.UnfoldKSet.get_band_weight_sets">
+<span class="sig-name descname"><span class="pre">get_band_weight_sets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atoms_idx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orbitals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">procars</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#easyunfold.unfold.UnfoldKSet.get_band_weight_sets" title="Permalink to this definition">#</a></dt>
+<dd><p>Get weights array sets for bands</p>
+<p>Construct the weights of each band in same format of the kpoint set.
+Each item is a numpy array of (nspins, nbands), containing the summed weights over
+the passed atom indices and orbitals.</p>
+<dl class="myst field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>atoms_idx</strong> – Indices of the atoms to be selected</p></li>
+<li><p><strong>orbitals</strong> – Orbitals to be selected for each atom</p></li>
+<li><p><strong>procars</strong> – Names of the PROCAR files to be loaded</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of weights for each band at each expanded kpoint</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="easyunfold.unfold.UnfoldKSet.get_spectral_function">
+<span class="sig-name descname"><span class="pre">get_spectral_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wavefunction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">npoints</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ncl</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_half</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'x'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symm_average</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atoms_idx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orbitals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.unfold.UnfoldKSet.get_spectral_function" title="Permalink to this definition">#</a></dt>
+<dd><p>Compute and return the spectral function</p>
+<dl class="myst field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>wavecar</strong> – The wavefunction files to be used</p></li>
+<li><p><strong>npoints</strong> – Number of points for the energy axis</p></li>
+<li><p><strong>sigma</strong> – Smearing width for the Gaussian smearing</p></li>
+<li><p><strong>gamma</strong> – Need to be set to <code class="docutils literal notranslate"><span class="pre">True</span></code> for Gamma-only calculation</p></li>
+<li><p><strong>ncl</strong> – Need to be set to <code class="docutils literal notranslate"><span class="pre">True</span></code> for non-collinear magnetism calculation</p></li>
+<li><p><strong>gamma_half</strong> – Flag used for reading WAVECAR</p></li>
+<li><p><strong>symm_average</strong> – Whether to perform symmetry averaging</p></li>
+<li><p><strong>atoms_idx</strong> – Indices for the atoms for projection</p></li>
+<li><p><strong>orbitals</strong> – Orbitals of the atoms for projection</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple of the energies and the spectral functioin.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="easyunfold.unfold.UnfoldKSet.get_spectral_weights">
+<span class="sig-name descname"><span class="pre">get_spectral_weights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wavefunction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ncl</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_half</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'x'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symm_average</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.unfold.UnfoldKSet.get_spectral_weights" title="Permalink to this definition">#</a></dt>
+<dd><p>Return the spectral weights calculated</p>
+<dl class="myst field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>wavefunction</strong> – The wavefunction file(s) for calculation. Not need if the weights has been calculated.</p></li>
+<li><p><strong>gamma</strong> – Whether the wavefunction files are from <span class="math notranslate nohighlight">\(\Gamma\)</span>-only calculation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An array storing the spectral weights.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="easyunfold.unfold.UnfoldKSet.as_dict">
+<span class="sig-name descname"><span class="pre">as_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#easyunfold.unfold.UnfoldKSet.as_dict" title="Permalink to this definition">#</a></dt>
+<dd><p>Convert the object into a dictionary representation</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="easyunfold.unfold.UnfoldKSet.get_kpoint_distances">
+<span class="sig-name descname"><span class="pre">get_kpoint_distances</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.unfold.UnfoldKSet.get_kpoint_distances" title="Permalink to this definition">#</a></dt>
+<dd><p>Distances between the kpoints along the path in the reciprocal space.
+This does not take account of the breaking of the path.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The reciprocal lattice vectors includes the <span class="math notranslate nohighlight">\(2\pi\)</span> factor, e.g. <code class="docutils literal notranslate"><span class="pre">np.linalg.inv(L).T</span> <span class="pre">*</span> <span class="pre">2</span> <span class="pre">*</span> <span class="pre">np.pi</span></code>.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="easyunfold.unfold.LorentzSmearing">
+<span class="sig-prename descclassname"><span class="pre">easyunfold.unfold.</span></span><span class="sig-name descname"><span class="pre">LorentzSmearing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.02</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.unfold.LorentzSmearing" title="Permalink to this definition">#</a></dt>
+<dd><p>Simulate the Delta function by a Lorentzian shape function
+$<span class="math notranslate nohighlight">\(
+    \Delta(x) = \lim_{\sigma\to 0}  Lorentzian
+\)</span>$</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="easyunfold.unfold.GaussianSmearing">
+<span class="sig-prename descclassname"><span class="pre">easyunfold.unfold.</span></span><span class="sig-name descname"><span class="pre">GaussianSmearing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.02</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.unfold.GaussianSmearing" title="Permalink to this definition">#</a></dt>
+<dd><p>Simulate the Delta function by a Lorentzian shape function
+$<span class="math notranslate nohighlight">\(
+    \Delta(x) = \lim_{\sigma\to 0} Gaussian
+\)</span>$</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="easyunfold.unfold.make_kpath">
+<span class="sig-prename descclassname"><span class="pre">easyunfold.unfold.</span></span><span class="sig-name descname"><span class="pre">make_kpath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kbound</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nseg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">40</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.unfold.make_kpath" title="Permalink to this definition">#</a></dt>
+<dd><p>Return a list of kpoints defining the path between the given kpoints.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="easyunfold.unfold.clean_latex_string">
+<span class="sig-prename descclassname"><span class="pre">easyunfold.unfold.</span></span><span class="sig-name descname"><span class="pre">clean_latex_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.unfold.clean_latex_string" title="Permalink to this definition">#</a></dt>
+<dd><p>Clean up latex labels and convert if necessary</p>
+<dl class="myst field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Cleaned tag string</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="easyunfold.unfold.spectral_function_from_weight_sets">
+<span class="sig-prename descclassname"><span class="pre">easyunfold.unfold.</span></span><span class="sig-name descname"><span class="pre">spectral_function_from_weight_sets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">spectral_weight_sets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kweight_sets</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nedos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.02</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">emin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">emax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">band_weight_sets</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.unfold.spectral_function_from_weight_sets" title="Permalink to this definition">#</a></dt>
+<dd><p>Generate the spectral function</p>
+<div class="math notranslate nohighlight">
+\[
+    A(k_i, E) = \sum_m P_{Km}(k_i)\Delta(E - Em)
+\]</div>
+<p>Where the \Delta function can be approximated by Lorentzian or Gaussian
+function.</p>
+<dl class="myst field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>band_weight_sets</strong> – Additional weighting for each band, used for generating
+projection onto atomic orbitals.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="easyunfold.unfold.Unfold">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">easyunfold.unfold.</span></span><span class="sig-name descname"><span class="pre">Unfold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">M</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'WAVECAR'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lsorbit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_half</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'x'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_reversal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dft_code</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'vasp'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.unfold.Unfold" title="Permalink to this definition">#</a></dt>
+<dd><p>Low level interface for performing unfolding related calculations.
+obtain the effective band structure (EBS).</p>
+<div class="admonition-reference admonition">
+<p class="admonition-title">Reference</p>
+<p>“Extracting E versus k effective band structure from supercell
+calculations on alloys and impurities”
+Phys. Rev. B 85, 085201 (2012)</p>
+</div>
+<p class="rubric">Initialization</p>
+<p>Initialization.</p>
+<p>M is the transformation matrix between supercell and primitive cell:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">M</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>In real space, the basis vectors of Supercell (A) and those of the
+primitive cell (a) satisfy:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">a</span><span class="p">);</span>      <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">M</span><span class="p">),</span> <span class="n">A</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Whereas in reciprocal space</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">B</span><span class="p">);</span>    <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">M</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="easyunfold.unfold.Unfold.get_vbm_cbm">
+<span class="sig-name descname"><span class="pre">get_vbm_cbm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">thresh</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-08</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#easyunfold.unfold.Unfold.get_vbm_cbm" title="Permalink to this definition">#</a></dt>
+<dd><p>Locate the VBM from the wave function data</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="easyunfold.unfold.Unfold.get_ovlap_G">
+<span class="sig-name descname"><span class="pre">get_ovlap_G</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ikpt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-05</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#easyunfold.unfold.Unfold.get_ovlap_G" title="Permalink to this definition">#</a></dt>
+<dd><p>Get subset of the reciprocal space vectors of the supercell,
+specifically the ones that match the reciprocal space vectors of the
+primitive cell.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="easyunfold.unfold.Unfold.find_K_index">
+<span class="sig-name descname"><span class="pre">find_K_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">K0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#easyunfold.unfold.Unfold.find_K_index" title="Permalink to this definition">#</a></dt>
+<dd><p>Find the (one-based) index of a point <code class="docutils literal notranslate"><span class="pre">K0</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="easyunfold.unfold.Unfold.spectral_weight_k">
+<span class="sig-name descname"><span class="pre">spectral_weight_k</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">whichspin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.unfold.Unfold.spectral_weight_k" title="Permalink to this definition">#</a></dt>
+<dd><p>Spectral weight for a given <span class="math notranslate nohighlight">\(k\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+    P_{Km}(k) = \sum_n |&lt;Km | kn&gt;|^2
+\]</div>
+<p>which is equivalent to
+$<span class="math notranslate nohighlight">\(
+    P_{Km}(k) = \sum_{G} |C_{Km}(G + k - K)|^2
+\)</span>$</p>
+<p>where <span class="math notranslate nohighlight">\(G\)</span> is a subset of the reciprocal space vectors of the supercell.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="easyunfold.unfold.Unfold.spectral_weight">
+<span class="sig-name descname"><span class="pre">spectral_weight</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kpoints</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.unfold.Unfold.spectral_weight" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculate the spectral weight for a list of kpoints in the primitive BZ.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="easyunfold.unfold.Unfold.spectral_function">
+<span class="sig-name descname"><span class="pre">spectral_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nedos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.02</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.unfold.Unfold.spectral_function" title="Permalink to this definition">#</a></dt>
+<dd><p>Generate the spectral function</p>
+<div class="math notranslate nohighlight">
+\[
+    A(k_i, E) = \sum_m P_{Km}(k_i)\Delta(E - Em)
+\]</div>
+<p>Where the <span class="math notranslate nohighlight">\(\Delta\)</span> function can be approximated by Lorentzian or Gaussian
+function.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="easyunfold.unfold.spectral_weight_multiple_source">
+<span class="sig-prename descclassname"><span class="pre">easyunfold.unfold.</span></span><span class="sig-name descname"><span class="pre">spectral_weight_multiple_source</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kpoints</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unfold_objs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#easyunfold.unfold.Unfold" title="easyunfold.unfold.Unfold"><span class="pre">easyunfold.unfold.Unfold</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform_matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.unfold.spectral_weight_multiple_source" title="Permalink to this definition">#</a></dt>
+<dd><p>Calculate the spectral weight for a list of kpoints in the primitive BZ
+from a list of wave function files.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="easyunfold.unfold.concatenate_scf_kpoints">
+<span class="sig-prename descclassname"><span class="pre">easyunfold.unfold.</span></span><span class="sig-name descname"><span class="pre">concatenate_scf_kpoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scf_kpts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scf_weights</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kpoints</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.unfold.concatenate_scf_kpoints" title="Permalink to this definition">#</a></dt>
+<dd><p>Concatenate SCF kpoints (from IBZKPT) with zero-weighted kpoints</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="easyunfold.unfold.create_white_colormap">
+<span class="sig-prename descclassname"><span class="pre">easyunfold.unfold.</span></span><span class="sig-name descname"><span class="pre">create_white_colormap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">matplotlib.colors.ListedColormap</span></span></span><a class="headerlink" href="#easyunfold.unfold.create_white_colormap" title="Permalink to this definition">#</a></dt>
+<dd><p>Create colormap from white to certain colour.</p>
+<p>Args:
+color (str, tuple, list): HEX color string or tuple/list of RGB color.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="easyunfold.unfold.create_white_colormap_from_existing">
+<span class="sig-prename descclassname"><span class="pre">easyunfold.unfold.</span></span><span class="sig-name descname"><span class="pre">create_white_colormap_from_existing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">matplotlib.colors.ListedColormap</span></span></span><a class="headerlink" href="#easyunfold.unfold.create_white_colormap_from_existing" title="Permalink to this definition">#</a></dt>
+<dd><p>Create a white-based color map from an existing one.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="easyunfold.unfold.parse_atoms_idx">
+<span class="sig-prename descclassname"><span class="pre">easyunfold.unfold.</span></span><span class="sig-name descname"><span class="pre">parse_atoms_idx</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atoms_idx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#easyunfold.unfold.parse_atoms_idx" title="Permalink to this definition">#</a></dt>
+<dd><p>Expanding syntax like <code class="docutils literal notranslate"><span class="pre">1-2</span></code> (inclusive)</p>
+<p>For example, <code class="docutils literal notranslate"><span class="pre">1,2,3,4-6</span></code> will be expanded as <code class="docutils literal notranslate"><span class="pre">1,2,3,4,5,6</span></code>.</p>
+<dl class="myst field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>atoms_idx</strong> – A string encode atom indices</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of atom indices</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="easyunfold.unfold.process_projection_options">
+<span class="sig-prename descclassname"><span class="pre">easyunfold.unfold.</span></span><span class="sig-name descname"><span class="pre">process_projection_options</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atoms_idx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orbitals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#easyunfold.unfold.process_projection_options" title="Permalink to this definition">#</a></dt>
+<dd><p>Process commandline-style specifications for project</p>
+<dl class="myst field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>atoms_idx</strong> – A comma- or hyphen-separated string of atom projections</p></li>
+<li><p><strong>orbitals</strong> – A comma-separated string of orbital projections</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple of atom indices and the orbitals selected for projection.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="easyunfold.unfold.read_poscar_contcar_if_present">
+<span class="sig-prename descclassname"><span class="pre">easyunfold.unfold.</span></span><span class="sig-name descname"><span class="pre">read_poscar_contcar_if_present</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">poscar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'POSCAR'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.unfold.read_poscar_contcar_if_present" title="Permalink to this definition">#</a></dt>
+<dd><p>Return an ase Atoms() object of the POSCAR or CONTCAR file if present in the current directory.</p>
+<dl class="myst field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ASE Atoms() object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="easyunfold.unfold.parse_atoms">
+<span class="sig-prename descclassname"><span class="pre">easyunfold.unfold.</span></span><span class="sig-name descname"><span class="pre">parse_atoms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atoms_to_project</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orbitals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">poscar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.unfold.parse_atoms" title="Permalink to this definition">#</a></dt>
+<dd><p>Parse the specified atoms (and orbitals if set) from a comma-separated
+string (e.g. “Na,Bi”) into a list of strings (e.g. [“Na”, “Bi”]), as well
+as a list of the corresponding atom indices in the structure and the parse
+orbital projections.</p>
+<dl class="myst field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>atoms_to_project</strong> – A comma-separted string of atom symbols to project</p></li>
+<li><p><strong>orbitals</strong> – A “|”-separated string of orbital projections</p></li>
+<li><p><strong>poscar</strong> – The POSCAR file to read atom indices from</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A tuple of lists of atoms, atom indices and the orbitals selected for projection.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="easyunfold.procar.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.procar</span></code></p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">Module Contents</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#classes">Classes</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#functions">Functions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api">API</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.get_symmetry_dataset"><code class="docutils literal notranslate"><span class="pre">get_symmetry_dataset()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.find_K_from_k"><code class="docutils literal notranslate"><span class="pre">find_K_from_k()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.rotate_kpt"><code class="docutils literal notranslate"><span class="pre">rotate_kpt()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.expand_K_by_symmetry"><code class="docutils literal notranslate"><span class="pre">expand_K_by_symmetry()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet._VERSION"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet._VERSION</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.check_version"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.check_version()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.is_calculated"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.is_calculated</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.has_averaged_spectral_weights"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.has_averaged_spectral_weights</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.from_atoms"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.from_atoms()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.from_file"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.from_file()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.expand_pc_kpoints"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.expand_pc_kpoints()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.__repr__"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.__repr__()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.nsymm_orig"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.nsymm_orig</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.nsymm_expand"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.nsymm_expand</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.nkpts_orig"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.nkpts_orig</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.nkpts_expand"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.nkpts_expand</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.generate_sc_kpoints"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.generate_sc_kpoints()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.write_sc_kpoints"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.write_sc_kpoints()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.write_pc_kpoints"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.write_pc_kpoints()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet._read_weights"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet._read_weights()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.load_procars"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.load_procars()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet._construct_procar_kmap"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet._construct_procar_kmap()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.procar"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.procar</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.procar_kmaps"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.procar_kmaps</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet._get_spectral_weights"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet._get_spectral_weights()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.get_band_weight_sets"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.get_band_weight_sets()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.get_spectral_function"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.get_spectral_function()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.get_spectral_weights"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.get_spectral_weights()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.as_dict"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.as_dict()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.get_kpoint_distances"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.get_kpoint_distances()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.LorentzSmearing"><code class="docutils literal notranslate"><span class="pre">LorentzSmearing()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.GaussianSmearing"><code class="docutils literal notranslate"><span class="pre">GaussianSmearing()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.make_kpath"><code class="docutils literal notranslate"><span class="pre">make_kpath()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.clean_latex_string"><code class="docutils literal notranslate"><span class="pre">clean_latex_string()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.spectral_function_from_weight_sets"><code class="docutils literal notranslate"><span class="pre">spectral_function_from_weight_sets()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.Unfold"><code class="docutils literal notranslate"><span class="pre">Unfold</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.Unfold.get_vbm_cbm"><code class="docutils literal notranslate"><span class="pre">Unfold.get_vbm_cbm()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.Unfold.get_ovlap_G"><code class="docutils literal notranslate"><span class="pre">Unfold.get_ovlap_G()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.Unfold.find_K_index"><code class="docutils literal notranslate"><span class="pre">Unfold.find_K_index()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.Unfold.spectral_weight_k"><code class="docutils literal notranslate"><span class="pre">Unfold.spectral_weight_k()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.Unfold.spectral_weight"><code class="docutils literal notranslate"><span class="pre">Unfold.spectral_weight()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.Unfold.spectral_function"><code class="docutils literal notranslate"><span class="pre">Unfold.spectral_function()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.spectral_weight_multiple_source"><code class="docutils literal notranslate"><span class="pre">spectral_weight_multiple_source()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.concatenate_scf_kpoints"><code class="docutils literal notranslate"><span class="pre">concatenate_scf_kpoints()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.create_white_colormap"><code class="docutils literal notranslate"><span class="pre">create_white_colormap()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.create_white_colormap_from_existing"><code class="docutils literal notranslate"><span class="pre">create_white_colormap_from_existing()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.parse_atoms_idx"><code class="docutils literal notranslate"><span class="pre">parse_atoms_idx()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.process_projection_options"><code class="docutils literal notranslate"><span class="pre">process_projection_options()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.read_poscar_contcar_if_present"><code class="docutils literal notranslate"><span class="pre">read_poscar_contcar_if_present()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.parse_atoms"><code class="docutils literal notranslate"><span class="pre">parse_atoms()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Bonan Zhu, Seán Kavanagh
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2023, Bonan Zhu.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=365ca57ee442770a23c6"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=365ca57ee442770a23c6"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,758 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Disordered NaBiS2 with atomic/orbital projections &amp; DOS plotting &#8212; easyunfold</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=365ca57ee442770a23c6" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=365ca57ee442770a23c6" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=365ca57ee442770a23c6" />
+  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=365ca57ee442770a23c6"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'examples/example_nabis2';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Si supercell using CASTEP" href="example_si211_castep.html" />
+    <link rel="prev" title="MgO with atomic projections" href="example_mgo.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.svg" class="logo__image only-light" alt="easyunfold - Home"/>
+    <script>document.write(`<img src="../_static/logo.svg" class="logo__image only-dark" alt="easyunfold - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/SMTG-Bham/easyunfold" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/easyunfold/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/pypi/v/easyunfold" class="icon-link-image" alt="PyPI"/></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../index.html">
+                    easyunfold Documentation
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../examples.html">Examples</a><input checked class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="example_si222.html">Si supercell with a displaced atom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_mgo.html">MgO with atomic projections</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Disordered NaBiS<sub>2</sub> with atomic/orbital projections &amp; DOS plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_si211_castep.html">Si supercell using CASTEP</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../theory.html">Band Unfolding Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">CLI Reference</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../apidocs/index.html">API Reference</a><input checked class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold</span></code></a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.wavefun.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavefun</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.utils</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.vasp_constant.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.vasp_constant</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.effective_mass.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.effective_mass</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.wavecar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavecar</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.cli.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.cli</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.plotting.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.plotting</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.procar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.procar</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.unfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.unfold</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/SMTG-Bham/easyunfold" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/examples/example_nabis2.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Disordered NaBiS<sub>2</sub> with atomic/orbital projections & DOS plotting</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#standard-unfolded-band-structure">Standard Unfolded Band Structure</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisation-customisation-colour-map-and-intensity-scaling">Visualisation Customisation: Colour map and intensity scaling</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#unfolded-band-structure-with-density-of-states-dos">Unfolded Band Structure with Density of States (DOS)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#atom-projected-unfolded-band-structure">Atom-Projected Unfolded Band Structure</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#atom-projected-unfolded-band-structure-with-dos">Atom-projected Unfolded Band Structure with DOS</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#unfolded-band-structure-with-specific-atom-selection">Unfolded Band Structure with Specific Atom Selection</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#unfolded-band-structure-with-orbital-projections">Unfolded Band Structure with Orbital Projections</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lm-decomposed-orbital-projections"><span class="math notranslate nohighlight">\(lm\)</span>-decomposed Orbital Projections</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="disordered-nabis2-with-atomic-orbital-projections-dos-plotting">
+<h1>Disordered NaBiS<sub>2</sub> with atomic/orbital projections &amp; DOS plotting<a class="headerlink" href="#disordered-nabis2-with-atomic-orbital-projections-dos-plotting" title="Permalink to this heading">#</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The files needed for reproducing this example are provided in the
+<a class="reference external" href="https://github.com/SMTG-Bham/easyunfold/tree/main/examples/NaBiS2">examples/NaBiS2</a> folder.
+Note that the <code class="docutils literal notranslate"><span class="pre">PROCAR.gz</span></code> file will need to be decompressed with <code class="docutils literal notranslate"><span class="pre">gzip</span> <span class="pre">-d</span> <span class="pre">PROCAR.gz</span></code> if recalculating
+and reproducing these example plots.</p>
+</div>
+<p>In this example, we unfold the bands from a 80-atom special-quasirandom (SQS) supercell of
+NaBiS<sub>2</sub>, where the Na and Bi cations are quasi-randomly distributed, in order to simulate
+randomised cation disorder in the material.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>SQS supercells can be generated using tools like
+<a class="reference external" href="https://icet.materialsmodeling.org/moduleref_icet/tools.html#module-icet.tools.structure_generation">icet</a>
+or <a class="reference external" href="https://www.brown.edu/Departments/Engineering/Labs/avdw/atat/">ATAT</a>.</p>
+</div>
+<p>These results were published in Y. T. Huang &amp; S. R. Kavanagh et al. 2022 <a class="footnote-reference brackets" href="#id6" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>, and an early version of <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code> was
+used for the similar AgBiS<span class="math notranslate nohighlight">\(_2\)</span> in Y. Wang &amp; S. R. Kavanagh et al. 2022 <a class="footnote-reference brackets" href="#id7" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>, with these plots demonstrating the key
+differences in electronic structure and thus photovoltaic performance between these two materials.</p>
+<section id="standard-unfolded-band-structure">
+<h2>Standard Unfolded Band Structure<a class="headerlink" href="#standard-unfolded-band-structure" title="Permalink to this heading">#</a></h2>
+<p>We have previously calculated the <code class="docutils literal notranslate"><span class="pre">easyunfold.json</span></code> file from the calculation using <code class="docutils literal notranslate"><span class="pre">easyunfold</span> <span class="pre">calculate</span> <span class="pre">WAVECAR</span></code>.
+Using <code class="docutils literal notranslate"><span class="pre">easyunfold</span> <span class="pre">unfold</span> <span class="pre">plot</span> <span class="pre">--intensity</span> <span class="pre">2</span></code>, we obtain the following unfolded band structure:</p>
+<figure class="align-default" id="id8">
+<a class="reference internal image-reference" href="../_images/NaBiS2_unfold-plot.png"><img alt="NaBiS2 unfolded band structure" src="../_images/NaBiS2_unfold-plot.png" style="width: 400px;" /></a>
+<figcaption>
+<p><span class="caption-text">Unfolded band structure of <span class="math notranslate nohighlight">\(\ce{NaBiS2}\)</span></span><a class="headerlink" href="#id8" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<section id="visualisation-customisation-colour-map-and-intensity-scaling">
+<h3>Visualisation Customisation: Colour map and intensity scaling<a class="headerlink" href="#visualisation-customisation-colour-map-and-intensity-scaling" title="Permalink to this heading">#</a></h3>
+<p>The band structure above is nice, but we can make the plot a little clearer by adjusting some of the parameters like
+the intensity scaling (via <code class="docutils literal notranslate"><span class="pre">--intensity</span></code>) and the colour map (via <code class="docutils literal notranslate"><span class="pre">--cmap</span></code>). Below we set <code class="docutils literal notranslate"><span class="pre">--intensity</span> <span class="pre">2.5</span></code> to
+increase the colourmap intensity, and try <code class="docutils literal notranslate"><span class="pre">BuPu</span></code>, <code class="docutils literal notranslate"><span class="pre">viridis</span></code> and <code class="docutils literal notranslate"><span class="pre">bone_r</span></code> from left to right below:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot<span class="w"> </span>--intensity<span class="w"> </span><span class="m">2</span>.5<span class="w"> </span>--cmap<span class="w"> </span><span class="s2">&quot;BuPu&quot;</span>
+easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot<span class="w"> </span>--intensity<span class="w"> </span><span class="m">2</span>.5<span class="w"> </span>--cmap<span class="w"> </span><span class="s2">&quot;viridis&quot;</span>
+easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot<span class="w"> </span>--intensity<span class="w"> </span><span class="m">2</span>.5<span class="w"> </span>--cmap<span class="w"> </span><span class="s2">&quot;bone_r&quot;</span>
+</pre></div>
+</div>
+<table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>BuPu</p></th>
+<th class="head text-center"><p>viridis</p></th>
+<th class="head text-center"><p>bone_r</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p><img alt="" src="../_images/NaBiS2_unfold-plot_BuPu.png" /></p></td>
+<td class="text-center"><p><img alt="" src="../_images/NaBiS2_unfold-plot_viridis.png" /></p></td>
+<td class="text-center"><p><img alt="" src="../_images/NaBiS2_unfold-plot_bone_r.png" /></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="unfolded-band-structure-with-density-of-states-dos">
+<h2>Unfolded Band Structure with Density of States (DOS)<a class="headerlink" href="#unfolded-band-structure-with-density-of-states-dos" title="Permalink to this heading">#</a></h2>
+<p>We can plot the electronic density of states (DOS) alongside the unfolded band structure using the <code class="docutils literal notranslate"><span class="pre">--dos</span></code> option to
+provide the <code class="docutils literal notranslate"><span class="pre">vasprun.xml(.gz)</span></code> file from our supercell calculation:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot<span class="w"> </span>--intensity<span class="w"> </span><span class="m">2</span><span class="w"> </span>--dos<span class="w"> </span>vasprun.xml.gz<span class="w"> </span>--zero-line<span class="w"> </span>--dos-label<span class="w"> </span>DOS<span class="w"> </span>--gaussian<span class="w"> </span><span class="m">0</span>.1
+</pre></div>
+</div>
+<p>Here we’ve used some other plot options to customise the DOS plot; see the help message with
+<code class="docutils literal notranslate"><span class="pre">easyunfold</span> <span class="pre">unfold</span> <span class="pre">plot</span> <span class="pre">-h</span></code> for more info on this.</p>
+<figure class="align-default" id="id9">
+<a class="reference internal image-reference" href="../_images/NaBiS2_unfold-plot_dos.png"><img alt="NaBiS2 unfolded band structure with DOS" src="../_images/NaBiS2_unfold-plot_dos.png" style="width: 700px;" /></a>
+<figcaption>
+<p><span class="caption-text">Unfolded band structure of NaBiS<sub>2</sub> alongside the electronic density of states (DOS)</span><a class="headerlink" href="#id9" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For unfolded band structures calculated with (semi-)local DFT (LDA/GGA), you should not use the <code class="docutils literal notranslate"><span class="pre">vasprun.xml(.gz)</span></code>
+from the band structure calculation (which uses a non-uniform <em>k</em>-point mesh, thus giving an unrepresentative DOS
+output), but rather the preceding self-consistent calculation (used to obtain the <code class="docutils literal notranslate"><span class="pre">CHGCAR</span></code> for the LDA/GGA DOS
+calculation), or a separate DOS calculation.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>To use the DOS plotting functionality of <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code>, the <code class="docutils literal notranslate"><span class="pre">sumo</span></code> package must be installed. This is currently an
+optional dependency for <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code> (to avoid strict requirements and <code class="docutils literal notranslate"><span class="pre">pymatgen</span></code> dependencies), but can be installed
+with <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">sumo</span></code>.</p>
+</div>
+</section>
+<section id="atom-projected-unfolded-band-structure">
+<h2>Atom-Projected Unfolded Band Structure<a class="headerlink" href="#atom-projected-unfolded-band-structure" title="Permalink to this heading">#</a></h2>
+<p>We can also plot the unfolded band structure with atomic projections, which is useful for understanding the electronic
+structure of the material. In this case, we are curious as to which atoms are contributing to the band edges, and so
+the atomic projections will be useful. For this, we need the <code class="docutils literal notranslate"><span class="pre">PROCAR</span></code> output from VASP with the atomic and orbital
+projection information, and so <code class="docutils literal notranslate"><span class="pre">LORBIT</span></code> should be set to <code class="docutils literal notranslate"><span class="pre">11</span></code>, <code class="docutils literal notranslate"><span class="pre">12</span></code>, <code class="docutils literal notranslate"><span class="pre">13</span></code> or <code class="docutils literal notranslate"><span class="pre">14</span></code> in the <code class="docutils literal notranslate"><span class="pre">INCAR</span></code> for the supercell
+calculation.</p>
+<p>When plotting the unfolded band, the <code class="docutils literal notranslate"><span class="pre">plot-projections</span></code> subcommand is used with the <code class="docutils literal notranslate"><span class="pre">--procar</span> <span class="pre">&lt;PROCAR&gt;</span></code> and
+<code class="docutils literal notranslate"><span class="pre">--atoms</span></code> options:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot-projections<span class="w"> </span>--atoms<span class="o">=</span><span class="s2">&quot;Na,Bi,S&quot;</span><span class="w"> </span>--intensity<span class="w"> </span><span class="m">3</span><span class="w"> </span>--combined
+</pre></div>
+</div>
+<figure class="align-default" id="id10">
+<a class="reference internal image-reference" href="../_images/NaBiS2_unfold-plot_proj.png"><img alt="NaBiS2 atom-projected unfolded band structure" src="../_images/NaBiS2_unfold-plot_proj.png" style="width: 700px;" /></a>
+<figcaption>
+<p><span class="caption-text">Unfolded band structure of NaBiS<sub>2</sub> with atomic contributions.</span><a class="headerlink" href="#id10" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If the <em>k</em>-points have been split into multiple calculations (e.g. hybrid DFT band structures), the <code class="docutils literal notranslate"><span class="pre">--procar</span></code> option
+should be passed multiple times to specify the path to each split <code class="docutils literal notranslate"><span class="pre">PROCAR</span></code> file (i.e.
+<code class="docutils literal notranslate"><span class="pre">--procar</span> <span class="pre">calc1/PROCAR</span> <span class="pre">--procar</span> <span class="pre">cal2/PROCAR</span> <span class="pre">...</span></code>).</p>
+</div>
+<p>From this plot, we can see that sulfur anions dominate the valence band, while bismuth cations dominate the conduction
+band, with minimal contributions from the sodium cations as expected.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The atomic projections are not stored in the <code class="docutils literal notranslate"><span class="pre">easyunfold.json</span></code> data file, so the <code class="docutils literal notranslate"><span class="pre">PROCAR</span></code> file should be
+kept for replotting in the future.</p>
+</div>
+<p>While the main conclusions of S dominating the valence band and Bi dominating the conduction band are clear from the
+plot above, the high intensity of the S projections in the valence band makes the Bi contributions in the conduction
+band more faint and less apparent.</p>
+<p>So, we can create separated plots for each atom type to make their individual contributions more clear, by omitting the
+<code class="docutils literal notranslate"><span class="pre">--combined</span></code> tag:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot-projections<span class="w"> </span>--atoms<span class="o">=</span><span class="s2">&quot;Na,Bi,S&quot;</span><span class="w"> </span>--cmap<span class="o">=</span><span class="s2">&quot;bone_r&quot;</span><span class="w"> </span>--intensity<span class="w"> </span><span class="m">2</span>
+</pre></div>
+</div>
+<figure class="align-default" id="id11">
+<a class="reference internal image-reference" href="../_images/NaBiS2_unfold-plot_proj_sep.png"><img alt="NaBiS2 atom-projected separated unfolded band structure" src="../_images/NaBiS2_unfold-plot_proj_sep.png" style="width: 800px;" /></a>
+<figcaption>
+<p><span class="caption-text">Unfolded band structure of NaBiS<sub>2</sub> with atomic contributions plotted separately.</span><a class="headerlink" href="#id11" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>An alternative option here is also to just plot only the contributions of <code class="docutils literal notranslate"><span class="pre">Na</span></code> and <code class="docutils literal notranslate"><span class="pre">Bi</span></code> cations, with no S projections:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot-projections<span class="w"> </span>--atoms<span class="o">=</span><span class="s2">&quot;Na,Bi&quot;</span><span class="w"> </span>--intensity<span class="w"> </span><span class="m">3</span><span class="w"> </span>--combined
+</pre></div>
+</div>
+<figure class="align-default" id="id12">
+<a class="reference internal image-reference" href="../_images/NaBiS2_unfold-plot_proj_noS.png"><img alt="NaBiS2 atom-projected unfolded band structure, no S" src="../_images/NaBiS2_unfold-plot_proj_noS.png" style="width: 700px;" /></a>
+<figcaption>
+<p><span class="caption-text">Unfolded band structure of NaBiS<sub>2</sub> with atomic contributions of only Na and Bi.</span><a class="headerlink" href="#id12" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>While this plot isn’t the most aesthetic, it clearly shows that Bi (green) contributes to both the conduction band and
+(less so) valence band states, but Na (red) doesn’t contribute significantly at or near the band edges
+(it’s a spectator ion!).</p>
+<section id="atom-projected-unfolded-band-structure-with-dos">
+<h3>Atom-projected Unfolded Band Structure with DOS<a class="headerlink" href="#atom-projected-unfolded-band-structure-with-dos" title="Permalink to this heading">#</a></h3>
+<p>We can also combine the atom projections with the DOS plotting, using the <code class="docutils literal notranslate"><span class="pre">--dos</span></code> option as before:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot-projections<span class="w"> </span>--atoms<span class="w"> </span><span class="s2">&quot;Na,Bi,S&quot;</span><span class="w"> </span>--intensity<span class="w"> </span><span class="m">3</span><span class="w"> </span>--combined<span class="w"> </span>--dos<span class="w"> </span>vasprun.xml.gz<span class="w"> </span>--zero-line<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--dos-label<span class="w"> </span><span class="s2">&quot;DOS&quot;</span><span class="w"> </span>--gaussian<span class="w"> </span><span class="m">0</span>.1<span class="w"> </span>--no-total<span class="w"> </span>--scale<span class="w"> </span><span class="m">2</span>
+</pre></div>
+</div>
+<figure class="align-default" id="id13">
+<a class="reference internal image-reference" href="../_images/NaBiS2_unfold-plot_proj_dos.png"><img alt="NaBiS2 atom-projected unfolded band structure with DOS" src="../_images/NaBiS2_unfold-plot_proj_dos.png" style="width: 700px;" /></a>
+<figcaption>
+<p><span class="caption-text">Atom-projected unfolded band structure of NaBiS<sub>2</sub> alongside the electronic density of states (DOS)</span><a class="headerlink" href="#id13" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The orbital contributions of elements in the DOS plot are automatically coloured to match that of the atomic
+projections in the unfolded band structure plot, and these colours can be changed with the <code class="docutils literal notranslate"><span class="pre">--colours</span></code> option (as shown
+in the <a class="reference external" href="https://smtg-Bham.github.io/easyunfold/examples/example_mgo.html">MgO example</a>).</p>
+</section>
+</section>
+<section id="unfolded-band-structure-with-specific-atom-selection">
+<h2>Unfolded Band Structure with Specific Atom Selection<a class="headerlink" href="#unfolded-band-structure-with-specific-atom-selection" title="Permalink to this heading">#</a></h2>
+<p>In certain cases, we may want to project the contributions of specific atoms to the unfolded band structure, rather
+than all atoms of a certain element. For example, in this example case of NaBiS<span class="math notranslate nohighlight">\(_2\)</span>, we see that a flat localised state
+is forming within the ‘bulk’ band gap. We can show that this state is contributed by only one or two atoms in the
+supercell, using the <code class="docutils literal notranslate"><span class="pre">--atoms-idx</span></code> option:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot-projections<span class="w"> </span>-unfold<span class="w"> </span>plot-projections<span class="w"> </span>--atoms-idx<span class="o">=</span><span class="s2">&quot;1-55,57-65,67-80|56,66&quot;</span><span class="w"> </span>--intensity<span class="w"> </span><span class="m">2</span>
+</pre></div>
+</div>
+<figure class="align-default" id="id14">
+<a class="reference internal image-reference" href="../_images/NaBiS2_unfold-plot_proj_sep_atomsidx.png"><img alt="NaBiS2 atom-projected unfolded band structure, specific atoms" src="../_images/NaBiS2_unfold-plot_proj_sep_atomsidx.png" style="width: 700px;" /></a>
+<figcaption>
+<p><span class="caption-text">Unfolded band structure of NaBiS<sub>2</sub> with the atomic contributions of atoms 56 and 66 plotted separately.</span><a class="headerlink" href="#id14" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Here we can see that this in-gap localised state is dominated by only two (sulfur) atoms in the supercell (atoms <code class="docutils literal notranslate"><span class="pre">56</span></code>
+and <code class="docutils literal notranslate"><span class="pre">66</span></code>), which correspond to Na-rich pockets in NaBiS<sub>2</sub>, as discussed in Huang &amp; Kavanagh et al. <a class="footnote-reference brackets" href="#id6" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">--atoms-idx</span></code> option is used to specify the atoms to be projected onto the unfolded band structure. This takes a
+string of the form <code class="docutils literal notranslate"><span class="pre">a-b|c-d|e-f</span></code> where <code class="docutils literal notranslate"><span class="pre">a</span></code>, <code class="docutils literal notranslate"><span class="pre">b</span></code>, <code class="docutils literal notranslate"><span class="pre">c</span></code>, <code class="docutils literal notranslate"><span class="pre">d</span></code>, <code class="docutils literal notranslate"><span class="pre">e</span></code> and <code class="docutils literal notranslate"><span class="pre">f</span></code> are integers corresponding to the atom indices
+in the VASP structure file (i.e. <code class="docutils literal notranslate"><span class="pre">POSCAR</span></code>/<code class="docutils literal notranslate"><span class="pre">CONTCAR</span></code>, corresponding to the <code class="docutils literal notranslate"><span class="pre">PROCAR</span></code> being used to obtain the
+projections). Different groups are separated by <code class="docutils literal notranslate"><span class="pre">|</span></code>, and <code class="docutils literal notranslate"><span class="pre">-</span></code> can be used to define the range for each projected atom
+type. A comma-separated list can also be used instead of ranges with hyphens. Note that 1-based indexing is used for
+atoms, matching the convention in VASP, which is then converted to zero-based indexing internally in python.</p>
+</div>
+</section>
+<section id="unfolded-band-structure-with-orbital-projections">
+<h2>Unfolded Band Structure with Orbital Projections<a class="headerlink" href="#unfolded-band-structure-with-orbital-projections" title="Permalink to this heading">#</a></h2>
+<p>If we want to see the contributions of specific orbitals to the unfolded band structure, we can use the <code class="docutils literal notranslate"><span class="pre">--orbitals</span></code>
+option. This takes a string of the form <code class="docutils literal notranslate"><span class="pre">a,b|c|d,e,f</span></code> where <code class="docutils literal notranslate"><span class="pre">a</span></code>, <code class="docutils literal notranslate"><span class="pre">b</span></code>, <code class="docutils literal notranslate"><span class="pre">c</span></code>, <code class="docutils literal notranslate"><span class="pre">d</span></code>, <code class="docutils literal notranslate"><span class="pre">e</span></code> and <code class="docutils literal notranslate"><span class="pre">f</span></code> are the orbitals we want
+to project onto the unfolded band structure.</p>
+<p>For example, if we want to see the contributions of the Bi <span class="math notranslate nohighlight">\(s\)</span>, <span class="math notranslate nohighlight">\(p\)</span> and S <span class="math notranslate nohighlight">\(s\)</span> orbitals to the unfolded band structure,
+we can use the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot-projections<span class="w"> </span>--atoms<span class="w"> </span><span class="s2">&quot;Bi,Bi,S&quot;</span><span class="w"> </span>--orbitals<span class="o">=</span><span class="s2">&quot;s|p|s&quot;</span><span class="w">  </span>--intensity<span class="w"> </span><span class="m">3</span><span class="w">  </span>--combined<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--dos<span class="w"> </span>vasprun.xml.gz<span class="w"> </span>--zero-line<span class="w"> </span>--dos-label<span class="w"> </span><span class="s2">&quot;DOS&quot;</span><span class="w"> </span>--gaussian<span class="w"> </span><span class="m">0</span>.1<span class="w"> </span>--no-total<span class="w"> </span>--scale<span class="w"> </span><span class="m">5</span>
+</pre></div>
+</div>
+<figure class="align-default" id="id15">
+<a class="reference internal image-reference" href="../_images/NaBiS2_unfold-plot_proj_sps_dos.png"><img alt="NaBiS2 atom-projected unfolded band structure with DOS and Bi s/p separated" src="../_images/NaBiS2_unfold-plot_proj_sps_dos.png" style="width: 700px;" /></a>
+<figcaption>
+<p><span class="caption-text">Orbital-projected unfolded band structure of NaBiS<sub>2</sub> alongside the electronic density of states (DOS)</span><a class="headerlink" href="#id15" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Here we have separated out the contributions of Bi <span class="math notranslate nohighlight">\(s\)</span> orbitals (which have some weak anti-bonding contributions to the upper
+‘bulk’ VBM as expected, due to the occupied Bi lone-pair; see refs <a class="footnote-reference brackets" href="#id6" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> and <a class="footnote-reference brackets" href="#id7" id="id5" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>) and <span class="math notranslate nohighlight">\(p\)</span> orbitals (which contribute to
+the conduction band and lower valence band). We have also shown only the <span class="math notranslate nohighlight">\(s\)</span> orbital contributions of sulfur, which we
+can see have minimal contributions to the electronic structure near the band gap.</p>
+<section id="lm-decomposed-orbital-projections">
+<h3><span class="math notranslate nohighlight">\(lm\)</span>-decomposed Orbital Projections<a class="headerlink" href="#lm-decomposed-orbital-projections" title="Permalink to this heading">#</a></h3>
+<p>We can also use the <code class="docutils literal notranslate"><span class="pre">--orbitals</span></code> option to project onto specific <span class="math notranslate nohighlight">\(lm\)</span>-decomposed orbitals, and/or use the
+<code class="docutils literal notranslate"><span class="pre">--dos-orbitals</span></code> option to split the DOS plot into <span class="math notranslate nohighlight">\(lm\)</span>-decomposed orbital contributions. For example, if we want to
+see the contributions of the Bi and S <span class="math notranslate nohighlight">\(p_x\)</span>, <span class="math notranslate nohighlight">\(p_y\)</span> and <span class="math notranslate nohighlight">\(p_z\)</span> orbitals to the unfolded band structure, we can use the
+following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot-projections<span class="w"> </span>--atoms<span class="w"> </span><span class="s2">&quot;Na,Bi,S&quot;</span><span class="w"> </span>--orbitals<span class="o">=</span><span class="s2">&quot;all|px,py,pz|px,py,pz&quot;</span><span class="w"> </span>--intensity<span class="w"> </span><span class="m">3</span><span class="w"> </span>--combined<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--dos<span class="w"> </span>vasprun.xml.gz<span class="w"> </span>--zero-line<span class="w"> </span>--dos-label<span class="w"> </span><span class="s2">&quot;DOS&quot;</span><span class="w"> </span>--gaussian<span class="w"> </span><span class="m">0</span>.1<span class="w"> </span>--no-total<span class="w"> </span>--scale<span class="w"> </span><span class="m">6</span>
+</pre></div>
+</div>
+<figure class="align-default" id="id16">
+<a class="reference internal image-reference" href="../_images/NaBiS2_unfold-plot_proj_orbital_lm_dos.png"><img alt="NaBiS2 $lm$-decomposed orbtial-projected unfolded band structure with DOS" src="../_images/NaBiS2_unfold-plot_proj_orbital_lm_dos.png" style="width: 700px;" /></a>
+<figcaption>
+<p><span class="caption-text"><span class="math notranslate nohighlight">\(lm\)</span>-decomposed orbital-projected unfolded band structure of NaBiS<sub>2</sub> alongside the DOS</span><a class="headerlink" href="#id16" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Here, the <span class="math notranslate nohighlight">\(p_x\)</span>, <span class="math notranslate nohighlight">\(p_y\)</span> and <span class="math notranslate nohighlight">\(p_z\)</span> orbitals do not differ significantly in their contributions to the electronic
+structure, due to the cubic symmetry of the NaBiS<sub>2</sub> crystal structure. However, in other cases, such as
+for the <span class="math notranslate nohighlight">\(d\)</span> orbitals of transition metals in octahedral/tetrahedral environments, we would expect to see significant
+differences in the contributions of different <span class="math notranslate nohighlight">\(lm\)</span>-decomposed orbitals to the electronic structure.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>There are <em>many</em> customisation options available for the plotting functions in <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code>. See <code class="docutils literal notranslate"><span class="pre">easyunfold</span> <span class="pre">plot</span> <span class="pre">-h</span></code> or
+<code class="docutils literal notranslate"><span class="pre">easyunfold</span> <span class="pre">unfold</span> <span class="pre">plot-projections</span> <span class="pre">-h</span></code> for more details!</p>
+</div>
+<hr class="footnotes docutils" />
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id6" role="note">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id3">2</a>,<a role="doc-backlink" href="#id4">3</a>)</span>
+<p><a class="reference external" href="https://www.nature.com/articles/s41467-022-32669-3">Huang, YT., Kavanagh, S.R., Righetto, M. et al. Strong absorption and ultrafast localisation in NaBiS2 nanocrystals with slow charge-carrier recombination. Nat Commun 13, 4960 (2022)</a></p>
+</aside>
+<aside class="footnote brackets" id="id7" role="note">
+<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id2">1</a>,<a role="doc-backlink" href="#id5">2</a>)</span>
+<p><a class="reference external" href="https://www.nature.com/articles/s41566-021-00950-4">Wang, Y., Kavanagh, S.R., Burgués-Ceballos, I. et al. Cation disorder engineering yields AgBiS2 nanocrystals with enhanced optical absorption for efficient ultrathin solar cells. Nat. Photon. 16, 235–241 (2022).</a></p>
+</aside>
+</aside>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  <!-- Previous / next buttons -->
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="example_mgo.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">MgO with atomic projections</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="example_si211_castep.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Si supercell using CASTEP</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#standard-unfolded-band-structure">Standard Unfolded Band Structure</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisation-customisation-colour-map-and-intensity-scaling">Visualisation Customisation: Colour map and intensity scaling</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#unfolded-band-structure-with-density-of-states-dos">Unfolded Band Structure with Density of States (DOS)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#atom-projected-unfolded-band-structure">Atom-Projected Unfolded Band Structure</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#atom-projected-unfolded-band-structure-with-dos">Atom-projected Unfolded Band Structure with DOS</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#unfolded-band-structure-with-specific-atom-selection">Unfolded Band Structure with Specific Atom Selection</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#unfolded-band-structure-with-orbital-projections">Unfolded Band Structure with Orbital Projections</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lm-decomposed-orbital-projections"><span class="math notranslate nohighlight">\(lm\)</span>-decomposed Orbital Projections</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Bonan Zhu, Seán Kavanagh
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  <p class="copyright">
+    
+      © Copyright 2023, Bonan Zhu.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=365ca57ee442770a23c6"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=365ca57ee442770a23c6"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
