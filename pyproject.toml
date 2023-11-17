@@ -4,7 +4,7 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "easyunfold"
-authors = [{name = "Bonan Zhu", email = "zhubonan@outlook.com"}]
+authors = [{name = "Bonan Zhu", email = "zhubonan@outlook.com"}, {name = "Seán Kavanagh", email = "s.kavanagh19@imperial.ac.uk"}]
 readme = "README.md"
 license = {file = "LICENSE"}
 classifiers = [
