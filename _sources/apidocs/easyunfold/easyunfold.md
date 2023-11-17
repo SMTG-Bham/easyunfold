@@ -43,7 +43,7 @@ easyunfold.unfold
 ````{py:data} __version__
 :canonical: easyunfold.__version__
 :value: >
-   '0.3.0'
+   '0.3.2'
 
 ```{autodoc2-docstring} easyunfold.__version__
 ```
