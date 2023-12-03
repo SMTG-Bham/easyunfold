@@ -37,9 +37,9 @@ The electronic band structure is an important property for
 understanding and designing solid crystalline materials in many fields
 such as photovoltaic, catalytic, thermoelectric and transparent-conducting
 materials. Obtaining the band structure for an ideal crystal through first-principles
-density functional theory (DFT) calculations is a well-established routine operation.
+density functional theory (DFT) calculations is a well-established routine operation[@Ganose_2018].
 However, the materials of interest are often complex and the simulation cells may contain multiple primitive
-cells of the archetypal structure when, for example, modelling disordered or defective materials.
+cells of the archetypal structure when, for example, modelling disordered or defective materials[@Kim_2020].
 Repeating the unit cell in real space results in folded band structures, as illustrated in \autoref{fig:figure1}, complicating its interpretation and analysis.
 Band structure unfolding maps the electronic structure from supercell calculations back to the reciprocal lattice of the primitive cell,
 thereby enabling researchers to understand structure-property relationships and compare the effect of various crystal imperfections on an equal footing.
@@ -59,14 +59,14 @@ Both the input settings and calculated outputs are stored in a single JSON file.
 This enables the unfolded band structure to be re-plotted and further analysed without reprocessing the wave function data, which can be time-consuming and require large storage space.
 
 The package is designed with flexibility in mind.
-`easyunfold` can split the supercell calculations into multiple runs, each working on a subset of $\vec{k}$-points.
+`easyunfold` can split a supercell calculation into multiple runs.
 This functionality is essential for compute-heavy and memory-intensive hybrid functional calculations, particularly if spin-orbit coupling is used, where the required computational resources would quickly become intractable otherwise.
 Upon completion of all calculations, their wave functions can be collected to generate a single effective band structure.
 The atomic and orbital projections can be used to colour the effective band structure (\autoref{fig:figure2}), and the electronic density of states (DOS) can optionally be plotted alongside (\autoref{fig:figure3}), which can provide valuable information for analysing the underlying structure-property relationships.
 
 We chose Python as the programming language due to its low barrier-to-entry, flexibility and popularity in the materials modelling field.
 An object-oriented approach is used when designing the package to allow abstractions when reading and processing wave function data.
-The code current supports two of the most popular DFT codes, VASP and CASTEP, and others can be added with a small amount of coding effort.
+The code current supports two of the most popular DFT codes, VASP [@vasp1,@vasp2] and CASTEP [@castep], and others can be added with a small amount of coding effort.
 `easyunfold` depends on common scientific computing packages such as `numpy` [@numpy] and `matplotlib` [@matplotlib].
 The Atomic Simulation Environment (`ase`) [@ase] is used for reading input crystal structures from a wide range of formats.
 

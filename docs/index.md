@@ -88,13 +88,19 @@ And those who helped in the development:
 - [Joe Willis](https://github.com/joebesity)  
 - [David O. Scanlon](http://davidscanlon.com/?page_id=5)  
 
-## Contributing
+
 ## Bugs reports and feature requests
 Bug reports and feature requests are well come.
 If you found any bug or missing features please report it on the 
 [Issue Tracker](https://github.com/SMTG-UCL/easyunfold/issues).
 
-## Code contributions
+## Seeking support 
+
+If you need support about using the software, please open a ticket with the *help wanted* label on the [Issue Tracker](https://github.com/SMTG-UCL/easyunfold/issues).
+
+## Contributing
+
+### Code contributions
 We welcome your help in improving and extending the package with your
 own contributions. This is managed through GitHub pull requests;
 for external contributions, we prefer the
@@ -109,6 +115,25 @@ workflow while core developers use branches in the main repository:
 3. Open a pull request to merge the changes into the main
   project. A more detailed discussion can take place there before
   the changes are accepted.
+
+### Development 
+
+To develope the package, please clone it on GitHub and install it with the `doc` and `test` extras so all dependencies needed for development are installed:
+
+```bash
+git clone https://github.com/SMTG-Bham/easyunfold
+pip install -e "./easyunfold[doc,test]"
+```
+
+To run the tests, simply run the `pytest` command  while in the top-level code repository.
+
+To build the documentation, run the `make html` command while in the `docs` directory.
+
+If you want to add new features, please also include a test case to check that they work as expected.
+For more information please consult [pytest's documentation](https://docs.pytest.org).
+
+Please note that we use pre-commit hooks for code formatting and linting. 
+Please install them using `pre-commit install` so these hooks can run before committing code updates.
 
 
 ```{toctree}
