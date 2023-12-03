@@ -1,10 +1,10 @@
 # `easyunfold` Documentation
 
-![build](https://github.com/SMTG-UCL/easyunfold/actions/workflows/ci.yaml/badge.svg)
-[![docs](https://github.com/SMTG-UCL/easyunfold/actions/workflows/docs.yaml/badge.svg)](https://smtg-ucl.github.io/easyunfold/)
-[![codecov](https://codecov.io/gh/SMTG-UCL/easyunfold/branch/main/graph/badge.svg?token=XLLWWU5UM2)](https://codecov.io/gh/SMTG-UCL/easyunfold)
+![build](https://github.com/SMTG-Bham/easyunfold/actions/workflows/ci.yaml/badge.svg)
+[![docs](https://github.com/SMTG-Bham/easyunfold/actions/workflows/docs.yaml/badge.svg)](https://smtg-Bham.github.io/easyunfold/)
+[![codecov](https://codecov.io/gh/SMTG-Bham/easyunfold/branch/main/graph/badge.svg?token=XLLWWU5UM2)](https://codecov.io/gh/SMTG-Bham/easyunfold)
 [![PyPI](https://img.shields.io/pypi/v/easyunfold)](https://pypi.org/project/easyunfold)
-[![Downloads](https://img.shields.io/pypi/dm/easyunfold)](https://smtg-ucl.github.io/easyunfold/)
+[![Downloads](https://img.shields.io/pypi/dm/easyunfold)](https://smtg-Bham.github.io/easyunfold/)
 <!--- When JOSS submitted, add this: [![JOSS](https://joss.theoj.org/papers/10.21105/joss.04817/status.
 svg)](https://doi.org/10.21105/joss.)--->
 
@@ -13,7 +13,7 @@ path of the primitive cell. It was originally based on
 [PyVaspwfc](https://github.com/QijingZheng/VaspBandUnfolding) for reading VASP wavefunction outputs, 
 with a notable improvement being that symmetry-breaking is properly accounted for by sampling necessary 
 additional _k_-points and averaging accordingly.
-Typical applications of band structure unfolding are the electronic structure analysis of defects, disorder, alloys, surfaces (and more), as illustrated in the example outputs below and [docs examples](https://smtg-ucl.github.io/easyunfold/examples.html).
+Typical applications of band structure unfolding are the electronic structure analysis of defects, disorder, alloys, surfaces (and more), as illustrated in the example outputs below and [docs examples](https://smtg-Bham.github.io/easyunfold/examples.html).
 
 Our goal is to implement the band structure unfolding workflow in a robust and user-friendly software 
 package.
@@ -49,7 +49,7 @@ In all cases, the supercell symmetry is lowered compared to the pristine primiti
 Hence, for a given _k_-point path in the primitive cell Brillouin Zone, additional _k_-points are 
 required to be sampled for the supercell, and the extracted spectral weights need to be appropriately 
 averaged to obtain the correct effective band structure (EBS). See the docs 
-[Theory](https://smtg-ucl.github.io/easyunfold/theory.html) page for more details.
+[Theory](https://smtg-Bham.github.io/easyunfold/theory.html) page for more details.
 <!-- when JOSS submitted, add link to paper (discussion of theory) here! -->
 <!--- When JOSS submitted, add 'Citation' section here, and CITATION.cff --->
 
@@ -96,7 +96,7 @@ And those who helped in the development:
 ## Bugs reports and feature requests
 Bug reports and feature requests are well come.
 If you found any bug or missing features please report it on the 
-[Issue Tracker](https://github.com/SMTG-UCL/easyunfold/issues).
+[Issue Tracker](https://github.com/SMTG-Bham/easyunfold/issues).
 
 ## Seeking support 
 
@@ -111,7 +111,7 @@ for external contributions, we prefer the
 [fork and pull](https://guides.github.com/activities/forking/)
 workflow while core developers use branches in the main repository:
 
-1. First open an [Issue](https://github.com/SMTG-UCL/easyunfold/issues) to discuss the proposed 
+1. First open an [Issue](https://github.com/SMTG-Bham/easyunfold/issues) to discuss the proposed 
    contribution. This discussion might include how the changes fit `easyunfold`'s scope and a
   general technical approach.
 2. Make your own project fork and implement the changes

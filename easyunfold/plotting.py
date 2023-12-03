@@ -332,7 +332,7 @@ class UnfoldPlotter:
             else:
                 fig, axes = plt.subplots(1, 2, figsize=figsize, dpi=dpi)
         else:
-            axes = [ax] if not isinstance(ax, list) else ax
+            axes = ax if isinstance(ax, (list, np.ndarray)) else [ax]
             fig = axes[0].figure
 
         mask = (engs < (ylim[1] + eref)) & (engs > (ylim[0] + eref))

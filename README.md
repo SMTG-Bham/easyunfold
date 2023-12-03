@@ -1,12 +1,12 @@
-![build](https://github.com/SMTG-UCL/easyunfold/actions/workflows/ci.yaml/badge.svg)
-[![docs](https://github.com/SMTG-UCL/easyunfold/actions/workflows/docs.yaml/badge.svg)](https://smtg-ucl.github.io/easyunfold/)
-[![codecov](https://codecov.io/gh/SMTG-UCL/easyunfold/branch/main/graph/badge.svg?token=XLLWWU5UM2)](https://codecov.io/gh/SMTG-UCL/easyunfold)
+![build](https://github.com/SMTG-Bham/easyunfold/actions/workflows/ci.yaml/badge.svg)
+[![docs](https://github.com/SMTG-Bham/easyunfold/actions/workflows/docs.yaml/badge.svg)](https://smtg-Bham.github.io/easyunfold/)
+[![codecov](https://codecov.io/gh/SMTG-Bham/easyunfold/branch/main/graph/badge.svg?token=XLLWWU5UM2)](https://codecov.io/gh/SMTG-Bham/easyunfold)
 [![PyPI](https://img.shields.io/pypi/v/easyunfold)](https://pypi.org/project/easyunfold)
-[![Downloads](https://img.shields.io/pypi/dm/easyunfold)](https://smtg-ucl.github.io/easyunfold/)
+[![Downloads](https://img.shields.io/pypi/dm/easyunfold)](https://smtg-Bham.github.io/easyunfold/)
 <!--- When JOSS submitted, add this: [![JOSS](https://joss.theoj.org/papers/10.21105/joss.04817/status.
 svg)](https://doi.org/10.21105/joss.)--->
 
-[![easyunfold](docs/img/logo.svg)](https://smtg-ucl.github.io/easyunfold/)
+[![easyunfold](docs/img/logo.svg)](https://smtg-Bham.github.io/easyunfold/)
 
 `easyunfold` is intended for obtaining the effective band structure of a supercell for a certain _k_-point
 path of the primitive cell. It was originally based on

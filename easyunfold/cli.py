@@ -48,7 +48,11 @@ def easyunfold():
     type=click.Choice(SUPPORTED_DFT_CODES),
     show_default=True,
 )
-@click.option('--matrix', '-m', help='Transformation matrix')
+@click.option('--matrix',
+              '-m',
+              help='Transformation matrix, in the form "x y z" for a diagonal matrix, '
+              'or "x1 y1 z1, x2 y2 z2, x3 y3 z3" for a 3x3 matrix. Automatically guessed if not '
+              'provided.')
 @click.option('--symprec', help='Tolerance for determining the symmetry', type=float, default=1e-5, show_default=True)
 @click.option('--out-file', '-o', default='easyunfold.json', help='Name of the output file')
 @click.option('--no-expand', help='Do not expand the kpoints by symmetry', default=False, is_flag=True)
@@ -91,21 +95,26 @@ def generate(pc_file, code, sc_file, matrix, kpoints, time_reversal, out_file, n
 
     if matrix:
         transform_matrix = matrix_from_string(matrix)
-        if not np.allclose(primitive.cell @ transform_matrix, supercell.cell, rtol=2e-2):  # 2% mismatch tolerance
-            if np.allclose(primitive.cell @ transform_matrix, supercell.cell, rtol=5e-2):  # 2-5% mismatch
+        if not np.allclose(transform_matrix @ primitive.cell, supercell.cell, rtol=2e-2):  # 2% mismatch tolerance
+            if np.allclose(transform_matrix @ primitive.cell, supercell.cell, rtol=5e-2):  # 2-5% mismatch
                 click.echo(_quantitative_inaccuracy_warning)
             else:
                 click.echo(_incommensurate_warning)
+                click.echo(f'Transform matrix x primitive cell:\n{transform_matrix @ primitive.cell}')
+                click.echo(f'Supercell cell:\n{supercell.cell}')
             click.echo('Proceeding with the assumed transformation matrix.')
         click.echo(f'Transform matrix:\n{transform_matrix.tolist()}')
     else:
         tmp = supercell.cell @ np.linalg.inv(primitive.cell)
         transform_matrix = np.rint(tmp)
         if not np.allclose(tmp, transform_matrix, rtol=2e-2):  # 2% mismatch tolerance
-            if np.allclose(primitive.cell @ transform_matrix, supercell.cell, rtol=5e-2):  # 2-5% mismatch
+            if np.allclose(transform_matrix @ primitive.cell, supercell.cell, rtol=5e-2):  # 2-5% mismatch
                 click.echo(_quantitative_inaccuracy_warning)
             else:
                 click.echo(_incommensurate_warning)
+                click.echo(f'(Guessed) Transform matrix:\n{transform_matrix.tolist()}')
+                click.echo(f'Transform matrix x primitive cell:\n{transform_matrix @ primitive.cell}')
+                click.echo(f'Supercell cell:\n{supercell.cell}')
                 raise click.Abort()
 
         click.echo(f'(Guessed) Transform matrix:\n{transform_matrix.tolist()}')

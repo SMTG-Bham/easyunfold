@@ -209,13 +209,15 @@ def wrap_kpoints(kpoints: Union[list, np.ndarray]):
     kpoints = np.array(kpoints) + 0.5
     kpoints -= np.floor(kpoints)
     kpoints -= 0.5
+    # Giving some numerical tolerance when enforcing the range [-0.5, 0.5)
+    kpoints[np.abs(kpoints - 0.5) < 1e-7] = -0.5
     return kpoints
 
 
 def find_unique(seq: np.ndarray, func=None):
     """
     Find unique slices along the first dimension of an np.array.
-    This is function is not optimised for high performance and has a O(N^2) scaling.
+    This function is not optimised for high performance and has a O(N^2) scaling.
 
     :return: A tuple of (unique, unique_idx, inv_mapping)
     """

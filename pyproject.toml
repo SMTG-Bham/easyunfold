@@ -4,7 +4,7 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "easyunfold"
-authors = [{name = "Bonan Zhu", email = "zhubonan@outlook.com"}]
+authors = [{name = "Bonan Zhu", email = "zhubonan@outlook.com"}, {name = "Seán Kavanagh", email = "s.kavanagh19@imperial.ac.uk"}]
 readme = "README.md"
 license = {file = "LICENSE"}
 classifiers = [
@@ -19,8 +19,8 @@ dependencies = ["scipy~=1.0", "numpy~=1.0", "matplotlib~=3.0", "ase~=3.14", "spg
                 "castepxbin~=0.3.0", "castepinput~=0.1"]
 
 [project.urls]
-"Homepage" = "https://github.com/SMTG-UCL/easyunfold"
-"Documentation" = "https://smtg-ucl.github.io/easyunfold/"
+"Homepage" = "https://github.com/SMTG-Bham/easyunfold"
+"Documentation" = "https://smtg-Bham.github.io/easyunfold/"
 
 [project.scripts]
 easyunfold = "easyunfold.cli:easyunfold"
@@ -28,7 +28,8 @@ easyunfold = "easyunfold.cli:easyunfold"
 [project.optional-dependencies]
 doc = [
     "sphinx-click>=4,<5", "sphinx-autodoc2>=0.4,<0.5", "sphinx-book-theme>=1,<2",
-    "sphinx-copybutton>=0.3,<0.4", "myst-parser[linkify]", "sphinx>=6,<7"
+    "sphinx-copybutton>=0.3,<0.4", "myst-parser[linkify]", "sphinx>=6,<7", "astroid<3"
+    # astroid needs to be <3 due to: https://github.com/sphinx-extensions2/sphinx-autodoc2/issues/31
 ]
 test = ["pytest", "pytest-cov", "coverage", "sumo"]
 dos = ["sumo"]

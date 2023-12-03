@@ -2,7 +2,7 @@
 
 :::{note}
 The files needed for reproducing this example are provided in the 
-[examples/NaBiS2](https://github.com/SMTG-UCL/easyunfold/tree/main/examples/NaBiS2) folder. 
+[examples/NaBiS2](https://github.com/SMTG-Bham/easyunfold/tree/main/examples/NaBiS2) folder. 
 Note that the `PROCAR.gz` file will need to be decompressed with `gzip -d PROCAR.gz` if recalculating 
 and reproducing these example plots.
 :::
@@ -161,7 +161,7 @@ Atom-projected unfolded band structure of NaBiS<sub>2</sub> alongside the electr
 ```
 The orbital contributions of elements in the DOS plot are automatically coloured to match that of the atomic 
 projections in the unfolded band structure plot, and these colours can be changed with the `--colours` option (as shown 
-in the [MgO example](https://smtg-ucl.github.io/easyunfold/examples/example_mgo.html)). 
+in the [MgO example](https://smtg-Bham.github.io/easyunfold/examples/example_mgo.html)). 
 
 ## Unfolded Band Structure with Specific Atom Selection
 In certain cases, we may want to project the contributions of specific atoms to the unfolded band structure, rather

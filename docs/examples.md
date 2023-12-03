@@ -2,7 +2,7 @@
 
 Worked examples showcasing the capability of the `easyunfold`.
 Input files for these examples can be found 
-[here](https://github.com/SMTG-UCL/easyunfold/tree/main/examples).
+[here](https://github.com/SMTG-Bham/easyunfold/tree/main/examples).
 
 ```{toctree}
 :maxdepth: 1

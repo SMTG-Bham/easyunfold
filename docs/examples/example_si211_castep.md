@@ -7,7 +7,7 @@ path using CASTEP.
 
 :::{note} 
 The files needed for this example are provided in the 
-[examples/Si-castep](https://github.com/SMTG-UCL/easyunfold/tree/main/examples/Si-castep) folder. 
+[examples/Si-castep](https://github.com/SMTG-Bham/easyunfold/tree/main/examples/Si-castep) folder. 
 This guide assumes the current working directory is located at the root of that folder.
 :::
 
@@ -19,7 +19,7 @@ easyunfold generate Si_prim.cell Si_211_band/Si_211_band.cell band.cell --code c
 
 :::{tip}
 Here, `band.cell` contains the band structure path and labels of the high symmetry _k_-points for the 
-primitive cell. The [sumo](https://github.com/SMTG-UCL/sumo) package can be used to generate it with ease.
+primitive cell. The [sumo](https://github.com/SMTG-Bham/sumo) package can be used to generate it with ease.
 :::
 
 The `easyunfold generate` command above also generates an `easyunfold.json` file in the current directory, 
@@ -112,7 +112,7 @@ Spectral function of the unfolded bands.
 ```
 
 :::{tip} 
-See the [NaBiS<sub>2</sub> example](https://smtg-ucl.github.io/easyunfold/examples/example_nabis2.html) for tips on 
+See the [NaBiS<sub>2</sub> example](https://smtg-Bham.github.io/easyunfold/examples/example_nabis2.html) for tips on 
 customising and prettifying the unfolded band structure plot.
 :::
 
