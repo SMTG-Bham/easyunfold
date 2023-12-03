@@ -66,7 +66,7 @@ The atomic and orbital projections can be used to colour the effective band stru
 
 We chose Python as the programming language due to its low barrier-to-entry, flexibility and popularity in the materials modelling field.
 An object-oriented approach is used when designing the package to allow abstractions when reading and processing wave function data.
-The code current supports two of the most popular DFT codes, VASP [@vasp1,@vasp2] and CASTEP [@castep], and others can be added with a small amount of coding effort.
+The code current supports two of the most popular DFT codes, VASP [@vasp1;@vasp2] and CASTEP [@castep], and others can be added with a small amount of coding effort.
 `easyunfold` depends on common scientific computing packages such as `numpy` [@numpy] and `matplotlib` [@matplotlib].
 The Atomic Simulation Environment (`ase`) [@ase] is used for reading input crystal structures from a wide range of formats.
 
