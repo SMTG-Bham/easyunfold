@@ -100,7 +100,7 @@ If you found any bug or missing features please report it on the
 
 ## Seeking support 
 
-If you need support about using the software, please open a ticket with the *help wanted* label on the [Issue Tracker](https://github.com/SMTG-UCL/easyunfold/issues).
+If you need support about using the software, please open a ticket with the *help wanted* label on the [Issue Tracker](https://github.com/SMTG-Bham/easyunfold/issues).
 
 ## Contributing
 
