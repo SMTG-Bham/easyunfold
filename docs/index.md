@@ -75,6 +75,10 @@ In principle, support for other plane wave DFT code can be added by:
 The Atomic Simulation Environment ([ASE](https://wiki.fysik.dtu.dk/ase/)) is used by `easyunfold` for 
 reading in structures, so structure file IO is natively supported for essentially all public DFT codes.
 
+In fact, ASE already can run band structure calculations using many plane-wave DFT codes.
+However, reading the plane wave coefficients from calculation outputs is not widely supported yet, which are needed here for band unfolding.
+Nevertheless, using ASE's existing IO framework to widen the code support can be a fruitful direction for further development. 
+
 ### Code Compatibility Notes
 - Atom-projected band structures are currently only supported for `VASP` calculation outputs.
 - Gamma-only and non-collinear spin calculations are not supported for `CASTEP`. 
