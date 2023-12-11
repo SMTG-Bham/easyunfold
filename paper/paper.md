@@ -45,7 +45,7 @@ Band structure unfolding maps the electronic structure from supercell calculatio
 thereby enabling researchers to understand structure-property relationships and compare the effect of various crystal imperfections on an equal footing.
 With `easyunfold`, we provide a simple, easy-to-use, yet powerful and flexible tool which implements the band structure unfolding workflow using plane-wave DFT codes, from input file generation to publication-quality plotting.
 
-![Schematics of band folding in a 2D lattice: (a) The primitive cell in real space; (b) The $2\times2$ supercell in real space. (c) A slice ($\varepsilon$) of the band structure in the Brillouin zone of the primitive cell; (d) The same band structure slice ($\varepsilon$) in the Brillouin zone of the supercell. Band structure unfolding is the process of transforming the band structure slice in (d) back to Brillouin zone of the primitive cell (i.e. the form shown in (c)). \label{fig:figure1}](figure1.png){width=100mm}
+![Schematics of band folding in a 2D lattice: (a) The primitive cell in real space; (b) The $2\times2$ supercell in real space. (c) A slice ($\varepsilon$) of the band structure in the Brillouin zone of the primitive cell; (d) The same band structure slice ($\varepsilon$) in the Brillouin zone of the supercell. Band structure unfolding is the process of transforming the band structure slice in (d) back to the Brillouin zone of the primitive cell (i.e. the form shown in (c)). \label{fig:figure1}](figure1.png){width=100mm}
 
 # Statement of need
 
@@ -66,7 +66,7 @@ The atomic and orbital projections can be used to colour the effective band stru
 
 We chose Python as the programming language due to its low barrier-to-entry, flexibility and popularity in the materials modelling field.
 An object-oriented approach is used when designing the package to allow abstractions when reading and processing wave function data.
-The code current supports two of the most popular DFT codes, VASP [@vasp1;@vasp2] and CASTEP [@castep], and others can be added with a small amount of coding effort.
+The code currently supports two of the most popular DFT codes, VASP [@vasp1;@vasp2] and CASTEP [@castep], and others can be added with a small amount of coding effort.
 `easyunfold` depends on common scientific computing packages such as `numpy` [@numpy] and `matplotlib` [@matplotlib].
 The Atomic Simulation Environment (`ase`) [@ase] is used for reading input crystal structures from a wide range of formats.
 
@@ -86,7 +86,7 @@ band structure unfolding and help train new researchers.
 
 # Theory
 
-The mathematics of band structure unfolding has been discussed in detail in the work of @Popescu:2009.
+The mathematics of band structure unfolding has been discussed in detail in the work of [@Popescu:2009].
 Here, we only give a brief summary of the key ingredients.
 
 Our goal is to reconstruct the energies of the Kohn-Sham states in the reciprocal lattice of the primitive cell ($E(\vec{k})$), given a more complex (folded) $E(\vec{K})$ of the supercell.
@@ -129,7 +129,7 @@ $$
 where $A$ is the total intensity summed from all contributing $P_{\vec{K}m}$ at $\vec{k}_i$ and energy $E$.
 In practice, the $\delta$ function is replaced with a Gaussian or Lorentzian function which smears the contribution across a discretised energy grid.
 
-For a plane wave basis, the $P_{\vec{K}m}(\vec{k}_i)$ can be calculated as (equation 15 @Popescu:2009):
+For a plane wave basis, the $P_{\vec{K}m}(\vec{k}_i)$ can be calculated as (equation 15 [@Popescu:2009]):
 
 $$
 P_{\vec{K}m}(\vec{k}_i) = \sum_{\vec{g}} |C_{\vec{Km}}(\vec{g} + \vec{G}_i)|^2,
