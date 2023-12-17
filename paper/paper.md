@@ -17,7 +17,7 @@ authors:
   - name: David Scanlon
     orcid: 0000-0001-9174-8601
     equal-contrib: false
-    affiliation: "1, 2, 3" # (Multiple affiliations must be quoted)
+    affiliation: "1, 2, 3, 5" # (Multiple affiliations must be quoted)
 affiliations:
  - name: Department of Chemistry, University College London, London, United Kingdom
    index: 1
@@ -27,6 +27,8 @@ affiliations:
    index: 3
  - name: Department of Materials, Imperial College London, London, United Kingdom
    index: 4
+ - name: School of Chemistry, University of Birmingham, Birmingham, United Kingdom
+   index: 5
 date: 6 June 2023
 bibliography: paper.bib
 ---
