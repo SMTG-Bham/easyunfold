@@ -47,7 +47,8 @@ def find_K_from_k(k: np.ndarray, M: np.ndarray):
         \\vec{k} = \\vec{K} + \\vec{G}
     $$
 
-    where G is a reciprocal space vector of supercell
+    where G is a reciprocal space vector of supercell.
+    NOTE: M is the transformation matrix for the cell matrix consistent of row vectors!
     """
 
     M = np.array(M)
