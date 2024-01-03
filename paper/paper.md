@@ -39,9 +39,9 @@ The electronic band structure is an important property for
 understanding and designing solid crystalline materials in many fields
 such as photovoltaic, catalytic, thermoelectric and transparent-conducting
 materials. Obtaining the band structure for an ideal crystal through first-principles
-density functional theory (DFT) calculations is a well-established routine operation[@Ganose_2018].
+density functional theory (DFT) calculations is a well-established routine operation [@Ganose_2018].
 However, the materials of interest are often complex and the simulation cells may contain multiple primitive
-cells of the archetypal structure when, for example, modelling disordered or defective materials[@Kim_2020].
+cells of the archetypal structure when, for example, modelling disordered or defective materials [@Kim_2020].
 Repeating the unit cell in real space results in folded band structures, as illustrated in \autoref{fig:figure1}, complicating its interpretation and analysis.
 Band structure unfolding maps the electronic structure from supercell calculations back to the reciprocal lattice of the primitive cell,
 thereby enabling researchers to understand structure-property relationships and compare the effect of various crystal imperfections on an equal footing.
