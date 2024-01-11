@@ -143,6 +143,7 @@ Increasing the value of `--intensity-tol` will filter away bands with very small
 On the other hand, increasing `--extrema-detect-tol` will increase the energy window with respect 
 to the VBM or CBM to assign extrema points. 
 One can also inspect if the defected bands makes sense by using the `--plot` option.
+A Jupyter Notebook example can be found [here](../../examples/MgO/effective-mass.ipynb).
 
 
 ```{figure} ../../examples/MgO/unfold-effective-mass.png
