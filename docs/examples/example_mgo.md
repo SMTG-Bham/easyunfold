@@ -108,3 +108,57 @@ Unfolded MgO band structure with atomic projections plotted separately.
 There are _many_ customisation options available for the plotting functions in `easyunfold`. See `easyunfold plot -h` or 
 `easyunfold unfold plot-projections -h` for more details!
 :::
+
+
+The command `easyunfold unfold effective-mass` can be used to find the effective masses of the unfolded band structure.
+
+The example output is shown below:
+
+```
+Loaded data from easyunfold.json
+Band extrema data:
+  Kpoint index  Kind      Sub-kpoint index    Band indices
+--------------  ------  ------------------  --------------
+             0  cbm                      0              16
+            47  cbm                      0              16
+             0  vbm                      0              15
+            47  vbm                      0              15
+
+Electron effective masses:
+  index  Kind      Effective mass    Band index  from                      to
+-------  ------  ----------------  ------------  ------------------------  -------------------
+      0  m_e             0.373553            16  [0.0, 0.0, 0.0] (\Gamma)  [0.5, 0.5, 0.5] (L)
+      1  m_e             0.367203            16  [0.0, 0.0, 0.0] (\Gamma)  [0.5, 0.0, 0.5] (X)
+
+Hole effective masses:
+  index  Kind      Effective mass    Band index  from                      to
+-------  ------  ----------------  ------------  ------------------------  -------------------
+      0  m_h             -3.44604            15  [0.0, 0.0, 0.0] (\Gamma)  [0.5, 0.5, 0.5] (L)
+      1  m_h             -2.13525            15  [0.0, 0.0, 0.0] (\Gamma)  [0.5, 0.0, 0.5] (X)
+Unfolded band structure can be ambiguous, please cross-check with the spectral function plot.
+```
+
+If detected band extremas are not consistent with the band structure, one should adjust the `--intensity-tol` and `--extrema-detect-tol`.
+Increasing the value of `--intensity-tol` will filter away bands with very small spectral weights.
+On the other hand, increasing `--extrema-detect-tol` will increase the energy window with respect 
+to the VBM or CBM to assign extrema points. 
+One can also inspect if the defected bands makes sense by using the `--plot` option.
+
+
+```{figure} ../../examples/MgO/unfold-effective-mass.png
+:width: 800 px
+:alt: Effective bands extracted  
+
+Extracted bands at CBM and VBM for an unfolded MgO band structure.
+```
+
+
+:::{warning}
+Make sure the band extrema data tabulated is correct and consistent before using any of the reported values.
+The results can unreliable for systems with little or no band gaps and those with complex unfolded band structures.
+:::
+
+
+:::{tip}
+For complex systems where the detection is difficult, one can manually pass the kpoint and the band indices using the `--manual-extrema` option.
+:::
