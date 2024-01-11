@@ -144,8 +144,8 @@ class EffectiveMass:
         cbm_indices = []
         for ik, wset in enumerate(weights):
             for isubset in range(wset.shape[1]):
-                etmp = weights[ik][ispin, isubset, :, 0]
-                wtmp = weights[ik][ispin, isubset, :, 1]
+                etmp = wset[ispin, isubset, :, 0]
+                wtmp = wset[ispin, isubset, :, 1]
                 # Filter by intensity
                 mask = wtmp > intensity_tol
                 midx = np.where(mask)[0]
