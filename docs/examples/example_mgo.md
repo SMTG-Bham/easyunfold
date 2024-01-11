@@ -138,11 +138,11 @@ Hole effective masses:
 Unfolded band structure can be ambiguous, please cross-check with the spectral function plot.
 ```
 
-If detected band extremas are not consistent with the band structure, one should adjust the `--intensity-tol` and `--extrema-detect-tol`.
+If detected band extrema are not consistent with the band structure, one should adjust the `--intensity-tol` and `--extrema-detect-tol`.
 Increasing the value of `--intensity-tol` will filter away bands with very small spectral weights.
 On the other hand, increasing `--extrema-detect-tol` will increase the energy window with respect 
 to the VBM or CBM to assign extrema points. 
-One can also inspect if the defected bands makes sense by using the `--plot` option.
+One can also inspect if the detected bands makes sense by using the `--plot` option.
 A Jupyter Notebook example can be found [here](../../examples/MgO/effective-mass.ipynb).
 
 
