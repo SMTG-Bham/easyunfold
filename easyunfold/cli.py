@@ -107,6 +107,7 @@ def generate(pc_file, code, sc_file, matrix, kpoints, time_reversal, out_file, n
     else:
         tmp = supercell.cell @ np.linalg.inv(primitive.cell)
         transform_matrix = np.rint(tmp)
+        transform_matrix[transform_matrix == 0] = 0
         if not np.allclose(tmp, transform_matrix, rtol=2e-2):  # 2% mismatch tolerance
             if np.allclose(transform_matrix @ primitive.cell, supercell.cell, rtol=5e-2):  # 2-5% mismatch
                 click.echo(_quantitative_inaccuracy_warning)
