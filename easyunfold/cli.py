@@ -57,11 +57,16 @@ def easyunfold():
 @click.option('--out-file', '-o', default='easyunfold.json', help='Name of the output file')
 @click.option('--no-expand', help='Do not expand the kpoints by symmetry', default=False, is_flag=True)
 @click.option('--nk-per-split', help='Number of band structure kpoints per split.', type=int)
+@click.option('--separate-folders/--no-separate-folders',
+              help='Whether to use separate folders for each split.',
+              default=False,
+              show_default=True)
 @click.option('--scf-kpoints',
               help='File (IBZKPT) to provide SCF kpoints for self-consistent calculations. Needed for hybrid functional calculations.',
               type=click.Path(exists=True, dir_okay=False))
 @click.option('--yes', '-y', is_flag=True, default=False, help='Skip and confirmation.', hidden=True)  # hide help
-def generate(pc_file, code, sc_file, matrix, kpoints, time_reversal, out_file, no_expand, symprec, nk_per_split, scf_kpoints, yes):
+def generate(pc_file, code, sc_file, matrix, kpoints, time_reversal, out_file, no_expand, symprec, nk_per_split, scf_kpoints, yes,
+             separate_folders):
     """
     Generate the kpoints for performing supercell calculations.
 
@@ -155,6 +160,7 @@ def generate(pc_file, code, sc_file, matrix, kpoints, time_reversal, out_file, n
         out_kpt_name,
         nk_per_split=nk_per_split,
         scf_kpoints_and_weights=scf_kpoints_and_weights,
+        use_separate_folders=separate_folders,
         source=sc_file,
     )
 
