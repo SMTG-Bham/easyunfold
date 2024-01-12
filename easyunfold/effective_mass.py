@@ -89,10 +89,11 @@ class EffectiveMass:
         """
         Instantiate the object
 
-        Args:
-            unfold (UnfoldKSet): The ``UnfoldKSet`` object that holes unfolding data.
-            intensity_tol (float): Intensity tolerance for detecting band edges.
-            parabolic (bool): Perform parabolic fit or not. Defaults to True as non-parabolic fit is not working at the moment...
+        :param unfold: The ``UnfoldKSet`` object that holds unfolding data.
+        :param intensity_tol: Intensity threshold for detecting band edges.
+        :param extrema_tol: Distance tolerance for detecting band edges.
+        :param parabolic: Perform parabolic fit or not. The default is None.
+        :param npoints: The number of points used for fitting.
         """
         self.unfold: UnfoldKSet = unfold
         self.intensity_tol = intensity_tol
@@ -109,26 +110,36 @@ class EffectiveMass:
 
     @property
     def kpoints(self):
+        """
+        The primitive cell k-points used for unfolding.
+        """
         return self.unfold.kpts_pc
 
     @property
     def kpoints_labels(self):
+        """
+        The primitive cell k-points labels set for unfolding.
+        """
         return self.unfold.kpoint_labels
 
     def get_band_extrema(self, mode: str = 'cbm', extrema_tol: float = None, ispin=0):
         """
-        Obtain the kpoint idx of band extrema, sub indices in th set and the band indices.
+        Obtain the kpoint idx of band extrema, sub indices in the set, and the band indices.
 
-        The search takes two steps, first the kpoints at the band extrema is located by comparing the
-        band energies with that recorded in supplied *cbm* and *vbm*, based on the `extrema_tol`.
-        Afterwards, the band indices are selected at the these kpoints using
+        The search takes two steps. First, the kpoints at the band extrema are located by comparing the
+        band energies with that recorded in the supplied *cbm* and *vbm*, based on the `extrema_tol`.
+        Afterwards, the band indices are selected at these kpoints using the `tol` set.
 
-        Returns:
-            A tuple of extrema locations including a list of kpoint indices, sub-indices within
-            the set and the band indices at each kpoint that is within the `tol` set.
+        :param mode: The mode to search for band extrema. Can be either 'cbm' (conduction band minimum) or 'vbm'
+                     (valence band maximum).
+        :param extrema_tol: The tolerance for determining the proximity of band energies to the cbm/vbm.
+                            If not provided, the default tolerance from `self.extrema_detect_tol` is used.
+        :param ispin: The spin index. Default is 0.
+        :returns: A tuple of extrema locations including a list of kpoint indices, sub-indices within
+                 the set, and the band indices at each kpoint that is within the `extrema_tol` from the cbm/vbm.
+        :raises ValueError: If an unknown mode is provided.
         """
-        if extrema_tol is None:
-            extrema_tol = self.extrema_detect_tol
+        extrema_tol = self.extrema_detect_tol if extrema_tol is None else extrema_tol
 
         intensity_tol = self.intensity_tol
 
@@ -179,6 +190,13 @@ class EffectiveMass:
     def _get_fitting_data(self, kidx: int, iband: int, direction=1, ispin=0, npoints=None):
         """
         Get fitting data for a specific combination of kpoint and band index
+
+        :param kidx: The index of the kpoint
+        :param iband: The index of the band
+        :param direction: The direction of the data collection, defaults to 1
+        :param ispin: The index of the spin, defaults to 0
+        :param npoints: Override for the number of data points to collect
+        :returns: The normalized kpoint distances, normalized effective energies, and the original kpoint distances and effective energies
         """
         istart = kidx
         weights = self.unfold.calculated_quantities['spectral_weights_per_set']
@@ -186,7 +204,7 @@ class EffectiveMass:
         kdists = []
         engs_effective = []
 
-        npoints = self.get_npoints(npoints)
+        npoints = self.npoints if npoints is None else npoints
         for i in range(npoints):
             idx = istart + i * direction
             if idx >= len(dists) or idx < 0:
@@ -211,15 +229,17 @@ class EffectiveMass:
 
         return kdists_norm, engs_norm, (kdists, engs_effective)
 
-    def get_npoints(self, override: Union[float, None] = None):
-        """Get the number of points used for fitting"""
-        if override is None:
-            return self.npoints
-        return override
-
     def get_effective_masses(self, npoints: Union[float, None] = None, ispin=0, iks=None, iband=None, mode=None):
         """
-        Workout the effective masses based on the unfolded band structure
+        Obtain the effective masses based on the unfolded band structure
+
+        :param npoints: Number of points to use for fitting. If None, a default value is used.
+        :param ispin: The index of the spin channel. Default is 0.
+        :param iks: K-point indices used for manual override.
+        :param iband: Band indices used for manual override.
+        :param mode: Calculation mode. If None, effective masses at both conduction band minimum (cbm)
+            and valence band maximum (vbm) will be calculated.
+        :returns: A dictionary containing the effective masses for electrons and holes.
         """
         outputs = {}
         mode = ['cbm', 'vbm'] if mode is None else [mode]
@@ -231,6 +251,16 @@ class EffectiveMass:
     def _get_effective_masses(self, mode: str = 'cbm', ispin: int = 0, npoints: Union[None, int] = None, iks=None, iband=None):
         """
         Work out the effective masses based on the unfolded band structure for CBM or VBM
+
+        :param mode: The mode to calculate effective masses, either 'cbm' for conduction band minimum
+            or 'vbm' for valence band maximum. Default is 'cbm'.
+        :param ispin: The spin index. Default is 0.
+        :param npoints: The number of points to use for fitting. If None, the default number of points will be used.
+        :param iks: The indices of the k-points to calculate effective masses. If None, the indices will be
+            obtained from get_band_extrema method.
+        :param iband: The indices of the bands to calculate effective masses. If None, the indices will be
+            obtained from get_band_extrema method.
+        :returns: A list of dictionaries containing the calculated effective masses and related information.
         """
         if iks is None or iband is None:
             iks, _, iband = self.get_band_extrema(mode=mode)
@@ -238,7 +268,7 @@ class EffectiveMass:
         if self.nocc:
             iband = [self.nocc for _ in iband]
 
-        npoints = self.get_npoints(npoints)
+        npoints = self.npoints if npoints is None else npoints
         results = []
         label_idx = [x[0] for x in self.kpoints_labels]
         label_names = [x[1] for x in self.kpoints_labels]
@@ -284,7 +314,15 @@ class EffectiveMass:
 
 
 def locate_kpoint_segment(idxk: int, label_idx: list, label_names: list, direction: int):
-    """Locate the labels and indices of the kpoints defining a segment"""
+    """
+    Locate the labels and indices of the kpoints defining a segment
+
+    :param idxk: The index of the kpoint
+    :param label_idx: A list of indices corresponding to the labels
+    :param label_names: A list of label names
+    :param direction: The direction of the segment (1 for forward, -1 for backward)
+    :returns: A tuple containing the index of the label, the label name of the starting point, and the label name of the ending point
+    """
     if idxk not in label_idx:
         pairs = list(zip(label_idx, label_names))
         i = 0

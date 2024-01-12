@@ -219,7 +219,7 @@ def find_unique(seq: np.ndarray, func=None):
     Find unique slices along the first dimension of an np.array.
     This function is not optimised for high performance and has a O(N^2) scaling.
 
-    :return: A tuple of (unique, unique_idx, inv_mapping)
+    :returns: A tuple of (unique, unique_idx, inv_mapping)
     """
     if func is None:
         # Use equality condition

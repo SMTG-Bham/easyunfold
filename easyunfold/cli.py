@@ -343,12 +343,15 @@ def unfold_effective_mass(ctx, intensity_threshold, spin, band_filter, npoints, 
     click.echo('Hole effective masses:')
     print_data(output.get('holes', []), 'm_h')
 
-    click.echo('Unfolded band structure can be ambiguous, please cross-check with the spectral function plot.')
+    if not plot:
+        click.echo(
+            'NOTE: Unfolded band structure can be ambiguous.'
+            'You may want to run the command with `--plot` and check if the detected bands are consistent with the spectral function.')
 
     if plot:
         from easyunfold.plotting import UnfoldPlotter
         plotter = UnfoldPlotter(unfoldset)
-        click.echo('Generating spectral function plot for visualising detected branches...')
+        click.echo('Generating spectral function plot for visualising detected band branches...')
         engs, sf = unfoldset.get_spectral_function()
         plotter.plot_effective_mass(efm, engs, sf, effective_mass_data=output, save=out_file, ylim=(emin, emax))
 

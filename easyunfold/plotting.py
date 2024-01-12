@@ -796,7 +796,7 @@ class UnfoldPlotter:
         :param save: Name of the file used for saveing.
         :param dpi: DPI of the figure when saving.
 
-        :return: A figure with plotted data.
+        :returns: A figure with plotted data.
         """
         data = efm.get_effective_masses(npoints=npoints)[carrier][idx]
 
