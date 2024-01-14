@@ -56,7 +56,7 @@ There are existing packages that provide band structure unfolding capabilities, 
 `easyunfold` is written in Python with a focus on user-friendliness, data provenance, reproducibility, and publication-quality figure generation.
 An example output of the effective band structure produced is shown in \autoref{fig:figure2} for a $2\times2\times2$ $\mathrm{MgO}$ supercell containing a neutral oxygen vacancy.
 \autoref{fig:figure3} shows the orbital-projected effective band structure of a $\mathrm{Cs_2(Sn_{0.5},Ti_{0.5})Br_6}$ vacancy-ordered perovskite alloy [@kavanagh_frenkel_2022; @liga_mixed-cation_2023], in the Brillouin zone of the primitive $Fm\bar{3}m$ unit cell.
-A key feature of `easyunfold` is to provide data serialization compliant with the FAIR principles [@wilkinson:2016].
+A key feature of `easyunfold` is to provide data serialisation compliant with the FAIR principles [@wilkinson:2016].
 Both the input settings and calculated outputs are stored in a single JSON file.
 This enables the unfolded band structure to be re-plotted and further analysed without reprocessing the wave function data, which can be time-consuming and require large storage space.
 
