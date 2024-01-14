@@ -43,7 +43,7 @@ easyunfold.wavecar
 ````{py:data} __version__
 :canonical: easyunfold.__version__
 :value: >
-   '0.3.4'
+   '0.3.5'
 
 ```{autodoc2-docstring} easyunfold.__version__
 ```
