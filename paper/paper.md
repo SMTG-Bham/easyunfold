@@ -39,9 +39,9 @@ The electronic band structure is an important property for
 understanding and designing solid crystalline materials in many fields
 such as photovoltaic, catalytic, thermoelectric and transparent-conducting
 materials. Obtaining the band structure for an ideal crystal through first-principles
-density functional theory (DFT) calculations is a well-established routine operation[@Ganose_2018].
+density functional theory (DFT) calculations is a well-established routine operation [@Ganose_2018].
 However, the materials of interest are often complex and the simulation cells may contain multiple primitive
-cells of the archetypal structure when, for example, modelling disordered or defective materials[@Kim_2020].
+cells of the archetypal structure when, for example, modelling disordered or defective materials [@Kim_2020].
 Repeating the unit cell in real space results in folded band structures, as illustrated in \autoref{fig:figure1}, complicating its interpretation and analysis.
 Band structure unfolding maps the electronic structure from supercell calculations back to the reciprocal lattice of the primitive cell,
 thereby enabling researchers to understand structure-property relationships and compare the effect of various crystal imperfections on an equal footing.
@@ -56,7 +56,7 @@ There are existing packages that provide band structure unfolding capabilities, 
 `easyunfold` is written in Python with a focus on user-friendliness, data provenance, reproducibility, and publication-quality figure generation.
 An example output of the effective band structure produced is shown in \autoref{fig:figure2} for a $2\times2\times2$ $\mathrm{MgO}$ supercell containing a neutral oxygen vacancy.
 \autoref{fig:figure3} shows the orbital-projected effective band structure of a $\mathrm{Cs_2(Sn_{0.5},Ti_{0.5})Br_6}$ vacancy-ordered perovskite alloy [@kavanagh_frenkel_2022; @liga_mixed-cation_2023], in the Brillouin zone of the primitive $Fm\bar{3}m$ unit cell.
-A key feature of `easyunfold` is to provide data serialization compliant with the FAIR principles [@wilkinson:2016].
+A key feature of `easyunfold` is to provide data serialisation compliant with the FAIR principles [@wilkinson:2016].
 Both the input settings and calculated outputs are stored in a single JSON file.
 This enables the unfolded band structure to be re-plotted and further analysed without reprocessing the wave function data, which can be time-consuming and require large storage space.
 
