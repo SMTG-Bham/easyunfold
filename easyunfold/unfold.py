@@ -11,6 +11,7 @@ import itertools
 import re
 import warnings
 from typing import Union, List, Tuple
+from pathlib import Path
 from packaging import version
 
 import numpy as np
@@ -332,6 +333,7 @@ class UnfoldKSet(MSONable):
                          file: str,
                          nk_per_split: Union[None, list] = None,
                          scf_kpoints_and_weights: Union[None, list] = None,
+                         use_separate_folders=False,
                          **kwargs):
         """
         Write the supercell kpoints to a file.
@@ -358,12 +360,13 @@ class UnfoldKSet(MSONable):
             for i_spilt, kpt in enumerate(splits):
                 if scf_kpoints_and_weights:
                     kpt, weights = concatenate_scf_kpoints(scf_kpoints_and_weights[0], scf_kpoints_and_weights[1], kpt)
-                write_kpoints(kpt,
-                              f'{file}_{i_spilt + 1:03d}',
-                              f'supercell kpoints split {i_spilt + 1}',
-                              code=self.dft_code,
-                              weights=weights,
-                              **kwargs)
+                if use_separate_folders:
+                    folder = f'split-{i_spilt+1:03d}'
+                    Path(folder).mkdir(exist_ok=True)
+                    fname = str(folder / file)
+                else:
+                    fname = f'{file}_{i_spilt + 1:03d}'
+                write_kpoints(kpt, fname, f'supercell kpoints split {i_spilt + 1}', code=self.dft_code, weights=weights, **kwargs)
 
     def write_pc_kpoints(self, file: str, expanded: bool = False, **kwargs):
         """Write the primitive cell kpoints"""

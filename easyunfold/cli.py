@@ -51,17 +51,22 @@ def easyunfold():
 @click.option('--matrix',
               '-m',
               help='Transformation matrix, in the form "x y z" for a diagonal matrix, '
-              'or "x1 y1 z1, x2 y2 z2, x3 y3 z3" for a 3x3 matrix. Automatically guessed if not '
+              'or "x1 y1 z1 x2 y2 z2 x3 y3 z3" for a 3x3 matrix. Automatically guessed if not '
               'provided.')
 @click.option('--symprec', help='Tolerance for determining the symmetry', type=float, default=1e-5, show_default=True)
 @click.option('--out-file', '-o', default='easyunfold.json', help='Name of the output file')
 @click.option('--no-expand', help='Do not expand the kpoints by symmetry', default=False, is_flag=True)
 @click.option('--nk-per-split', help='Number of band structure kpoints per split.', type=int)
+@click.option('--separate-folders/--no-separate-folders',
+              help='Whether to use separate folders for each split.',
+              default=False,
+              show_default=True)
 @click.option('--scf-kpoints',
               help='File (IBZKPT) to provide SCF kpoints for self-consistent calculations. Needed for hybrid functional calculations.',
               type=click.Path(exists=True, dir_okay=False))
 @click.option('--yes', '-y', is_flag=True, default=False, help='Skip and confirmation.', hidden=True)  # hide help
-def generate(pc_file, code, sc_file, matrix, kpoints, time_reversal, out_file, no_expand, symprec, nk_per_split, scf_kpoints, yes):
+def generate(pc_file, code, sc_file, matrix, kpoints, time_reversal, out_file, no_expand, symprec, nk_per_split, scf_kpoints, yes,
+             separate_folders):
     """
     Generate the kpoints for performing supercell calculations.
 
@@ -107,6 +112,7 @@ def generate(pc_file, code, sc_file, matrix, kpoints, time_reversal, out_file, n
     else:
         tmp = supercell.cell @ np.linalg.inv(primitive.cell)
         transform_matrix = np.rint(tmp)
+        transform_matrix[transform_matrix == 0] = 0
         if not np.allclose(tmp, transform_matrix, rtol=2e-2):  # 2% mismatch tolerance
             if np.allclose(transform_matrix @ primitive.cell, supercell.cell, rtol=5e-2):  # 2-5% mismatch
                 click.echo(_quantitative_inaccuracy_warning)
@@ -154,6 +160,7 @@ def generate(pc_file, code, sc_file, matrix, kpoints, time_reversal, out_file, n
         out_kpt_name,
         nk_per_split=nk_per_split,
         scf_kpoints_and_weights=scf_kpoints_and_weights,
+        use_separate_folders=separate_folders,
         source=sc_file,
     )
 
@@ -267,19 +274,17 @@ def add_mpl_style_option(func):
 @click.option('--spin', type=int, default=0, help='Index of the spin channel.', show_default=True)
 @click.option('--npoints', type=int, default=3, help='Number of kpoints used for fitting from the extrema.', show_default=True)
 @click.option('--extrema-detect-tol', type=float, default=0.01, help='Tolerance for band extrema detection.', show_default=True)
-@click.option('--degeneracy-detect-tol',
-              type=float,
-              default=0.01,
-              help='Tolerance for band degeneracy detection at extrema.',
-              show_default=True)
 @click.option('--nocc', type=int, help='DEV: Use this band as the extrema at all kpoints.')
 @click.option('--plot', is_flag=True, default=False)
 @click.option('--plot-fit', is_flag=True, default=False, help='Generate plots of the band edge and parabolic fits.')
 @click.option('--fit-label', help='Which branch to use for plot fitting. e.g. electrons:0', default='electrons:0', show_default=True)
 @click.option('--band-filter', default=None, type=int, help='Only displace information for this band.')
 @click.option('--out-file', '-o', default='unfold-effective-mass.png', help='Name of the output file.', show_default=True)
-def unfold_effective_mass(ctx, intensity_threshold, spin, band_filter, npoints, extrema_detect_tol, degeneracy_detect_tol, nocc, plot,
-                          plot_fit, fit_label, out_file):
+@click.option('--emin', type=float, default=-5., help='Minimum energy in eV relative to the reference.', show_default=True)
+@click.option('--emax', type=float, default=5., help='Maximum energy in eV relative to the reference.', show_default=True)
+@click.option('--manual-extrema', help='Manually specify the extrema to use for fitting, in the form "mode,k_index,band_index"')
+def unfold_effective_mass(ctx, intensity_threshold, spin, band_filter, npoints, extrema_detect_tol, nocc, plot, plot_fit, fit_label,
+                          out_file, emin, emax, manual_extrema):
     """
     Compute and print effective masses by tracing the unfolded weights.
 
@@ -293,7 +298,7 @@ def unfold_effective_mass(ctx, intensity_threshold, spin, band_filter, npoints, 
     from easyunfold.unfold import UnfoldKSet
     from tabulate import tabulate
     unfoldset: UnfoldKSet = ctx.obj['obj']
-    efm = EffectiveMass(unfoldset, intensity_tol=intensity_threshold, extrema_tol=extrema_detect_tol, degeneracy_tol=degeneracy_detect_tol)
+    efm = EffectiveMass(unfoldset, intensity_tol=intensity_threshold, extrema_tol=extrema_detect_tol)
 
     click.echo('Band extrema data:')
     table = []
@@ -306,12 +311,20 @@ def unfold_effective_mass(ctx, intensity_threshold, spin, band_filter, npoints, 
 
     if nocc:
         efm.set_nocc(nocc)
-    output = efm.get_effective_masses(ispin=spin, npoints=npoints)
+    if manual_extrema is None:
+        output = efm.get_effective_masses(ispin=spin, npoints=npoints)
+    else:
+        mode, ik, ib = manual_extrema.split(',')
+        ik = int(ik)
+        ib = int(ib)
+        click.echo(f'Using manually passed kpoint and band: {ik},{ib}')
+        output = efm.get_effective_masses(ispin=spin, npoints=npoints, mode=mode, iks=[ik], iband=[[ib]])
 
     # Filter by band if requested
     if band_filter is not None:
         for carrier in ['electrons', 'holes']:
-            output[carrier] = [entry for entry in output[carrier] if entry['band_index'] == band_filter]
+            if carrier in output:
+                output[carrier] = [entry for entry in output[carrier] if entry['band_index'] == band_filter]
 
     ## Print data
     def print_data(entries, tag='me'):
@@ -332,19 +345,22 @@ def unfold_effective_mass(ctx, intensity_threshold, spin, band_filter, npoints, 
         click.echo(tabulate(table, headers=['index', 'Kind', 'Effective mass', 'Band index', 'from', 'to']))
 
     click.echo('Electron effective masses:')
-    print_data(output['electrons'], 'm_e')
+    print_data(output.get('electrons', []), 'm_e')
     print('')
     click.echo('Hole effective masses:')
-    print_data(output['holes'], 'm_h')
+    print_data(output.get('holes', []), 'm_h')
 
-    click.echo('Unfolded band structure can be ambiguous, please cross-check with the spectral function plot.')
+    if not plot:
+        click.echo(
+            'NOTE: Unfolded band structure can be ambiguous.'
+            'You may want to run the command with `--plot` and check if the detected bands are consistent with the spectral function.')
 
     if plot:
         from easyunfold.plotting import UnfoldPlotter
         plotter = UnfoldPlotter(unfoldset)
-        click.echo('Generating spectral function plot for visualising detected branches...')
+        click.echo('Generating spectral function plot for visualising detected band branches...')
         engs, sf = unfoldset.get_spectral_function()
-        plotter.plot_effective_mass(efm, engs, sf, effective_mass_data=output, save=out_file)
+        plotter.plot_effective_mass(efm, engs, sf, effective_mass_data=output, save=out_file, ylim=(emin, emax))
 
     elif plot_fit:
         from easyunfold.plotting import UnfoldPlotter

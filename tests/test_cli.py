@@ -100,7 +100,7 @@ def test_generate_agsbte2(agsbte2_project_dir):
             'Warning: There is a lattice parameter mismatch in the range 2-5% between the primitive (multiplied by the '
             'transformation matrix) and the supercell. This will lead to some quantitative inaccuracies in the '
             'Brillouin Zone spacing (and thus effective masses) of the unfolded band structures.',
-            '(Guessed) Transform matrix:\n[[1.0, -0.0, 0.0], [1.0, -3.0, 1.0], [1.0, 1.0, -3.0]]',
+            '(Guessed) Transform matrix:\n[[1.0, 0.0, 0.0], [1.0, -3.0, 1.0], [1.0, 1.0, -3.0]]',
         ],
         output,
     )
@@ -217,7 +217,7 @@ def test_unfold(si_project_dir, tag):
     if tag == '':
         output = runner.invoke(easyunfold, ['unfold', '--data-file', 'test.json', 'effective-mass'])
         assert 'Hole effective masses' in output.stdout
-        assert (r'     0  m_e            -0.938459             8  [0.5, 0.0, 0.5] (X)  [0.5, 0.25, 0.75] (W)' in output.stdout)
+        assert r'0  m_e             0.820036             8  [0.5, 0.0, 0.5] (X)' in output.stdout
         # Plot effective mass
         output = runner.invoke(
             easyunfold,

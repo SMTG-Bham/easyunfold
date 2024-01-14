@@ -21,7 +21,7 @@ package.
 For the methodology of supercell band unfolding, see 
 [here](https://link.aps.org/doi/10.1103/PhysRevB.85.085201).
 
-### Example Outputs
+## Example Outputs
 | [Cs₂(Sn/Ti)Br₆ Vacancy-Ordered Perovskite Alloys](https://doi.org/10.1021/acs.jpcc.3c05204) |                        Oxygen Vacancy (*V*ₒ⁰) in MgO                         |
 |:-------------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------:|
 |                      <img src="img/CSTB_easyunfold.gif" height="400"/>                      | <img src="../examples/MgO/unfold_project_MgO_v_O_0_tall.png" height="400"/> |

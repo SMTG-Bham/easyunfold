@@ -40,7 +40,8 @@ class UnfoldPlotter:
         """
         self.unfold = unfold
 
-    def plot_dos(self, ax, dos_plotter, dos_label, dos_options, ylim, eref, atoms=None, colours=None, orbitals_subplots=None):
+    @staticmethod
+    def plot_dos(ax, dos_plotter, dos_label, dos_options, ylim, eref, atoms=None, colours=None, orbitals_subplots=None):
         """
         Prepare and plot the density of states.
         """
@@ -410,38 +411,40 @@ class UnfoldPlotter:
         kvbm = eff.get_band_extrema(mode='vbm')[0]
         all_k = sorted(list(set(list(kcbm) + list(kvbm))))
         kdist = self.unfold.get_kpoint_distances()
-        xwidth = 0.2
         if eref is None:
             eref = self.unfold.calculated_quantities['vbm']
 
-        fig, axes = plt.subplots(1, len(all_k))
+        fig, axes = plt.subplots(1, len(all_k), figsize=(4 * len(all_k), 3), dpi=300, squeeze=False)
         if effective_mass_data is None:
             effective_mass_data = eff.get_effective_masses()
 
         # Plot the spectral function
-        for (ik, ax) in zip(all_k, axes):
+        xwidth = abs(kdist[1] - kdist[0])
+        for (ik, ax) in zip(all_k, axes[0]):
             self.plot_spectral_function(engs, sf, ax=ax, eref=eref, **kwargs)
             xk = kdist[ik]
             xlim = (xk - xwidth / 2, xk + xwidth / 2)
             ax.set_xlim(xlim)
             ax.set_title(f'Kpoint: {ik}')
 
-        elec = effective_mass_data['electrons']
+        elec = effective_mass_data.get('electrons', [])
         # Plot the detected effective mass fitting data on top
         for entry in elec:
             ik = entry['kpoint_index']
             iax = all_k.index(ik)
-            x = entry['raw_data']['kpoint_distances']
-            y = entry['raw_data']['effective_energies']
-            axes[iax].plot(x, np.asarray(y) - eref, '-o', color='C1')
+            x = entry['raw_data']['raw_fit_values'][0]
+            y = entry['raw_data']['raw_fit_values'][1]
+            axes[0, iax].plot(x, np.asarray(y) - eref, '-o', color='C1')
+            axes[0, iax].set_xlim(min(x) - xwidth / 2, max(x) + xwidth / 2)
 
-        hole = effective_mass_data['holes']
+        hole = effective_mass_data.get('holes', [])
         for entry in hole:
             ik = entry['kpoint_index']
             iax = all_k.index(ik)
-            x = entry['raw_data']['kpoint_distances']
-            y = entry['raw_data']['effective_energies']
-            axes[iax].plot(x, np.asarray(y) - eref, '-o', color='C2')
+            x = entry['raw_data']['raw_fit_values'][0]
+            y = entry['raw_data']['raw_fit_values'][1]
+            axes[0, iax].plot(x, np.asarray(y) - eref, '-o', color='C2')
+            axes[0, iax].set_xlim(min(x) - xwidth / 2, max(x) + xwidth / 2)
         if save:
             fig.savefig(save)
 
@@ -793,18 +796,18 @@ class UnfoldPlotter:
         :param save: Name of the file used for saveing.
         :param dpi: DPI of the figure when saving.
 
-        :return: A figure with plotted data.
+        :returns: A figure with plotted data.
         """
         data = efm.get_effective_masses(npoints=npoints)[carrier][idx]
 
         x = data['raw_data']['kpoint_distances']
         y = data['raw_data']['effective_energies']
         me = data['effective_mass']
-        x1, y1 = fitted_band(x, me)
+        y1 = fitted_band(x, me)
         if ax is None:
             fig, ax = plt.subplots(1, 1)
         ax.plot(x, y, 'x-', label='Energy ')
-        ax.plot(x1, y1 + y[0], label='fitted')
+        ax.plot(x, y1, label='fitted')
         ax.legend()
         if save:
             fig.savefig(save, dpi=dpi)
