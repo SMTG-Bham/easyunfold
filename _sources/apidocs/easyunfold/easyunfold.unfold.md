@@ -256,7 +256,7 @@ Bases: {py:obj}`monty.json.MSONable`
 
 ````
 
-````{py:method} write_sc_kpoints(file: str, nk_per_split: typing.Union[None, list] = None, scf_kpoints_and_weights: typing.Union[None, list] = None, **kwargs)
+````{py:method} write_sc_kpoints(file: str, nk_per_split: typing.Union[None, list] = None, scf_kpoints_and_weights: typing.Union[None, list] = None, use_separate_folders=False, **kwargs)
 :canonical: easyunfold.unfold.UnfoldKSet.write_sc_kpoints
 
 ```{autodoc2-docstring} easyunfold.unfold.UnfoldKSet.write_sc_kpoints

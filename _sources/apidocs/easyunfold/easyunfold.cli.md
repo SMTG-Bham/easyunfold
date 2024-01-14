@@ -132,7 +132,7 @@
 ```
 ````
 
-````{py:function} generate(pc_file, code, sc_file, matrix, kpoints, time_reversal, out_file, no_expand, symprec, nk_per_split, scf_kpoints, yes)
+````{py:function} generate(pc_file, code, sc_file, matrix, kpoints, time_reversal, out_file, no_expand, symprec, nk_per_split, scf_kpoints, yes, separate_folders)
 :canonical: easyunfold.cli.generate
 
 ```{autodoc2-docstring} easyunfold.cli.generate
@@ -167,7 +167,7 @@
 ```
 ````
 
-````{py:function} unfold_effective_mass(ctx, intensity_threshold, spin, band_filter, npoints, extrema_detect_tol, degeneracy_detect_tol, nocc, plot, plot_fit, fit_label, out_file)
+````{py:function} unfold_effective_mass(ctx, intensity_threshold, spin, band_filter, npoints, extrema_detect_tol, nocc, plot, plot_fit, fit_label, out_file, emin, emax, manual_extrema)
 :canonical: easyunfold.cli.unfold_effective_mass
 
 ```{autodoc2-docstring} easyunfold.cli.unfold_effective_mass

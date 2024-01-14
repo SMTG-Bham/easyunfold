@@ -125,14 +125,14 @@
 ```
 ````
 
-````{py:function} points_with_tol(array, value, tol=0.0001)
+````{py:function} points_with_tol(array, value, tol=0.0001, sign=1)
 :canonical: easyunfold.effective_mass.points_with_tol
 
 ```{autodoc2-docstring} easyunfold.effective_mass.points_with_tol
 ```
 ````
 
-`````{py:class} EffectiveMass(unfold: easyunfold.unfold.UnfoldKSet, intensity_tol: float = 0.1, extrema_tol: float = 0.001, degeneracy_tol: float = 0.01, parabolic: bool = True, npoints: float = 3)
+`````{py:class} EffectiveMass(unfold: easyunfold.unfold.UnfoldKSet, intensity_tol: float = 0.1, extrema_tol: float = 0.001, parabolic: bool = True, npoints: float = 3)
 :canonical: easyunfold.effective_mass.EffectiveMass
 
 ```{autodoc2-docstring} easyunfold.effective_mass.EffectiveMass
@@ -168,7 +168,7 @@
 
 ````
 
-````{py:method} get_band_extrema(mode: str = 'cbm', extrema_tol: float = None, degeneracy_tol: float = None, ispin=0)
+````{py:method} get_band_extrema(mode: str = 'cbm', extrema_tol: float = None, ispin=0)
 :canonical: easyunfold.effective_mass.EffectiveMass.get_band_extrema
 
 ```{autodoc2-docstring} easyunfold.effective_mass.EffectiveMass.get_band_extrema
@@ -192,15 +192,7 @@
 
 ````
 
-````{py:method} get_npoints(override: typing.Union[float, None] = None)
-:canonical: easyunfold.effective_mass.EffectiveMass.get_npoints
-
-```{autodoc2-docstring} easyunfold.effective_mass.EffectiveMass.get_npoints
-```
-
-````
-
-````{py:method} get_effective_masses(npoints: typing.Union[float, None] = None, ispin=0)
+````{py:method} get_effective_masses(npoints: typing.Union[float, None] = None, ispin=0, iks=None, iband=None, mode=None)
 :canonical: easyunfold.effective_mass.EffectiveMass.get_effective_masses
 
 ```{autodoc2-docstring} easyunfold.effective_mass.EffectiveMass.get_effective_masses
@@ -208,7 +200,7 @@
 
 ````
 
-````{py:method} _get_effective_masses(mode: str = 'cbm', ispin: int = 0, npoints: typing.Union[None, int] = None)
+````{py:method} _get_effective_masses(mode: str = 'cbm', ispin: int = 0, npoints: typing.Union[None, int] = None, iks=None, iband=None)
 :canonical: easyunfold.effective_mass.EffectiveMass._get_effective_masses
 
 ```{autodoc2-docstring} easyunfold.effective_mass.EffectiveMass._get_effective_masses

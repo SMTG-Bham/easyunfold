@@ -19,31 +19,31 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
 
   
-  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+  <link href="_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" href="_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
-  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509" />
+  <script src="_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=bd9e20870c6007c4c509"></script>
 
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
     <script src="_static/doctools.js"></script>
     <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
-    <script src="_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="_static/scripts/sphinx-book-theme.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'cli';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -58,7 +58,7 @@
 
   
   
-  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
   
   <div id="pst-scroll-pixel-helper"></div>
 
@@ -101,12 +101,20 @@
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
+
+  <header>
   
-    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
-    </nav>
+    <div class="bd-header navbar navbar-expand-lg bd-navbar">
+    </div>
   
+  </header>
+
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
       
       <div class="bd-sidebar-primary bd-sidebar">
         
@@ -166,7 +174,18 @@
           <a href="https://pypi.org/project/easyunfold/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/pypi/v/easyunfold" class="icon-link-image" alt="PyPI"/></a>
         </li>
 </ul></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -389,7 +408,7 @@ document.write(`
               
                 
 <div id="searchbox"></div>
-                <article class="bd-article" role="main">
+                <article class="bd-article">
                   
   <section id="cli-reference">
 <h1>CLI Reference<a class="headerlink" href="#cli-reference" title="Permalink to this heading">#</a></h1>
@@ -447,7 +466,7 @@ the SCF kpoints followed by the actual kpoints needed for unfolding with zero we
 <dl class="std option">
 <dt class="sig sig-object std" id="cmdoption-easyunfold-generate-m">
 <span id="cmdoption-easyunfold-generate-matrix"></span><span class="sig-name descname"><span class="pre">-m</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--matrix</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;matrix&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-generate-m" title="Permalink to this definition">#</a></dt>
-<dd><p>Transformation matrix, in the form “x y z” for a diagonal matrix, or “x1 y1 z1, x2 y2 z2, x3 y3 z3” for a 3x3 matrix. Automatically guessed if not provided.</p>
+<dd><p>Transformation matrix, in the form “x y z” for a diagonal matrix, or “x1 y1 z1 x2 y2 z2 x3 y3 z3” for a 3x3 matrix. Automatically guessed if not provided.</p>
 </dd></dl>
 
 <dl class="std option">
@@ -477,6 +496,17 @@ the SCF kpoints followed by the actual kpoints needed for unfolding with zero we
 <dt class="sig sig-object std" id="cmdoption-easyunfold-generate-nk-per-split">
 <span class="sig-name descname"><span class="pre">--nk-per-split</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;nk_per_split&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-generate-nk-per-split" title="Permalink to this definition">#</a></dt>
 <dd><p>Number of band structure kpoints per split.</p>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-generate-separate-folders">
+<span id="cmdoption-easyunfold-generate-no-separate-folders"></span><span class="sig-name descname"><span class="pre">--separate-folders</span></span><span class="sig-prename descclassname"></span><span class="sig-prename descclassname"><span class="pre">,</span> </span><span class="sig-name descname"><span class="pre">--no-separate-folders</span></span><span class="sig-prename descclassname"></span><a class="headerlink" href="#cmdoption-easyunfold-generate-separate-folders" title="Permalink to this definition">#</a></dt>
+<dd><p>Whether to use separate folders for each split.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="std option">
@@ -621,17 +651,6 @@ for visual confirmation if unsure.</p>
 </dd></dl>
 
 <dl class="std option">
-<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-effective-mass-degeneracy-detect-tol">
-<span class="sig-name descname"><span class="pre">--degeneracy-detect-tol</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;degeneracy_detect_tol&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-effective-mass-degeneracy-detect-tol" title="Permalink to this definition">#</a></dt>
-<dd><p>Tolerance for band degeneracy detection at extrema.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Default<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">0.01</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="std option">
 <dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-effective-mass-nocc">
 <span class="sig-name descname"><span class="pre">--nocc</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;nocc&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-effective-mass-nocc" title="Permalink to this definition">#</a></dt>
 <dd><p>DEV: Use this band as the extrema at all kpoints.</p>
@@ -674,6 +693,34 @@ for visual confirmation if unsure.</p>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">unfold-effective-mass.png</span></code></p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-effective-mass-emin">
+<span class="sig-name descname"><span class="pre">--emin</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;emin&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-effective-mass-emin" title="Permalink to this definition">#</a></dt>
+<dd><p>Minimum energy in eV relative to the reference.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">-5.0</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-effective-mass-emax">
+<span class="sig-name descname"><span class="pre">--emax</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;emax&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-effective-mass-emax" title="Permalink to this definition">#</a></dt>
+<dd><p>Maximum energy in eV relative to the reference.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Default<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">5.0</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="std option">
+<dt class="sig sig-object std" id="cmdoption-easyunfold-unfold-effective-mass-manual-extrema">
+<span class="sig-name descname"><span class="pre">--manual-extrema</span></span><span class="sig-prename descclassname"> <span class="pre">&lt;manual_extrema&gt;</span></span><a class="headerlink" href="#cmdoption-easyunfold-unfold-effective-mass-manual-extrema" title="Permalink to this definition">#</a></dt>
+<dd><p>Manually specify the extrema to use for fitting, in the form “mode,k_index,band_index”</p>
 </dd></dl>
 
 </section>
@@ -1318,6 +1365,7 @@ for visual confirmation if unsure.</p>
               
                 <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
+
   <div class="sidebar-secondary-item">
   <div class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> Contents
@@ -1384,8 +1432,8 @@ By Bonan Zhu, Seán Kavanagh
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
-<script src="_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+  <script src="_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509"></script>
 
   <footer class="bd-footer">
   </footer>

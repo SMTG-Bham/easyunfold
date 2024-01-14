@@ -19,31 +19,31 @@
   </script>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=5b4479735964841361fd" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=5b4479735964841361fd" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
 
   
-  <link href="../_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=5b4479735964841361fd" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+  <link href="../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=bd9e20870c6007c4c509" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=14f4ca6b54d191a8c7657f6c759bf11a5fb86285" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd" />
-  <script src="../_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=5b4479735964841361fd"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509" />
+  <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=bd9e20870c6007c4c509"></script>
 
     <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
     <script src="../_static/doctools.js"></script>
     <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/clipboard.min.js"></script>
     <script src="../_static/copybutton.js"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js?digest=5a5c038af52cf7bc1a1ec88eea08e6366ee68824"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'examples/example_mgo';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -58,7 +58,7 @@
 
   
   
-  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
   
   <div id="pst-scroll-pixel-helper"></div>
 
@@ -101,12 +101,18 @@
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
 </form></div>
   </div>
+
+  <header>
   
-    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
-    </nav>
+    <div class="bd-header navbar navbar-expand-lg bd-navbar">
+    </div>
   
+  </header>
+
   <div class="bd-container">
     <div class="bd-container__inner bd-page-width">
+      
+      
       
       <div class="bd-sidebar-primary bd-sidebar">
         
@@ -166,7 +172,18 @@
           <a href="https://pypi.org/project/easyunfold/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/pypi/v/easyunfold" class="icon-link-image" alt="PyPI"/></a>
         </li>
 </ul></div>
-        <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
@@ -368,7 +385,7 @@ document.write(`
               
                 
 <div id="searchbox"></div>
-                <article class="bd-article" role="main">
+                <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="mgo-with-atomic-projections">
 <h1>MgO with atomic projections<a class="headerlink" href="#mgo-with-atomic-projections" title="Permalink to this heading">#</a></h1>
@@ -465,6 +482,52 @@ separated plots for each. This is the default behaviour for <code class="docutil
 <p>There are <em>many</em> customisation options available for the plotting functions in <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code>. See <code class="docutils literal notranslate"><span class="pre">easyunfold</span> <span class="pre">plot</span> <span class="pre">-h</span></code> or
 <code class="docutils literal notranslate"><span class="pre">easyunfold</span> <span class="pre">unfold</span> <span class="pre">plot-projections</span> <span class="pre">-h</span></code> for more details!</p>
 </div>
+<p>The command <code class="docutils literal notranslate"><span class="pre">easyunfold</span> <span class="pre">unfold</span> <span class="pre">effective-mass</span></code> can be used to find the effective masses of the unfolded band structure.</p>
+<p>The example output is shown below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Loaded</span> <span class="n">data</span> <span class="kn">from</span> <span class="nn">easyunfold.json</span>
+<span class="n">Band</span> <span class="n">extrema</span> <span class="n">data</span><span class="p">:</span>
+  <span class="n">Kpoint</span> <span class="n">index</span>  <span class="n">Kind</span>      <span class="n">Sub</span><span class="o">-</span><span class="n">kpoint</span> <span class="n">index</span>    <span class="n">Band</span> <span class="n">indices</span>
+<span class="o">--------------</span>  <span class="o">------</span>  <span class="o">------------------</span>  <span class="o">--------------</span>
+             <span class="mi">0</span>  <span class="n">cbm</span>                      <span class="mi">0</span>              <span class="mi">16</span>
+            <span class="mi">47</span>  <span class="n">cbm</span>                      <span class="mi">0</span>              <span class="mi">16</span>
+             <span class="mi">0</span>  <span class="n">vbm</span>                      <span class="mi">0</span>              <span class="mi">15</span>
+            <span class="mi">47</span>  <span class="n">vbm</span>                      <span class="mi">0</span>              <span class="mi">15</span>
+
+<span class="n">Electron</span> <span class="n">effective</span> <span class="n">masses</span><span class="p">:</span>
+  <span class="n">index</span>  <span class="n">Kind</span>      <span class="n">Effective</span> <span class="n">mass</span>    <span class="n">Band</span> <span class="n">index</span>  <span class="kn">from</span>                      <span class="nn">to</span>
+<span class="o">-------</span>  <span class="o">------</span>  <span class="o">----------------</span>  <span class="o">------------</span>  <span class="o">------------------------</span>  <span class="o">-------------------</span>
+      <span class="mi">0</span>  <span class="n">m_e</span>             <span class="mf">0.373553</span>            <span class="mi">16</span>  <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span> <span class="p">(</span>\<span class="n">Gamma</span><span class="p">)</span>  <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]</span> <span class="p">(</span><span class="n">L</span><span class="p">)</span>
+      <span class="mi">1</span>  <span class="n">m_e</span>             <span class="mf">0.367203</span>            <span class="mi">16</span>  <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span> <span class="p">(</span>\<span class="n">Gamma</span><span class="p">)</span>  <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]</span> <span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="n">Hole</span> <span class="n">effective</span> <span class="n">masses</span><span class="p">:</span>
+  <span class="n">index</span>  <span class="n">Kind</span>      <span class="n">Effective</span> <span class="n">mass</span>    <span class="n">Band</span> <span class="n">index</span>  <span class="kn">from</span>                      <span class="nn">to</span>
+<span class="o">-------</span>  <span class="o">------</span>  <span class="o">----------------</span>  <span class="o">------------</span>  <span class="o">------------------------</span>  <span class="o">-------------------</span>
+      <span class="mi">0</span>  <span class="n">m_h</span>             <span class="o">-</span><span class="mf">3.44604</span>            <span class="mi">15</span>  <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span> <span class="p">(</span>\<span class="n">Gamma</span><span class="p">)</span>  <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]</span> <span class="p">(</span><span class="n">L</span><span class="p">)</span>
+      <span class="mi">1</span>  <span class="n">m_h</span>             <span class="o">-</span><span class="mf">2.13525</span>            <span class="mi">15</span>  <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span> <span class="p">(</span>\<span class="n">Gamma</span><span class="p">)</span>  <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]</span> <span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">Unfolded</span> <span class="n">band</span> <span class="n">structure</span> <span class="n">can</span> <span class="n">be</span> <span class="n">ambiguous</span><span class="p">,</span> <span class="n">please</span> <span class="n">cross</span><span class="o">-</span><span class="n">check</span> <span class="k">with</span> <span class="n">the</span> <span class="n">spectral</span> <span class="n">function</span> <span class="n">plot</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>If detected band extrema are not consistent with the band structure, one should adjust the <code class="docutils literal notranslate"><span class="pre">--intensity-tol</span></code> and <code class="docutils literal notranslate"><span class="pre">--extrema-detect-tol</span></code>.
+Increasing the value of <code class="docutils literal notranslate"><span class="pre">--intensity-tol</span></code> will filter away bands with very small spectral weights.
+On the other hand, increasing <code class="docutils literal notranslate"><span class="pre">--extrema-detect-tol</span></code> will increase the energy window with respect
+to the VBM or CBM to assign extrema points.
+One can also inspect if the detected bands makes sense by using the <code class="docutils literal notranslate"><span class="pre">--plot</span></code> option.
+A Jupyter Notebook example can be found <a class="reference download internal" download="" href="../_downloads/a05e9d5ab343c0e9346bd299b6257a5e/effective-mass.ipynb"><span class="xref download myst">here</span></a>.</p>
+<figure class="align-default" id="id5">
+<a class="reference internal image-reference" href="../_images/unfold-effective-mass.png"><img alt="Effective bands extracted" src="../_images/unfold-effective-mass.png" style="width: 800px;" /></a>
+<figcaption>
+<p><span class="caption-text">Extracted bands at CBM and VBM for an unfolded MgO band structure.</span><a class="headerlink" href="#id5" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Make sure the band extrema data tabulated is correct and consistent before using any of the reported values.
+The results can unreliable for systems with little or no band gaps and those with complex unfolded band structures.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>For complex systems where the detection is difficult, one can manually pass the kpoint and the band indices using the <code class="docutils literal notranslate"><span class="pre">--manual-extrema</span></code> option.</p>
+</div>
 </section>
 
 
@@ -502,6 +565,8 @@ separated plots for each. This is the default behaviour for <code class="docutil
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"></div>
               
             
           </div>
@@ -546,8 +611,8 @@ By Bonan Zhu, Seán Kavanagh
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=5b4479735964841361fd"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=5b4479735964841361fd"></script>
+  <script src="../_static/scripts/bootstrap.js?digest=bd9e20870c6007c4c509"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=bd9e20870c6007c4c509"></script>
 
   <footer class="bd-footer">
   </footer>
