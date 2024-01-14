@@ -51,7 +51,7 @@ def easyunfold():
 @click.option('--matrix',
               '-m',
               help='Transformation matrix, in the form "x y z" for a diagonal matrix, '
-              'or "x1 y1 z1, x2 y2 z2, x3 y3 z3" for a 3x3 matrix. Automatically guessed if not '
+              'or "x1 y1 z1 x2 y2 z2 x3 y3 z3" for a 3x3 matrix. Automatically guessed if not '
               'provided.')
 @click.option('--symprec', help='Tolerance for determining the symmetry', type=float, default=1e-5, show_default=True)
 @click.option('--out-file', '-o', default='easyunfold.json', help='Name of the output file')

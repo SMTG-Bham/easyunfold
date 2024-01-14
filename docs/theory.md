@@ -74,5 +74,40 @@ cell, followed by a reduction using the symmetry of the supercell. The spectral 
 is then a weighted combination of that set of $\vec{k_s^\prime}$ points that are inequivalent under the 
 symmetry of the supercell.
 
+
+## Cell and Transformation Matrix convention
+
+The cell matrix may be consisted of column or row lattice vectors. In this package we use the **row vector**
+convention as commonly found in many post-processing tools and DFT codes. The cell matrix is defined as:
+
+$$
+\mathbf{C} = \begin{pmatrix}
+x_a & y_a & z_a \\
+x_b & y_b & z_b \\
+x_c & y_c & z_c
+\end{pmatrix}
+$$
+
+where $x_a$, $y_a$, $z_a$ are components of the lattice vector $\mathbf{a}$.
+
+The cell matrix of the supercell $\mathbf{C_s}$ is obtained by (left) multiplying the original unit cell $\mathbf{C_u}$ by the transformation matrix $\mathbf{M}$:
+
+
+$$
+\mathbf{C_{s}} = \mathbf{M} \, \mathbf{C_u}
+$$
+
+:::{note}
+Sometimes the cell matrix is defined by **column** vectors of the lattice parameters, e.g. $\mathbf{C_u^c} = \mathbf{C_u^T}$, and the relationship becomes:
+$$
+\mathbf{C_u^c} = \mathbf{C_u^T} \, \mathbf{M^T}
+$$
+
+Hence, when the column vector convention is used, the transformation matrix is the **transpose** of that used by the row convention.
+
+One example of code using the column vector convention is [Phonopy](https://phonopy.github.io/phonopy/setting-tags.html#dim).
+:::
+
+
 [^1]: Popescu, V.; Zunger, A. Effective Band Structure of Random Alloys. Phys. Rev. Lett. 2010, 104 (23), 236403. https://doi.org/10.1103/PhysRevLett.104.236403.
 [^2]: Popescu, V.; Zunger, A. Extracting $E$ versus $\vec{k}$ Effective Band Structure from Supercell Calculations on Alloys and Impurities. Phys. Rev. B 2012, 85 (8), 085201. https://doi.org/10.1103/PhysRevB.85.085201.
