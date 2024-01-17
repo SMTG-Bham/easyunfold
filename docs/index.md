@@ -5,8 +5,7 @@
 [![codecov](https://codecov.io/gh/SMTG-Bham/easyunfold/branch/main/graph/badge.svg?token=XLLWWU5UM2)](https://codecov.io/gh/SMTG-Bham/easyunfold)
 [![PyPI](https://img.shields.io/pypi/v/easyunfold)](https://pypi.org/project/easyunfold)
 [![Downloads](https://img.shields.io/pypi/dm/easyunfold)](https://smtg-Bham.github.io/easyunfold/)
-<!--- When JOSS submitted, add this: [![JOSS](https://joss.theoj.org/papers/10.21105/joss.04817/status.
-svg)](https://doi.org/10.21105/joss.)--->
+[![JOSS](https://joss.theoj.org/papers/10.21105/joss.05974/status.svg)](https://doi.org/10.21105/joss.05974)
 
 This package is intended for obtaining the effective band structure of a supercell for a certain _k_-point
 path of the primitive cell. It was originally based on 
@@ -49,9 +48,12 @@ In all cases, the supercell symmetry is lowered compared to the pristine primiti
 Hence, for a given _k_-point path in the primitive cell Brillouin Zone, additional _k_-points are 
 required to be sampled for the supercell, and the extracted spectral weights need to be appropriately 
 averaged to obtain the correct effective band structure (EBS). See the docs 
-[Theory](https://smtg-Bham.github.io/easyunfold/theory.html) page for more details.
-<!-- when JOSS submitted, add link to paper (discussion of theory) here! -->
-<!--- When JOSS submitted, add 'Citation' section here, and CITATION.cff --->
+[Theory](https://smtg-Bham.github.io/easyunfold/theory.html) page and/or [JOSS paper](https://doi.org/10.21105/joss.05974) for more details.
+
+## Citation
+
+If you use `easyunfold` in your work, please cite:
+- B. Zhu, S. R. Kavanagh & D. O. Scanlon, (2024). easyunfold: A Python package for unfolding electronic band structures. Journal of Open Source Software, 9(93), 5974, https://doi.org/10.21105/joss.05974
 
 ## Studies using `easyunfold`
 
