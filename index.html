@@ -388,6 +388,7 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-outputs">Example Outputs</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citation">Citation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#studies-using-easyunfold">Studies using <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dft-code-support">DFT code support</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#code-compatibility-notes">Code Compatibility Notes</a></li>
@@ -418,9 +419,8 @@ document.write(`
 <a class="reference external" href="https://smtg-Bham.github.io/easyunfold/"><img alt="docs" src="https://github.com/SMTG-Bham/easyunfold/actions/workflows/docs.yaml/badge.svg" /></a>
 <a class="reference external" href="https://codecov.io/gh/SMTG-Bham/easyunfold"><img alt="codecov" src="https://codecov.io/gh/SMTG-Bham/easyunfold/branch/main/graph/badge.svg?token=XLLWWU5UM2" /></a>
 <a class="reference external" href="https://pypi.org/project/easyunfold"><img alt="PyPI" src="https://img.shields.io/pypi/v/easyunfold" /></a>
-<a class="reference external" href="https://smtg-Bham.github.io/easyunfold/"><img alt="Downloads" src="https://img.shields.io/pypi/dm/easyunfold" /></a></p>
-<!--- When JOSS submitted, add this: [![JOSS](https://joss.theoj.org/papers/10.21105/joss.04817/status.
-svg)](https://doi.org/10.21105/joss.)--->
+<a class="reference external" href="https://smtg-Bham.github.io/easyunfold/"><img alt="Downloads" src="https://img.shields.io/pypi/dm/easyunfold" /></a>
+<a class="reference external" href="https://doi.org/10.21105/joss.05974"><img alt="JOSS" src="https://joss.theoj.org/papers/10.21105/joss.05974/status.svg" /></a></p>
 <p>This package is intended for obtaining the effective band structure of a supercell for a certain <em>k</em>-point
 path of the primitive cell. It was originally based on
 <a class="reference external" href="https://github.com/QijingZheng/VaspBandUnfolding">PyVaspwfc</a> for reading VASP wavefunction outputs,
@@ -468,9 +468,14 @@ In all cases, the supercell symmetry is lowered compared to the pristine primiti
 Hence, for a given <em>k</em>-point path in the primitive cell Brillouin Zone, additional <em>k</em>-points are
 required to be sampled for the supercell, and the extracted spectral weights need to be appropriately
 averaged to obtain the correct effective band structure (EBS). See the docs
-<a class="reference external" href="https://smtg-Bham.github.io/easyunfold/theory.html">Theory</a> page for more details.</p>
-<!-- when JOSS submitted, add link to paper (discussion of theory) here! -->
-<!--- When JOSS submitted, add 'Citation' section here, and CITATION.cff --->
+<a class="reference external" href="https://smtg-Bham.github.io/easyunfold/theory.html">Theory</a> page and/or <a class="reference external" href="https://doi.org/10.21105/joss.05974">JOSS paper</a> for more details.</p>
+</section>
+<section id="citation">
+<h2>Citation<a class="headerlink" href="#citation" title="Permalink to this heading">#</a></h2>
+<p>If you use <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code> in your work, please cite:</p>
+<ul class="simple">
+<li><p>B. Zhu, S. R. Kavanagh &amp; D. O. Scanlon, (2024). easyunfold: A Python package for unfolding electronic band structures. Journal of Open Source Software, 9(93), 5974, <a class="reference external" href="https://doi.org/10.21105/joss.05974">https://doi.org/10.21105/joss.05974</a></p></li>
+</ul>
 </section>
 <section id="studies-using-easyunfold">
 <h2>Studies using <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code><a class="headerlink" href="#studies-using-easyunfold" title="Permalink to this heading">#</a></h2>
@@ -605,6 +610,7 @@ Please install them using <code class="docutils literal notranslate"><span class
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-outputs">Example Outputs</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citation">Citation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#studies-using-easyunfold">Studies using <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dft-code-support">DFT code support</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#code-compatibility-notes">Code Compatibility Notes</a></li>

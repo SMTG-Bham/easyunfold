@@ -366,7 +366,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
 </div></div>
       
     </div>
@@ -382,6 +384,14 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold-citation"><code class="docutils literal notranslate"><span class="pre">easyunfold</span></code> Citation</a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -398,6 +408,13 @@ document.write(`
 <li><p>Popescu, V.; Zunger, A. Effective Band Structure of Random Alloys. Phys. Rev. Lett. 2010, 104 (23), 236403. <a class="reference external" href="https://doi.org/10.1103/PhysRevLett.104.236403">https://doi.org/10.1103/PhysRevLett.104.236403</a>.</p></li>
 <li><p>Popescu, V.; Zunger, A. Extracting <span class="math notranslate nohighlight">\(E\)</span> versus <span class="math notranslate nohighlight">\(\vec{k}\)</span> Effective Band Structure from Supercell Calculations on Alloys and Impurities. Phys. Rev. B 2012, 85 (8), 085201. <a class="reference external" href="https://doi.org/10.1103/PhysRevB.85.085201">https://doi.org/10.1103/PhysRevB.85.085201</a>.</p></li>
 </ul>
+<section id="easyunfold-citation">
+<h2><code class="docutils literal notranslate"><span class="pre">easyunfold</span></code> Citation<a class="headerlink" href="#easyunfold-citation" title="Permalink to this heading">#</a></h2>
+<p>If you use <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code> in your work, please cite:</p>
+<ul class="simple">
+<li><p>B. Zhu, S. R. Kavanagh &amp; D. O. Scanlon, (2024). easyunfold: A Python package for unfolding electronic band structures. Journal of Open Source Software, 9(93), 5974, <a class="reference external" href="https://doi.org/10.21105/joss.05974">https://doi.org/10.21105/joss.05974</a></p></li>
+</ul>
+</section>
 </section>
 
 
@@ -436,7 +453,20 @@ document.write(`
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"></div>
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold-citation"><code class="docutils literal notranslate"><span class="pre">easyunfold</span></code> Citation</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

@@ -366,7 +366,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
 </div></div>
       
     </div>
@@ -382,6 +384,14 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold-citation"><code class="docutils literal notranslate"><span class="pre">easyunfold</span></code> Citation</a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -395,6 +405,7 @@ document.write(`
 <h1>Publications<a class="headerlink" href="#publications" title="Permalink to this heading">#</a></h1>
 <p>We’ll add papers that use <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code> to this list as they come out!</p>
 <ul class="simple">
+<li><p>S. M. Liga &amp; S. R. Kavanagh, A. Walsh, D. O. Scanlon and G. Konstantatos. Mixed-Cation Vacancy-Ordered Perovskites (Cs<span class="math notranslate nohighlight">\(_2\)</span>Ti<span class="math notranslate nohighlight">\(_{1–x}\)</span>Sn<span class="math notranslate nohighlight">\(_x\)</span>X<span class="math notranslate nohighlight">\(_6\)</span>; X = I or Br): Low-Temperature Miscibility, Additivity, and Tunable Stability. <em>J. Phys.  Chem. C</em> <strong>2023</strong>. <a class="reference external" href="https://doi.org/10.1021/acs.jpcc.3c05204">https://doi.org/10.1021/acs.jpcc.3c05204</a></p></li>
 <li><p>Nicolson, A.; Breternitz, J.; Kavanagh, S. R.; Tomm, Y.; Morita, K.; Squires, A. G.; Tovar, M.; Walsh,
 A.; Schorr, S.; Scanlon, D. O. Interplay of Static and Dynamic Disorder in the Mixed-Metal
 Chalcohalide Sn<span class="math notranslate nohighlight">\(_2\)</span>SbS<span class="math notranslate nohighlight">\(_2\)</span>I<span class="math notranslate nohighlight">\(_3\)</span>. <em>J. Am. Chem. Soc.</em> <strong>2023</strong>. <a class="reference external" href="https://doi.org/10.1021/jacs.2c13336">https://doi.org/10.1021/jacs.2c13336</a>.</p></li>
@@ -402,13 +413,19 @@ Chalcohalide Sn<span class="math notranslate nohighlight">\(_2\)</span>SbS<span 
 A. J.; Zhang, K.; Dai, L.; Britton, A. J.; Ye, J.; Julin, J.; Napari, M.; Zhang, Z.; Xiao, J.;
 Laitinen, M.; Torrente-Murciano, L.; Stranks, S. D.; Rao, A.; Herz, L. M.; Scanlon, D. O.; Walsh, A.;
 Hoye, R. L. Z. Strong Absorption and Ultrafast Localisation in NaBiS<span class="math notranslate nohighlight">\(_2\)</span> Nanocrystals with Slow
-Charge-Carrier Recombination. <em>Nat Commun</em> <strong>2022</strong>, 13 (1), 4960.</p></li>
-<li><p><a class="reference external" href="https://doi.org/10.1038/s41467-022-32669-3">https://doi.org/10.1038/s41467-022-32669-3</a>.</p></li>
+Charge-Carrier Recombination. <em>Nat Commun</em> <strong>2022</strong>. <a class="reference external" href="https://doi.org/10.1038/s41467-022-32669-3">https://doi.org/10.1038/s41467-022-32669-3</a>.</p></li>
 <li><p>Wang, Y.; Kavanagh, S. R.; Burgués-Ceballos, I.; Walsh, A.; Scanlon, D. O.; Konstantatos, G. Cation
 Disorder Engineering Yields AgBiS<span class="math notranslate nohighlight">\(_2\)</span> Nanocrystals with Enhanced Optical Absorption for Efficient
-Ultrathin Solar Cells. <em>Nat. Photon.</em> <strong>2022</strong>, 16 (3), 235–241.
+Ultrathin Solar Cells. <em>Nat. Photon.</em> <strong>2022</strong>.
 <a class="reference external" href="https://doi.org/10.1038/s41566-021-00950-4">https://doi.org/10.1038/s41566-021-00950-4</a>.</p></li>
 </ul>
+<section id="easyunfold-citation">
+<h2><code class="docutils literal notranslate"><span class="pre">easyunfold</span></code> Citation<a class="headerlink" href="#easyunfold-citation" title="Permalink to this heading">#</a></h2>
+<p>If you use <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code> in your work, please cite:</p>
+<ul class="simple">
+<li><p>B. Zhu, S. R. Kavanagh &amp; D. O. Scanlon, (2024). easyunfold: A Python package for unfolding electronic band structures. Journal of Open Source Software, 9(93), 5974, <a class="reference external" href="https://doi.org/10.21105/joss.05974">https://doi.org/10.21105/joss.05974</a></p></li>
+</ul>
+</section>
 </section>
 
 
@@ -447,7 +464,20 @@ Ultrathin Solar Cells. <em>Nat. Photon.</em> <strong>2022</strong>, 16 (3), 235�
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"></div>
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold-citation"><code class="docutils literal notranslate"><span class="pre">easyunfold</span></code> Citation</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

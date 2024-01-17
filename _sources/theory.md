@@ -1,6 +1,6 @@
 # Band Unfolding Theory
 
-The theoretical background of the methodology used in this package is available in the literature.[^1][^2]
+The theoretical background of the methodology used in this package is available in the literature,[^1][^2] and also discussed in the [JOSS paper](https://doi.org/10.21105/joss.05974).
 Here, only a summary is given for brevity.
 
 Notation: $\vec{K}$ is the _k_-point of the supercell and $\vec{k}$ is that of the primitive cell.
