@@ -32,21 +32,21 @@ The only difference here is that we turn on the calculation of orbital projectio
 when plotting the unfolded band structure:
 
 ```bash
-easyunfold unfold plot-projections --procar MgO_super/PROCAR --atoms="Mg,O" --combined --emin=-6 \
+easyunfold unfold plot-projections --procar MgO_super/PROCAR.gz --atoms="Mg,O" --combined --emin=-6 \
 --emax=20 --intensity 6.5
 ```
 
-Note that the path of the `PROCAR` is passed along with the desired atom projections (`Mg` and `O` here). 
+Note that the path of the `PROCAR(.gz)` is passed along with the desired atom projections (`Mg` and `O` here). 
 
 :::{tip}
 If the _k_-points have been split into multiple calculations (e.g. hybrid DFT band structures), the `--procar` option 
-should be passed multiple times to specify the path to each split `PROCAR` file (i.e. 
+should be passed multiple times to specify the path to each split `PROCAR(.gz)` file (i.e. 
 `--procar calc1/PROCAR --procar cal2/PROCAR ...`).
 :::
 
 :::{note}
-The atomic projections are not stored in the `easyunfold.json` data file, so the `PROCAR` file(s) should be kept for 
-replotting in the future.
+The atomic projections are not stored in the `easyunfold.json` data file, so the `PROCAR(.gz)` file(s) 
+should be kept for replotting in the future.
 :::
 
 The `--combined` option creates a combined plot with different colour maps for each atomic grouping.
@@ -82,7 +82,7 @@ In order to specify the atomic projections with `--atoms`, the `POSCAR` or `CONT
 present. If this is not the case, or we want to use projections from only specific atom subsets in the supercell, we can 
 alternatively use the `--atoms-idx` tag. This takes a string of the form `a-b|c-d|e-f` where `a`, `b`, `c`, `d`, `e` and
 `f` are integers corresponding to the atom indices in the VASP structure file (i.e. `POSCAR`/`CONTCAR`, corresponding 
-to the `PROCAR` being used to obtain the projections). Different groups are separated by `|`, and `-` 
+to the `PROCAR(.gz)` being used to obtain the projections). Different groups are separated by `|`, and `-` 
 can be used to define the range for each projected atom type. A comma-separated list can also be used instead of ranges 
 with hyphens. Note that 1-based indexing is used for atoms, matching the convention in VASP, which is then converted to 
 zero-based indexing internally in python. In this example, we could set `--atoms-idx="1-4|5-8"` to get the same result
