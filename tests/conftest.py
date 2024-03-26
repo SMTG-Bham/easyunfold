@@ -5,7 +5,6 @@ Pytest fixtures
 import urllib.request
 from pathlib import Path
 import shutil
-import gzip
 
 import pytest
 
