@@ -533,7 +533,7 @@ class UnfoldKSet(MSONable):
         if procars:
             self.load_procars(procars)
         if self.procar is None:
-            raise RuntimeError('PROCAR files needs to be loaded')
+            raise RuntimeError('PROCAR(.gz) file(s) need to be loaded')
 
         proj = self.procar.get_projection(atoms_idx, orbitals)
         # Construct band weighting, same structure as o

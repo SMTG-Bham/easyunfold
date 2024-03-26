@@ -433,7 +433,7 @@ def add_plot_options(func):
                  multiple=True,
                  default=['PROCAR'],
                  help=('PROCAR file(s) for atomic weighting, can be passed multiple times if more than one PROCAR '
-                       'should be used. Default is to read PROCAR in current directory'))(func)
+                       'should be used. Default is to read PROCAR(.gz) in current directory'))(func)
     click.option('--atoms',
                  help='Atoms to be used for weighting, as a comma-separated list (e.g. "Na,Bi,S"). '
                  'The POSCAR or CONTCAR file (matching `--poscar`) must be present, otherwise use `--atoms-idx`.')(func)
@@ -570,7 +570,7 @@ def unfold_plot_projections(ctx, npoints, sigma, eref, out_file, show, emin, ema
     from easyunfold.plotting import UnfoldPlotter
 
     unfoldset: UnfoldKSet = ctx.obj['obj']
-    click.echo(f'Loading projections from: {procar}')
+    click.echo(f'Loading projections from: {procar}(.gz)')
 
     plotter = UnfoldPlotter(unfoldset)
     dos_plotter, dos_options = process_dos(dos, dos_elements, dos_orbitals, dos_atoms, gaussian, total_only, atoms, orbitals, poscar,
@@ -659,11 +659,11 @@ def _unfold_plot(ctx,
     # Set up the atoms_idx and orbitals
     if atoms or atoms_idx:
         # Process the PROCARs
-        click.echo(f'Loading projections from: {procar}')
+        click.echo(f'Loading projections from: {procar}(.gz)')
         try:
             unfoldset.load_procars(procar)
         except FileNotFoundError as exc:
-            click.echo(f'Could not find and parse the --procar file: {procar} – needed for atomic projections!')
+            click.echo(f'Could not find and parse the --procar file: {procar}(.gz) – needed for atomic projections!')
             raise click.Abort() from exc
 
         if atoms_idx:

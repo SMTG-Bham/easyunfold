@@ -2,9 +2,7 @@
 
 :::{note}
 The files needed for reproducing this example are provided in the 
-[examples/NaBiS2](https://github.com/SMTG-Bham/easyunfold/tree/main/examples/NaBiS2) folder. 
-Note that the `PROCAR.gz` file will need to be decompressed with `gzip -d PROCAR.gz` if recalculating 
-and reproducing these example plots.
+[examples/NaBiS2](https://github.com/SMTG-Bham/easyunfold/tree/main/examples/NaBiS2) folder.
 :::
 
 In this example, we unfold the bands from a 80-atom special-quasirandom (SQS) supercell of 
@@ -80,7 +78,7 @@ with `pip install sumo`.
 ## Atom-Projected Unfolded Band Structure
 We can also plot the unfolded band structure with atomic projections, which is useful for understanding the electronic 
 structure of the material. In this case, we are curious as to which atoms are contributing to the band edges, and so 
-the atomic projections will be useful. For this, we need the `PROCAR` output from VASP with the atomic and orbital 
+the atomic projections will be useful. For this, we need the `PROCAR(.gz)` output from VASP with the atomic and orbital 
 projection information, and so `LORBIT` should be set to `11`, `12`, `13` or `14` in the `INCAR` for the supercell 
 calculation.
 
@@ -100,7 +98,7 @@ Unfolded band structure of NaBiS<sub>2</sub> with atomic contributions.
 
 :::{tip}
 If the _k_-points have been split into multiple calculations (e.g. hybrid DFT band structures), the `--procar` option 
-should be passed multiple times to specify the path to each split `PROCAR` file (i.e. 
+should be passed multiple times to specify the path to each split `PROCAR(.gz)` file (i.e. 
 `--procar calc1/PROCAR --procar cal2/PROCAR ...`).
 :::
 
@@ -108,8 +106,8 @@ From this plot, we can see that sulfur anions dominate the valence band, while b
 band, with minimal contributions from the sodium cations as expected.
 
 :::{note}
-The atomic projections are not stored in the `easyunfold.json` data file, so the `PROCAR` file should be 
-kept for replotting in the future.
+The atomic projections are not stored in the `easyunfold.json` data file, so the `PROCAR(.gz)` file 
+should be kept for replotting in the future.
 :::
 
 While the main conclusions of S dominating the valence band and Bi dominating the conduction band are clear from the 
@@ -184,7 +182,7 @@ and `66`), which correspond to Na-rich pockets in NaBiS<sub>2</sub>, as discusse
 :::{note}
 The `--atoms-idx` option is used to specify the atoms to be projected onto the unfolded band structure. This takes a 
 string of the form `a-b|c-d|e-f` where `a`, `b`, `c`, `d`, `e` and `f` are integers corresponding to the atom indices 
-in the VASP structure file (i.e. `POSCAR`/`CONTCAR`, corresponding to the `PROCAR` being used to obtain the 
+in the VASP structure file (i.e. `POSCAR`/`CONTCAR`, corresponding to the `PROCAR(.gz)` being used to obtain the 
 projections). Different groups are separated by `|`, and `-` can be used to define the range for each projected atom 
 type. A comma-separated list can also be used instead of ranges with hyphens. Note that 1-based indexing is used for 
 atoms, matching the convention in VASP, which is then converted to zero-based indexing internally in python. 

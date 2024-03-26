@@ -592,7 +592,7 @@ class UnfoldPlotter:
         This simply computes the spectral function at each orbital/atoms sites and plot them onto
         multiple subplots. The columns are for each orbital and the rows are for each spin channel.
 
-        :param procar: Name of names of the `PROCAR` files.
+        :param procar: Name(s) of the `PROCAR(.gz)` file(s).
 
         :param colours: Default is pastel red, green, blue if <=3 projections, else red, green,
             blue, purple, orange, yellow.
