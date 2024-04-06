@@ -210,7 +210,7 @@ Path in the primitive cell:
    W         : 38   
    X         : 50   
    \Gamma    : 73   
-Unfolding had been performed - use `unfold plot` to plot the spectral function.
+Unfolding has been performed - use `unfold plot` to plot the spectral function.
 ```
 
 Note that in most cases one would always want to include the additional kpoints to correctly capture the effect of symmetry breaking.

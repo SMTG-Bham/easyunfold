@@ -207,7 +207,7 @@ def test_unfold(si_project_dir, tag):
     args_calc = ['unfold', '--data-file', 'test.json', 'status']
     output = runner.invoke(easyunfold, args_calc)
     assert output.exit_code == 0
-    assert 'had been performed' in output.stdout
+    assert 'has been performed' in output.stdout
 
     unfoldset = loadfn('test.json')
 

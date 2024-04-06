@@ -214,7 +214,7 @@ def unfold_status(ctx):
         click.echo(f'   {label:<10}: {index+1:<5}')
 
     if unfoldset.is_calculated:
-        click.echo('Unfolding had been performed - use `unfold plot` to plot the spectral function.')
+        click.echo('Unfolding has been performed - use `unfold plot` to plot the spectral function.')
     else:
         click.echo('Please run the supercell band structure calculation and run `unfold calculate`.')
 
@@ -305,7 +305,7 @@ def unfold_effective_mass(ctx, intensity_threshold, spin, band_filter, npoints, 
     for mode in ['cbm', 'vbm']:
         for kid, subkid, iband in zip(*efm.get_band_extrema(mode=mode)):
             band_idx = ','.join(map(str, iband))
-            table.append([kid, mode, subkid, band_idx])
+            table.append([kid, mode.upper(), subkid, band_idx])
     click.echo(tabulate(table, headers=['Kpoint index', 'Kind', 'Sub-kpoint index', 'Band indices']))
     click.echo('')
 
@@ -331,7 +331,7 @@ def unfold_effective_mass(ctx, intensity_threshold, spin, band_filter, npoints, 
         """Print the effective mass data"""
         table = []
         for i, entry in enumerate(entries):
-            me = entry['effective_mass']
+            me = round(entry['effective_mass'], 3)
 
             kf = entry['kpoint_from']
             lf = entry['kpoint_label_from']
