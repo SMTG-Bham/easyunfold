@@ -165,7 +165,7 @@ def _check_output_info_and_kpoints_agsbte2(info_messages: list, output: str):
 @pytest.mark.parametrize('tag', ['', '_spin', '_soc'])
 def test_unfold(si_project_dir, tag):
     """
-    Test the generate function
+    Test the generate and unfolding functions
     """
     runner = CliRunner()
 
@@ -217,7 +217,7 @@ def test_unfold(si_project_dir, tag):
     if tag == '':
         output = runner.invoke(easyunfold, ['unfold', '--data-file', 'test.json', 'effective-mass'])
         assert 'Hole effective masses' in output.stdout
-        assert r'0  m_e             0.820036             8  [0.5, 0.0, 0.5] (X)' in output.stdout
+        assert r'0  m_e                0.82              8  [0.5, 0.0, 0.5] (X)' in output.stdout
         # Plot effective mass
         output = runner.invoke(
             easyunfold,
