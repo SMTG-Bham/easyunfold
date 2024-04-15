@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>MgO with atomic projections &#8212; easyunfold</title>
+    <title>MgO with atomic projections, effective masses &amp; defects &#8212; easyunfold</title>
   
   
   
@@ -48,7 +48,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Disordered NaBiS2 with atomic/orbital projections &amp; DOS plotting" href="example_nabis2.html" />
-    <link rel="prev" title="Si supercell with a displaced atom" href="example_si222.html" />
+    <link rel="prev" title="Silicon with a displaced atom" href="example_si222.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -193,8 +193,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../examples.html">Examples</a><input checked class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="example_si222.html">Si supercell with a displaced atom</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">MgO with atomic projections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_si222.html">Silicon with a displaced atom</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">MgO with atomic projections, effective masses &amp; defects</a></li>
 <li class="toctree-l2"><a class="reference internal" href="example_nabis2.html">Disordered NaBiS<sub>2</sub> with atomic/orbital projections &amp; DOS plotting</a></li>
 <li class="toctree-l2"><a class="reference internal" href="example_si211_castep.html">Si supercell using CASTEP</a></li>
 </ul>
@@ -358,7 +358,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
 </div></div>
       
     </div>
@@ -369,11 +371,28 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>MgO with atomic projections</h1>
+    <h1>MgO with atomic projections, effective masses & defects</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#displaced-mg-supercell-band-unfolding">Displaced Mg Supercell Band Unfolding</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#carrier-effective-masses">Carrier Effective Masses</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defects">Defects</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-defect-supercell-generation">Step 1. Defect Supercell Generation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-band-structure-k-point-generation">Step 2. Band Structure <em>k</em>-point Generation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-band-structure-parsing">Step 3. Band Structure Parsing</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -383,8 +402,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="mgo-with-atomic-projections">
-<h1>MgO with atomic projections<a class="headerlink" href="#mgo-with-atomic-projections" title="Permalink to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="mgo-with-atomic-projections-effective-masses-defects">
+<h1>MgO with atomic projections, effective masses &amp; defects<a class="headerlink" href="#mgo-with-atomic-projections-effective-masses-defects" title="Permalink to this heading">#</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The files needed for this example are provided in the
@@ -404,6 +423,8 @@ according to the elemental contributions, which can be done using <a class="refe
 <p>Similar plots can be generated for unfolded band structures. However, because the unfolded spectral
 function itself contains both the <em>location</em> of the band and its <em>intensity</em>, adding a third
 dimension of information (atomic projection) can be tricky to visualise.</p>
+<section id="displaced-mg-supercell-band-unfolding">
+<h2>Displaced Mg Supercell Band Unfolding<a class="headerlink" href="#displaced-mg-supercell-band-unfolding" title="Permalink to this heading">#</a></h2>
 <p>In this example, we unfold the bands from a MgO 2x1x2 supercell with a Mg atom displaced to break
 symmetry. The procedure is essentially the same as described in the
 <a class="reference external" href="https://smtg-Bham.github.io/easyunfold/examples/example_si222.html">Si supercell example</a>.</p>
@@ -478,6 +499,8 @@ separated plots for each. This is the default behaviour for <code class="docutil
 <p>There are <em>many</em> customisation options available for the plotting functions in <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code>. See <code class="docutils literal notranslate"><span class="pre">easyunfold</span> <span class="pre">plot</span> <span class="pre">-h</span></code> or
 <code class="docutils literal notranslate"><span class="pre">easyunfold</span> <span class="pre">unfold</span> <span class="pre">plot-projections</span> <span class="pre">-h</span></code> for more details!</p>
 </div>
+<section id="carrier-effective-masses">
+<h3>Carrier Effective Masses<a class="headerlink" href="#carrier-effective-masses" title="Permalink to this heading">#</a></h3>
 <p>The command <code class="docutils literal notranslate"><span class="pre">easyunfold</span> <span class="pre">unfold</span> <span class="pre">effective-mass</span></code> can be used to find the effective masses of the unfolded band structure.</p>
 <p>The example output is shown below:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Loaded</span> <span class="n">data</span> <span class="kn">from</span> <span class="nn">easyunfold.json</span>
@@ -525,6 +548,84 @@ The results can unreliable for systems with little or no band gaps and those wit
 <p>For complex systems where the detection is difficult, one can manually pass the kpoint and the band indices using the <code class="docutils literal notranslate"><span class="pre">--manual-extrema</span></code> option.</p>
 </div>
 </section>
+</section>
+<section id="defects">
+<h2>Defects<a class="headerlink" href="#defects" title="Permalink to this heading">#</a></h2>
+<p>As shown in the <a class="reference external" href="https://youtu.be/9zeABbd1r1U?si=Oix3Bamiw8DZaMO4"><code class="docutils literal notranslate"><span class="pre">easyunfold</span></code> YouTube tutorial</a>, band structure unfolding can often be useful for analysing the impact of defects and dopants on the electronic structure of materials – particularly under high concentrations.</p>
+<p>As a brief example, here we show base steps in calculating the unfolded band structure of a defective supercell with <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code>, following the procedure shown in the <a class="reference external" href="https://youtu.be/9zeABbd1r1U?si=Oix3Bamiw8DZaMO4">YouTube tutorial</a>.</p>
+<section id="step-1-defect-supercell-generation">
+<h3>Step 1. Defect Supercell Generation<a class="headerlink" href="#step-1-defect-supercell-generation" title="Permalink to this heading">#</a></h3>
+<p>For this, we can use the <a class="reference external" href="https://doped.readthedocs.io/en/latest"><code class="docutils literal notranslate"><span class="pre">doped</span></code></a> defect package as shown in the tutorial:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pymatgen.core.structure</span> <span class="kn">import</span> <span class="n">Structure</span>
+<span class="kn">from</span> <span class="nn">doped.generation</span> <span class="kn">import</span> <span class="n">DefectsGenerator</span>
+
+<span class="n">mgo_prim</span> <span class="o">=</span> <span class="n">Structure</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="s1">&#39;MgO_prim_POSCAR&#39;</span><span class="p">)</span>
+<span class="n">defect_gen</span> <span class="o">=</span> <span class="n">DefectsGenerator</span><span class="p">(</span><span class="n">mgo_prim</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Generating DefectEntry objects: 100.0%|██████████| [00:23,   4.26it/s]                             
+Vacancies    Guessed Charges    Conv. Cell Coords    Wyckoff
+-----------  -----------------  -------------------  ---------
+v_Mg         [+1,0,-1,-2]       [0.000,0.000,0.000]  4a
+v_O          [+2,+1,0,-1]       [0.500,0.500,0.500]  4b
+
+Substitutions    Guessed Charges    Conv. Cell Coords    Wyckoff
+---------------  -----------------  -------------------  ---------
+Mg_O             [+4,+3,+2,+1,0]    [0.500,0.500,0.500]  4b
+O_Mg             [0,-1,-2,-3,-4]    [0.000,0.000,0.000]  4a
+
+Interstitials    Guessed Charges    Conv. Cell Coords    Wyckoff
+---------------  -----------------  -------------------  ---------
+Mg_i_Td          [+2,+1,0]          [0.250,0.250,0.250]  8c
+O_i_Td           [0,-1,-2]          [0.250,0.250,0.250]  8c
+
+The number in the Wyckoff label is the site multiplicity/degeneracy of that defect in the conventional (&#39;conv.&#39;) unit cell, which comprises 4 formula unit(s) of MgO.
+Note that Wyckoff letters can depend on the ordering of elements in the conventional standard structure, for which doped uses the spglib convention.
+</pre></div>
+</div>
+<p>and then write the VASP output files for the supercell relaxations:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">doped.vasp</span> <span class="kn">import</span> <span class="n">DefectsSet</span>
+
+<span class="n">ds</span> <span class="o">=</span> <span class="n">DefectsSet</span><span class="p">(</span><span class="n">defect_gen</span><span class="p">)</span>
+<span class="n">ds</span><span class="o">.</span><span class="n">write_files</span><span class="p">(</span><span class="n">unperturbed_poscar</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>See the <a class="reference external" href="https://doped.readthedocs.io"><code class="docutils literal notranslate"><span class="pre">doped</span></code></a> tutorials <a class="reference external" href="https://doped.readthedocs.io/en/latest/Tutorials.html">here</a> if you’re interested in using it for defect calculations.</p>
+</div>
+</section>
+<section id="step-2-band-structure-k-point-generation">
+<h3>Step 2. Band Structure <em>k</em>-point Generation<a class="headerlink" href="#step-2-band-structure-k-point-generation" title="Permalink to this heading">#</a></h3>
+<p>When our defect supercell relaxations have completed, we can then generate our k-point paths for the supercell band structure calculation, as usual with <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>generate<span class="w"> </span>MgO_prim_POSCAR<span class="w"> </span>supercell_POSCAR<span class="w"> </span>MgO_prim_KPOINTS_band<span class="w"> </span>--scf-kpoints<span class="w"> </span>supercell_IBZKPT
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">MgO_prim_KPOINTS_band</span></code> contains the <em>k</em>-point path for the primitive cell band structure (e.g. generated by <code class="docutils literal notranslate"><span class="pre">sumo-kgen</span></code>) and here we are performing a hybrid DFT calculation and so we need to use the <code class="docutils literal notranslate"><span class="pre">--scf-kpoints</span></code> option. If for any reason <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code> cannot automatically guess the supercell transformation matrix, we can also access this from the <code class="docutils literal notranslate"><span class="pre">doped</span></code> <code class="docutils literal notranslate"><span class="pre">DefectsGenerator.supercell_matrix</span></code> attribute and supply this with the <code class="docutils literal notranslate"><span class="pre">--matrix</span></code> option.</p>
+</section>
+<section id="step-3-band-structure-parsing">
+<h3>Step 3. Band Structure Parsing<a class="headerlink" href="#step-3-band-structure-parsing" title="Permalink to this heading">#</a></h3>
+<p>When our supercell band structure calculation has then completed, we can parse the wavefunction output to obtain the unfolded band structure:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>calculate<span class="w"> </span>WAVECAR
+</pre></div>
+</div>
+<p>and then plot the unfolded band structure with atomic projections:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot-projections<span class="w"> </span>--intensity<span class="w"> </span><span class="m">60</span><span class="w"> </span>--dos<span class="w"> </span>vasprun.xml.gz<span class="w"> </span>--gaussian<span class="w"> </span><span class="m">0</span>.03<span class="w"> </span>--atoms<span class="o">=</span><span class="s2">&quot;Mg,O&quot;</span><span class="w"> </span>--combined<span class="w"> </span>--scale<span class="w"> </span><span class="m">40</span><span class="w"> </span>--no-total
+</pre></div>
+</div>
+<figure class="align-default" id="id6">
+<a class="reference internal image-reference" href="../_images/unfold.png"><img alt="Neutral oxygen vacancy in MgO" src="../_images/unfold.png" style="width: 800px;" /></a>
+<figcaption>
+<p><span class="caption-text">Atom-projected unfolded band structure for a neutral oxygen vacancy in MgO, showing that the single-particle state introduced by the vacancy is the band gap is comprised of both Mg and O contributions.</span><a class="headerlink" href="#id6" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The example files for this unfolded band structure calculation of the neutral oxygen vacancy supercell are provided in the <a class="reference external" href="https://github.com/SMTG-Bham/easyunfold/tree/main/examples/MgO/v_O_0_YT_tutorial">examples/MgO/v_O_0_YT_tutorial</a> folder.</p>
+</div>
+</section>
+</section>
+</section>
 
 
                 </article>
@@ -543,7 +644,7 @@ The results can unreliable for systems with little or no band gaps and those wit
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Si supercell with a displaced atom</p>
+        <p class="prev-next-title">Silicon with a displaced atom</p>
       </div>
     </a>
     <a class="right-next"
@@ -562,7 +663,29 @@ The results can unreliable for systems with little or no band gaps and those wit
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"></div>
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#displaced-mg-supercell-band-unfolding">Displaced Mg Supercell Band Unfolding</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#carrier-effective-masses">Carrier Effective Masses</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defects">Defects</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-defect-supercell-generation">Step 1. Defect Supercell Generation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-band-structure-k-point-generation">Step 2. Band Structure <em>k</em>-point Generation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-band-structure-parsing">Step 3. Band Structure Parsing</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

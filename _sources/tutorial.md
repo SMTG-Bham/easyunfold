@@ -1,5 +1,9 @@
 # Tutorial
 
+:::{tip}
+See the [`easyunfold` YouTube tutorial](https://youtu.be/9zeABbd1r1U?si=Oix3Bamiw8DZaMO4) for a quick overview of the theory of band structure unfolding, and a walkthrough of the calculation & analysis workflow with `easyunfold`. 
+:::
+
 The main goal of `easyunfold` is to make the band structure unfolding workflow easier to implement and 
 less error-prone. To generate an unfolded band structure, one typically needs to perform the following 
 steps:

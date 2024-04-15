@@ -1,4 +1,4 @@
-# Si supercell with a displaced atom
+# Silicon with a displaced atom
 
 Below is a step-by-step guide for unfolding the electronic structure of a `2x2x2` supercell of 
 crystalline silicon (Si) which contains a displaced atom, breaking symmetry.
