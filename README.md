@@ -26,6 +26,8 @@ For the methodology of supercell band unfolding, see
 :-------------------------:|:------------------------------------:
 <img src="docs/img/CSTB_easyunfold.gif" height="400"/> | <img src="examples/MgO/unfold_project_MgO_v_O_0_tall.png" height="400"/>
 
+See the [`easyunfold` YouTube tutorial](https://youtu.be/9zeABbd1r1U?si=Oix3Bamiw8DZaMO4) for a quick overview of the theory of band structure unfolding, and a walkthrough of the calculation & analysis workflow with `easyunfold`.
+
 ## Usage
 
 To generate an unfolded band structure, one typically needs to perform the following steps:
