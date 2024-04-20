@@ -210,7 +210,7 @@ and then write the VASP output files for the supercell relaxations:
 from doped.vasp import DefectsSet
 
 ds = DefectsSet(defect_gen)
-ds.write_files(unperturbed_poscar=True)
+ds.write_files(unperturbed_poscar=True)  # skipping structure-searching for this example
 ```
 
 :::{tip}
