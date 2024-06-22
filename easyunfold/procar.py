@@ -154,10 +154,10 @@ class Procar(MSONable):
         if self.normalise:
             self.normalise_projs(proj_data)
 
-        if proj_xyz is not None:
-            proj_sum = np.sum(proj_xyz, axis=(-3, -2, -1), keepdims=True)
-            proj_sum[proj_sum == 0] = 1
-            proj_xyz /= proj_sum
+            if proj_xyz is not None:
+                proj_sum = np.sum(proj_xyz, axis=(-3, -2, -1), keepdims=True)
+                proj_sum[proj_sum == 0] = 1
+                proj_xyz /= proj_sum
 
         # Update the parsed kpoints
         parsed_kpoints.update({kvec_section_counter_tuple[0] for kvec_section_counter_tuple in this_procar_parsed_kpoints})
