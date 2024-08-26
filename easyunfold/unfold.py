@@ -615,10 +615,13 @@ class UnfoldKSet(MSONable):
             output[key] = getattr(self, key)
         return output
 
-    def get_kpoint_distances(self, hide_discontinuities=True):
+    def get_kpoint_distances(self, hide_discontinuities: bool = True):
         """
         Distances between the kpoints along the path in the reciprocal space.
         This does not take account of the breaking of the path.
+
+        :param hide_discontinuities: Whether to hide the discontinuities in the kpoint path.
+
         :::{note}
         The reciprocal lattice vectors includes the $2\\pi$ factor, e.g. `np.linalg.inv(L).T * 2 * np.pi`.
         :::
