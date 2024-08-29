@@ -372,7 +372,7 @@ class UnfoldPlotter:
     def _add_kpoint_labels(self, ax: plt.Axes, x_is_kidx=False):
         """Add labels to the k-points for a given axes"""
         # Label the kpoints
-        labels = self.unfold.kpoint_labels
+        labels = self.unfold.get_combined_kpoint_labels()
         kdist = self.unfold.get_kpoint_distances()
 
         # Explicit label indices
