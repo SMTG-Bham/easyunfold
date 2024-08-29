@@ -14,14 +14,14 @@
 :maxdepth: 1
 
 easyunfold.cli
-easyunfold.wavecar
-easyunfold.wavefun
-easyunfold.vasp_constant
-easyunfold.plotting
-easyunfold.effective_mass
-easyunfold.procar
-easyunfold.utils
 easyunfold.unfold
+easyunfold.utils
+easyunfold.effective_mass
+easyunfold.wavecar
+easyunfold.vasp_constant
+easyunfold.procar
+easyunfold.plotting
+easyunfold.wavefun
 ```
 
 ## Package Contents
@@ -43,7 +43,7 @@ easyunfold.unfold
 ````{py:data} __version__
 :canonical: easyunfold.__version__
 :value: >
-   '0.3.6'
+   '0.3.7'
 
 ```{autodoc2-docstring} easyunfold.__version__
 ```

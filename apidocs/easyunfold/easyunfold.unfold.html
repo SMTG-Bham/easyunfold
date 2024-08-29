@@ -49,7 +49,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'apidocs/easyunfold/easyunfold.unfold';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="prev" title="easyunfold.utils" href="easyunfold.utils.html" />
+    <link rel="next" title="easyunfold.utils" href="easyunfold.utils.html" />
+    <link rel="prev" title="easyunfold.cli" href="easyunfold.cli.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -210,14 +211,14 @@
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Reference</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="easyunfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold</span></code></a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="easyunfold.cli.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.cli</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="easyunfold.wavecar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavecar</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="easyunfold.wavefun.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavefun</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="easyunfold.vasp_constant.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.vasp_constant</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="easyunfold.plotting.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.plotting</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="easyunfold.effective_mass.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.effective_mass</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="easyunfold.procar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.procar</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="easyunfold.utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.utils</span></code></a></li>
 <li class="toctree-l3 current active"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.unfold</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="easyunfold.utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.utils</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="easyunfold.effective_mass.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.effective_mass</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="easyunfold.wavecar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavecar</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="easyunfold.vasp_constant.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.vasp_constant</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="easyunfold.procar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.procar</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="easyunfold.plotting.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.plotting</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="easyunfold.wavefun.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavefun</span></code></a></li>
 </ul>
 </details></li>
 </ul>
@@ -420,6 +421,7 @@ document.write(`
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.get_spectral_weights"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.get_spectral_weights()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.as_dict"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.as_dict()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.get_kpoint_distances"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.get_kpoint_distances()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.get_combined_kpoint_labels"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.get_combined_kpoint_labels()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.LorentzSmearing"><code class="docutils literal notranslate"><span class="pre">LorentzSmearing()</span></code></a></li>
@@ -837,13 +839,24 @@ the passed atom indices and orbitals.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="easyunfold.unfold.UnfoldKSet.get_kpoint_distances">
-<span class="sig-name descname"><span class="pre">get_kpoint_distances</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.unfold.UnfoldKSet.get_kpoint_distances" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_kpoint_distances</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hide_discontinuities</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.unfold.UnfoldKSet.get_kpoint_distances" title="Permalink to this definition">#</a></dt>
 <dd><p>Distances between the kpoints along the path in the reciprocal space.
 This does not take account of the breaking of the path.</p>
+<dl class="myst field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>hide_discontinuities</strong> – Whether to hide the discontinuities in the kpoint path.</p>
+</dd>
+</dl>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The reciprocal lattice vectors includes the <span class="math notranslate nohighlight">\(2\pi\)</span> factor, e.g. <code class="docutils literal notranslate"><span class="pre">np.linalg.inv(L).T</span> <span class="pre">*</span> <span class="pre">2</span> <span class="pre">*</span> <span class="pre">np.pi</span></code>.</p>
 </div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="easyunfold.unfold.UnfoldKSet.get_combined_kpoint_labels">
+<span class="sig-name descname"><span class="pre">get_combined_kpoint_labels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.unfold.UnfoldKSet.get_combined_kpoint_labels" title="Permalink to this definition">#</a></dt>
+<dd><p>Get kpoints label with discontinuities combined into a single label</p>
 </dd></dl>
 
 </dd></dl>
@@ -1089,13 +1102,22 @@ orbital projections.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="easyunfold.utils.html"
+       href="easyunfold.cli.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.cli</span></code></p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="easyunfold.utils.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
         <p class="prev-next-title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.utils</span></code></p>
       </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
@@ -1148,6 +1170,7 @@ orbital projections.</p>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.get_spectral_weights"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.get_spectral_weights()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.as_dict"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.as_dict()</span></code></a></li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.get_kpoint_distances"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.get_kpoint_distances()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.UnfoldKSet.get_combined_kpoint_labels"><code class="docutils literal notranslate"><span class="pre">UnfoldKSet.get_combined_kpoint_labels()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.unfold.LorentzSmearing"><code class="docutils literal notranslate"><span class="pre">LorentzSmearing()</span></code></a></li>

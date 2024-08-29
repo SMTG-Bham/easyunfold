@@ -353,10 +353,18 @@ Bases: {py:obj}`monty.json.MSONable`
 
 ````
 
-````{py:method} get_kpoint_distances()
+````{py:method} get_kpoint_distances(hide_discontinuities: bool = True)
 :canonical: easyunfold.unfold.UnfoldKSet.get_kpoint_distances
 
 ```{autodoc2-docstring} easyunfold.unfold.UnfoldKSet.get_kpoint_distances
+```
+
+````
+
+````{py:method} get_combined_kpoint_labels()
+:canonical: easyunfold.unfold.UnfoldKSet.get_combined_kpoint_labels
+
+```{autodoc2-docstring} easyunfold.unfold.UnfoldKSet.get_combined_kpoint_labels
 ```
 
 ````
