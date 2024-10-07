@@ -615,21 +615,48 @@ class UnfoldKSet(MSONable):
             output[key] = getattr(self, key)
         return output
 
-    def get_kpoint_distances(self):
+    def get_kpoint_distances(self, hide_discontinuities: bool = True):
         """
         Distances between the kpoints along the path in the reciprocal space.
         This does not take account of the breaking of the path.
+
+        :param hide_discontinuities: Whether to hide the discontinuities in the kpoint path.
+
         :::{note}
         The reciprocal lattice vectors includes the $2\\pi$ factor, e.g. `np.linalg.inv(L).T * 2 * np.pi`.
         :::
         """
+        # Check for
         kpts = self.kpts_pc
         pc_latt = self.pc_latt
         kpts_path = kpts @ np.linalg.inv(pc_latt).T * np.pi * 2  # Kpoint path in the reciprocal space
         dists = np.cumsum(np.linalg.norm(np.diff(kpts_path, axis=0), axis=-1))
         dists = np.append([0], dists)
 
+        if hide_discontinuities:
+            last_idx = -2
+            for idx, _ in self.kpoint_labels:
+                if idx - last_idx == 1:
+                    # This label is directly adjacent to the previous one - this is a discontinuity
+                    shift = dists[idx] - dists[idx - 1]
+                    # Shift the distances beyond
+                    dists[idx:] -= shift
+                last_idx = idx
+
         return dists
+
+    def get_combined_kpoint_labels(self):
+        """Get kpoints label with discontinuities combined into a single label"""
+        last_entry = [-2, None]
+        comnbined_labels = []
+        for idx, name in self.kpoint_labels:
+            if idx - last_entry[0] == 1:
+                comnbined_labels.append([last_entry[0], last_entry[1] + '|' + name])
+            else:
+                comnbined_labels.append([idx, name])
+            last_entry = [idx, name]
+
+        return comnbined_labels
 
 
 def LorentzSmearing(x, x0, sigma=0.02):
