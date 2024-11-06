@@ -236,8 +236,8 @@ class UnfoldKSet(MSONable):
             M=M,
             kpts_pc=kpts_pc,
             pc_latt=np.asarray(pc.cell),
-            pc_opts=pc_symm_data['rotations'],
-            sc_opts=sc_symm_data['rotations'],
+            pc_opts=pc_symm_data.rotations,
+            sc_opts=sc_symm_data.rotations,
             time_reversal=time_reversal,
             expand=expand,
             metadata={
