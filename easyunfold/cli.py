@@ -98,10 +98,18 @@ def generate(pc_file, code, sc_file, matrix, kpoints, time_reversal, out_file, n
         'will likely lead to severe inaccuracies in the results! You should double check the correct transformation '
         'matrix, primitive and super cells have been provided.')
 
+    def _check_supercell_match(s1_cell, s2_cell, rtol=2e-2):
+        norms = np.linalg.norm(s1_cell, axis=1)
+        atols = rtol * norms
+        for i, atol in enumerate(atols):
+            if not np.allclose(s1_cell[i], s2_cell[i], atol=atol):
+                return False
+        return True
+
     if matrix:
         transform_matrix = matrix_from_string(matrix)
-        if not np.allclose(transform_matrix @ primitive.cell, supercell.cell, rtol=2e-2):  # 2% mismatch tolerance
-            if np.allclose(transform_matrix @ primitive.cell, supercell.cell, rtol=5e-2):  # 2-5% mismatch
+        if not _check_supercell_match(transform_matrix @ primitive.cell, supercell.cell, rtol=2e-2):  # 2% mismatch tolerance
+            if _check_supercell_match(transform_matrix @ primitive.cell, supercell.cell, rtol=5e-2):  # 2-5% mismatch
                 click.echo(_quantitative_inaccuracy_warning)
             else:
                 click.echo(_incommensurate_warning)
@@ -113,8 +121,8 @@ def generate(pc_file, code, sc_file, matrix, kpoints, time_reversal, out_file, n
         tmp = supercell.cell @ np.linalg.inv(primitive.cell)
         transform_matrix = np.rint(tmp)
         transform_matrix[transform_matrix == 0] = 0
-        if not np.allclose(tmp, transform_matrix, rtol=2e-2):  # 2% mismatch tolerance
-            if np.allclose(transform_matrix @ primitive.cell, supercell.cell, rtol=5e-2):  # 2-5% mismatch
+        if not _check_supercell_match(tmp, transform_matrix, rtol=2e-2):  # 2% mismatch tolerance
+            if _check_supercell_match(transform_matrix @ primitive.cell, supercell.cell, rtol=5e-2):  # 2-5% mismatch
                 click.echo(_quantitative_inaccuracy_warning)
             else:
                 click.echo(_incommensurate_warning)
