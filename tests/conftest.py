@@ -65,3 +65,14 @@ def nabis2_project_dir(tmp_path):
     for i in ['POSCAR', 'KPOINTS', 'easyunfold.json', 'PROCAR.gz', 'vasprun.xml.gz']:
         shutil.copy2(nabis2_dir / i, tmp_path / i)
     return tmp_path
+
+
+@pytest.fixture
+def alvfe_test_dir(datapath, tmp_path):
+    """Create a temporary directory containing AlVFe inputs for testing"""
+
+    def _inner(tag=''):
+        shutil.copytree(datapath('AlVFe'), tmp_path / 'AlVFe')
+        return tmp_path / 'AlVFe'
+
+    return _inner

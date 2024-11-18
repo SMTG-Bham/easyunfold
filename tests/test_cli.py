@@ -162,6 +162,29 @@ def _check_output_info_and_kpoints_agsbte2(info_messages: list, output: str):
     return kpts
 
 
+def test_generate_from_zero_weighted_prim_kpoints(alvfe_test_dir):
+    """
+    Test KPOINTS generation when the input KPOINTS are from a meta-GGA
+    or hybrid DFT VASP calculation (having weighted and zero-weighted
+    kpoints).
+    """
+    runner = CliRunner()
+    tmp_dir = alvfe_test_dir(None)
+    os.chdir(tmp_dir)
+
+    output = runner.invoke(
+        easyunfold,
+        ['generate', 'prim_POSCAR', 'super_POSCAR', 'prim_KPOINTS'],
+    )
+    kpts_expected = 208
+    assert output.exit_code == 0
+    assert 'Only zero-weighted kpoints are taken from the input KPOINTS.' in output.output
+    assert f'{kpts_expected} kpoints specified along the path' in output.output
+    kpts, _, _, weights = read_kpoints('KPOINTS_easyunfold')
+    assert len(kpts) == len(weights)
+    assert len(kpts) == 324
+
+
 @pytest.mark.parametrize('tag', ['', '_spin', '_soc'])
 def test_unfold(si_project_dir, tag):
     """
