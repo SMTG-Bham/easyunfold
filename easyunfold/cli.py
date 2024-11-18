@@ -133,7 +133,14 @@ def generate(pc_file, code, sc_file, matrix, kpoints, time_reversal, out_file, n
 
         click.echo(f'(Guessed) Transform matrix:\n{transform_matrix.tolist()}')
 
-    kpoints, _, labels, _ = read_kpoints(kpoints, code=code)
+    kpoints, _, labels, weights = read_kpoints(kpoints, code=code)
+    # if we have weighted and zero-weighted kpoints, then only take the zero-weighted ones (i.e. from a
+    # meta-GGA or hybrid calculation)
+    if weights and np.any(weights) and np.any(np.array(weights) == 0):
+        kpoints = [k for k, w in zip(kpoints, weights) if w == 0]
+        labels = [l for l, w in zip(labels, weights) if w == 0]
+        click.echo('Only zero-weighted kpoints are taken from the input KPOINTS.')
+
     click.echo(f'{len(kpoints)} kpoints specified along the path')
 
     unfoldset = UnfoldKSet.from_atoms(transform_matrix,
