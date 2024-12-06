@@ -113,6 +113,7 @@ If you use `easyunfold` in your work, please cite:
 We'll add papers that use `easyunfold` to this list as they come out!
 
 - H. Maleki-Ghaleh et al. **_Visible Light-Sensitive Sustainable Quantum Dot Crystals of Co/Mg Doped Natural Hydroxyapatite Possessing Antimicrobial Activity and Biocompatibility_** [_Small_](https://doi.org/10.1002/smll.202405708) 2024
+- L. Richarz et al. **_Ferroelectric domain walls for environmental sensors_** [_arXiv_](https://arxiv.org/abs/2412.03691) 2024
 - K. Eggestad, B. A. D. Williamson, D. Meier and S. M. Selbach **_Mobile Intrinsic Point Defects for Conductive Neutral Domain Walls in LiNbO<sub>3</sub>_** [_Journal of Materials Chemistry C_](https://doi.org/10.1039/D4TC02856B) 2024
 - L. Zhang et al. **_Study of native point defects in Al<sub>0.5</sub>Ga<sub>0.5</sub>N by first principles calculations_** [_Computational Materials Science_](https://doi.org/10.1016/j.commatsci.2024.113312) 2024
 - Dargahi et al. **_Synthesis and characterization of zinc-doped hematite nanoparticles for photocatalytic applications and their electronic structure studies by density functional theory_** [_Optical Materials_](https://doi.org/10.1016/j.optmat.2024.116234) 2024
