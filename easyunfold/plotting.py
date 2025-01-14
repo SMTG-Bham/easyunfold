@@ -234,7 +234,7 @@ class UnfoldPlotter:
             axes = [ax] if not isinstance(ax, list) else ax
             fig = axes[0].figure
 
-        # Shift the kdist so the pcolormesh draw the pixel centred on the original point
+        # Shift the kdist so the plot draws the pixel centred on the original point
         X, Y = np.meshgrid(kdist, engs - eref)
 
         # Calculate the min and max values within the field of view, scaled by the factor
@@ -250,7 +250,14 @@ class UnfoldPlotter:
             if contour_plot:
                 ax_.contourf(X, Y, sf[ispin], cmap=cmap, vmax=vmax, vmin=vmin, alpha=alpha)
             else:
-                ax_.pcolormesh(X, Y, sf[ispin], cmap=cmap, shading='auto', vmax=vmax, vmin=vmin, alpha=alpha)
+                ax_.imshow(sf[ispin],
+                           cmap=cmap,
+                           aspect='auto',
+                           extent=(X.min(), X.max(), Y.min(), Y.max()),
+                           vmin=vmin,
+                           vmax=vmax,
+                           alpha=alpha,
+                           origin='lower')
 
             ax_.set_xlim(xmin, xmax)
             ax_.set_ylim(*ylim)
