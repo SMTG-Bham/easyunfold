@@ -205,9 +205,9 @@ class Procar(MSONable):
         def open_file(fobj_or_path):
             if isinstance(fobj_or_path, (str, Path)):
                 if os.path.exists(fobj_or_path):
-                    return zopen(fobj_or_path, mode='rt')  # closed later
+                    return zopen(fobj_or_path, mode='rt', encoding='utf-8')  # closed later
                 if os.path.exists(f'{fobj_or_path}.gz'):
-                    return zopen(f'{fobj_or_path}.gz', mode='rt')
+                    return zopen(f'{fobj_or_path}.gz', mode='rt', encoding='utf-8')
 
                 raise FileNotFoundError(  # else raise error
                     f'File not found: {fobj_or_path} – PROCAR(.gz) file needed for '
