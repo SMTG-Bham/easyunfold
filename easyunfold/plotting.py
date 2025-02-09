@@ -246,18 +246,12 @@ class UnfoldPlotter:
             vmax = (vmax - vmin) * (vscale /
                                     intensity) + vmin  # vscale and intensity have the equal opposite effect on the colour intensity
 
+        plot_kwargs = {'cmap': cmap, 'vmax': vmax, 'vmin': vmin, 'alpha': alpha}
         for ispin, ax_ in zip(range(nspin), axes):
             if contour_plot:
-                ax_.contourf(X, Y, sf[ispin], cmap=cmap, vmax=vmax, vmin=vmin, alpha=alpha)
-            else:
-                ax_.imshow(sf[ispin],
-                           cmap=cmap,
-                           aspect='auto',
-                           extent=(X.min(), X.max(), Y.min(), Y.max()),
-                           vmin=vmin,
-                           vmax=vmax,
-                           alpha=alpha,
-                           origin='lower')
+                ax_.contourf(X, Y, sf[ispin], **plot_kwargs)
+            else:  # TODO: comment
+                ax_.pcolormesh(X, Y, sf[ispin], shading='gouraud', **plot_kwargs)
 
             ax_.set_xlim(xmin, xmax)
             ax_.set_ylim(*ylim)
