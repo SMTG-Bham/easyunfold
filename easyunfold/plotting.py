@@ -41,13 +41,13 @@ class UnfoldPlotter:
         self.unfold = unfold
 
     @staticmethod
-    def plot_dos(ax, dos_plotter, dos_label, dos_options, ylim, eref, atoms=None, colours=None, orbitals_subplots=None):
+    def plot_dos(ax, dos_plotter, ylim, eref, dos_label=None, dos_options=None, atoms=None, colours=None, orbitals_subplots=None):
         """
         Prepare and plot the density of states.
         """
         from pymatgen.electronic_structure.core import Spin
 
-        if not dos_options:
+        if dos_options is None:
             dos_options = {}
 
         from sumo.plotting import sumo_base_style, sumo_bs_style
@@ -250,7 +250,7 @@ class UnfoldPlotter:
         for ispin, ax_ in zip(range(nspin), axes):
             if contour_plot:
                 ax_.contourf(X, Y, sf[ispin], **plot_kwargs)
-            else:  # TODO: comment
+            else:  # note that pcolormesh is used over imshow to allow non-uniform k-point meshes
                 ax_.pcolormesh(X, Y, sf[ispin], shading='gouraud', **plot_kwargs)
 
             ax_.set_xlim(xmin, xmax)
@@ -264,7 +264,7 @@ class UnfoldPlotter:
 
         if dos_plotter:
             ax = fig.axes[1]
-            ax = self.plot_dos(ax, dos_plotter, dos_label, dos_options, ylim, eref)
+            ax = self.plot_dos(ax, dos_plotter, ylim, eref, dos_label=dos_label, dos_options=dos_options)
 
         if zero_line:
             try:
@@ -754,7 +754,15 @@ class UnfoldPlotter:
 
             if dos_plotter:
                 ax = fig.axes[1]
-                ax = self.plot_dos(ax, dos_plotter, dos_label, dos_options, ylim, eref, atoms, colours, orbitals_subplots)
+                ax = self.plot_dos(ax,
+                                   dos_plotter,
+                                   ylim,
+                                   eref,
+                                   dos_label=dos_label,
+                                   dos_options=dos_options,
+                                   atoms=atoms,
+                                   colours=colours,
+                                   orbitals_subplots=orbitals_subplots)
 
             if zero_line:
                 try:
