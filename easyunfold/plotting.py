@@ -818,6 +818,8 @@ class UnfoldPlotter:
         ax.plot(x, y, 'x-', label='Energy ')
         ax.plot(x, y1, label='fitted')
         ax.legend()
+
+        fig = ax.figure
         if save:
             fig.savefig(save, dpi=dpi)
         return fig
