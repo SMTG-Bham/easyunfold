@@ -267,7 +267,8 @@ class EffectiveMass:
         """
         if iks is None or iband is None:
             iks, _, iband = self.get_band_extrema(mode=mode)
-        # Override occupations
+
+        # Override band indices
         if self.nocc:
             iband = [self.nocc for _ in iband]
 
