@@ -71,7 +71,7 @@ def points_with_tol(array, value, tol=1e-2, sign=1):
         diff = abs(array - value)
     else:
         diff = (array - value) * sign
-    idx = np.where((-1e-3 < diff) & (diff < tol))[0]
+    idx = np.where((-tol <= diff) & (diff <= tol))[0]
     return idx, array[idx]
 
 
