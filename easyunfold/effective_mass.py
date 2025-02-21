@@ -82,7 +82,7 @@ class EffectiveMass:
         self,
         unfold: UnfoldKSet,
         intensity_tol: float = 1e-1,
-        extrema_tol: float = 1e-3,
+        extrema_tol: float = 1e-2,
         parabolic: bool = True,
         npoints: float = 3,
     ):

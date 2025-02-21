@@ -282,6 +282,9 @@ def add_mpl_style_option(func):
     return wrapper
 
 
+# TODO: The units of extrema-detect-tol should be given/explained
+
+
 @unfold.command('effective-mass')
 @click.pass_context
 @add_mpl_style_option
