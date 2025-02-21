@@ -293,7 +293,7 @@ def add_mpl_style_option(func):
 @click.option('--plot', is_flag=True, default=False)
 @click.option('--plot-fit', is_flag=True, default=False, help='Generate plots of the band edge and parabolic fits.')
 @click.option('--fit-label', help='Which branch to use for plot fitting. e.g. electrons:0', default='electrons:0', show_default=True)
-@click.option('--band-filter', default=None, type=int, help='Only displace information for this band.')
+@click.option('--band-filter', default=None, type=int, help='Only display information for this band.')
 @click.option('--out-file', '-o', default='unfold-effective-mass.png', help='Name of the output file.', show_default=True)
 @click.option('--emin', type=float, default=-5., help='Minimum energy in eV relative to the reference.', show_default=True)
 @click.option('--emax', type=float, default=5., help='Maximum energy in eV relative to the reference.', show_default=True)
