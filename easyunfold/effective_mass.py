@@ -149,28 +149,31 @@ class EffectiveMass:
         eref = self.unfold.calculated_quantities[mode]
         weights = self.unfold.calculated_quantities['spectral_weights_per_set']
 
-        # Indices of the kpoint corresponding to the CBM
-        k_indicies = []
+        # Indices of the kpoint corresponding to the band edges
+        k_indices = []
         k_subset_indices = []
-        cbm_indices = []
+        extrema_indices = []
         for ik, wset in enumerate(weights):
             for isubset in range(wset.shape[1]):
                 etmp = wset[ispin, isubset, :, 0]
                 wtmp = wset[ispin, isubset, :, 1]
+
                 # Filter by intensity
                 mask = wtmp > intensity_tol
                 midx = np.where(mask)[0]
+
                 # Find points close to the reference energy (vbm/cbm)
                 itmp, _ = points_with_tol(etmp[mask], eref, extrema_tol, 0)
                 if len(itmp) == 0:
                     continue
+
                 # Reconstruct the valid extrema indices
                 itmp = midx[itmp]
-                cbm_indices.append(itmp)
-                k_indicies.append(ik)
+                extrema_indices.append(itmp)
+                k_indices.append(ik)
                 k_subset_indices.append(isubset)
 
-        return k_indicies, k_subset_indices, cbm_indices
+        return k_indices, k_subset_indices, extrema_indices
 
     def _get_kpoint_distances(self):
         """
