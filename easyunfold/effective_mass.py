@@ -63,7 +63,7 @@ def fitted_band(x: np.ndarray, eff_mass: float) -> np.ndarray:
     return c / 2 * x**2
 
 
-def points_with_tol(array, value, tol=1e-4, sign=1):
+def points_with_tol(array, value, tol=1e-2, sign=1):
     """
     Return the indices and values of points in an array close to the value with a tolerance
     """
