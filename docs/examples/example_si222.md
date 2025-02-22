@@ -171,7 +171,7 @@ output:
 :alt: Spectral function
 :width: 400px
 
-Spectral function of the unfolded bands with out additional kpoints due to reduced symmetry.
+Spectral function of the unfolded bands without additional kpoints due to reduced symmetry.
 ```
 
 Comparing this plot with the one above, we see that we get spurious band breaking (e.g. along $\Gamma - L$)

@@ -41,13 +41,13 @@ class UnfoldPlotter:
         self.unfold = unfold
 
     @staticmethod
-    def plot_dos(ax, dos_plotter, dos_label, dos_options, ylim, eref, atoms=None, colours=None, orbitals_subplots=None):
+    def plot_dos(ax, dos_plotter, ylim, eref, dos_label=None, dos_options=None, atoms=None, colours=None, orbitals_subplots=None):
         """
         Prepare and plot the density of states.
         """
         from pymatgen.electronic_structure.core import Spin
 
-        if not dos_options:
+        if dos_options is None:
             dos_options = {}
 
         from sumo.plotting import sumo_base_style, sumo_bs_style
@@ -234,7 +234,7 @@ class UnfoldPlotter:
             axes = [ax] if not isinstance(ax, list) else ax
             fig = axes[0].figure
 
-        # Shift the kdist so the pcolormesh draw the pixel centred on the original point
+        # Shift the kdist so the plot draws the pixel centred on the original point
         X, Y = np.meshgrid(kdist, engs - eref)
 
         # Calculate the min and max values within the field of view, scaled by the factor
@@ -246,11 +246,12 @@ class UnfoldPlotter:
             vmax = (vmax - vmin) * (vscale /
                                     intensity) + vmin  # vscale and intensity have the equal opposite effect on the colour intensity
 
+        plot_kwargs = {'cmap': cmap, 'vmax': vmax, 'vmin': vmin, 'alpha': alpha}
         for ispin, ax_ in zip(range(nspin), axes):
             if contour_plot:
-                ax_.contourf(X, Y, sf[ispin], cmap=cmap, vmax=vmax, vmin=vmin, alpha=alpha)
-            else:
-                ax_.pcolormesh(X, Y, sf[ispin], cmap=cmap, shading='auto', vmax=vmax, vmin=vmin, alpha=alpha)
+                ax_.contourf(X, Y, sf[ispin], **plot_kwargs)
+            else:  # note that pcolormesh is used over imshow to allow non-uniform k-point meshes
+                ax_.pcolormesh(X, Y, sf[ispin], shading='gouraud', **plot_kwargs)
 
             ax_.set_xlim(xmin, xmax)
             ax_.set_ylim(*ylim)
@@ -263,7 +264,7 @@ class UnfoldPlotter:
 
         if dos_plotter:
             ax = fig.axes[1]
-            ax = self.plot_dos(ax, dos_plotter, dos_label, dos_options, ylim, eref)
+            ax = self.plot_dos(ax, dos_plotter, ylim, eref, dos_label=dos_label, dos_options=dos_options)
 
         if zero_line:
             try:
@@ -753,7 +754,15 @@ class UnfoldPlotter:
 
             if dos_plotter:
                 ax = fig.axes[1]
-                ax = self.plot_dos(ax, dos_plotter, dos_label, dos_options, ylim, eref, atoms, colours, orbitals_subplots)
+                ax = self.plot_dos(ax,
+                                   dos_plotter,
+                                   ylim,
+                                   eref,
+                                   dos_label=dos_label,
+                                   dos_options=dos_options,
+                                   atoms=atoms,
+                                   colours=colours,
+                                   orbitals_subplots=orbitals_subplots)
 
             if zero_line:
                 try:
@@ -809,6 +818,8 @@ class UnfoldPlotter:
         ax.plot(x, y, 'x-', label='Energy ')
         ax.plot(x, y1, label='fitted')
         ax.legend()
+
+        fig = ax.figure
         if save:
             fig.savefig(save, dpi=dpi)
         return fig

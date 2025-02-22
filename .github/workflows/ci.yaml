@@ -10,12 +10,12 @@ jobs:
   pre-commit:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v5
       with:
-        python-version: "3.9"
+        python-version: "3.10"
 
     - name: Install dependencies
       run: |
@@ -47,11 +47,11 @@ jobs:
       run: |
         pytest tests/
     - name: Run coverage from coverage-python by running pytest yet again
-      if: ${{ matrix.python-version == '3.9' }}
+      if: ${{ matrix.python-version == '3.10' }}
       run: pytest --cov-report=xml --cov-append --cov=easyunfold
     - name: Upload coverage to Codecov
-      if: ${{ matrix.python-version == '3.9' }}
-      uses: codecov/codecov-action@v3
+      if: ${{ matrix.python-version == '3.10' }}
+      uses: codecov/codecov-action@v5
       with:
         name: easyunfold
         token: ${{ secrets.CODECOV_TOKEN }}
@@ -64,11 +64,11 @@ jobs:
     name: Build and publish Python 🐍 distributions 📦 to PyPI and TestPyPI
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up Python 3.9
-        uses: actions/setup-python@v2
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
         with:
-          python-version: 3.9
+          python-version: "3.10"
 
       - name: Build
         run: |
