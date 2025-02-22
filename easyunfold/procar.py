@@ -81,20 +81,23 @@ class Procar(MSONable):
                     section_counter += 1
                 _last_kid = _kid
 
-                kvec = tuple(round(float(val), 5) for val in tokens[-6:-3]  # tuple to make it hashable
-                            )  # round to 5 decimal places to ensure proper kpoint matching
+                kvec = tuple(round(float(val), 5) for val in tokens[-6:-3])  # tuple to make it hashable
+                # (rounded to 5 decimal places to ensure proper kpoint matching)
+
                 if (kvec not in parsed_kpoints and (kvec, section_counter) not in this_procar_parsed_kpoints):
                     this_procar_parsed_kpoints.add((kvec, section_counter))
                     kvecs.append(list(kvec))
                     kweights.append(float(tokens[-1]))
-                else:
-                    # skip ahead to the next instance of two blank lines in a row
-                    while line.strip() or fobj.readline().strip():
+                else:  # previously parsed k-point, skip ahead to the next k-point:
+                    while line:
                         line = fobj.readline()
-                    continue
+                        if line.startswith(' k-point'):  # next k-point
+                            break
+                    continue  # go back to start of outer while loop, to parse this k-point
 
             elif (not re.search(r'[a-zA-Z]', line) and line.strip() and len(line.strip().split()) - 2 == len(self.proj_names)):
-                # only parse data if line is expected length, in case of LORBIT >= 12
+                # data line, as there is only numerical values, not empty line, and expected number of
+                # columns (in case of LORBIT >= 12)
                 proj_data.append([float(token) for token in line.strip().split()[1:-1]])
 
             elif line.startswith('band'):
@@ -205,9 +208,9 @@ class Procar(MSONable):
         def open_file(fobj_or_path):
             if isinstance(fobj_or_path, (str, Path)):
                 if os.path.exists(fobj_or_path):
-                    return zopen(fobj_or_path, mode='rt')  # closed later
+                    return zopen(fobj_or_path, mode='rt', encoding='utf-8')  # closed later
                 if os.path.exists(f'{fobj_or_path}.gz'):
-                    return zopen(f'{fobj_or_path}.gz', mode='rt')
+                    return zopen(f'{fobj_or_path}.gz', mode='rt', encoding='utf-8')
 
                 raise FileNotFoundError(  # else raise error
                     f'File not found: {fobj_or_path} – PROCAR(.gz) file needed for '
