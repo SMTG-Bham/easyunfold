@@ -51,7 +51,7 @@
 ```{autodoc2-docstring} easyunfold.plotting.UnfoldPlotter.__init__
 ```
 
-````{py:method} plot_dos(ax, dos_plotter, dos_label, dos_options, ylim, eref, atoms=None, colours=None, orbitals_subplots=None)
+````{py:method} plot_dos(ax, dos_plotter, ylim, eref, dos_label=None, dos_options=None, atoms=None, colours=None, orbitals_subplots=None)
 :canonical: easyunfold.plotting.UnfoldPlotter.plot_dos
 :staticmethod:
 
