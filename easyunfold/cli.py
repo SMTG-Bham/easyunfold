@@ -282,6 +282,7 @@ def add_mpl_style_option(func):
     return wrapper
 
 
+# TODO: The units of extrema-detect-tol should be given/explained
 @unfold.command('effective-mass')
 @click.pass_context
 @add_mpl_style_option
@@ -293,13 +294,16 @@ def add_mpl_style_option(func):
 @click.option('--plot', is_flag=True, default=False)
 @click.option('--plot-fit', is_flag=True, default=False, help='Generate plots of the band edge and parabolic fits.')
 @click.option('--fit-label', help='Which branch to use for plot fitting. e.g. electrons:0', default='electrons:0', show_default=True)
-@click.option('--band-filter', default=None, type=int, help='Only displace information for this band.')
+@click.option('--band-filter', default=None, type=int, help='Only display information for this band.')
 @click.option('--out-file', '-o', default='unfold-effective-mass.png', help='Name of the output file.', show_default=True)
 @click.option('--emin', type=float, default=-5., help='Minimum energy in eV relative to the reference.', show_default=True)
 @click.option('--emax', type=float, default=5., help='Maximum energy in eV relative to the reference.', show_default=True)
 @click.option('--manual-extrema', help='Manually specify the extrema to use for fitting, in the form "mode,k_index,band_index"')
+@click.option('--extremum-eigenvalue',
+              type=float,
+              help='Eigenvalue (energy) of the band edge to use for fitting, in case auto-detection fails')
 def unfold_effective_mass(ctx, intensity_threshold, spin, band_filter, npoints, extrema_detect_tol, nocc, plot, plot_fit, fit_label,
-                          out_file, emin, emax, manual_extrema):
+                          out_file, emin, emax, manual_extrema, extremum_eigenvalue):
     """
     Compute and print effective masses by tracing the unfolded weights.
 
@@ -318,7 +322,7 @@ def unfold_effective_mass(ctx, intensity_threshold, spin, band_filter, npoints, 
     click.echo('Band extrema data:')
     table = []
     for mode in ['cbm', 'vbm']:
-        for kid, subkid, iband in zip(*efm.get_band_extrema(mode=mode)):
+        for kid, subkid, iband in zip(*efm.get_band_extrema(mode=mode, extremum_eigenvalue=extremum_eigenvalue)):
             band_idx = ','.join(map(str, iband))
             table.append([kid, mode.upper(), subkid, band_idx])
     click.echo(tabulate(table, headers=['Kpoint index', 'Kind', 'Sub-kpoint index', 'Band indices']))
@@ -327,7 +331,7 @@ def unfold_effective_mass(ctx, intensity_threshold, spin, band_filter, npoints, 
     if nocc:
         efm.set_nocc(nocc)
     if manual_extrema is None:
-        output = efm.get_effective_masses(ispin=spin, npoints=npoints)
+        output = efm.get_effective_masses(ispin=spin, npoints=npoints, extremum_eigenvalue=extremum_eigenvalue)
     else:
         mode, ik, ib = manual_extrema.split(',')
         ik = int(ik)

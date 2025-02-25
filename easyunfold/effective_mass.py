@@ -63,7 +63,7 @@ def fitted_band(x: np.ndarray, eff_mass: float) -> np.ndarray:
     return c / 2 * x**2
 
 
-def points_with_tol(array, value, tol=1e-4, sign=1):
+def points_with_tol(array, value, tol=1e-2, sign=1):
     """
     Return the indices and values of points in an array close to the value with a tolerance
     """
@@ -71,7 +71,7 @@ def points_with_tol(array, value, tol=1e-4, sign=1):
         diff = abs(array - value)
     else:
         diff = (array - value) * sign
-    idx = np.where((-1e-3 < diff) & (diff < tol))[0]
+    idx = np.where((-tol <= diff) & (diff <= tol))[0]
     return idx, array[idx]
 
 
@@ -82,7 +82,7 @@ class EffectiveMass:
         self,
         unfold: UnfoldKSet,
         intensity_tol: float = 1e-1,
-        extrema_tol: float = 1e-3,
+        extrema_tol: float = 1e-2,
         parabolic: bool = True,
         npoints: float = 3,
     ):
@@ -122,7 +122,7 @@ class EffectiveMass:
         """
         return self.unfold.kpoint_labels
 
-    def get_band_extrema(self, mode: str = 'cbm', extrema_tol: float = None, ispin=0):
+    def get_band_extrema(self, mode: str = 'cbm', extrema_tol: float = None, ispin=0, extremum_eigenvalue: float = None):
         """
         Obtain the kpoint idx of band extrema, sub indices in the set, and the band indices.
 
@@ -131,10 +131,12 @@ class EffectiveMass:
         Afterwards, the band indices are selected at these kpoints using the `tol` set.
 
         :param mode: The mode to search for band extrema. Can be either 'cbm' (conduction band minimum) or 'vbm'
-                     (valence band maximum).
+                     (valence band maximum). Irrelevant if `extremum_eigenvalue` is provided.
         :param extrema_tol: The tolerance for determining the proximity of band energies to the cbm/vbm.
                             If not provided, the default tolerance from `self.extrema_detect_tol` is used.
         :param ispin: The spin index. Default is 0.
+        :param extremum_eigenvalue: The eigenvalue of the extremum. If not provided, the eigenvalue is
+                                    taken from UnfoldKSet.calculation_quantities[mode].
         :returns: A tuple of extrema locations including a list of kpoint indices, sub-indices within
                  the set, and the band indices at each kpoint that is within the `extrema_tol` from the cbm/vbm.
         :raises ValueError: If an unknown mode is provided.
@@ -146,31 +148,34 @@ class EffectiveMass:
         if mode not in ['cbm', 'vbm']:
             raise ValueError(f'Unknown mode {mode}')
 
-        eref = self.unfold.calculated_quantities[mode]
+        eref = extremum_eigenvalue or self.unfold.calculated_quantities[mode]
         weights = self.unfold.calculated_quantities['spectral_weights_per_set']
 
-        # Indices of the kpoint corresponding to the CBM
-        k_indicies = []
+        # Indices of the kpoint corresponding to the band edges
+        k_indices = []
         k_subset_indices = []
-        cbm_indices = []
+        extrema_indices = []
         for ik, wset in enumerate(weights):
             for isubset in range(wset.shape[1]):
                 etmp = wset[ispin, isubset, :, 0]
                 wtmp = wset[ispin, isubset, :, 1]
+
                 # Filter by intensity
                 mask = wtmp > intensity_tol
                 midx = np.where(mask)[0]
+
                 # Find points close to the reference energy (vbm/cbm)
                 itmp, _ = points_with_tol(etmp[mask], eref, extrema_tol, 0)
                 if len(itmp) == 0:
                     continue
+
                 # Reconstruct the valid extrema indices
                 itmp = midx[itmp]
-                cbm_indices.append(itmp)
-                k_indicies.append(ik)
+                extrema_indices.append(itmp)
+                k_indices.append(ik)
                 k_subset_indices.append(isubset)
 
-        return k_indicies, k_subset_indices, cbm_indices
+        return k_indices, k_subset_indices, extrema_indices
 
     def _get_kpoint_distances(self):
         """
@@ -229,7 +234,13 @@ class EffectiveMass:
 
         return kdists_norm, engs_norm, (kdists, engs_effective)
 
-    def get_effective_masses(self, npoints: Union[float, None] = None, ispin=0, iks=None, iband=None, mode=None):
+    def get_effective_masses(self,
+                             npoints: Union[float, None] = None,
+                             ispin=0,
+                             iks=None,
+                             iband=None,
+                             mode=None,
+                             extremum_eigenvalue: float = None):
         """
         Obtain the effective masses based on the unfolded band structure
 
@@ -239,16 +250,29 @@ class EffectiveMass:
         :param iband: Band indices used for manual override.
         :param mode: Calculation mode. If None, effective masses at both conduction band minimum (cbm)
             and valence band maximum (vbm) will be calculated.
+        :param extremum_eigenvalue: The eigenvalue of the extremum. If not provided, the eigenvalue is
+                                    taken from UnfoldKSet.calculation_quantities[mode].
         :returns: A dictionary containing the effective masses for electrons and holes.
         """
         outputs = {}
         mode = ['cbm', 'vbm'] if mode is None else [mode]
         for mname in mode:
             name = 'electrons' if mname == 'cbm' else 'holes'
-            outputs[name] = self._get_effective_masses(mname, npoints=npoints, ispin=ispin, iband=iband, iks=iks)
+            outputs[name] = self._get_effective_masses(mname,
+                                                       npoints=npoints,
+                                                       ispin=ispin,
+                                                       iband=iband,
+                                                       iks=iks,
+                                                       extremum_eigenvalue=extremum_eigenvalue)
         return outputs
 
-    def _get_effective_masses(self, mode: str = 'cbm', ispin: int = 0, npoints: Union[None, int] = None, iks=None, iband=None):
+    def _get_effective_masses(self,
+                              mode: str = 'cbm',
+                              ispin: int = 0,
+                              npoints: Union[None, int] = None,
+                              iks=None,
+                              iband=None,
+                              extremum_eigenvalue: float = None):
         """
         Work out the effective masses based on the unfolded band structure for CBM or VBM
 
@@ -260,11 +284,14 @@ class EffectiveMass:
             obtained from get_band_extrema method.
         :param iband: The indices of the bands to calculate effective masses. If None, the indices will be
             obtained from get_band_extrema method.
+        :param extremum_eigenvalue: The eigenvalue of the extremum. If not provided, the eigenvalue is
+                                    taken from UnfoldKSet.calculation_quantities[mode].
         :returns: A list of dictionaries containing the calculated effective masses and related information.
         """
         if iks is None or iband is None:
-            iks, _, iband = self.get_band_extrema(mode=mode)
-        # Override occupations
+            iks, _, iband = self.get_band_extrema(mode=mode, extremum_eigenvalue=extremum_eigenvalue)
+
+        # Override band indices
         if self.nocc:
             iband = [self.nocc for _ in iband]
 
