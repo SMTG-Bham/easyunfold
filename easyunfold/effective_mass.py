@@ -91,7 +91,9 @@ class EffectiveMass:
 
         :param unfold: The ``UnfoldKSet`` object that holds unfolding data.
         :param intensity_tol: Intensity threshold for detecting band edges.
-        :param extrema_tol: Distance tolerance for detecting band edges.
+        :param extrema_tol:
+            Energy tolerance for k-points and bands to be included in effective
+            mass fitting, relative to the band edge eigenvalues.
         :param parabolic: Perform parabolic fit or not. The default is None.
         :param npoints: The number of points used for fitting.
         """
@@ -127,13 +129,14 @@ class EffectiveMass:
         Obtain the kpoint idx of band extrema, sub indices in the set, and the band indices.
 
         The search takes two steps. First, the kpoints at the band extrema are located by comparing the
-        band energies with that recorded in the supplied *cbm* and *vbm*, based on the `extrema_tol`.
-        Afterwards, the band indices are selected at these kpoints using the `tol` set.
+        band energies with that recorded in the supplied *cbm* and *vbm*, based on the `extrema_tol`
+        energy tolerance. Afterwards, the band indices are selected at these kpoints using the `tol` set.
 
         :param mode: The mode to search for band extrema. Can be either 'cbm' (conduction band minimum) or 'vbm'
                      (valence band maximum). Irrelevant if `extremum_eigenvalue` is provided.
-        :param extrema_tol: The tolerance for determining the proximity of band energies to the cbm/vbm.
-                            If not provided, the default tolerance from `self.extrema_detect_tol` is used.
+        :param extrema_tol: The energy tolerance for determining k-points/bands to be included, relative
+                            to the cbm/vbm eigenvalues. If not provided, the default tolerance from
+                            `self.extrema_detect_tol` is used.
         :param ispin: The spin index. Default is 0.
         :param extremum_eigenvalue: The eigenvalue of the extremum. If not provided, the eigenvalue is
                                     taken from UnfoldKSet.calculation_quantities[mode].

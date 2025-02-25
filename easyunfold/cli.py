@@ -282,14 +282,17 @@ def add_mpl_style_option(func):
     return wrapper
 
 
-# TODO: The units of extrema-detect-tol should be given/explained
 @unfold.command('effective-mass')
 @click.pass_context
 @add_mpl_style_option
 @click.option('--intensity-threshold', type=float, default=0.1, help='Intensity threshold for detecting valid bands.', show_default=True)
 @click.option('--spin', type=int, default=0, help='Index of the spin channel.', show_default=True)
 @click.option('--npoints', type=int, default=3, help='Number of kpoints used for fitting from the extrema.', show_default=True)
-@click.option('--extrema-detect-tol', type=float, default=0.01, help='Tolerance for band extrema detection.', show_default=True)
+@click.option('--extrema-detect-tol',
+              type=float,
+              default=0.01,
+              help='Tolerance for k-points and bands to be included in fitting, as energy difference (in eV) from band edge eigenvalues.',
+              show_default=True)
 @click.option('--nocc', type=int, help='DEV: Use this band as the extrema at all kpoints.')
 @click.option('--plot', is_flag=True, default=False)
 @click.option('--plot-fit', is_flag=True, default=False, help='Generate plots of the band edge and parabolic fits.')
