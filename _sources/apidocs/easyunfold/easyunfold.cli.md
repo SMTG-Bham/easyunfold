@@ -167,7 +167,7 @@
 ```
 ````
 
-````{py:function} unfold_effective_mass(ctx, intensity_threshold, spin, band_filter, npoints, extrema_detect_tol, nocc, plot, plot_fit, fit_label, out_file, emin, emax, manual_extrema)
+````{py:function} unfold_effective_mass(ctx, intensity_threshold, spin, band_filter, npoints, extrema_detect_tol, nocc, plot, plot_fit, fit_label, out_file, emin, emax, manual_extrema, extremum_eigenvalue)
 :canonical: easyunfold.cli.unfold_effective_mass
 
 ```{autodoc2-docstring} easyunfold.cli.unfold_effective_mass
