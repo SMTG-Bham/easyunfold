@@ -47,8 +47,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'apidocs/easyunfold/easyunfold.effective_mass';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="easyunfold.procar" href="easyunfold.procar.html" />
-    <link rel="prev" title="easyunfold.plotting" href="easyunfold.plotting.html" />
+    <link rel="next" title="easyunfold.utils" href="easyunfold.utils.html" />
+    <link rel="prev" title="easyunfold.unfold" href="easyunfold.unfold.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -208,15 +208,15 @@
 <li class="toctree-l1"><a class="reference internal" href="../../cli.html">CLI Reference</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Reference</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="easyunfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold</span></code></a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="easyunfold.plotting.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.plotting</span></code></a></li>
-<li class="toctree-l3 current active"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.effective_mass</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="easyunfold.procar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.procar</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="easyunfold.vasp_constant.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.vasp_constant</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="easyunfold.cli.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.cli</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="easyunfold.wavefun.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavefun</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="easyunfold.wavecar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavecar</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="easyunfold.unfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.unfold</span></code></a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.effective_mass</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="easyunfold.utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.utils</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="easyunfold.cli.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.cli</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="easyunfold.procar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.procar</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="easyunfold.wavefun.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavefun</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="easyunfold.vasp_constant.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.vasp_constant</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="easyunfold.plotting.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.plotting</span></code></a></li>
 </ul>
 </details></li>
 </ul>
@@ -545,7 +545,8 @@ float: The effective mass in units of electron rest mass, :math:<code class="doc
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>unfold</strong> – The <code class="docutils literal notranslate"><span class="pre">UnfoldKSet</span></code> object that holds unfolding data.</p></li>
 <li><p><strong>intensity_tol</strong> – Intensity threshold for detecting band edges.</p></li>
-<li><p><strong>extrema_tol</strong> – Distance tolerance for detecting band edges.</p></li>
+<li><p><strong>extrema_tol</strong> – Energy tolerance for k-points and bands to be included in effective
+mass fitting, relative to the band edge eigenvalues.</p></li>
 <li><p><strong>parabolic</strong> – Perform parabolic fit or not. The default is None.</p></li>
 <li><p><strong>npoints</strong> – The number of points used for fitting.</p></li>
 </ul>
@@ -573,15 +574,16 @@ float: The effective mass in units of electron rest mass, :math:<code class="doc
 <span class="sig-name descname"><span class="pre">get_band_extrema</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'cbm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extrema_tol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ispin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extremum_eigenvalue</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#easyunfold.effective_mass.EffectiveMass.get_band_extrema" title="Permalink to this definition">#</a></dt>
 <dd><p>Obtain the kpoint idx of band extrema, sub indices in the set, and the band indices.</p>
 <p>The search takes two steps. First, the kpoints at the band extrema are located by comparing the
-band energies with that recorded in the supplied <em>cbm</em> and <em>vbm</em>, based on the <code class="docutils literal notranslate"><span class="pre">extrema_tol</span></code>.
-Afterwards, the band indices are selected at these kpoints using the <code class="docutils literal notranslate"><span class="pre">tol</span></code> set.</p>
+band energies with that recorded in the supplied <em>cbm</em> and <em>vbm</em>, based on the <code class="docutils literal notranslate"><span class="pre">extrema_tol</span></code>
+energy tolerance. Afterwards, the band indices are selected at these kpoints using the <code class="docutils literal notranslate"><span class="pre">tol</span></code> set.</p>
 <dl class="myst field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>mode</strong> – The mode to search for band extrema. Can be either ‘cbm’ (conduction band minimum) or ‘vbm’
 (valence band maximum). Irrelevant if <code class="docutils literal notranslate"><span class="pre">extremum_eigenvalue</span></code> is provided.</p></li>
-<li><p><strong>extrema_tol</strong> – The tolerance for determining the proximity of band energies to the cbm/vbm.
-If not provided, the default tolerance from <code class="docutils literal notranslate"><span class="pre">self.extrema_detect_tol</span></code> is used.</p></li>
+<li><p><strong>extrema_tol</strong> – The energy tolerance for determining k-points/bands to be included, relative
+to the cbm/vbm eigenvalues. If not provided, the default tolerance from
+<code class="docutils literal notranslate"><span class="pre">self.extrema_detect_tol</span></code> is used.</p></li>
 <li><p><strong>ispin</strong> – The spin index. Default is 0.</p></li>
 <li><p><strong>extremum_eigenvalue</strong> – The eigenvalue of the extremum. If not provided, the eigenvalue is
 taken from UnfoldKSet.calculation_quantities[mode].</p></li>
@@ -710,20 +712,20 @@ taken from UnfoldKSet.calculation_quantities[mode].</p></li>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="easyunfold.plotting.html"
+       href="easyunfold.unfold.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.plotting</span></code></p>
+        <p class="prev-next-title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.unfold</span></code></p>
       </div>
     </a>
     <a class="right-next"
-       href="easyunfold.procar.html"
+       href="easyunfold.utils.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.procar</span></code></p>
+        <p class="prev-next-title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.utils</span></code></p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
