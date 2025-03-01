@@ -382,7 +382,8 @@ def unfold_effective_mass(ctx, intensity_threshold, spin, band_filter, npoints, 
         plotter = UnfoldPlotter(unfoldset)
         click.echo('Generating spectral function plot for visualising detected band branches...')
         engs, sf = unfoldset.get_spectral_function()
-        plotter.plot_effective_mass(efm, engs, sf, effective_mass_data=output, save=out_file, ylim=(emin, emax))
+        plotter.plot_effective_mass(efm, engs, sf, effective_mass_data=output, save=out_file, ylim=(emin, emax),
+                                    eref=extremum_eigenvalue)  # set eref to extremum_eigenvalue if not None
 
     elif plot_fit:
         from easyunfold.plotting import UnfoldPlotter
