@@ -435,7 +435,7 @@ class UnfoldPlotter:
             iax = all_k.index(ik)
             x = entry['raw_data']['raw_fit_values'][0]
             y = entry['raw_data']['raw_fit_values'][1]
-            axes[0, iax].plot(x, np.asarray(y) - eref, '-o', color='C1')
+            axes[0, iax].plot(x, np.asarray(y) - eref, '-o', color='C1', label='m_e')
             axes[0, iax].set_xlim(min(x) - xwidth / 2, max(x) + xwidth / 2)
 
         for entry in hole:
@@ -443,8 +443,12 @@ class UnfoldPlotter:
             iax = all_k.index(ik)
             x = entry['raw_data']['raw_fit_values'][0]
             y = entry['raw_data']['raw_fit_values'][1]
-            axes[0, iax].plot(x, np.asarray(y) - eref, '-o', color='C2')
+            axes[0, iax].plot(x, np.asarray(y) - eref, '-o', color='C2', label='m_h')
             axes[0, iax].set_xlim(min(x) - xwidth / 2, max(x) + xwidth / 2)
+
+        for ax in axes[0]:
+            ax.legend()
+
         if save:
             fig.savefig(save)
 
