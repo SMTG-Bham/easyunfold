@@ -148,14 +148,12 @@ to the VBM or CBM to assign extrema points.
 One can also inspect if the detected bands makes sense by using the `--plot` option.
 A Jupyter Notebook example can be found [here](../../examples/MgO/effective-mass.ipynb).
 
-
 ```{figure} ../../examples/MgO/unfold-effective-mass.png
 :width: 800 px
 :alt: Effective bands extracted  
 
 Extracted bands at CBM and VBM for an unfolded MgO band structure.
 ```
-
 
 :::{warning}
 Make sure the band extrema data tabulated is correct and consistent before using any of the reported values.
@@ -164,7 +162,7 @@ The results can unreliable for systems with little or no band gaps and those wit
 
 
 :::{tip}
-For complex systems where the detection is difficult, one can manually pass the kpoint and the band indices using the `--manual-extrema` option.
+For complex systems where the detection is difficult, one can manually pass the kpoint and the band indices using the `--manual-extrema` option, or can pass the eigenvalue of the band edge of interest using the `--extremum-eigenvalue` option. See `easyunfold unfold effective-mass -h` for more details.
 :::
 
 ## Defects
