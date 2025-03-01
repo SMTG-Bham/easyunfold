@@ -427,27 +427,17 @@ class UnfoldPlotter:
         xwidth = 2 * mean_n_points * abs(kdist[1] - kdist[0])
         for (ik, ax) in zip(all_k, axes[0]):
             self.plot_spectral_function(engs, sf, ax=ax, eref=eref, **kwargs)
-            xk = kdist[ik]
-            xlim = (xk - xwidth / 2, xk + xwidth / 2)
-            ax.set_xlim(xlim)
             ax.set_title(f'Kpoint: {ik}')
 
         # Plot the detected effective mass fitting data on top
-        for entry in elec:
-            ik = entry['kpoint_index']
-            iax = all_k.index(ik)
-            x = entry['raw_data']['raw_fit_values'][0]
-            y = entry['raw_data']['raw_fit_values'][1]
-            axes[0, iax].plot(x, np.asarray(y) - eref, '-o', color='C1', label='m_e')
-            axes[0, iax].set_xlim(min(x) - xwidth / 2, max(x) + xwidth / 2)
-
-        for entry in hole:
-            ik = entry['kpoint_index']
-            iax = all_k.index(ik)
-            x = entry['raw_data']['raw_fit_values'][0]
-            y = entry['raw_data']['raw_fit_values'][1]
-            axes[0, iax].plot(x, np.asarray(y) - eref, '-o', color='C2', label='m_h')
-            axes[0, iax].set_xlim(min(x) - xwidth / 2, max(x) + xwidth / 2)
+        for carrier_type, entry_list in zip(['m_e', 'm_h'], [elec, hole]):
+            for entry in entry_list:
+                ik = entry['kpoint_index']
+                iax = all_k.index(ik)
+                x = entry['raw_data']['raw_fit_values'][0]
+                y = entry['raw_data']['raw_fit_values'][1]
+                axes[0, iax].plot(x, np.asarray(y) - eref, '-o', color='C1' if carrier_type == 'm_e' else 'C2', label=carrier_type)
+                axes[0, iax].set_xlim(max(min(x) - xwidth / 2, axes[0, iax].get_xlim()[0]), max(x) + xwidth / 2)
 
         for ax in axes[0]:
             ax.legend()
