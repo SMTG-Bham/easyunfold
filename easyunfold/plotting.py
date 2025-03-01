@@ -388,7 +388,7 @@ class UnfoldPlotter:
         ax.set_xticklabels(tick_labels)
 
     def plot_effective_mass(self,
-                            eff: EffectiveMass,
+                            efm: EffectiveMass,
                             engs: np.ndarray,
                             sf: np.ndarray,
                             eref: Union[None, float] = None,
@@ -399,7 +399,8 @@ class UnfoldPlotter:
         """
         Plot the effective masses on top of the spectral function.
 
-        :param eff: An `EffectiveMass` object used for plotting.
+        :param efm: ``EffectiveMass`` object for plotting, or pre-calculated
+                    ``EffectiveMass.get_effective_masses()`` data dict.
         :param engs: The energies of the spectral functions.
         :param sf: An array of the spectral function.
         :param eref: Reference energy to be used - this energy will be set as zero.
@@ -408,8 +409,8 @@ class UnfoldPlotter:
         :returns: A figure with the data used for fitting effective mass plotted on top of the spectral function.
         """
 
-        kcbm = eff.get_band_extrema(mode='cbm')[0]
-        kvbm = eff.get_band_extrema(mode='vbm')[0]
+        kcbm = efm.get_band_extrema(mode='cbm')[0]
+        kvbm = efm.get_band_extrema(mode='vbm')[0]
         all_k = sorted(list(set(list(kcbm) + list(kvbm))))
         kdist = self.unfold.get_kpoint_distances()
         if eref is None:
@@ -417,7 +418,7 @@ class UnfoldPlotter:
 
         fig, axes = plt.subplots(1, len(all_k), figsize=(4 * len(all_k), 3), dpi=300, squeeze=False)
         if effective_mass_data is None:
-            effective_mass_data = eff.get_effective_masses()
+            effective_mass_data = efm.get_effective_masses()
 
         # Plot the spectral function
         xwidth = abs(kdist[1] - kdist[0])
@@ -797,7 +798,7 @@ class UnfoldPlotter:
         """
         Plot detected band edges and the fitted effective masses.
 
-        :param efm: `EffectiveMass` object for plotting, or pre-calculated
+        :param efm: ``EffectiveMass`` object for plotting, or pre-calculated
                     ``EffectiveMass.get_effective_masses()`` data dict.
         :param npoints: The number of points to be used for fitting.
         :param carrier: Type of the charge carrier, e.g. `electrons` or `holes`.
