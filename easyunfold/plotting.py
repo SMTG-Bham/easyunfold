@@ -418,10 +418,13 @@ class UnfoldPlotter:
         if eref is None:
             eref = self.unfold.calculated_quantities['vbm']
 
-        fig, axes = plt.subplots(1, len(all_k), figsize=(4 * len(all_k), 3), dpi=50, squeeze=False)
+        fig, axes = plt.subplots(1, len(all_k), figsize=(4 * len(all_k), 3), squeeze=False)
 
         # Plot the spectral function
-        xwidth = abs(kdist[1] - kdist[0])
+        # set xwidth to 2 * npoints * kdist-diff, so that final plot should have ~1/3 of plot having
+        # fitted data points:
+        mean_n_points = round(np.mean([len(entry['raw_data']['raw_fit_values'][0]) for entry in elec + hole]))
+        xwidth = 2 * mean_n_points * abs(kdist[1] - kdist[0])
         for (ik, ax) in zip(all_k, axes[0]):
             self.plot_spectral_function(engs, sf, ax=ax, eref=eref, **kwargs)
             xk = kdist[ik]
