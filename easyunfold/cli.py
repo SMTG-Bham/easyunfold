@@ -393,7 +393,7 @@ def unfold_effective_mass(ctx, intensity_threshold, spin, band_filter, npoints, 
         for carrier in ['electrons', 'holes']:
             for idx, _ in enumerate(output[carrier]):
                 plotter.plot_effective_mass_fit(
-                    efm=efm,
+                    efm=output,
                     npoints=npoints,
                     carrier=carrier,
                     idx=int(idx),

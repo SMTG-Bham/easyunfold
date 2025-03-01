@@ -787,7 +787,7 @@ class UnfoldPlotter:
         return fig
 
     @staticmethod
-    def plot_effective_mass_fit(efm: EffectiveMass,
+    def plot_effective_mass_fit(efm: Union[EffectiveMass, dict],
                                 npoints: int = 3,
                                 carrier: str = 'electrons',
                                 idx: int = 0,
@@ -797,7 +797,8 @@ class UnfoldPlotter:
         """
         Plot detected band edges and the fitted effective masses.
 
-        :param efm: `EffectiveMass` object for plotting.
+        :param efm: `EffectiveMass` object for plotting, or pre-calculated
+                    ``EffectiveMass.get_effective_masses()`` data dict.
         :param npoints: The number of points to be used for fitting.
         :param carrier: Type of the charge carrier, e.g. `electrons` or `holes`.
         :param idx: Index for the detected effective mass of the same kind.
@@ -807,7 +808,8 @@ class UnfoldPlotter:
 
         :returns: A figure with plotted data.
         """
-        data = efm.get_effective_masses(npoints=npoints)[carrier][idx]
+        efm_output_data = efm if isinstance(efm, dict) else efm.get_effective_masses(npoints=npoints)
+        data = efm_output_data[carrier][idx]
 
         x = data['raw_data']['kpoint_distances']
         y = data['raw_data']['effective_energies']
