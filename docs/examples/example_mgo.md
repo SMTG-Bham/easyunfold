@@ -145,7 +145,7 @@ If detected band extrema are not consistent with the band structure, one should 
 Increasing the value of `--intensity-tol` will filter away bands with very small spectral weights.
 On the other hand, increasing `--extrema-detect-tol` will increase the energy window with respect 
 to the VBM or CBM to assign extrema points. 
-One can also inspect if the detected bands makes sense by using the `--plot` option.
+One can also inspect if the detected bands makes sense by using the `--plot` or `--plot-fit` options, in which case it can be useful to increase `--npoints` to extend the plotted range.
 A Jupyter Notebook example can be found [here](../../examples/MgO/effective-mass.ipynb).
 
 ```{figure} ../../examples/MgO/unfold-effective-mass.png
