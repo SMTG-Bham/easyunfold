@@ -141,8 +141,8 @@ Hole effective masses:
 Unfolded band structure can be ambiguous, please cross-check with the spectral function plot.
 ```
 
-If detected band extrema are not consistent with the band structure, one should adjust the `--intensity-tol` and `--extrema-detect-tol`.
-Increasing the value of `--intensity-tol` will filter away bands with very small spectral weights.
+If detected band extrema are not consistent with the band structure, or some band edges are not detected, one should adjust the `--intensity-threshold` and `--extrema-detect-tol`.
+Increasing the value of `--intensity-threshold` will filter away bands with very small spectral weights.
 On the other hand, increasing `--extrema-detect-tol` will increase the energy window with respect 
 to the VBM or CBM to assign extrema points. 
 One can also inspect if the detected bands makes sense by using the `--plot` or `--plot-fit` options, in which case it can be useful to increase `--npoints` to extend the plotted range.
