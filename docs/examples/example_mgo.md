@@ -43,7 +43,7 @@ Note that the path of the `PROCAR(.gz)` is passed along with the desired atom pr
 :::{tip}
 If the _k_-points have been split into multiple calculations (e.g. hybrid DFT band structures), the `--procar` option 
 should be passed multiple times to specify the path to each split `PROCAR(.gz)` file (i.e. 
-`--procar calc1/PROCAR --procar cal2/PROCAR ...`).
+`--procar calc1/PROCAR --procar calc2/PROCAR ...`).
 :::
 
 :::{note}
