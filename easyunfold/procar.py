@@ -102,7 +102,14 @@ class Procar(MSONable):
 
             elif line.startswith('band'):
                 tokens = line.strip().split()
-                energies.append(float(tokens[4]))
+                try:
+                    energies.append(float(tokens[4]))
+                except ValueError:
+                    # this can happen for cases where energy in PROCAR is "*****...", where the energy
+                    # is either very negative or very positive (likely outside plotting range anyway), so
+                    # set to +/-np.inf
+                    energies.append(np.sign(energies[-1] if energies else -1))
+
                 occs.append(float(tokens[-1]))
 
             elif line.startswith('tot'):
