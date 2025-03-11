@@ -111,6 +111,10 @@ There are _many_ customisation options available for the plotting functions in `
 `easyunfold unfold plot-projections -h` for more details!
 :::
 
+:::{warning}
+If your `PROCAR(.gz)` file(s) are corrupted or incomplete, the `plot-projections` command will fail with an error message like `ValueError: cannot reshape array of size 73542192 into shape (2,74,348,90,16)`. In cases where the start/end of the `PROCAR` file looks fine, this can sometimes be checked with `grep -E '[^[:print:]]' --color=never PROCAR` which will only show an output if some lines in the file are corrupted. Typically this requires re-running the VASP calculation to give an uncorrupted file. 
+:::
+
 ### Carrier Effective Masses
 
 The command `easyunfold unfold effective-mass` can be used to find the effective masses of the unfolded band structure.
