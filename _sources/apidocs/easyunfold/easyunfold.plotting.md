@@ -84,7 +84,7 @@
 
 ````
 
-````{py:method} plot_effective_mass(eff: easyunfold.effective_mass.EffectiveMass, engs: numpy.ndarray, sf: numpy.ndarray, eref: typing.Union[None, float] = None, save: typing.Union[None, str] = None, show: bool = False, effective_mass_data: dict = None, **kwargs)
+````{py:method} plot_effective_mass(efm: easyunfold.effective_mass.EffectiveMass, engs: numpy.ndarray, sf: numpy.ndarray, eref: typing.Union[None, float] = None, save: typing.Union[None, str] = None, show: bool = False, effective_mass_data: dict = None, **kwargs)
 :canonical: easyunfold.plotting.UnfoldPlotter.plot_effective_mass
 
 ```{autodoc2-docstring} easyunfold.plotting.UnfoldPlotter.plot_effective_mass
@@ -108,7 +108,7 @@
 
 ````
 
-````{py:method} plot_effective_mass_fit(efm: easyunfold.effective_mass.EffectiveMass, npoints: int = 3, carrier: str = 'electrons', idx: int = 0, ax: typing.Union[matplotlib.pyplot.Axes, None] = None, save: typing.Union[None, str] = None, dpi: float = 120)
+````{py:method} plot_effective_mass_fit(efm: typing.Union[easyunfold.effective_mass.EffectiveMass, dict], npoints: int = 3, carrier: str = 'electrons', idx: int = 0, ax: typing.Union[matplotlib.pyplot.Axes, None] = None, save: typing.Union[None, str] = None, dpi: float = 120)
 :canonical: easyunfold.plotting.UnfoldPlotter.plot_effective_mass_fit
 :staticmethod:
 
