@@ -201,7 +201,7 @@ BuPu `cmap`        |                     viridis `cmap`                      |  
 ![](../examples/NaBiS2/NaBiS2_unfold-plot_BuPu.png)  | ![](../examples/NaBiS2/NaBiS2_unfold-plot_viridis.png)  |  <img src="../examples/NaBiS2/NaBiS2_unfold-plot_proj.png" alt="atom-projected NaBiS2 band structure" width="1200"/>
 
 :::{tip}
-Figure can be further customised by passing a path to a matplotlib style sheet file, for example:
+The output figure can be further customised by passing a path to a matplotlib style sheet file, for example:
 
 ```
 easyunfold unfold --mpl-style-file <path-to-mpl-style-sheet> plot
@@ -209,6 +209,10 @@ easyunfold unfold --mpl-style-file <path-to-mpl-style-sheet> plot
 
 which can be used to change the font, font sizes, ticks styles etc.
 Read more on [the matplotlib tutorial page](https://matplotlib.org/stable/tutorials/introductory/customizing.html#using-style-sheets).
+:::
+
+:::{tip}
+There are a number of further plot customisation and analysis tools, such as atomic/site/orbital projections, combined plots with electronic density of states (DOS), effective mass fitting & plotting, and more. These are demonstrated in the [examples](https://smtg-bham.github.io/easyunfold/examples.html).
 :::
 
 [^vasp]: https://www.vasp.at

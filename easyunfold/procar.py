@@ -69,6 +69,7 @@ class Procar(MSONable):
         # Counter for the number of sections in the PROCAR
         section_counter = 1
         _last_kid = 0
+        # _last_ion = nion  # track ion numbers to ensure all ions being parsed
         this_procar_parsed_kpoints = set()  # set with tuples of parsed (kvec tuple, section_counter) for this PROCAR
         while line:
             if line.startswith(' k-point'):
@@ -95,14 +96,26 @@ class Procar(MSONable):
                             break
                     continue  # go back to start of outer while loop, to parse this k-point
 
-            elif (not re.search(r'[a-zA-Z]', line) and line.strip() and len(line.strip().split()) - 2 == len(self.proj_names)):
+            elif not re.search(r'[a-zA-Z]', line) and line.strip() and len(line.strip().split()) - 2 == len(self.proj_names):
                 # data line, as there is only numerical values, not empty line, and expected number of
                 # columns (in case of LORBIT >= 12)
+                # DEBUGGING for corrupted PROCARs: (Uncomment these lines and _last_ion definition above)
+                # ion_no = int(line.strip().split()[0])
+                # if ion_no not in [_last_ion+1, 1]:
+                #     print(ion_no, _last_ion, line)
+                # _last_ion = ion_no
                 proj_data.append([float(token) for token in line.strip().split()[1:-1]])
 
             elif line.startswith('band'):
                 tokens = line.strip().split()
-                energies.append(float(tokens[4]))
+                try:
+                    energies.append(float(tokens[4]))
+                except ValueError:
+                    # this can happen for cases where energy in PROCAR is "*****...", where the energy
+                    # is either very negative or very positive (likely outside plotting range anyway), so
+                    # set to +/-np.inf
+                    energies.append(np.sign(energies[-1] if energies else -1))
+
                 occs.append(float(tokens[-1]))
 
             elif line.startswith('tot'):

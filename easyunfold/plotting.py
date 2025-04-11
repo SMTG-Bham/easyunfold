@@ -388,7 +388,7 @@ class UnfoldPlotter:
         ax.set_xticklabels(tick_labels)
 
     def plot_effective_mass(self,
-                            eff: EffectiveMass,
+                            efm: EffectiveMass,
                             engs: np.ndarray,
                             sf: np.ndarray,
                             eref: Union[None, float] = None,
@@ -399,53 +399,49 @@ class UnfoldPlotter:
         """
         Plot the effective masses on top of the spectral function.
 
-        :param eff: An `EffectiveMass` object used for plotting.
+        :param efm: ``EffectiveMass`` object for plotting.
         :param engs: The energies of the spectral functions.
         :param sf: An array of the spectral function.
         :param eref: Reference energy to be used - this energy will be set as zero.
-        :param effective_mass_data: Calculated data of the effective masses.
+        :param effective_mass_data: Calculated data of the effective masses (i.e.
+                                    ``EffectiveMass.get_effective_masses()``).
 
         :returns: A figure with the data used for fitting effective mass plotted on top of the spectral function.
         """
+        if effective_mass_data is None:
+            effective_mass_data = efm.get_effective_masses()
+        elec = effective_mass_data.get('electrons', [])
+        hole = effective_mass_data.get('holes', [])
+        all_k = sorted({entry['kpoint_index'] for entry in elec + hole})
 
-        kcbm = eff.get_band_extrema(mode='cbm')[0]
-        kvbm = eff.get_band_extrema(mode='vbm')[0]
-        all_k = sorted(list(set(list(kcbm) + list(kvbm))))
         kdist = self.unfold.get_kpoint_distances()
         if eref is None:
             eref = self.unfold.calculated_quantities['vbm']
 
-        fig, axes = plt.subplots(1, len(all_k), figsize=(4 * len(all_k), 3), dpi=300, squeeze=False)
-        if effective_mass_data is None:
-            effective_mass_data = eff.get_effective_masses()
+        fig, axes = plt.subplots(1, len(all_k), figsize=(4 * len(all_k), 3), squeeze=False)
 
         # Plot the spectral function
-        xwidth = abs(kdist[1] - kdist[0])
+        # set xwidth to 2 * npoints * kdist-diff, so that final plot should have ~1/3 of plot having
+        # fitted data points:
+        mean_n_points = round(np.mean([len(entry['raw_data']['raw_fit_values'][0]) for entry in elec + hole]))
+        xwidth = 2 * mean_n_points * abs(kdist[1] - kdist[0])
         for (ik, ax) in zip(all_k, axes[0]):
             self.plot_spectral_function(engs, sf, ax=ax, eref=eref, **kwargs)
-            xk = kdist[ik]
-            xlim = (xk - xwidth / 2, xk + xwidth / 2)
-            ax.set_xlim(xlim)
             ax.set_title(f'Kpoint: {ik}')
 
-        elec = effective_mass_data.get('electrons', [])
         # Plot the detected effective mass fitting data on top
-        for entry in elec:
-            ik = entry['kpoint_index']
-            iax = all_k.index(ik)
-            x = entry['raw_data']['raw_fit_values'][0]
-            y = entry['raw_data']['raw_fit_values'][1]
-            axes[0, iax].plot(x, np.asarray(y) - eref, '-o', color='C1')
-            axes[0, iax].set_xlim(min(x) - xwidth / 2, max(x) + xwidth / 2)
+        for carrier_type, entry_list in zip(['m_e', 'm_h'], [elec, hole]):
+            for entry in entry_list:
+                ik = entry['kpoint_index']
+                iax = all_k.index(ik)
+                x = entry['raw_data']['raw_fit_values'][0]
+                y = entry['raw_data']['raw_fit_values'][1]
+                axes[0, iax].plot(x, np.asarray(y) - eref, '-o', color='C1' if carrier_type == 'm_e' else 'C2', label=carrier_type)
+                axes[0, iax].set_xlim(max(min(x) - xwidth / 2, axes[0, iax].get_xlim()[0]), max(x) + xwidth / 2)
 
-        hole = effective_mass_data.get('holes', [])
-        for entry in hole:
-            ik = entry['kpoint_index']
-            iax = all_k.index(ik)
-            x = entry['raw_data']['raw_fit_values'][0]
-            y = entry['raw_data']['raw_fit_values'][1]
-            axes[0, iax].plot(x, np.asarray(y) - eref, '-o', color='C2')
-            axes[0, iax].set_xlim(min(x) - xwidth / 2, max(x) + xwidth / 2)
+        for ax in axes[0]:
+            ax.legend()
+
         if save:
             fig.savefig(save)
 
@@ -787,7 +783,7 @@ class UnfoldPlotter:
         return fig
 
     @staticmethod
-    def plot_effective_mass_fit(efm: EffectiveMass,
+    def plot_effective_mass_fit(efm: Union[EffectiveMass, dict],
                                 npoints: int = 3,
                                 carrier: str = 'electrons',
                                 idx: int = 0,
@@ -797,7 +793,8 @@ class UnfoldPlotter:
         """
         Plot detected band edges and the fitted effective masses.
 
-        :param efm: `EffectiveMass` object for plotting.
+        :param efm: ``EffectiveMass`` object for plotting, or pre-calculated
+                    ``EffectiveMass.get_effective_masses()`` data dict.
         :param npoints: The number of points to be used for fitting.
         :param carrier: Type of the charge carrier, e.g. `electrons` or `holes`.
         :param idx: Index for the detected effective mass of the same kind.
@@ -807,7 +804,8 @@ class UnfoldPlotter:
 
         :returns: A figure with plotted data.
         """
-        data = efm.get_effective_masses(npoints=npoints)[carrier][idx]
+        efm_output_data = efm if isinstance(efm, dict) else efm.get_effective_masses(npoints=npoints)
+        data = efm_output_data[carrier][idx]
 
         x = data['raw_data']['kpoint_distances']
         y = data['raw_data']['effective_energies']

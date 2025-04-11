@@ -382,7 +382,8 @@ def unfold_effective_mass(ctx, intensity_threshold, spin, band_filter, npoints, 
         plotter = UnfoldPlotter(unfoldset)
         click.echo('Generating spectral function plot for visualising detected band branches...')
         engs, sf = unfoldset.get_spectral_function()
-        plotter.plot_effective_mass(efm, engs, sf, effective_mass_data=output, save=out_file, ylim=(emin, emax))
+        plotter.plot_effective_mass(efm, engs, sf, effective_mass_data=output, save=out_file, ylim=(emin, emax),
+                                    eref=extremum_eigenvalue)  # set eref to extremum_eigenvalue if not None
 
     elif plot_fit:
         from easyunfold.plotting import UnfoldPlotter
@@ -393,7 +394,7 @@ def unfold_effective_mass(ctx, intensity_threshold, spin, band_filter, npoints, 
         for carrier in ['electrons', 'holes']:
             for idx, _ in enumerate(output[carrier]):
                 plotter.plot_effective_mass_fit(
-                    efm=efm,
+                    efm=output,
                     npoints=npoints,
                     carrier=carrier,
                     idx=int(idx),
@@ -454,8 +455,9 @@ def add_plot_options(func):
     click.option('--procar',
                  multiple=True,
                  default=['PROCAR'],
-                 help=('PROCAR file(s) for atomic weighting, can be passed multiple times if more than one PROCAR '
-                       'should be used. Default is to read PROCAR(.gz) in current directory'))(func)
+                 help=('PROCAR file(s) for atomic weighting. Default is to read PROCAR(.gz) in current '
+                       'directory. If working with split k-point directories, the should be passed '
+                       'multiple times as `--procar calc1/PROCAR --procar calc2/PROCAR... `'))(func)
     click.option('--atoms',
                  help='Atoms to be used for weighting, as a comma-separated list (e.g. "Na,Bi,S"). '
                  'The POSCAR or CONTCAR file (matching `--poscar`) must be present, otherwise use `--atoms-idx`.')(func)

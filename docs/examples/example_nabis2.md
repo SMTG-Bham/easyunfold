@@ -99,7 +99,7 @@ Unfolded band structure of NaBiS<sub>2</sub> with atomic contributions.
 :::{tip}
 If the _k_-points have been split into multiple calculations (e.g. hybrid DFT band structures), the `--procar` option 
 should be passed multiple times to specify the path to each split `PROCAR(.gz)` file (i.e. 
-`--procar calc1/PROCAR --procar cal2/PROCAR ...`).
+`--procar calc1/PROCAR --procar calc2/PROCAR ...`).
 :::
 
 From this plot, we can see that sulfur anions dominate the valence band, while bismuth cations dominate the conduction 

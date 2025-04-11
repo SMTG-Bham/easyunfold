@@ -43,7 +43,7 @@ Note that the path of the `PROCAR(.gz)` is passed along with the desired atom pr
 :::{tip}
 If the _k_-points have been split into multiple calculations (e.g. hybrid DFT band structures), the `--procar` option 
 should be passed multiple times to specify the path to each split `PROCAR(.gz)` file (i.e. 
-`--procar calc1/PROCAR --procar cal2/PROCAR ...`).
+`--procar calc1/PROCAR --procar calc2/PROCAR ...`).
 :::
 
 :::{note}
@@ -111,6 +111,10 @@ There are _many_ customisation options available for the plotting functions in `
 `easyunfold unfold plot-projections -h` for more details!
 :::
 
+:::{warning}
+If your `PROCAR(.gz)` file(s) are corrupted or incomplete, the `plot-projections` command will fail with an error message like `ValueError: cannot reshape array of size 73542192 into shape (2,74,348,90,16)`. In cases where the start/end of the `PROCAR` file looks fine, this can sometimes be checked with `grep -E '[^[:print:]]' --color=never PROCAR` which will only show an output if some lines in the file are corrupted. Typically this requires re-running the VASP calculation to give an uncorrupted file. 
+:::
+
 ### Carrier Effective Masses
 
 The command `easyunfold unfold effective-mass` can be used to find the effective masses of the unfolded band structure.
@@ -141,13 +145,12 @@ Hole effective masses:
 Unfolded band structure can be ambiguous, please cross-check with the spectral function plot.
 ```
 
-If detected band extrema are not consistent with the band structure, one should adjust the `--intensity-tol` and `--extrema-detect-tol`.
-Increasing the value of `--intensity-tol` will filter away bands with very small spectral weights.
+If detected band extrema are not consistent with the band structure, or some band edges are not detected, one should adjust the `--intensity-threshold` and `--extrema-detect-tol`.
+Increasing the value of `--intensity-threshold` will filter away bands with very small spectral weights.
 On the other hand, increasing `--extrema-detect-tol` will increase the energy window with respect 
 to the VBM or CBM to assign extrema points. 
-One can also inspect if the detected bands makes sense by using the `--plot` option.
+One can also inspect if the detected bands makes sense by using the `--plot` or `--plot-fit` options, in which case it can be useful to increase `--npoints` to extend the plotted range.
 A Jupyter Notebook example can be found [here](../../examples/MgO/effective-mass.ipynb).
-
 
 ```{figure} ../../examples/MgO/unfold-effective-mass.png
 :width: 800 px
@@ -156,7 +159,6 @@ A Jupyter Notebook example can be found [here](../../examples/MgO/effective-mass
 Extracted bands at CBM and VBM for an unfolded MgO band structure.
 ```
 
-
 :::{warning}
 Make sure the band extrema data tabulated is correct and consistent before using any of the reported values.
 The results can unreliable for systems with little or no band gaps and those with complex unfolded band structures.
@@ -164,7 +166,7 @@ The results can unreliable for systems with little or no band gaps and those wit
 
 
 :::{tip}
-For complex systems where the detection is difficult, one can manually pass the kpoint and the band indices using the `--manual-extrema` option.
+For complex systems where the detection is difficult, one can manually pass the kpoint and the band indices using the `--manual-extrema` option, or can pass the eigenvalue of the band edge of interest using the `--extremum-eigenvalue` option. See `easyunfold unfold effective-mass -h` for more details.
 :::
 
 ## Defects
