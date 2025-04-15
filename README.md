@@ -112,6 +112,7 @@ If you use `easyunfold` in your work, please cite:
 
 We'll add papers that use `easyunfold` to this list as they come out!
 
+- P. B. Colominas et al. **_Giant Thermally Induced Band-Gap Renormalization in Anharmonic Silver Chalcohalide Antiperovskites_** [_Journal of Materials Chemistry C_](https://doi.org/10.1039/D5TC00863H) 2025
 - H. Maleki-Ghaleh et al. **_Visible Light-Sensitive Sustainable Quantum Dot Crystals of Co/Mg Doped Natural Hydroxyapatite Possessing Antimicrobial Activity and Biocompatibility_** [_Small_](https://doi.org/10.1002/smll.202405708) 2024
 - L. Richarz et al. **_Ferroelectric domain walls for environmental sensors_** [_arXiv_](https://arxiv.org/abs/2412.03691) 2024
 - K. Eggestad, B. A. D. Williamson, D. Meier and S. M. Selbach **_Mobile Intrinsic Point Defects for Conductive Neutral Domain Walls in LiNbO<sub>3</sub>_** [_Journal of Materials Chemistry C_](https://doi.org/10.1039/D4TC02856B) 2024
