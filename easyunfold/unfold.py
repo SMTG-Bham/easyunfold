@@ -178,8 +178,6 @@ class UnfoldKSet(MSONable):
         self.transient_quantities = {}
 
         # Transient properties
-        self.reduced_sckpts = None
-        self.reduced_sckpts_map = None
         if self.expansion_results is None:
             self.expand_pc_kpoints()
 
