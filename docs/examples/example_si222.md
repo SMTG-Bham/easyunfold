@@ -22,6 +22,10 @@ unit cell, which in this case was generated using `sumo-kgen` (see [Step 1](
 https://smtg-Bham.github.io/easyunfold/guide.html#step-1-generate-the-kpoints-path-of-the-primitive-cell) 
 of the tutorial docs page).
 
+:::{note} 
+In this example we are using GGA DFT, but if we were using hybrid DFT with `VASP`, we would need to use the `--scf-kpoints` option with `easyunfold generate`, as described in the tutorial docs page.
+:::
+
 This generates an  `easyunfold.json` file in the current direction containing information about the 
 unfolding. The output name of this file can be modified with the `--out-file` commandline argument.
 
