@@ -107,7 +107,7 @@ cell_super = M @ cell_primitive
 where `cell_super` and `cell_primitive` are (3,3) matrices made of **row vectors**.
 If `M` is non-diagonal, all nine elements must be passed in a row-major order.
 
-The `--matrix` argument may be omitted (and automatically detected by `easyunfol`) if the supercell is 
+The `--matrix` argument may be omitted (and automatically detected by `easyunfold`) if the supercell is 
 perfectly commensurate with the primitive cell, which is the case if the supercell calculation did not 
 undergo cell relaxation (typically the case for defect calculations).
 
