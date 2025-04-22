@@ -205,12 +205,17 @@ def read_kpoints_castep(path, tag='spectral'):
 
 
 def wrap_kpoints(kpoints: Union[list, np.ndarray]):
-    """Wrap the kpoints to range [-0.5, 0.5)"""
+    """
+    Wrap the kpoints to the range (-0.5, 0.5].
+
+    e.g. [-0.5, 0.5, 0.75] -> [0.5, 0.5, -0.25]
+    """
+    # Shift so that the modulus gives an answer in [0,1):
     kpoints = np.array(kpoints) + 0.5
     kpoints -= np.floor(kpoints)
-    kpoints -= 0.5
-    # Giving some numerical tolerance when enforcing the range [-0.5, 0.5)
-    kpoints[np.abs(kpoints - 0.5) < 1e-7] = -0.5
+    kpoints -= 0.5  # shift back: normally gives values in [-0.5, 0.5)
+    # Now enforce the range (-0.5, 0.5] with some numerical tolerance:
+    kpoints[np.abs(kpoints + 0.5) < 1e-6] = 0.5
     return kpoints
 
 
