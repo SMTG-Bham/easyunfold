@@ -361,7 +361,7 @@ class UnfoldKSet(MSONable):
                 if use_separate_folders:
                     folder = f'split-{i_spilt+1:03d}'
                     Path(folder).mkdir(exist_ok=True)
-                    fname = str(folder / file)
+                    fname = str(Path(folder) / file)
                 else:
                     fname = f'{file}_{i_spilt + 1:03d}'
                 write_kpoints(kpt, fname, f'supercell kpoints split {i_spilt + 1}', code=self.dft_code, weights=weights, **kwargs)
