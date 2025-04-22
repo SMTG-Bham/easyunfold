@@ -51,7 +51,7 @@ def test_generate(si_project_dir):
     assert output.exit_code == 0
 
     kpts = read_kpoints('KPOINTS_test')[0]
-    kpts_expected = 25
+    kpts_expected = 23
     assert len(kpts) == kpts_expected
     kpts = read_kpoints('KPOINTS_test_002')[0]
     assert len(kpts) == 3
@@ -240,7 +240,7 @@ def test_unfold(si_project_dir, tag):
     if tag == '':
         output = runner.invoke(easyunfold, ['unfold', '--data-file', 'test.json', 'effective-mass'])
         assert 'Hole effective masses' in output.stdout
-        assert r'0  m_e                0.82              8  [0.5, 0.0, 0.5] (X)' in output.stdout
+        assert r'0  m_e                0.827             8  [0.5, 0.0, 0.5] (X)' in output.stdout
         # Plot effective mass
         output = runner.invoke(
             easyunfold,

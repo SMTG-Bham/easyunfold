@@ -36,7 +36,6 @@ vasprun.xml
 coverage.xml
 *.vasp
 IBZKPT
-KPOINTS
 POTCAR
 *.cell
 *.bands
