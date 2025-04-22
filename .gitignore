@@ -37,12 +37,10 @@ coverage.xml
 *.vasp
 IBZKPT
 POTCAR
-*.cell
 *.bands
 *.castep
 *.check
 *.cst_esp
-KPOINTS
 *.json
 *.DS_Store
 
