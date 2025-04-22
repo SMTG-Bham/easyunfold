@@ -1,8 +1,6 @@
-
 *.png
 *.castep_bin
 *.log
-KPOINTS_*
 *.dat
 *.pdf
 *.xml
