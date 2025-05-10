@@ -4,6 +4,7 @@ Test unfolding routines
 import numpy as np
 from ase.io import read
 import pytest
+import shutil
 import easyunfold.unfold as unfold
 from easyunfold.utils import read_kpoints
 from matplotlib.colors import hex2color
@@ -74,7 +75,7 @@ def test_unfold_expansion(si_atoms, si222_atoms, explicit_kpoints):
     assert rots_pc.shape[0] == 48
     assert rots_sc.shape[0] == 6
     assert foldset.nkpts_orig == len(explicit_kpoints)
-    assert foldset.nkpts_expand == 138
+    assert foldset.nkpts_expand == 119
 
 
 def test_symmetry_expand(si_atoms, si222_atoms):
@@ -114,7 +115,7 @@ def test_serialization(silicon_unfold, tmp_path):
 
 
 @pytest.mark.parametrize('tag,nspin,ncl, nbands_expected', [('', 1, False, 14), ('_spin', 2, False, 14), ('_soc', 1, True, 20)])
-def test_unfold(si_project_dir, tag, nspin, ncl, nbands_expected):
+def test_unfold(si_project_dir, tag, nspin, ncl, nbands_expected, datapath):
     """
     Test unfolding on the real data
     """
@@ -145,6 +146,9 @@ def test_unfold(si_project_dir, tag, nspin, ncl, nbands_expected):
 
     # Test kpoints generation
     kpoints_sc = read_kpoints(si_project_dir / 'KPOINTS_sc')[0]
+    # to update:
+    # shutil.copyfile(si_project_dir / 'KPOINTS_sc',
+    #                 datapath('Si-project') / f'{folder_name}/KPOINTS_easyunfold')
     kpoints_sc_ref = read_kpoints(si_project_dir / f'{folder_name}/KPOINTS_easyunfold')[0]
     np.testing.assert_allclose(kpoints_sc, kpoints_sc_ref)
 
@@ -166,7 +170,7 @@ def test_unfold(si_project_dir, tag, nspin, ncl, nbands_expected):
 
 
 @pytest.mark.parametrize('tag,nspin,ncl, nbands_expected', [('_castep', 1, False, 14)])
-def test_unfold_castep(si_project_dir, tag, nspin, ncl, nbands_expected):
+def test_unfold_castep(si_project_dir, tag, nspin, ncl, nbands_expected, datapath):
     """
     Test unfolding on the real data
     """
@@ -188,6 +192,8 @@ def test_unfold_castep(si_project_dir, tag, nspin, ncl, nbands_expected):
     # Test kpoints generation
     kpoints_sc = read_kpoints(si_project_dir / 'easyunfold_sc_kpoints.cell', code='castep')[0]
     kpoints_sc_ref = read_kpoints(si_project_dir / f'{folder_name}/easyunfold_sc_kpoints.cell', code='castep')[0]
+    # shutil.copyfile(si_project_dir / 'easyunfold_sc_kpoints.cell',  # to update
+    #                 datapath('Si-project') / f'{folder_name}/easyunfold_sc_kpoints.cell')
     np.testing.assert_allclose(kpoints_sc, kpoints_sc_ref)
 
     # Test unfold
@@ -240,7 +246,7 @@ def test_unfold_projection(si_project_dir, tag, nspin, ncl, nbands_expected):
 @pytest.mark.parametrize('tag,nspin,ncl,nbands_expected', [
     ('', 1, False, 14),
 ])
-def test_unfold_no_expand(si_project_dir, tag, nspin, ncl, nbands_expected):
+def test_unfold_no_expand(si_project_dir, tag, nspin, ncl, nbands_expected, datapath):
     """
     Test unfolding on the real data without symmetry expansion in the first place
     """
@@ -258,6 +264,8 @@ def test_unfold_no_expand(si_project_dir, tag, nspin, ncl, nbands_expected):
 
     # Test kpoints generation
     kpoints_sc = read_kpoints(si_project_dir / 'KPOINTS_sc')[0]
+    # shutil.copyfile(si_project_dir / 'KPOINTS_sc',  # to update
+    #                 datapath('Si-project') / f'{folder_name}/KPOINTS_easyunfold')
     kpoints_sc_ref = read_kpoints(si_project_dir / f'{folder_name}/KPOINTS_easyunfold')[0]
     # The kpoints should be a subset of the SC kpoints
     for kpt in kpoints_sc:

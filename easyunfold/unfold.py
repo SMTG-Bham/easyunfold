@@ -77,13 +77,13 @@ def expand_K_by_symmetry(kpt: Union[list, np.ndarray], opts_pc: np.ndarray, opts
 
     :returns: Expanded kpoints and corresponding weights for each primitive cell kpoint.
     """
-    kpt_orig = np.asarray(kpt)
+    kpt_orig = np.asarray(wrap_kpoints(kpt))
 
     # Find distinct images of the kpoints in the PC
     pc_distinct = [kpt_orig]
     for opt in opts_pc:
-        k_equiv = rotate_kpt(kpt_orig, opt)
-        k_equiv_neg = k_equiv * -1
+        k_equiv = wrap_kpoints(rotate_kpt(kpt_orig, opt))
+        k_equiv_neg = wrap_kpoints(k_equiv * -1)
         found = False
         for k_ in pc_distinct:
             if np.allclose(k_equiv, k_):
@@ -99,8 +99,8 @@ def expand_K_by_symmetry(kpt: Union[list, np.ndarray], opts_pc: np.ndarray, opts
             continue
 
         for opt in opts_sc:
-            k_equiv = rotate_kpt(kpt_, opt)
-            k_equiv_neg = k_equiv * -1
+            k_equiv = wrap_kpoints(rotate_kpt(kpt_, opt))
+            k_equiv_neg = wrap_kpoints(k_equiv * -1)
             for j, k_ in enumerate(pc_distinct):
                 # Skip if it is the same point, or the other point has been taken
                 if i == j or weights[j] == 0:
@@ -117,7 +117,7 @@ def expand_K_by_symmetry(kpt: Union[list, np.ndarray], opts_pc: np.ndarray, opts
             out_weights.append(weights[i])
     assert sum(out_weights) == len(pc_distinct)
     # The first kpoint of the set should always be the original kpoint
-    assert out_points[0] is kpt_orig
+    assert np.allclose(out_points[0], kpt_orig)
     out_weights = np.array(out_weights) / sum(out_weights)
     return out_points, out_weights
 
@@ -178,8 +178,6 @@ class UnfoldKSet(MSONable):
         self.transient_quantities = {}
 
         # Transient properties
-        self.reduced_sckpts = None
-        self.reduced_sckpts_map = None
         if self.expansion_results is None:
             self.expand_pc_kpoints()
 
@@ -363,7 +361,7 @@ class UnfoldKSet(MSONable):
                 if use_separate_folders:
                     folder = f'split-{i_spilt+1:03d}'
                     Path(folder).mkdir(exist_ok=True)
-                    fname = str(folder / file)
+                    fname = str(Path(folder) / file)
                 else:
                     fname = f'{file}_{i_spilt + 1:03d}'
                 write_kpoints(kpt, fname, f'supercell kpoints split {i_spilt + 1}', code=self.dft_code, weights=weights, **kwargs)
