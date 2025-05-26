@@ -258,7 +258,7 @@ class UnfoldKSet(MSONable):
                 kset, weights = expand_K_by_symmetry(kpt, self.pc_opts, self.sc_opts, time_reversal=self.time_reversal)
             else:
                 # Just take the original point and set the weight to be unity
-                kset = [kpt]
+                kset = [wrap_kpoints(kpt)]
                 weights = np.array([1.0])
             expended_k.append(kset)
             expended_weights.append(weights)
