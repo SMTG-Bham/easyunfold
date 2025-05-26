@@ -215,7 +215,7 @@ def wrap_kpoints(kpoints: Union[list, np.ndarray]):
     kpoints -= np.floor(kpoints)
     kpoints -= 0.5  # shift back: normally gives values in [-0.5, 0.5)
     # Now enforce the range [-0.5, 0.5) with some numerical tolerance:
-    #kpoints[np.abs(kpoints + 0.5) < 1e-6] = 0.5
+    kpoints[np.abs(kpoints + 0.5) < 1e-6] = 0.5
     return kpoints
 
 
