@@ -109,7 +109,7 @@ If you don't want to run the VASP calculation by yourself, the calculated `WAVEC
 for this example can be downloaded using git-lfs:
 
 
-Install the git-lfs was not installed when you clone the repository, install it via:
+If git-lfs was not installed when you cloned the repository, install it via:
 
 ```
 sudo apt install git-lfs
