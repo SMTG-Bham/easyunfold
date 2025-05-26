@@ -53,11 +53,9 @@ def find_K_from_k(k: np.ndarray, M: np.ndarray):
     """
 
     M = np.array(M)
-    Kc = np.dot(k, M.T)
-    G = np.array(np.round(Kc), dtype=int)
-    # Wrap to -0.5, 0.5
-    KG = wrap_kpoints(Kc)
-
+    Kc = np.dot(k, M.T)  # Primitive cell kpoint in supercell fractional coordinates
+    KG = wrap_kpoints(Kc)  # Wrap to the 1st BZ
+    G = np.array(Kc - KG, dtype=int)  # Compute the G vector in supercell fractional coordinates
     return KG, G
 
 
