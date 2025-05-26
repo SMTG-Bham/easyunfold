@@ -119,7 +119,7 @@ git lfs install
 Download the files:
 
 ```
-git lfs pull -I examples/Si_super_deformed/WAVECARE,examples/Si_super_deformed/vasprun.xml --exclude="" 
+git lfs pull -I git lfs pull -I examples/Si222/Si_super_deformed/WAVECAR,examples/Si222/Si_super_deformed/vasprun.xml --exclude=""
 ```
 :::
 
