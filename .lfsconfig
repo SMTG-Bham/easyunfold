@@ -1,1 +1,2 @@
-lfs.fetchexclude examples/Si222/Si_super_deformed/WAVECAR
+[lfs]
+    fetchexclude="examples/Si222/Si_super_deformed/WAVECAR,examples/Si222/Si_super_deformed/vasprun.xml"

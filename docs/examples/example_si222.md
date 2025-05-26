@@ -106,10 +106,20 @@ easyunfold unfold calculate Si_super_deformed/WAVECAR
 
 :::{note} 
 If you don't want to run the VASP calculation by yourself, the calculated `WAVECAR` and `vasprun.xml` 
-for this example can be downloaded with:
+for this example can be downloaded using git-lfs:
+
+
+Install the git-lfs was not installed when you clone the repository, install it via:
 
 ```
-wget -O Si_super_deformed/WAVECAR https://www.dropbox.com/s/3cmn2epw7d290jd/WAVECAR?dl=1
+sudo apt install git-lfs
+git lfs install
+```
+
+Download the files:
+
+```
+git lfs pull -I examples/Si_super_deformed/WAVECARE,examples/Si_super_deformed/vasprun.xml --exclude="" 
 ```
 :::
 
