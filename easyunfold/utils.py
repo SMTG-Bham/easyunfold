@@ -208,7 +208,7 @@ def wrap_kpoints(kpoints: Union[list, np.ndarray]):
     """
     Wrap the kpoints to the range (-0.5, 0.5].
 
-    e.g. [-0.5, 0.5, 0.75] -> [-0.5, 0.5, -0.25]
+    e.g. [-0.5, 0.5, 0.75] -> [0.5, 0.5, -0.25]
     """
     # Shift so that the modulus gives an answer in [0,1):
     kpoints = np.array(kpoints) + 0.5
