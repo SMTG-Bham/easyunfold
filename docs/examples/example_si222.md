@@ -106,20 +106,21 @@ easyunfold unfold calculate Si_super_deformed/WAVECAR
 
 :::{note} 
 If you don't want to run the VASP calculation by yourself, the calculated `WAVECAR` and `vasprun.xml` 
-for this example can be downloaded using git-lfs:
+for this example can be downloaded using `git-lfs`:
 
-
-If git-lfs was not installed when you cloned the repository, install it via:
+If `git-lfs` was not installed when you cloned the repository, install it via:
 
 ```
 sudo apt install git-lfs
 git lfs install
 ```
 
-Download the files:
+(or `brew install git-lfs` on macOS; see [here](https://docs.github.com/en/repositories/working-with-files/managing-large-files/installing-git-large-file-storage) for full instructions).
 
-```
-git lfs pull -I git lfs pull -I examples/Si222/Si_super_deformed/WAVECAR,examples/Si222/Si_super_deformed/vasprun.xml --exclude=""
+Then download the files:
+
+```bash
+git lfs pull -I examples/Si222/Si_super_deformed/WAVECAR,examples/Si222/Si_super_deformed/vasprun.xml --exclude=""
 ```
 :::
 
@@ -174,8 +175,8 @@ cp KPOINTS_no-expand Si_super_deformed_no_expand/KPOINTS
 cd Si_super_deformed_no_expand
 mpirun -np 4 vasp_std
 cd ../
-easyunfold unfold --data-file  no-expand.json calculate Si_super_deformed_no_expand/WAVECAR
-easyunfold unfold --data-file  no-expand.json  plot --out-file unfold_no-expand.png
+easyunfold unfold --data-file no-expand.json calculate Si_super_deformed_no_expand/WAVECAR
+easyunfold unfold --data-file no-expand.json plot --out-file unfold_no-expand.png
 ```
 
 output:
