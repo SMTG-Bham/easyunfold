@@ -53,11 +53,9 @@ def find_K_from_k(k: np.ndarray, M: np.ndarray):
     """
 
     M = np.array(M)
-    Kc = np.dot(k, M.T)
-    G = np.array(np.round(Kc), dtype=int)
-    # Wrap to -0.5, 0.5
-    KG = wrap_kpoints(Kc)
-
+    Kc = np.dot(k, M.T)  # Primitive cell kpoint in supercell fractional coordinates
+    KG = wrap_kpoints(Kc)  # Wrap to the 1st BZ
+    G = np.array(Kc - KG, dtype=int)  # Compute the G vector in supercell fractional coordinates
     return KG, G
 
 
@@ -260,7 +258,7 @@ class UnfoldKSet(MSONable):
                 kset, weights = expand_K_by_symmetry(kpt, self.pc_opts, self.sc_opts, time_reversal=self.time_reversal)
             else:
                 # Just take the original point and set the weight to be unity
-                kset = [kpt]
+                kset = [wrap_kpoints(kpt)]
                 weights = np.array([1.0])
             expended_k.append(kset)
             expended_weights.append(weights)

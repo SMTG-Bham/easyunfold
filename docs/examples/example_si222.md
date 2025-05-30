@@ -91,7 +91,7 @@ cp KPOINTS_easyunfold KPOINTS  # supercell band structure kpoint path
 mpirun -np 4 vasp_std  # run the calculation
 ```
 
-Alternatively, there is a `run.sh` script in the 
+Alternatively, there is a `unfold.sh` script in the 
 [examples/Si222/Si_super_deformed](https://github.com/SMTG-Bham/easyunfold/tree/main/examples/Si222/Si_super_deformed) 
 folder that can be used to perform these two steps above.
 
@@ -106,10 +106,21 @@ easyunfold unfold calculate Si_super_deformed/WAVECAR
 
 :::{note} 
 If you don't want to run the VASP calculation by yourself, the calculated `WAVECAR` and `vasprun.xml` 
-for this example can be downloaded with:
+for this example can be downloaded using `git-lfs`:
+
+If `git-lfs` was not installed when you cloned the repository, install it via:
 
 ```
-wget -O Si_super_deformed/WAVECAR https://www.dropbox.com/s/3cmn2epw7d290jd/WAVECAR?dl=1
+sudo apt install git-lfs
+git lfs install
+```
+
+(or `brew install git-lfs` on macOS; see [here](https://docs.github.com/en/repositories/working-with-files/managing-large-files/installing-git-large-file-storage) for full instructions).
+
+Then download the files:
+
+```bash
+git lfs pull -I examples/Si222/Si_super_deformed/WAVECAR,examples/Si222/Si_super_deformed/vasprun.xml --exclude=""
 ```
 :::
 
@@ -131,8 +142,7 @@ Spectral function of the unfolded bands.
 
 :::{tip} 
 See the [NaBiS<sub>2</sub> example](https://smtg-Bham.github.io/easyunfold/examples/example_nabis2.html) for tips on 
-customising and prettifying the unfolded band structure plot. Here we have also actually used the `--intensity 3.5` 
-option to increase the spectral function intensity.
+customising and prettifying the unfolded band structure plot. For example, you can use the `--intensity 3.5` option to increase the spectral function intensity.
 :::
 
 Note the appearance of extra branches compared to the band structure of the primitive cell (below), due 
@@ -161,12 +171,12 @@ easyunfold generate Si/POSCAR Si_super_deformed/POSCAR Si/KPOINTS_band --no-expa
 Swap the `KPOINTS` to the new file, non-expanded `KPOINTS` file:
 
 ```bash
-cp KPOINTS_no-expand Si_super_deformed/KPOINTS
-cd Si_super_deformed
+cp KPOINTS_no-expand Si_super_deformed_no_expand/KPOINTS
+cd Si_super_deformed_no_expand
 mpirun -np 4 vasp_std
 cd ../
-easyunfold unfold --data-file  no-expand.json calculate Si_super_deformed/WAVECAR
-easyunfold unfold --data-file  no-expand.json  plot --out-file unfold_no-expand.png --intensity 3.5
+easyunfold unfold --data-file no-expand.json calculate Si_super_deformed_no_expand/WAVECAR
+easyunfold unfold --data-file no-expand.json plot --out-file unfold_no-expand.png
 ```
 
 output:
