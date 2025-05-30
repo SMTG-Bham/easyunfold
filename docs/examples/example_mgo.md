@@ -35,7 +35,7 @@ when plotting the unfolded band structure:
 
 ```bash
 easyunfold unfold plot-projections --procar MgO_super/PROCAR.gz --atoms="Mg,O" --combined --emin=-6 \
---emax=20 --intensity 6.5
+--emax=20 --intensity 6.5 --poscar MgO_super/POSCAR
 ```
 
 Note that the path of the `PROCAR(.gz)` is passed along with the desired atom projections (`Mg` and `O` here). 
