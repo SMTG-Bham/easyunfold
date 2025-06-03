@@ -99,7 +99,7 @@ folder that can be used to perform these two steps above.
 
 Unfold the supercell wave function (`WAVECAR`) and calculate the spectral weights:
 
-```
+```bash
 cd ../
 easyunfold unfold calculate Si_super_deformed/WAVECAR
 ```
@@ -110,7 +110,7 @@ for this example can be downloaded using `git-lfs`:
 
 If `git-lfs` was not installed when you cloned the repository, install it via:
 
-```
+```bash
 sudo apt install git-lfs
 git lfs install
 ```
