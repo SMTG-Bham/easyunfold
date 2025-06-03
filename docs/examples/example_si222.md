@@ -91,7 +91,7 @@ cp KPOINTS_easyunfold KPOINTS  # supercell band structure kpoint path
 mpirun -np 4 vasp_std  # run the calculation
 ```
 
-Alternatively, there is a `unfold.sh` script in the 
+Alternatively, there is a `run.sh` script in the 
 [examples/Si222/Si_super_deformed](https://github.com/SMTG-Bham/easyunfold/tree/main/examples/Si222/Si_super_deformed) 
 folder that can be used to perform these two steps above.
 
