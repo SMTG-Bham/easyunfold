@@ -16,4 +16,4 @@ cd ../
 
 # Calculate the spectral weights and generate effective band structure plots
 easyunfold unfold --data-file=no_expand.json calculate Si_super_deformed_no_expand/WAVECAR
-easyunfold unfold --data-file=no_expand.json  plot --emax=10 --emin=-10 --out-file=unfold_no_expand.png
+easyunfold unfold --data-file=no_expand.json  plot --emax=10 --emin=-10 --out-file=unfold_no_expand.png --intensity=2
