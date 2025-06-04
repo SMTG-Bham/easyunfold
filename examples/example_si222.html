@@ -487,15 +487,22 @@ folder that can be used to perform these two steps above.</p>
 <section id="perform-band-unfolding">
 <h2>Perform band unfolding<a class="headerlink" href="#perform-band-unfolding" title="Permalink to this heading">#</a></h2>
 <p>Unfold the supercell wave function (<code class="docutils literal notranslate"><span class="pre">WAVECAR</span></code>) and calculate the spectral weights:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="o">../</span>
-<span class="n">easyunfold</span> <span class="n">unfold</span> <span class="n">calculate</span> <span class="n">Si_super_deformed</span><span class="o">/</span><span class="n">WAVECAR</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>../
+easyunfold<span class="w"> </span>unfold<span class="w"> </span>calculate<span class="w"> </span>Si_super_deformed/WAVECAR
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>If you don’t want to run the VASP calculation by yourself, the calculated <code class="docutils literal notranslate"><span class="pre">WAVECAR</span></code> and <code class="docutils literal notranslate"><span class="pre">vasprun.xml</span></code>
-for this example can be downloaded with:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>wget -O Si_super_deformed/WAVECAR https://www.dropbox.com/s/3cmn2epw7d290jd/WAVECAR?dl=1
+for this example can be downloaded using <code class="docutils literal notranslate"><span class="pre">git-lfs</span></code>:</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">git-lfs</span></code> was not installed when you cloned the repository, install it via:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>git-lfs
+git<span class="w"> </span>lfs<span class="w"> </span>install
+</pre></div>
+</div>
+<p>(or <code class="docutils literal notranslate"><span class="pre">brew</span> <span class="pre">install</span> <span class="pre">git-lfs</span></code> on macOS; see <a class="reference external" href="https://docs.github.com/en/repositories/working-with-files/managing-large-files/installing-git-large-file-storage">here</a> for full instructions).</p>
+<p>Then download the files:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>lfs<span class="w"> </span>pull<span class="w"> </span>-I<span class="w"> </span>examples/Si222/Si_super_deformed/WAVECAR,examples/Si222/Si_super_deformed/vasprun.xml<span class="w"> </span>--exclude<span class="o">=</span><span class="s2">&quot;&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -513,8 +520,7 @@ for this example can be downloaded with:</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>See the <a class="reference external" href="https://smtg-Bham.github.io/easyunfold/examples/example_nabis2.html">NaBiS<sub>2</sub> example</a> for tips on
-customising and prettifying the unfolded band structure plot. Here we have also actually used the <code class="docutils literal notranslate"><span class="pre">--intensity</span> <span class="pre">3.5</span></code>
-option to increase the spectral function intensity.</p>
+customising and prettifying the unfolded band structure plot. For example, you can use the <code class="docutils literal notranslate"><span class="pre">--intensity</span> <span class="pre">3.5</span></code> option to increase the spectral function intensity.</p>
 </div>
 <p>Note the appearance of extra branches compared to the band structure of the primitive cell (below), due
 to symmetry breaking from the displaced atom.</p>
@@ -536,17 +542,17 @@ We can create a new unfolding project (<code class="docutils literal notranslate
 </pre></div>
 </div>
 <p>Swap the <code class="docutils literal notranslate"><span class="pre">KPOINTS</span></code> to the new file, non-expanded <code class="docutils literal notranslate"><span class="pre">KPOINTS</span></code> file:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cp<span class="w"> </span>KPOINTS_no-expand<span class="w"> </span>Si_super_deformed/KPOINTS
-<span class="nb">cd</span><span class="w"> </span>Si_super_deformed
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cp<span class="w"> </span>KPOINTS_no-expand<span class="w"> </span>Si_super_deformed_no_expand/KPOINTS
+<span class="nb">cd</span><span class="w"> </span>Si_super_deformed_no_expand
 mpirun<span class="w"> </span>-np<span class="w"> </span><span class="m">4</span><span class="w"> </span>vasp_std
 <span class="nb">cd</span><span class="w"> </span>../
-easyunfold<span class="w"> </span>unfold<span class="w"> </span>--data-file<span class="w">  </span>no-expand.json<span class="w"> </span>calculate<span class="w"> </span>Si_super_deformed/WAVECAR
-easyunfold<span class="w"> </span>unfold<span class="w"> </span>--data-file<span class="w">  </span>no-expand.json<span class="w">  </span>plot<span class="w"> </span>--out-file<span class="w"> </span>unfold_no-expand.png<span class="w"> </span>--intensity<span class="w"> </span><span class="m">3</span>.5
+easyunfold<span class="w"> </span>unfold<span class="w"> </span>--data-file<span class="w"> </span>no-expand.json<span class="w"> </span>calculate<span class="w"> </span>Si_super_deformed_no_expand/WAVECAR
+easyunfold<span class="w"> </span>unfold<span class="w"> </span>--data-file<span class="w"> </span>no-expand.json<span class="w"> </span>plot<span class="w"> </span>--out-file<span class="w"> </span>unfold_no-expand.png
 </pre></div>
 </div>
 <p>output:</p>
 <figure class="align-default" id="id3">
-<a class="reference internal image-reference" href="../_images/unfold_no-expand.png"><img alt="Spectral function" src="../_images/unfold_no-expand.png" style="width: 400px;" /></a>
+<a class="reference internal image-reference" href="../examples/Si222/unfold_no-expand.png"><img alt="Spectral function" src="../examples/Si222/unfold_no-expand.png" style="width: 400px;" /></a>
 <figcaption>
 <p><span class="caption-text">Spectral function of the unfolded bands without additional kpoints due to reduced symmetry.</span><a class="headerlink" href="#id3" title="Permalink to this image">#</a></p>
 </figcaption>
