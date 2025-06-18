@@ -780,7 +780,7 @@ class UnfoldPlotter:
 
             if atoms is not None:  # add figure legend with atoms and colors
                 legend_elements = [Patch(facecolor=colours[i], label=atom, alpha=0.7) for i, atom in enumerate(atoms)]
-                fig.axes[0].legend(handles=legend_elements, bbox_to_anchor=(1.025, 1), fontsize=9)
+                fig.axes[nspin - 1].legend(handles=legend_elements, bbox_to_anchor=(1.025, 1), fontsize=9)
                 fig.subplots_adjust(right=0.78)  # ensure legend is not cut off
 
         return fig
