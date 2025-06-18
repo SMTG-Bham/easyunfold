@@ -778,10 +778,11 @@ class UnfoldPlotter:
                 except ImportError:
                     warnings.warn('zero_line option requires sumo to be installed!')
 
-            if atoms is not None:  # add figure legend with atoms and colors
+            if atoms is not None and dos_plotter is None:  # add figure legend with atoms and colors
                 legend_elements = [Patch(facecolor=colours[i], label=atom, alpha=0.7) for i, atom in enumerate(atoms)]
                 fig.axes[nspin - 1].legend(handles=legend_elements, bbox_to_anchor=(1.025, 1), fontsize=9)
-                fig.subplots_adjust(right=0.78)  # ensure legend is not cut off
+            if atoms is not None or dos_plotter is not None:
+                fig.subplots_adjust(right=0.78)  # compensate for the legend
 
         return fig
 
