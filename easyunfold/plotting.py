@@ -359,8 +359,7 @@ class UnfoldPlotter:
             extent[2:] -= ebin * 0.5
             ax_.imshow(sf[ispin], extent=extent, aspect='auto', origin='upper')
             ax_.set_ylim(ylim)
-            ax_.set_xlim(0, sf.shape[2])
-            ax_.set_ylabel('Energy (eV)', labelpad=5)
+            ax_.set_xlim(0, sf.shape[2] - 1)
             ax_.set_title(title)
             self._add_kpoint_labels(ax_, x_is_kidx=True)
 
@@ -538,7 +537,7 @@ class UnfoldPlotter:
                 alpha=alpha,
                 lw=0.0,
             )
-            ax_.set_xlim(0, kdist.max())
+            ax_.set_xlim(0, kdist.max() - 1)
             ax_.set_ylim(ylim)
             if title:
                 ax_.set_title(title)
