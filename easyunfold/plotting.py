@@ -255,12 +255,13 @@ class UnfoldPlotter:
 
             ax_.set_xlim(xmin, xmax)
             ax_.set_ylim(*ylim)
-            ax_.set_ylabel('Energy (eV)', labelpad=5)
             if title:
                 ax_.set_title(title)
 
             # Label the kpoints
             self._add_kpoint_labels(ax_)
+
+        axes[0].set_ylabel('Energy (eV)', labelpad=5)
 
         if dos_plotter:
             ax = fig.axes[1]
@@ -362,6 +363,8 @@ class UnfoldPlotter:
             ax_.set_ylabel('Energy (eV)', labelpad=5)
             ax_.set_title(title)
             self._add_kpoint_labels(ax_, x_is_kidx=True)
+
+        axes[0].set_ylabel('Energy (eV)', labelpad=5)
 
         fig.tight_layout(pad=0.2)
         if save:
@@ -537,10 +540,11 @@ class UnfoldPlotter:
             )
             ax_.set_xlim(0, kdist.max())
             ax_.set_ylim(ylim)
-            ax_.set_ylabel('Energy [eV]', labelpad=5)
             if title:
                 ax_.set_title(title)
             self._add_kpoint_labels(ax_)
+
+        axes[0].set_ylabel('Energy [eV]', labelpad=5)
 
         fig.tight_layout(pad=0.2)
 
