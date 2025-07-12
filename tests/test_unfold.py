@@ -150,7 +150,13 @@ def test_unfold(si_project_dir, tag, nspin, ncl, nbands_expected, datapath):
     # shutil.copyfile(si_project_dir / 'KPOINTS_sc',
     #                 datapath('Si-project') / f'{folder_name}/KPOINTS_easyunfold')
     kpoints_sc_ref = read_kpoints(si_project_dir / f'{folder_name}/KPOINTS_easyunfold')[0]
-    np.testing.assert_allclose(kpoints_sc, kpoints_sc_ref)
+    for kpt in kpoints_sc_ref:
+        found = False
+        for ref in kpoints_sc:
+            if np.allclose(kpt, ref, atol=1e-9):
+                found = True
+                break
+        assert found, f'Kpoint {kpt} not found in the unfolded kpoints'
 
     # Test unfold
     sws = unfolder.get_spectral_weights(si_project_dir / f'{folder_name}/WAVECAR', ncl=ncl)
@@ -194,7 +200,15 @@ def test_unfold_castep(si_project_dir, tag, nspin, ncl, nbands_expected, datapat
     kpoints_sc_ref = read_kpoints(si_project_dir / f'{folder_name}/easyunfold_sc_kpoints.cell', code='castep')[0]
     # shutil.copyfile(si_project_dir / 'easyunfold_sc_kpoints.cell',  # to update
     #                 datapath('Si-project') / f'{folder_name}/easyunfold_sc_kpoints.cell')
-    np.testing.assert_allclose(kpoints_sc, kpoints_sc_ref)
+    for kpt in kpoints_sc_ref:
+        found = False
+        for ref in kpoints_sc:
+            ref = np.array(ref)
+            # Note - allow time reversal symmetry when checking the equivalence of kpoints
+            if np.allclose(kpt, ref, atol=1e-9) or np.allclose(kpt, -ref, atol=1e-9):
+                found = True
+                break
+        assert found, f'Kpoint {kpt} not found in the unfolded kpoints'
 
     # Test unfold
     sws = unfolder.get_spectral_weights(si_project_dir / f'{folder_name}/Si_211_unfold/easyunfold_sc_kpoints.orbitals', ncl=ncl)

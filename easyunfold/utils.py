@@ -8,6 +8,7 @@ import numpy as np
 from castepinput import CellInput, Block
 
 RE_COMMENT = re.compile(r'[!#]')
+ATOL = 1e-9
 
 
 def write_kpoints(kpoints: Union[np.ndarray, list], outpath, *args, code='vasp', **kwargs):
@@ -230,7 +231,7 @@ def find_unique(seq: np.ndarray, func=None):
         # Use equality condition
         def _func(x, y):
             """Check elements of x and y are all the same"""
-            return np.all(x == y)
+            return np.allclose(x, y, atol=ATOL)
 
         func = _func
 
@@ -261,17 +262,18 @@ def reduce_kpoints(kpoints: Union[list, np.ndarray], time_reversal=True, roundin
     kpoints = np.asarray(kpoints)
     kpoints_rounded = np.round(wrap_kpoints(kpoints), rounding_digits)
 
-    if not time_reversal:
-        # No time-reversal - use np.unique for speed
-        _, unique_id, inv_mapping = np.unique(kpoints_rounded, axis=0, return_inverse=True, return_index=True)
-    else:
+    def equality_close(x, y):
+        """Check if x == y or x == -y"""
+        return np.allclose(x, y, atol=ATOL)
 
-        def equality_time_reversal(x, y):
-            """Check if x == y or x == -y"""
-            return np.all(x == y) | np.all(x == -y)
+    def equality_time_reversal(x, y):
+        """Check if x == y or x == -y"""
+        return np.allclose(x, y, atol=ATOL) | np.allclose(x, -y, atol=ATOL)
 
+    if time_reversal:
         _, unique_id, inv_mapping = find_unique(kpoints_rounded, equality_time_reversal)
-
+    else:
+        _, unique_id, inv_mapping = find_unique(kpoints_rounded, equality_close)
     unique_k = kpoints[unique_id]
     return unique_k, unique_id, inv_mapping
 
