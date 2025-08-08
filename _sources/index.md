@@ -63,17 +63,21 @@ If you use `easyunfold` in your work, please cite:
 
 We'll add papers that use `easyunfold` to this list as they come out!
 
+- S. Husremović et al. **_Local interface effects modulate global charge order
+and optical properties of 1T-TaS<sub>2</sub>/1H-WSe<sub>2</sub> heterostructures_** [_arXiv_](https://arxiv.org/abs/2508.01512) 2025
+- L. Richarz et al. **_Ferroelectric domain walls for environmental sensors_** [_ACS Applied Materials & Interfaces_](http://dx.doi.org/10.1021/acsami.5c04875) 2025
+- J. M. Domínguez-Vázquez et al. **_Thermoelectric performance boost by chemical order in epitaxial L2<sub>1</sub> (100) and (110) oriented undoped Fe<sub>2</sub>VAl thin films: an experimental and theoretical study_** [_Journal of Materials Chemistry A_](https://doi.org/10.1039/D5TA02619A) 2025
 - J. Tu et al. **_Giant switchable ferroelectric photovoltage in double-perovskite epitaxial films through chemical negative strain_** [_Science Advances_](https://doi.org/10.1126/sciadv.ads4925) 2025
 - L. F. Leon-Pinzon et al. **_Observation of Pseudogap in Cr<sub>1−x</sub>Y<sub>x</sub>N magnetic alloy and its impact on the Seebeck coefficient by ab-initio calculations_** [_arXiv_](http://dx.doi.org/10.48550/arXiv.2506.00687) 2025
 - C. Zhang & J. Recatala-Gomez & Z. Aabdin & Y. Jiang et al. **_Direct Joule-Heated Non-Equilibrium Synthesis Enables High Performing Thermoelectrics_** [_arXiv_](https://arxiv.org/abs/2506.04447) 2025
 - W. Feng et al. **_Unraveling the role of oxygen vacancies in the electronic and optical properties of κ-Ga2O3_** [_ResearchSquare_](https://doi.org/10.21203/rs.3.rs-6624989/v1) 2025
 - J. J. Plata et al. **_High-Entropy Skutterudites as Thermoelectrics: Synthesizability and Band Convergence via the Cocktail Effect_** [_ChemRxiv_](https://chemrxiv.org/engage/chemrxiv/article-details/67ff672750018ac7c59b7b11) 2025
 - P. B. Colominas et al. **_Giant Thermally Induced Band-Gap Renormalization in Anharmonic Silver Chalcohalide Antiperovskites_** [_Journal of Materials Chemistry C_](https://doi.org/10.1039/D5TC00863H) 2025
+- L. Zhang et al. **_Mg doping point defects in Al<sub>0.5</sub>Ga<sub>0.5</sub>N by density functional theory_** [_Vacuum_](https://doi.org/10.1016/j.vacuum.2025.114610) 2025
 - L. Zhang et al. **_Impurity point defects in Mg doping Al<sub>0.5</sub>Ga<sub>0.5</sub>N: A first principles study_** [_Computational Materials Science_](https://doi.org/10.1016/j.commatsci.2025.113925) 2025
-- H. Maleki-Ghaleh et al. **_Visible Light-Sensitive Sustainable Quantum Dot Crystals of Co/Mg Doped Natural Hydroxyapatite Possessing Antimicrobial Activity and Biocompatibility_** [_Small_](https://doi.org/10.1002/smll.202405708) 2024
-- L. Richarz et al. **_Ferroelectric domain walls for environmental sensors_** [_arXiv_](https://arxiv.org/abs/2412.03691) 2024
-- K. Eggestad, B. A. D. Williamson, D. Meier and S. M. Selbach **_Mobile Intrinsic Point Defects for Conductive Neutral Domain Walls in LiNbO<sub>3</sub>_** [_Journal of Materials Chemistry C_](https://doi.org/10.1039/D4TC02856B) 2024
 - L. Zhang et al. **_Study of native point defects in Al<sub>0.5</sub>Ga<sub>0.5</sub>N by first principles calculations_** [_Computational Materials Science_](https://doi.org/10.1016/j.commatsci.2024.113312) 2024
+- H. Maleki-Ghaleh et al. **_Visible Light-Sensitive Sustainable Quantum Dot Crystals of Co/Mg Doped Natural Hydroxyapatite Possessing Antimicrobial Activity and Biocompatibility_** [_Small_](https://doi.org/10.1002/smll.202405708) 2024
+- K. Eggestad, B. A. D. Williamson, D. Meier and S. M. Selbach **_Mobile Intrinsic Point Defects for Conductive Neutral Domain Walls in LiNbO<sub>3</sub>_** [_Journal of Materials Chemistry C_](https://doi.org/10.1039/D4TC02856B) 2024
 - Dargahi et al. **_Synthesis and characterization of zinc-doped hematite nanoparticles for photocatalytic applications and their electronic structure studies by density functional theory_** [_Optical Materials_](https://doi.org/10.1016/j.optmat.2024.116234) 2024
 - S. M. Liga & S. R. Kavanagh, A. Walsh, D. O. Scanlon and G. Konstantatos **_Mixed-Cation Vacancy-Ordered Perovskites (Cs<sub>2</sub>Ti<sub>1–x</sub>Sn<sub>x</sub>X<sub>6</sub>; X = I or Br): Low-Temperature Miscibility, Additivity, and Tunable Stability_** [_Journal of Physical Chemistry C_](https://doi.org/10.1021/acs.jpcc.3c05204) 2023
 - Y. T. Huang & S. R. Kavanagh et al. **_Strong absorption and ultrafast localisation in NaBiS<sub>2</sub> nanocrystals with slow charge-carrier recombination_** [_Nature Communications_](https://www.nature.com/articles/s41467-022-32669-3) 2022
