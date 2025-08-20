@@ -269,11 +269,8 @@ def reduce_kpoints(kpoints: Union[list, np.ndarray], time_reversal=True, roundin
     def equality_time_reversal(x, y):
         """Check if x == y or x == -y"""
         return np.allclose(x, y, atol=ATOL) | np.allclose(x, -y, atol=ATOL)
-
-    if time_reversal:
-        _, unique_id, inv_mapping = find_unique(kpoints_rounded, equality_time_reversal)
-    else:
-        _, unique_id, inv_mapping = find_unique(kpoints_rounded, equality_close)
+        
+    _, unique_id, inv_mapping = find_unique(kpoints_rounded, equality_time_reversal if time_reversal else equality_close)
     unique_k = kpoints[unique_id]
     return unique_k, unique_id, inv_mapping
 
