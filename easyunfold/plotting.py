@@ -255,12 +255,19 @@ class UnfoldPlotter:
 
             ax_.set_xlim(xmin, xmax)
             ax_.set_ylim(*ylim)
-            ax_.set_ylabel('Energy (eV)', labelpad=5)
-            if title:
-                ax_.set_title(title)
+            spin_title = f'Spin {"Up" if ispin == 0 else "Down"}'
+            if title is None and nspin > 1:
+                plot_title = spin_title
+            elif nspin > 1:
+                plot_title = f'{title} ({spin_title})'
+            else:
+                plot_title = title
+            ax_.set_title(plot_title)
 
             # Label the kpoints
             self._add_kpoint_labels(ax_)
+
+        axes[0].set_ylabel('Energy (eV)', labelpad=5)
 
         if dos_plotter:
             ax = fig.axes[1]
@@ -358,10 +365,18 @@ class UnfoldPlotter:
             extent[2:] -= ebin * 0.5
             ax_.imshow(sf[ispin], extent=extent, aspect='auto', origin='upper')
             ax_.set_ylim(ylim)
-            ax_.set_xlim(0, sf.shape[2])
-            ax_.set_ylabel('Energy (eV)', labelpad=5)
-            ax_.set_title(title)
+            ax_.set_xlim(0, sf.shape[2] - 1)
+            spin_title = f'Spin {"Up" if ispin == 0 else "Down"}'
+            if title is None and nspin > 1:
+                plot_title = spin_title
+            elif nspin > 1:
+                plot_title = f'{title} ({spin_title})'
+            else:
+                plot_title = title
+            ax_.set_title(plot_title)
             self._add_kpoint_labels(ax_, x_is_kidx=True)
+
+        axes[0].set_ylabel('Energy (eV)', labelpad=5)
 
         fig.tight_layout(pad=0.2)
         if save:
@@ -535,12 +550,19 @@ class UnfoldPlotter:
                 alpha=alpha,
                 lw=0.0,
             )
-            ax_.set_xlim(0, kdist.max())
+            ax_.set_xlim(0, kdist.max() - 1)
             ax_.set_ylim(ylim)
-            ax_.set_ylabel('Energy [eV]', labelpad=5)
-            if title:
-                ax_.set_title(title)
+            spin_title = f'Spin {"Up" if ispin == 0 else "Down"}'
+            if title is None and nspin > 1:
+                plot_title = spin_title
+            elif nspin > 1:
+                plot_title = f'{title} ({spin_title})'
+            else:
+                plot_title = title
+            ax_.set_title(plot_title)
             self._add_kpoint_labels(ax_)
+
+        axes[0].set_ylabel('Energy [eV]', labelpad=5)
 
         fig.tight_layout(pad=0.2)
 
@@ -775,10 +797,11 @@ class UnfoldPlotter:
                 except ImportError:
                     warnings.warn('zero_line option requires sumo to be installed!')
 
-            if atoms is not None:  # add figure legend with atoms and colors
+            if atoms is not None and dos_plotter is None:  # add figure legend with atoms and colors
                 legend_elements = [Patch(facecolor=colours[i], label=atom, alpha=0.7) for i, atom in enumerate(atoms)]
-                fig.axes[0].legend(handles=legend_elements, bbox_to_anchor=(1.025, 1), fontsize=9)
-                fig.subplots_adjust(right=0.78)  # ensure legend is not cut off
+                fig.axes[nspin - 1].legend(handles=legend_elements, bbox_to_anchor=(1.025, 1), fontsize=9)
+            if atoms is not None or dos_plotter is not None:
+                fig.subplots_adjust(right=0.78)  # compensate for the legend
 
         return fig
 
