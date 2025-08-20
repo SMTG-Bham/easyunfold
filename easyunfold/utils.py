@@ -8,7 +8,7 @@ import numpy as np
 from castepinput import CellInput, Block
 
 RE_COMMENT = re.compile(r'[!#]')
-ATOL = 1e-9
+ATOL = 1e-8
 
 
 def write_kpoints(kpoints: Union[np.ndarray, list], outpath, *args, code='vasp', **kwargs):
