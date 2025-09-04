@@ -47,8 +47,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'apidocs/easyunfold/easyunfold.utils';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="easyunfold.plotting" href="easyunfold.plotting.html" />
-    <link rel="prev" title="easyunfold.cli" href="easyunfold.cli.html" />
+    <link rel="next" title="easyunfold.wavefun" href="easyunfold.wavefun.html" />
+    <link rel="prev" title="easyunfold" href="easyunfold.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -208,15 +208,15 @@
 <li class="toctree-l1"><a class="reference internal" href="../../cli.html">CLI Reference</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Reference</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="easyunfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold</span></code></a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="easyunfold.vasp_constant.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.vasp_constant</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="easyunfold.wavefun.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavefun</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="easyunfold.wavecar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavecar</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="easyunfold.procar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.procar</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="easyunfold.cli.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.cli</span></code></a></li>
 <li class="toctree-l3 current active"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.utils</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="easyunfold.plotting.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.plotting</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="easyunfold.effective_mass.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.effective_mass</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="easyunfold.wavefun.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavefun</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="easyunfold.unfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.unfold</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="easyunfold.effective_mass.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.effective_mass</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="easyunfold.vasp_constant.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.vasp_constant</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="easyunfold.plotting.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.plotting</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="easyunfold.wavecar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavecar</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="easyunfold.cli.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.cli</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="easyunfold.procar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.procar</span></code></a></li>
 </ul>
 </details></li>
 </ul>
@@ -389,6 +389,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data">Data</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api">API</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.utils.RE_COMMENT"><code class="docutils literal notranslate"><span class="pre">RE_COMMENT</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.utils.ATOL"><code class="docutils literal notranslate"><span class="pre">ATOL</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.utils.write_kpoints"><code class="docutils literal notranslate"><span class="pre">write_kpoints()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.utils.write_kpoints_castep"><code class="docutils literal notranslate"><span class="pre">write_kpoints_castep()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.utils.write_kpoints_vasp"><code class="docutils literal notranslate"><span class="pre">write_kpoints_vasp()</span></code></a></li>
@@ -471,6 +472,9 @@ This function is not optimised for high performance and has a O(N^2) scaling.</p
 <tr class="row-odd"><td><p><a class="reference internal" href="#easyunfold.utils.RE_COMMENT" title="easyunfold.utils.RE_COMMENT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RE_COMMENT</span></code></a></p></td>
 <td></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#easyunfold.utils.ATOL" title="easyunfold.utils.ATOL"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ATOL</span></code></a></p></td>
+<td></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -481,6 +485,12 @@ This function is not optimised for high performance and has a O(N^2) scaling.</p
 <dt class="sig sig-object py" id="easyunfold.utils.RE_COMMENT">
 <span class="sig-prename descclassname"><span class="pre">easyunfold.utils.</span></span><span class="sig-name descname"><span class="pre">RE_COMMENT</span></span><a class="headerlink" href="#easyunfold.utils.RE_COMMENT" title="Permalink to this definition">#</a></dt>
 <dd><p>None</p>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="easyunfold.utils.ATOL">
+<span class="sig-prename descclassname"><span class="pre">easyunfold.utils.</span></span><span class="sig-name descname"><span class="pre">ATOL</span></span><a class="headerlink" href="#easyunfold.utils.ATOL" title="Permalink to this definition">#</a></dt>
+<dd><p>1e-08</p>
 </dd></dl>
 
 <dl class="py function">
@@ -604,20 +614,20 @@ This function is not optimised for high performance and has a O(N^2) scaling.</p
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="easyunfold.cli.html"
+       href="easyunfold.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.cli</span></code></p>
+        <p class="prev-next-title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold</span></code></p>
       </div>
     </a>
     <a class="right-next"
-       href="easyunfold.plotting.html"
+       href="easyunfold.wavefun.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.plotting</span></code></p>
+        <p class="prev-next-title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavefun</span></code></p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -642,6 +652,7 @@ This function is not optimised for high performance and has a O(N^2) scaling.</p
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data">Data</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api">API</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.utils.RE_COMMENT"><code class="docutils literal notranslate"><span class="pre">RE_COMMENT</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.utils.ATOL"><code class="docutils literal notranslate"><span class="pre">ATOL</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.utils.write_kpoints"><code class="docutils literal notranslate"><span class="pre">write_kpoints()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.utils.write_kpoints_castep"><code class="docutils literal notranslate"><span class="pre">write_kpoints_castep()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#easyunfold.utils.write_kpoints_vasp"><code class="docutils literal notranslate"><span class="pre">write_kpoints_vasp()</span></code></a></li>

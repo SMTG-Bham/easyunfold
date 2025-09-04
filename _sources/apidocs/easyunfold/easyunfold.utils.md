@@ -71,6 +71,10 @@
   - ```{autodoc2-docstring} easyunfold.utils.RE_COMMENT
     :summary:
     ```
+* - {py:obj}`ATOL <easyunfold.utils.ATOL>`
+  - ```{autodoc2-docstring} easyunfold.utils.ATOL
+    :summary:
+    ```
 ````
 
 ### API
@@ -81,6 +85,16 @@
    None
 
 ```{autodoc2-docstring} easyunfold.utils.RE_COMMENT
+```
+
+````
+
+````{py:data} ATOL
+:canonical: easyunfold.utils.ATOL
+:value: >
+   1e-08
+
+```{autodoc2-docstring} easyunfold.utils.ATOL
 ```
 
 ````
