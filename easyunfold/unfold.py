@@ -855,7 +855,7 @@ class Unfold:
         gvecs = np.dot(Gvecs, np.linalg.inv(self.M).T)
         # Deviation from the perfect sites
         gd = gvecs - np.round(gvecs)
-        match = np.alltrue(np.abs(gd) < epsilon, axis=1)
+        match = np.all(np.abs(gd) < epsilon, axis=1)
 
         return Gvecs[match], Gvecs
 
@@ -866,10 +866,10 @@ class Unfold:
         kpts_wrapped = wrap_kpoints(self.wfc.kpoints)
         K0_wrapped = wrap_kpoints(K0)
         for ii in range(self.wfc.nkpts):
-            if np.alltrue(np.abs(kpts_wrapped[ii] - K0_wrapped) < 1E-5):
+            if np.all(np.abs(kpts_wrapped[ii] - K0_wrapped) < 1E-5):
                 return ii + 1, False
             # Check for kpoint related with time-reversal symmetry
-            if self.time_reversal and np.alltrue(np.abs(kpts_wrapped[ii] + K0_wrapped) < 1E-5):
+            if self.time_reversal and np.all(np.abs(kpts_wrapped[ii] + K0_wrapped) < 1E-5):
                 # This actually returns the index of -K0
                 return ii + 1, True
         raise ValueError('Cannot find the corresponding K-points in WAVECAR!')
