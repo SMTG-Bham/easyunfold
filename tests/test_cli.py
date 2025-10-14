@@ -1,6 +1,7 @@
 """
 Tests for the CLI system
 """
+import contextlib
 import os
 from pathlib import Path
 import pytest
@@ -453,11 +454,13 @@ def test_help(nabis2_project_dir):
 
 def _check_dos_atom_orbital_plots(output):
     print(output.stdout)
-    print(output.stderr)
+    with contextlib.suppress(Exception):
+        print(output.stderr)
     print(output)
     assert output.exit_code == 0
     assert Path('unfold.png').is_file()
     Path('unfold.png').unlink()
+
 
 def test_dos_atom_orbital_plots(nabis2_project_dir):
     """Test various dos/atom/orbital etc plot options with NaBiS2"""
