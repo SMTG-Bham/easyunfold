@@ -528,7 +528,9 @@ def process_dos(dos, dos_elements, dos_orbitals, dos_atoms, gaussian, total_only
                     if orbital not in draft_dos_elements[atom] and orbital != 'all':
                         draft_dos_elements[atom] += (orbital,)
 
-            if orbitals and any(i in orbital for my_tuple in draft_dos_elements.values() for orbital in my_tuple
+            if orbitals and any(i in orbital
+                                for my_tuple in draft_dos_elements.values()
+                                for orbital in my_tuple
                                 for i in ['x', 'y', 'z']) and dos_orbitals is None:
                 dos_orbitals = {}
                 for atom, orbital_tuple in draft_dos_elements.items():

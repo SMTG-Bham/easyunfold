@@ -4,7 +4,7 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "easyunfold"
-authors = [{name = "Bonan Zhu", email = "zhubonan@outlook.com"}, {name = "Seán Kavanagh", email = "skavanagh@seas.harvard.edu"}]
+authors = [{name = "Bonan Zhu", email = "zhubonan@outlook.com"}, {name = "Seán Kavanagh", email = "sk2045@cam.ac.uk"}]
 readme = "README.md"
 license = {file = "LICENSE"}
 classifiers = [
@@ -14,8 +14,8 @@ classifiers = [
 dynamic = ["version", "description"]
 requires-python = ">=3.7"
 
-dependencies = ["scipy~=1.0", "numpy~=1.0", "matplotlib~=3.0", "ase~=3.14", "spglib~=2.0", "click",
-                "monty", "tqdm~=4.0", "tabulate~=0.8", "colormath~=3.0", "castepxbin~=0.3.0", "castepinput~=0.1"]
+dependencies = ["scipy>=1.0", "numpy>=1.0", "matplotlib>=3.0", "ase>=3.14", "spglib>=2.0", "click",
+                "monty", "tqdm>=4.0", "tabulate>=0.8", "colormath>=3.0", "castepxbin>=0.3.0", "castepinput>=0.1"]
 
 [project.urls]
 "Homepage" = "https://github.com/SMTG-Bham/easyunfold"

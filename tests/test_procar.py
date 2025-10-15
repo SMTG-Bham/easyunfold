@@ -67,8 +67,7 @@ def test_procar():
     # atoms, happens for some bands (3 in this case) at high-symmetry kpoints due to orthogonal projections on
     # spherical harmonics)
     num_zero = np.sum([
-        1 for x in range(procar.proj_data.shape[0]) for y in range(procar.proj_data.shape[1])
-        for z in range(procar.proj_data.shape[2])
+        1 for x in range(procar.proj_data.shape[0]) for y in range(procar.proj_data.shape[1]) for z in range(procar.proj_data.shape[2])
         if np.isclose(procar.proj_data[x, y, z, :, :].sum(), 0)
     ])
     assert np.isclose(
