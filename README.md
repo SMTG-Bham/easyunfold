@@ -113,8 +113,8 @@ If you use `easyunfold` in your work, please cite:
 We'll add papers that use `easyunfold` to this list as they come out!
 
 - P. Russell et al. **_Computational prediction of Y-doped Cd<sub>2</sub>Sb<sub>2</sub>O<sub>7</sub> as a competitive Sb-based n-type Transparent Conducting Oxide_** [_ChemRxiv_](https://doi.org/10.26434/chemrxiv-2025-c1r3l) 2025
-- S. Husremović et al. **_Local interface effects modulate global charge order
-and optical properties of 1T-TaS<sub>2</sub>/1H-WSe<sub>2</sub> heterostructures_** [_arXiv_](https://arxiv.org/abs/2508.01512) 2025
+- R. E. Philip et al. **_Disorder mediated fully compensated ferrimagnetic spin-gapless semiconducting behaviour in Cr<sub>3</sub>Al Heusler alloy_** [_arXiv_](https://arxiv.org/abs/2512.10885) 2025
+- S. Husremović et al. **_Local interface effects modulate global charge order and optical properties of 1T-TaS<sub>2</sub>/1H-WSe<sub>2</sub> heterostructures_** [_arXiv_](https://arxiv.org/abs/2508.01512) 2025
 - L. Richarz et al. **_Ferroelectric domain walls for environmental sensors_** [_ACS Applied Materials & Interfaces_](http://dx.doi.org/10.1021/acsami.5c04875) 2025
 - J. M. Domínguez-Vázquez et al. **_Thermoelectric performance boost by chemical order in epitaxial L2<sub>1</sub> (100) and (110) oriented undoped Fe<sub>2</sub>VAl thin films: an experimental and theoretical study_** [_Journal of Materials Chemistry A_](https://doi.org/10.1039/D5TA02619A) 2025
 - J. Tu et al. **_Giant switchable ferroelectric photovoltage in double-perovskite epitaxial films through chemical negative strain_** [_Science Advances_](https://doi.org/10.1126/sciadv.ads4925) 2025
@@ -122,6 +122,7 @@ and optical properties of 1T-TaS<sub>2</sub>/1H-WSe<sub>2</sub> heterostructures
 - C. Zhang & J. Recatala-Gomez & Z. Aabdin & Y. Jiang et al. **_Direct Joule-Heated Non-Equilibrium Synthesis Enables High Performing Thermoelectrics_** [_arXiv_](https://arxiv.org/abs/2506.04447) 2025
 - W. Feng et al. **_Unraveling the role of oxygen vacancies in the electronic and optical properties of κ-Ga2O3_** [_ResearchSquare_](https://doi.org/10.21203/rs.3.rs-6624989/v1) 2025
 - J. J. Plata et al. **_High-Entropy Skutterudites as Thermoelectrics: Synthesizability and Band Convergence via the Cocktail Effect_** [_ChemRxiv_](https://chemrxiv.org/engage/chemrxiv/article-details/67ff672750018ac7c59b7b11) 2025
+- Y. Gong Wang et al. **_Influence of Vanadium and Chromium Doping on the Thermoelectric Performance of AgSbTe<sub>2</sub>_** [_Physica Scripta_](https://doi.org/10.1088/1402-4896/ae26ec) 2025
 - P. B. Colominas et al. **_Giant Thermally Induced Band-Gap Renormalization in Anharmonic Silver Chalcohalide Antiperovskites_** [_Journal of Materials Chemistry C_](https://doi.org/10.1039/D5TC00863H) 2025
 - L. Zhang et al. **_Mg doping point defects in Al<sub>0.5</sub>Ga<sub>0.5</sub>N by density functional theory_** [_Vacuum_](https://doi.org/10.1016/j.vacuum.2025.114610) 2025
 - L. Zhang et al. **_Impurity point defects in Mg doping Al<sub>0.5</sub>Ga<sub>0.5</sub>N: A first principles study_** [_Computational Materials Science_](https://doi.org/10.1016/j.commatsci.2025.113925) 2025
