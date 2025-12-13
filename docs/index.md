@@ -64,6 +64,8 @@ If you use `easyunfold` in your work, please cite:
 We'll add papers that use `easyunfold` to this list as they come out!
 
 - P. Russell et al. **_Computational prediction of Y-doped Cd<sub>2</sub>Sb<sub>2</sub>O<sub>7</sub> as a competitive Sb-based n-type Transparent Conducting Oxide_** [_ChemRxiv_](https://doi.org/10.26434/chemrxiv-2025-c1r3l) 2025
+- Y. Yin et al. **_Halogen Chains with One-Dimensional Semi-Metallic Electronic Structure and Peierls Physics in Polymorphs of Na<sub>4</sub>X<sub>5</sub> (X = I, Br, Cl) Compounds_** [_arXiv_](https://arxiv.org/abs/2512.08349) 2025
+- V. Posligua et al. **_Deep Learning Framework for Accurate Prediction and  High-Throughput Search of the Thermoelectric Figure  of Merit in Skutterudites_** [_ChemRxiv_](https://doi.org/10.26434/chemrxiv-2025-77vg1) 2025
 - R. E. Philip et al. **_Disorder mediated fully compensated ferrimagnetic spin-gapless semiconducting behaviour in Cr<sub>3</sub>Al Heusler alloy_** [_arXiv_](https://arxiv.org/abs/2512.10885) 2025
 - S. Husremović et al. **_Local interface effects modulate global charge order and optical properties of 1T-TaS<sub>2</sub>/1H-WSe<sub>2</sub> heterostructures_** [_arXiv_](https://arxiv.org/abs/2508.01512) 2025
 - L. Richarz et al. **_Ferroelectric domain walls for environmental sensors_** [_ACS Applied Materials & Interfaces_](http://dx.doi.org/10.1021/acsami.5c04875) 2025
