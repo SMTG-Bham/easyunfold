@@ -64,6 +64,7 @@ If you use `easyunfold` in your work, please cite:
 We'll add papers that use `easyunfold` to this list as they come out!
 
 - P. Russell et al. **_Computational prediction of Y-doped Cd<sub>2</sub>Sb<sub>2</sub>O<sub>7</sub> as a competitive Sb-based n-type Transparent Conducting Oxide_** [_ChemRxiv_](https://doi.org/10.26434/chemrxiv-2025-c1r3l) 2025
+- P. Kumar et al. **_Theoretical insights into the h-NbN monolayer for selective and moisture-resistant gas sensing: an ab initio study_** [_Electronic Structure_](https://doi.org/10.1088/2516-1075/adf021) 2025
 - M. Sigl et al. **_Solution-based synthesis of nanocrystalline KBiS<sub>2</sub> films at low temperatures and study of photoinduced charge generation_** [_Journal of Materials Chemistry C_](https://doi.org/10.1039/D5TC02554K) 2025
 - Y. Yin et al. **_Halogen Chains with One-Dimensional Semi-Metallic Electronic Structure and Peierls Physics in Polymorphs of Na<sub>4</sub>X<sub>5</sub> (X = I, Br, Cl) Compounds_** [_arXiv_](https://arxiv.org/abs/2512.08349) 2025
 - V. Posligua et al. **_Deep Learning Framework for Accurate Prediction and  High-Throughput Search of the Thermoelectric Figure  of Merit in Skutterudites_** [_ChemRxiv_](https://doi.org/10.26434/chemrxiv-2025-77vg1) 2025
