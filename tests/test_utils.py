@@ -13,8 +13,8 @@ def test_find_unique():
 
     unique, idx, idx_inv = utils.find_unique(data, lambda x, y: np.all(x == y))
 
-    assert np.all(np.in1d(np.unique(data, axis=0), unique))
-    assert np.all(np.in1d(unique, np.unique(data, axis=0)))
+    assert np.all(np.isin(np.unique(data, axis=0), unique))
+    assert np.all(np.isin(unique, np.unique(data, axis=0)))
     assert len(np.unique(data, axis=0)) == len(unique)
     assert np.all(data == unique[idx_inv])
     assert np.all(unique == data[idx])
