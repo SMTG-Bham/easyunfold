@@ -63,6 +63,8 @@ If you use `easyunfold` in your work, please cite:
 
 We'll add papers that use `easyunfold` to this list as they come out!
 
+- M. Wróblewska et al. **_Continuous Alloying between Rocksalt and Half-Heusler Structures Drives Metal–Semiconductor Transition in ErNi<sub><i>x</i></sub>Sb_** [_Chemistry of Materials_](https://doi.org/10.1021/acs.chemmater.5c02710) 2026
+- K. V. Sopiha et al. **_Functional off-stoichiometry in Cu(In,Ga)Se<sub>2</sub>. Part II: electronic properties in a wide range of compositions_** [_Journal of Materials Chemistry A_](https://doi.org/10.1039/D5TA07044A) 2026
 - Y.-S. Liao et al. **_Moiré-Induced Electronic Reconstruction in van der Waals Heterobilayer PtSe<sub>2</sub>/PtTe<sub>2</sub>_** [_ACS Nano_](https://doi.org/10.1021/acsnano.5c19273) 2026
 - P. Russell et al. **_Computational prediction of Y-doped Cd<sub>2</sub>Sb<sub>2</sub>O<sub>7</sub> as a competitive Sb-based n-type Transparent Conducting Oxide_** [_ChemRxiv_](https://doi.org/10.26434/chemrxiv-2025-c1r3l) 2025
 - P. Kumar et al. **_Theoretical insights into the h-NbN monolayer for selective and moisture-resistant gas sensing: an ab initio study_** [_Electronic Structure_](https://doi.org/10.1088/2516-1075/adf021) 2025
