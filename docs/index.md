@@ -63,6 +63,7 @@ If you use `easyunfold` in your work, please cite:
 
 We'll add papers that use `easyunfold` to this list as they come out!
 
+- A. Pike et al. **_Alloying to tune the bandgap of the <i>AM</i><sub>2</sub><i>Pn</i><sub>2</sub> Zintl compounds_** [_Journal of Physics: Energy_](https://doi.org/10.1088/2515-7655/ae3d64) 2026
 - M. Wróblewska et al. **_Continuous Alloying between Rocksalt and Half-Heusler Structures Drives Metal–Semiconductor Transition in ErNi<sub><i>x</i></sub>Sb_** [_Chemistry of Materials_](https://doi.org/10.1021/acs.chemmater.5c02710) 2026
 - K. V. Sopiha et al. **_Functional off-stoichiometry in Cu(In,Ga)Se<sub>2</sub>. Part II: electronic properties in a wide range of compositions_** [_Journal of Materials Chemistry A_](https://doi.org/10.1039/D5TA07044A) 2026
 - Y.-S. Liao et al. **_Moiré-Induced Electronic Reconstruction in van der Waals Heterobilayer PtSe<sub>2</sub>/PtTe<sub>2</sub>_** [_ACS Nano_](https://doi.org/10.1021/acsnano.5c19273) 2026
