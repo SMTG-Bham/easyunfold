@@ -51,9 +51,7 @@ In all cases, the supercell symmetry is lowered compared to the pristine primiti
 Hence, for a given _k_-point path in the primitive cell Brillouin Zone, additional _k_-points are
 required to be sampled for the supercell, and the extracted spectral weights need to be appropriately
 averaged to obtain the correct effective band structure (EBS). See the docs
-[Theory](https://smtg-bham.github.io/easyunfold/theory.html) page for more details.
-<!-- when JOSS submitted, add link to paper (discussion of theory) here! -->
-<!--- When JOSS submitted, add 'License and Citation' section here, and `CITATION.cff` file --->
+[Theory](https://smtg-bham.github.io/easyunfold/theory.html) page and/or [JOSS paper](https://doi.org/10.21105/joss.05974) for more details.
 
 Please see the [documentation](https://smtg-bham.github.io/easyunfold/) for guides and examples.
 
@@ -85,14 +83,6 @@ Commands:
 ```
 
 ### Developer Installation (from source)
-
-A recent version of `pip` is needed to do this, due to the new style of the `pyproject.toml` configuration
-file.
-To upgrade your `pip`, do:
-
-```
-pip install -U pip
-```
 
 Assuming the package is in the `easyunfold` folder, use the following command to install:
 
