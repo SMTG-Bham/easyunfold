@@ -52,7 +52,7 @@ In all cases, the supercell symmetry is lowered compared to the pristine primiti
 Hence, for a given _k_-point path in the primitive cell Brillouin Zone, additional _k_-points are 
 required to be sampled for the supercell, and the extracted spectral weights need to be appropriately 
 averaged to obtain the correct effective band structure (EBS). See the docs 
-[Theory](https://smtg-Bham.github.io/easyunfold/theory.html) page and/or [JOSS paper](https://doi.org/10.21105/joss.05974) for more details.
+[Theory](https://smtg-bham.github.io/easyunfold/theory.html) page and/or [JOSS paper](https://doi.org/10.21105/joss.05974) for more details.
 
 ## Citation
 
@@ -63,7 +63,14 @@ If you use `easyunfold` in your work, please cite:
 
 We'll add papers that use `easyunfold` to this list as they come out!
 
+- I. Caro-Campos et al. **_Phonon Scattering by Local Off‐Centering in Diamond‐Like Cu<sub>2−X</sub>Ag<sub>x</sub>In<sub>2</sub>Se<sub>4</sub> Chalcopyrites: High Carrier Mobility and Ultralow Thermal Conductivity_** [_Small Structures_](https://doi.org/10.1002/sstr.202500800) 2026
+- J. M. Domínguez-Vázquez et al. **_Enhanced thermoelectric performance in Fe<sub>2</sub>V<sub>0.8</sub>W<sub>0.2</sub>Al thin films: synergistic effects of chemical ordering and tungsten substitution_** [_Journal of Materials Chemistry A_](https://doi.org/10.1039/D5TA09938B) 2026
+- H. Li et al. **_CuI-enhanced thermoelectric performance in GeTe by synchronous modulation of hole concentration and thermal conductivity_** [_Matter_](https://doi.org/10.1016/j.matt.2025.102609) 2026
+- A. Pike et al. **_Alloying to tune the bandgap of the <i>AM</i><sub>2</sub><i>Pn</i><sub>2</sub> Zintl compounds_** [_Journal of Physics: Energy_](https://doi.org/10.1088/2515-7655/ae3d64) 2026
+- M. Wróblewska et al. **_Continuous Alloying between Rocksalt and Half-Heusler Structures Drives Metal–Semiconductor Transition in ErNi<sub><i>x</i></sub>Sb_** [_Chemistry of Materials_](https://doi.org/10.1021/acs.chemmater.5c02710) 2026
+- K. V. Sopiha et al. **_Functional off-stoichiometry in Cu(In,Ga)Se<sub>2</sub>. Part II: electronic properties in a wide range of compositions_** [_Journal of Materials Chemistry A_](https://doi.org/10.1039/D5TA07044A) 2026
 - Y.-S. Liao et al. **_Moiré-Induced Electronic Reconstruction in van der Waals Heterobilayer PtSe<sub>2</sub>/PtTe<sub>2</sub>_** [_ACS Nano_](https://doi.org/10.1021/acsnano.5c19273) 2026
+- J. J. Plata et al. **_High-Entropy Skutterudites as Thermoelectrics: Potential Synthesizability, Enhanced Stability, and Band Convergence via the Cocktail Effect_** [_PRX Energy_](https://doi.org/10.1103/qd4g-95cf) 2026
 - P. Russell et al. **_Computational prediction of Y-doped Cd<sub>2</sub>Sb<sub>2</sub>O<sub>7</sub> as a competitive Sb-based n-type Transparent Conducting Oxide_** [_ChemRxiv_](https://doi.org/10.26434/chemrxiv-2025-c1r3l) 2025
 - P. Kumar et al. **_Theoretical insights into the h-NbN monolayer for selective and moisture-resistant gas sensing: an ab initio study_** [_Electronic Structure_](https://doi.org/10.1088/2516-1075/adf021) 2025
 - M. Sigl et al. **_Solution-based synthesis of nanocrystalline KBiS<sub>2</sub> films at low temperatures and study of photoinduced charge generation_** [_Journal of Materials Chemistry C_](https://doi.org/10.1039/D5TC02554K) 2025
@@ -77,7 +84,6 @@ We'll add papers that use `easyunfold` to this list as they come out!
 - L. F. Leon-Pinzon et al. **_Observation of Pseudogap in Cr<sub>1−x</sub>Y<sub>x</sub>N magnetic alloy and its impact on the Seebeck coefficient by ab-initio calculations_** [_arXiv_](http://dx.doi.org/10.48550/arXiv.2506.00687) 2025
 - C. Zhang & J. Recatala-Gomez & Z. Aabdin & Y. Jiang et al. **_Direct Joule-Heated Non-Equilibrium Synthesis Enables High Performing Thermoelectrics_** [_arXiv_](https://arxiv.org/abs/2506.04447) 2025
 - W. Feng et al. **_Unraveling the role of oxygen vacancies in the electronic and optical properties of κ-Ga2O3_** [_Communications Chemistry_](https://doi.org/10.1038/s42004-025-01843-1) 2025
-- J. J. Plata et al. **_High-Entropy Skutterudites as Thermoelectrics: Synthesizability and Band Convergence via the Cocktail Effect_** [_ChemRxiv_](https://chemrxiv.org/engage/chemrxiv/article-details/67ff672750018ac7c59b7b11) 2025
 - Y. Gong Wang et al. **_Influence of Vanadium and Chromium Doping on the Thermoelectric Performance of AgSbTe<sub>2</sub>_** [_Physica Scripta_](https://doi.org/10.1088/1402-4896/ae26ec) 2025
 - P. B. Colominas et al. **_Giant Thermally Induced Band-Gap Renormalization in Anharmonic Silver Chalcohalide Antiperovskites_** [_Journal of Materials Chemistry C_](https://doi.org/10.1039/D5TC00863H) 2025
 - E. Moradpur-Tari et al. **_A correlation-based optimization model to recover lost and distorted data from scanning tunneling microscopy images based on density functional theory_** [_Ultramicroscopy_](https://doi.org/10.1016/j.ultramic.2025.114306) 2025
