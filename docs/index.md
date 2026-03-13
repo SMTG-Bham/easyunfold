@@ -60,9 +60,9 @@ If you use `easyunfold` in your work, please cite:
 - B. Zhu, S. R. Kavanagh & D. O. Scanlon, (2024). easyunfold: A Python package for unfolding electronic band structures. Journal of Open Source Software, 9(93), 5974, https://doi.org/10.21105/joss.05974
 
 ## Studies using `easyunfold`
-
 We'll add papers that use `easyunfold` to this list as they come out!
 
+- Ø. Finnseth et al. **_Electronic Structure and Resonant Circular Dichroism of La<sub>0.7</sub>Sr<sub>0.3</sub>MnO<sub>3</sub> from Soft X-ray Angle-Resolved Photoemission_** [_arXiv_](https://arxiv.org/abs/2603.10794) 2026
 - R. Claes et al. **_Screening ASb<sub>2</sub>O<sub>6</sub> (A = Mg, Ca, Sr, Ba, Cd) for High Performance Transparent Conducting Oxides_** [_ChemRxiv_](https://doi.org/10.26434/chemrxiv-2025-39bbf) 2025
 - I. Caro-Campos et al. **_Phonon Scattering by Local Off‐Centering in Diamond‐Like Cu<sub>2−X</sub>Ag<sub>x</sub>In<sub>2</sub>Se<sub>4</sub> Chalcopyrites: High Carrier Mobility and Ultralow Thermal Conductivity_** [_Small Structures_](https://doi.org/10.1002/sstr.202500800) 2026
 - J. M. Domínguez-Vázquez et al. **_Enhanced thermoelectric performance in Fe<sub>2</sub>V<sub>0.8</sub>W<sub>0.2</sub>Al thin films: synergistic effects of chemical ordering and tungsten substitution_** [_Journal of Materials Chemistry A_](https://doi.org/10.1039/D5TA09938B) 2026
