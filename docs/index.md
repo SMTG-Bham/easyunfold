@@ -62,6 +62,7 @@ If you use `easyunfold` in your work, please cite:
 ## Studies using `easyunfold`
 We'll add papers that use `easyunfold` to this list as they come out!
 
+- V. Posligua et al. **_Deep Learning Framework for Accurate Prediction and  High-Throughput Search of the Thermoelectric Figure  of Merit in Skutterudites_** [_Journal of Materials Chemistry A_](https://doi.org/10.1039/D5TA08841K) 2026
 - K. Li et al. **_Resonant Doping in Binary Sb(V)-oxide Sb<sub>2</sub>O<sub>5</sub> for High-Mobility Transparent Conductors_** [_ChemRxiv_](https://doi.org/10.26434/chemrxiv.15001890/v1) 2026
 - H.-Y. Chen et al. **_Electrostatically tunable moiré-mediated Wigner states via interfacial potential engineering in 2D van der Waals heterostructures_** [_Nature Communications_](https://doi.org/10.1038/s41467-026-70614-w) 2026
 - Ø. Finnseth et al. **_Electronic Structure and Resonant Circular Dichroism of La<sub>0.7</sub>Sr<sub>0.3</sub>MnO<sub>3</sub> from Soft X-ray Angle-Resolved Photoemission_** [_arXiv_](https://arxiv.org/abs/2603.10794) 2026
@@ -79,7 +80,6 @@ We'll add papers that use `easyunfold` to this list as they come out!
 - P. Kumar et al. **_Theoretical insights into the h-NbN monolayer for selective and moisture-resistant gas sensing: an ab initio study_** [_Electronic Structure_](https://doi.org/10.1088/2516-1075/adf021) 2025
 - M. Sigl et al. **_Solution-based synthesis of nanocrystalline KBiS<sub>2</sub> films at low temperatures and study of photoinduced charge generation_** [_Journal of Materials Chemistry C_](https://doi.org/10.1039/D5TC02554K) 2025
 - Y. Yin et al. **_Halogen Chains with One-Dimensional Semi-Metallic Electronic Structure and Peierls Physics in Polymorphs of Na<sub>4</sub>X<sub>5</sub> (X = I, Br, Cl) Compounds_** [_arXiv_](https://arxiv.org/abs/2512.08349) 2025
-- V. Posligua et al. **_Deep Learning Framework for Accurate Prediction and  High-Throughput Search of the Thermoelectric Figure  of Merit in Skutterudites_** [_ChemRxiv_](https://doi.org/10.26434/chemrxiv-2025-77vg1) 2025
 - S. Husremović et al. **_Local interface effects modulate global charge order and optical properties of 1T-TaS<sub>2</sub>/1H-WSe<sub>2</sub> heterostructures_** [_ACS Nano_](https://doi.org/10.1021/acsnano.5c06759) 2025
 - L. Richarz et al. **_Ferroelectric domain walls for environmental sensors_** [_ACS Applied Materials & Interfaces_](http://dx.doi.org/10.1021/acsami.5c04875) 2025
 - J. M. Domínguez-Vázquez et al. **_Thermoelectric performance boost by chemical order in epitaxial L2<sub>1</sub> (100) and (110) oriented undoped Fe<sub>2</sub>VAl thin films: an experimental and theoretical study_** [_Journal of Materials Chemistry A_](https://doi.org/10.1039/D5TA02619A) 2025
