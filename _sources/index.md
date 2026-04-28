@@ -60,9 +60,13 @@ If you use `easyunfold` in your work, please cite:
 - B. Zhu, S. R. Kavanagh & D. O. Scanlon, (2024). easyunfold: A Python package for unfolding electronic band structures. Journal of Open Source Software, 9(93), 5974, https://doi.org/10.21105/joss.05974
 
 ## Studies using `easyunfold`
-
 We'll add papers that use `easyunfold` to this list as they come out!
 
+- V. Posligua et al. **_Deep Learning Framework for Accurate Prediction and  High-Throughput Search of the Thermoelectric Figure  of Merit in Skutterudites_** [_Journal of Materials Chemistry A_](https://doi.org/10.1039/D5TA08841K) 2026
+- K. Li et al. **_Resonant Doping in Binary Sb(V)-oxide Sb<sub>2</sub>O<sub>5</sub> for High-Mobility Transparent Conductors_** [_ChemRxiv_](https://doi.org/10.26434/chemrxiv.15001890/v1) 2026
+- H.-Y. Chen et al. **_Electrostatically tunable moiré-mediated Wigner states via interfacial potential engineering in 2D van der Waals heterostructures_** [_Nature Communications_](https://doi.org/10.1038/s41467-026-70614-w) 2026
+- Ø. Finnseth et al. **_Electronic Structure and Resonant Circular Dichroism of La<sub>0.7</sub>Sr<sub>0.3</sub>MnO<sub>3</sub> from Soft X-ray Angle-Resolved Photoemission_** [_arXiv_](https://arxiv.org/abs/2603.10794) 2026
+- R. Claes et al. **_Screening ASb<sub>2</sub>O<sub>6</sub> (A = Mg, Ca, Sr, Ba, Cd) for High Performance Transparent Conducting Oxides_** [_ChemRxiv_](https://doi.org/10.26434/chemrxiv-2025-39bbf) 2025
 - I. Caro-Campos et al. **_Phonon Scattering by Local Off‐Centering in Diamond‐Like Cu<sub>2−X</sub>Ag<sub>x</sub>In<sub>2</sub>Se<sub>4</sub> Chalcopyrites: High Carrier Mobility and Ultralow Thermal Conductivity_** [_Small Structures_](https://doi.org/10.1002/sstr.202500800) 2026
 - J. M. Domínguez-Vázquez et al. **_Enhanced thermoelectric performance in Fe<sub>2</sub>V<sub>0.8</sub>W<sub>0.2</sub>Al thin films: synergistic effects of chemical ordering and tungsten substitution_** [_Journal of Materials Chemistry A_](https://doi.org/10.1039/D5TA09938B) 2026
 - H. Li et al. **_CuI-enhanced thermoelectric performance in GeTe by synchronous modulation of hole concentration and thermal conductivity_** [_Matter_](https://doi.org/10.1016/j.matt.2025.102609) 2026
@@ -71,12 +75,11 @@ We'll add papers that use `easyunfold` to this list as they come out!
 - K. V. Sopiha et al. **_Functional off-stoichiometry in Cu(In,Ga)Se<sub>2</sub>. Part II: electronic properties in a wide range of compositions_** [_Journal of Materials Chemistry A_](https://doi.org/10.1039/D5TA07044A) 2026
 - Y.-S. Liao et al. **_Moiré-Induced Electronic Reconstruction in van der Waals Heterobilayer PtSe<sub>2</sub>/PtTe<sub>2</sub>_** [_ACS Nano_](https://doi.org/10.1021/acsnano.5c19273) 2026
 - J. J. Plata et al. **_High-Entropy Skutterudites as Thermoelectrics: Potential Synthesizability, Enhanced Stability, and Band Convergence via the Cocktail Effect_** [_PRX Energy_](https://doi.org/10.1103/qd4g-95cf) 2026
+- R. E. Philip et al. **_Disorder Mediated Fully Compensated Ferrimagnetic Spin-Gapless Semiconducting Behavior in Cr<sub>3</sub>Al Heusler Alloy_** [_Advanced Functional Materials_](https://doi.org/10.1002/adfm.75194) 2026
 - P. Russell et al. **_Computational prediction of Y-doped Cd<sub>2</sub>Sb<sub>2</sub>O<sub>7</sub> as a competitive Sb-based n-type Transparent Conducting Oxide_** [_ChemRxiv_](https://doi.org/10.26434/chemrxiv-2025-c1r3l) 2025
 - P. Kumar et al. **_Theoretical insights into the h-NbN monolayer for selective and moisture-resistant gas sensing: an ab initio study_** [_Electronic Structure_](https://doi.org/10.1088/2516-1075/adf021) 2025
 - M. Sigl et al. **_Solution-based synthesis of nanocrystalline KBiS<sub>2</sub> films at low temperatures and study of photoinduced charge generation_** [_Journal of Materials Chemistry C_](https://doi.org/10.1039/D5TC02554K) 2025
 - Y. Yin et al. **_Halogen Chains with One-Dimensional Semi-Metallic Electronic Structure and Peierls Physics in Polymorphs of Na<sub>4</sub>X<sub>5</sub> (X = I, Br, Cl) Compounds_** [_arXiv_](https://arxiv.org/abs/2512.08349) 2025
-- V. Posligua et al. **_Deep Learning Framework for Accurate Prediction and  High-Throughput Search of the Thermoelectric Figure  of Merit in Skutterudites_** [_ChemRxiv_](https://doi.org/10.26434/chemrxiv-2025-77vg1) 2025
-- R. E. Philip et al. **_Disorder mediated fully compensated ferrimagnetic spin-gapless semiconducting behaviour in Cr<sub>3</sub>Al Heusler alloy_** [_arXiv_](https://arxiv.org/abs/2512.10885) 2025
 - S. Husremović et al. **_Local interface effects modulate global charge order and optical properties of 1T-TaS<sub>2</sub>/1H-WSe<sub>2</sub> heterostructures_** [_ACS Nano_](https://doi.org/10.1021/acsnano.5c06759) 2025
 - L. Richarz et al. **_Ferroelectric domain walls for environmental sensors_** [_ACS Applied Materials & Interfaces_](http://dx.doi.org/10.1021/acsami.5c04875) 2025
 - J. M. Domínguez-Vázquez et al. **_Thermoelectric performance boost by chemical order in epitaxial L2<sub>1</sub> (100) and (110) oriented undoped Fe<sub>2</sub>VAl thin films: an experimental and theoretical study_** [_Journal of Materials Chemistry A_](https://doi.org/10.1039/D5TA02619A) 2025
