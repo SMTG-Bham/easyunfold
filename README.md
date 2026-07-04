@@ -101,6 +101,7 @@ If you use `easyunfold` in your work, please cite:
 ## Studies using `easyunfold`
 We'll add papers that use `easyunfold` to this list as they come out!
 
+- D. Mekan et al. **_Solution-Synthesis and Optical and Magnetic Properties of MnX<sub>2</sub>Se<sub>4</sub> (X = Bi, Sb, In) Nanomaterials_** [_Chemistry of Materials_](https://doi.org/10.1021/acs.chemmater.6c01100) 2026
 - V. Posligua et al. **_Deep Learning Framework for Accurate Prediction and  High-Throughput Search of the Thermoelectric Figure  of Merit in Skutterudites_** [_Journal of Materials Chemistry A_](https://doi.org/10.1039/D5TA08841K) 2026
 - K. Li et al. **_Resonant Doping in Binary Sb(V)-oxide Sb<sub>2</sub>O<sub>5</sub> for High-Mobility Transparent Conductors_** [_ChemRxiv_](https://doi.org/10.26434/chemrxiv.15001890/v1) 2026
 - H.-Y. Chen et al. **_Electrostatically tunable moiré-mediated Wigner states via interfacial potential engineering in 2D van der Waals heterostructures_** [_Nature Communications_](https://doi.org/10.1038/s41467-026-70614-w) 2026
@@ -115,6 +116,7 @@ We'll add papers that use `easyunfold` to this list as they come out!
 - Y.-S. Liao et al. **_Moiré-Induced Electronic Reconstruction in van der Waals Heterobilayer PtSe<sub>2</sub>/PtTe<sub>2</sub>_** [_ACS Nano_](https://doi.org/10.1021/acsnano.5c19273) 2026
 - J. J. Plata et al. **_High-Entropy Skutterudites as Thermoelectrics: Potential Synthesizability, Enhanced Stability, and Band Convergence via the Cocktail Effect_** [_PRX Energy_](https://doi.org/10.1103/qd4g-95cf) 2026
 - R. E. Philip et al. **_Disorder Mediated Fully Compensated Ferrimagnetic Spin-Gapless Semiconducting Behavior in Cr<sub>3</sub>Al Heusler Alloy_** [_Advanced Functional Materials_](https://doi.org/10.1002/adfm.75194) 2026
+- J. Cai et al. **_Enhancing photocatalytic hydrogen production in ε-Ga<sub>2</sub>O<sub>3</sub> via doping and strain: A shell DFT-1/2+U approach_** [_Journal of Power Sources_](https://doi.org/10.1016/j.jpowsour.2026.240244) 2026
 - P. Russell et al. **_Computational prediction of Y-doped Cd<sub>2</sub>Sb<sub>2</sub>O<sub>7</sub> as a competitive Sb-based n-type Transparent Conducting Oxide_** [_ChemRxiv_](https://doi.org/10.26434/chemrxiv-2025-c1r3l) 2025
 - P. Kumar et al. **_Theoretical insights into the h-NbN monolayer for selective and moisture-resistant gas sensing: an ab initio study_** [_Electronic Structure_](https://doi.org/10.1088/2516-1075/adf021) 2025
 - M. Sigl et al. **_Solution-based synthesis of nanocrystalline KBiS<sub>2</sub> films at low temperatures and study of photoinduced charge generation_** [_Journal of Materials Chemistry C_](https://doi.org/10.1039/D5TC02554K) 2025
