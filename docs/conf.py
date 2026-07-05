@@ -113,7 +113,4 @@ linkcheck_ignore = [
     r"https://smtg-bham\.github\.io/easyunfold/.*",
     # Flaky external badges
     r"https://codecov\.io/.*",
-    # External links that have moved or are unreliable
-    r"https://icet\.materialsmodeling\.org/moduleref_icet/.*",
-    r"https://www\.brown\.edu/Departments/Engineering/.*",
 ]

@@ -11,8 +11,8 @@ randomised cation disorder in the material.
 
 :::{tip}
 SQS supercells can be generated using tools like 
-[icet](https://icet.materialsmodeling.org/moduleref_icet/tools.html#module-icet.tools.structure_generation)
-or [ATAT](https://www.brown.edu/Departments/Engineering/Labs/avdw/atat/).
+[icet](https://icet.materialsmodeling.org/advanced_topics/sqs_generation.html)
+or [ATAT](http://alum.mit.edu/www/avdw/atat/).
 :::
 
 These results were published in Y. T. Huang & S. R. Kavanagh et al. 2022 [^1], and an early version of `easyunfold` was 
