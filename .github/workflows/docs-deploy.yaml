@@ -33,6 +33,7 @@ jobs:
           make -C docs html linkcheck 2>&1 | tee check.log
           echo "broken=$(grep '(line\s*[0-9]*)\(\s\)broken\(\s\)' check.log)" >> "$GITHUB_OUTPUT"
         env:
+          # Keep nitpicky checks enabled, but don't fail on non-link Sphinx warnings.
           SPHINXOPTS: -n --keep-going
 
       - name: Show docs build check results
