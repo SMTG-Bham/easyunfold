@@ -87,13 +87,14 @@ class UnfoldPlotter:
                                 if orbital in key:
                                     sumo_colours[atom][key] = orbital_colour_dict[key]
         else:
-            from pkg_resources import Requirement, resource_filename
+            import configparser
+            import importlib.resources as _importlib_resources
             try:
-                import configparser
-            except ImportError:
-                import ConfigParser as configparser
-
-            config_path = resource_filename(Requirement.parse('sumo'), 'sumo/plotting/orbital_colours.conf')
+                config_path = str(_importlib_resources.files('sumo').joinpath('plotting/orbital_colours.conf'))
+            except AttributeError:
+                # Python < 3.9 fallback
+                import sumo as _sumo
+                config_path = os.path.join(os.path.dirname(_sumo.__file__), 'plotting', 'orbital_colours.conf')
             sumo_colours = configparser.ConfigParser()
             sumo_colours.read(os.path.abspath(config_path))
 
@@ -255,7 +256,8 @@ class UnfoldPlotter:
 
             ax_.set_xlim(xmin, xmax)
             ax_.set_ylim(*ylim)
-            spin_title = f'Spin {"Up" if ispin == 0 else "Down"}'
+            spin_label = 'Up' if ispin == 0 else 'Down'
+            spin_title = f'Spin {spin_label}'
             if title is None and nspin > 1:
                 plot_title = spin_title
             elif nspin > 1:
@@ -366,7 +368,8 @@ class UnfoldPlotter:
             ax_.imshow(sf[ispin], extent=extent, aspect='auto', origin='upper')
             ax_.set_ylim(ylim)
             ax_.set_xlim(0, sf.shape[2] - 1)
-            spin_title = f'Spin {"Up" if ispin == 0 else "Down"}'
+            spin_label = 'Up' if ispin == 0 else 'Down'
+            spin_title = f'Spin {spin_label}'
             if title is None and nspin > 1:
                 plot_title = spin_title
             elif nspin > 1:
@@ -552,7 +555,8 @@ class UnfoldPlotter:
             )
             ax_.set_xlim(0, kdist.max() - 1)
             ax_.set_ylim(ylim)
-            spin_title = f'Spin {"Up" if ispin == 0 else "Down"}'
+            spin_label = 'Up' if ispin == 0 else 'Down'
+            spin_title = f'Spin {spin_label}'
             if title is None and nspin > 1:
                 plot_title = spin_title
             elif nspin > 1:
