@@ -110,7 +110,7 @@ linkcheck_ignore = [
     r"https://www\.science\.org/.*",
     r"https://chemrxiv\.org/.*",
     # Self-referential docs links (404 until the docs site is deployed)
-    r"https://smtg-[Bb]ham\.github\.io/easyunfold/.*",
+    r"https://smtg-bham\.github\.io/easyunfold/.*",
     # Flaky external badges
     r"https://codecov\.io/.*",
     # External links that have moved or are unreliable
