@@ -1,0 +1,196 @@
+# `easyunfold` Documentation
+
+![build](https://github.com/SMTG-Bham/easyunfold/actions/workflows/ci.yaml/badge.svg)
+[![docs](https://github.com/SMTG-Bham/easyunfold/actions/workflows/docs.yaml/badge.svg)](https://smtg-Bham.github.io/easyunfold/)
+[![codecov](https://codecov.io/gh/SMTG-Bham/easyunfold/branch/main/graph/badge.svg?token=XLLWWU5UM2)](https://codecov.io/gh/SMTG-Bham/easyunfold)
+[![PyPI](https://img.shields.io/pypi/v/easyunfold)](https://pypi.org/project/easyunfold)
+[![Downloads](https://img.shields.io/pypi/dm/easyunfold)](https://smtg-Bham.github.io/easyunfold/)
+[![JOSS](https://joss.theoj.org/papers/10.21105/joss.05974/status.svg)](https://doi.org/10.21105/joss.05974)
+
+This package is intended for obtaining the effective band structure of a supercell for a certain _k_-point
+path of the primitive cell. It was originally based on 
+[PyVaspwfc](https://github.com/QijingZheng/VaspBandUnfolding) for reading VASP wavefunction outputs, 
+with a notable improvement being that symmetry-breaking is properly accounted for by sampling necessary 
+additional _k_-points and averaging accordingly.
+Typical applications of band structure unfolding are the electronic structure analysis of defects, disorder, alloys, surfaces (and more), as illustrated in the example outputs below and [docs examples](https://smtg-Bham.github.io/easyunfold/examples.html).
+
+Our goal is to implement the band structure unfolding workflow in a robust and user-friendly software 
+package.
+
+For the methodology of supercell band unfolding, see 
+[here](https://link.aps.org/doi/10.1103/PhysRevB.85.085201).
+
+## Example Outputs
+| [Cs₂(Sn/Ti)Br₆ Vacancy-Ordered Perovskite Alloys](https://doi.org/10.1021/acs.jpcc.3c05204) |                        Oxygen Vacancy (*V*ₒ⁰) in MgO                         |
+|:-------------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------:|
+|                      <img src="img/CSTB_easyunfold.gif" height="400"/>                      | <img src="../examples/MgO/unfold_project_MgO_v_O_0_tall.png" height="400"/> |
+
+:::{tip}
+See the [`easyunfold` YouTube tutorial](https://youtu.be/9zeABbd1r1U?si=Oix3Bamiw8DZaMO4) for a quick overview of the theory of band structure unfolding, and a walkthrough of the calculation & analysis workflow with `easyunfold`. 
+:::
+
+## Usage
+
+To generate an unfolded band structure, one typically needs to perform the following steps:
+
+1. Create a primitive unit cell, and generate a band structure _k_-point path corresponding to this 
+   primitive cell.
+2. Create a supercell (e.g. disordered, defective, surface slab etc.), and obtain its optimised structure.
+3. Generate a series of _k_-points for the supercell to be calculated.
+4. Perform a band structure calculation with the supercell, and save its wavefunction output to file.
+5. Post-process the supercell wavefunction to obtain the unfolded band structure in the _k_-point path 
+   of the primitive unit cell.
+
+These generation and analysis steps are automated in `easyunfold`, with only the primitive unit cell and 
+supercell structures required as inputs from the user.
+
+Typically, the supercell comprises some form of symmetry-breaking relative to the primitive cell, such 
+as defects, disorder (e.g. special quasi-random structures (SQS) for site disorder – other forms of 
+disorder such as magnetic, dynamic/vibrational, polar, elastic etc. also possible), or a surface/interface 
+slab.
+In all cases, the supercell symmetry is lowered compared to the pristine primitive cell.
+Hence, for a given _k_-point path in the primitive cell Brillouin Zone, additional _k_-points are 
+required to be sampled for the supercell, and the extracted spectral weights need to be appropriately 
+averaged to obtain the correct effective band structure (EBS). See the docs 
+[Theory](https://smtg-bham.github.io/easyunfold/theory.html) page and/or [JOSS paper](https://doi.org/10.21105/joss.05974) for more details.
+
+## Citation
+
+If you use `easyunfold` in your work, please cite:
+- B. Zhu, S. R. Kavanagh & D. O. Scanlon, (2024). easyunfold: A Python package for unfolding electronic band structures. Journal of Open Source Software, 9(93), 5974, https://doi.org/10.21105/joss.05974
+
+## Studies using `easyunfold`
+We'll add papers that use `easyunfold` to this list as they come out!
+
+- D. Mekan et al. **_Solution-Synthesis and Optical and Magnetic Properties of MnX<sub>2</sub>Se<sub>4</sub> (X = Bi, Sb, In) Nanomaterials_** [_Chemistry of Materials_](https://doi.org/10.1021/acs.chemmater.6c01100) 2026
+- V. Posligua et al. **_Deep Learning Framework for Accurate Prediction and  High-Throughput Search of the Thermoelectric Figure  of Merit in Skutterudites_** [_Journal of Materials Chemistry A_](https://doi.org/10.1039/D5TA08841K) 2026
+- K. Li et al. **_Resonant Doping in Binary Sb(V)-oxide Sb<sub>2</sub>O<sub>5</sub> for High-Mobility Transparent Conductors_** [_ChemRxiv_](https://doi.org/10.26434/chemrxiv.15001890/v1) 2026
+- H.-Y. Chen et al. **_Electrostatically tunable moiré-mediated Wigner states via interfacial potential engineering in 2D van der Waals heterostructures_** [_Nature Communications_](https://doi.org/10.1038/s41467-026-70614-w) 2026
+- Ø. Finnseth et al. **_Electronic Structure and Resonant Circular Dichroism of La<sub>0.7</sub>Sr<sub>0.3</sub>MnO<sub>3</sub> from Soft X-ray Angle-Resolved Photoemission_** [_arXiv_](https://arxiv.org/abs/2603.10794) 2026
+- R. Claes et al. **_Screening ASb<sub>2</sub>O<sub>6</sub> (A = Mg, Ca, Sr, Ba, Cd) for High Performance Transparent Conducting Oxides_** [_ChemRxiv_](https://doi.org/10.26434/chemrxiv-2025-39bbf) 2025
+- I. Caro-Campos et al. **_Phonon Scattering by Local Off‐Centering in Diamond‐Like Cu<sub>2−X</sub>Ag<sub>x</sub>In<sub>2</sub>Se<sub>4</sub> Chalcopyrites: High Carrier Mobility and Ultralow Thermal Conductivity_** [_Small Structures_](https://doi.org/10.1002/sstr.202500800) 2026
+- J. M. Domínguez-Vázquez et al. **_Enhanced thermoelectric performance in Fe<sub>2</sub>V<sub>0.8</sub>W<sub>0.2</sub>Al thin films: synergistic effects of chemical ordering and tungsten substitution_** [_Journal of Materials Chemistry A_](https://doi.org/10.1039/D5TA09938B) 2026
+- H. Li et al. **_CuI-enhanced thermoelectric performance in GeTe by synchronous modulation of hole concentration and thermal conductivity_** [_Matter_](https://doi.org/10.1016/j.matt.2025.102609) 2026
+- A. Pike et al. **_Alloying to tune the bandgap of the <i>AM</i><sub>2</sub><i>Pn</i><sub>2</sub> Zintl compounds_** [_Journal of Physics: Energy_](https://doi.org/10.1088/2515-7655/ae3d64) 2026
+- M. Wróblewska et al. **_Continuous Alloying between Rocksalt and Half-Heusler Structures Drives Metal–Semiconductor Transition in ErNi<sub><i>x</i></sub>Sb_** [_Chemistry of Materials_](https://doi.org/10.1021/acs.chemmater.5c02710) 2026
+- K. V. Sopiha et al. **_Functional off-stoichiometry in Cu(In,Ga)Se<sub>2</sub>. Part II: electronic properties in a wide range of compositions_** [_Journal of Materials Chemistry A_](https://doi.org/10.1039/D5TA07044A) 2026
+- Y.-S. Liao et al. **_Moiré-Induced Electronic Reconstruction in van der Waals Heterobilayer PtSe<sub>2</sub>/PtTe<sub>2</sub>_** [_ACS Nano_](https://doi.org/10.1021/acsnano.5c19273) 2026
+- J. J. Plata et al. **_High-Entropy Skutterudites as Thermoelectrics: Potential Synthesizability, Enhanced Stability, and Band Convergence via the Cocktail Effect_** [_PRX Energy_](https://doi.org/10.1103/qd4g-95cf) 2026
+- R. E. Philip et al. **_Disorder Mediated Fully Compensated Ferrimagnetic Spin-Gapless Semiconducting Behavior in Cr<sub>3</sub>Al Heusler Alloy_** [_Advanced Functional Materials_](https://doi.org/10.1002/adfm.75194) 2026
+- J. Cai et al. **_Enhancing photocatalytic hydrogen production in ε-Ga<sub>2</sub>O<sub>3</sub> via doping and strain: A shell DFT-1/2+U approach_** [_Journal of Power Sources_](https://doi.org/10.1016/j.jpowsour.2026.240244) 2026
+- P. Russell et al. **_Computational prediction of Y-doped Cd<sub>2</sub>Sb<sub>2</sub>O<sub>7</sub> as a competitive Sb-based n-type Transparent Conducting Oxide_** [_ChemRxiv_](https://doi.org/10.26434/chemrxiv-2025-c1r3l) 2025
+- P. Kumar et al. **_Theoretical insights into the h-NbN monolayer for selective and moisture-resistant gas sensing: an ab initio study_** [_Electronic Structure_](https://doi.org/10.1088/2516-1075/adf021) 2025
+- M. Sigl et al. **_Solution-based synthesis of nanocrystalline KBiS<sub>2</sub> films at low temperatures and study of photoinduced charge generation_** [_Journal of Materials Chemistry C_](https://doi.org/10.1039/D5TC02554K) 2025
+- Y. Yin et al. **_Halogen Chains with One-Dimensional Semi-Metallic Electronic Structure and Peierls Physics in Polymorphs of Na<sub>4</sub>X<sub>5</sub> (X = I, Br, Cl) Compounds_** [_arXiv_](https://arxiv.org/abs/2512.08349) 2025
+- S. Husremović et al. **_Local interface effects modulate global charge order and optical properties of 1T-TaS<sub>2</sub>/1H-WSe<sub>2</sub> heterostructures_** [_ACS Nano_](https://doi.org/10.1021/acsnano.5c06759) 2025
+- L. Richarz et al. **_Ferroelectric domain walls for environmental sensors_** [_ACS Applied Materials & Interfaces_](http://dx.doi.org/10.1021/acsami.5c04875) 2025
+- J. M. Domínguez-Vázquez et al. **_Thermoelectric performance boost by chemical order in epitaxial L2<sub>1</sub> (100) and (110) oriented undoped Fe<sub>2</sub>VAl thin films: an experimental and theoretical study_** [_Journal of Materials Chemistry A_](https://doi.org/10.1039/D5TA02619A) 2025
+- J. Tu et al. **_Giant switchable ferroelectric photovoltage in double-perovskite epitaxial films through chemical negative strain_** [_Science Advances_](https://doi.org/10.1126/sciadv.ads4925) 2025
+- L. F. Leon-Pinzon et al. **_Observation of Pseudogap in Cr<sub>1−x</sub>Y<sub>x</sub>N magnetic alloy and its impact on the Seebeck coefficient by ab-initio calculations_** [_arXiv_](http://dx.doi.org/10.48550/arXiv.2506.00687) 2025
+- C. Zhang & J. Recatala-Gomez & Z. Aabdin & Y. Jiang et al. **_Direct Joule-Heated Non-Equilibrium Synthesis Enables High Performing Thermoelectrics_** [_arXiv_](https://arxiv.org/abs/2506.04447) 2025
+- W. Feng et al. **_Unraveling the role of oxygen vacancies in the electronic and optical properties of κ-Ga2O3_** [_Communications Chemistry_](https://doi.org/10.1038/s42004-025-01843-1) 2025
+- Y. Gong Wang et al. **_Influence of Vanadium and Chromium Doping on the Thermoelectric Performance of AgSbTe<sub>2</sub>_** [_Physica Scripta_](https://doi.org/10.1088/1402-4896/ae26ec) 2025
+- P. B. Colominas et al. **_Giant Thermally Induced Band-Gap Renormalization in Anharmonic Silver Chalcohalide Antiperovskites_** [_Journal of Materials Chemistry C_](https://doi.org/10.1039/D5TC00863H) 2025
+- E. Moradpur-Tari et al. **_A correlation-based optimization model to recover lost and distorted data from scanning tunneling microscopy images based on density functional theory_** [_Ultramicroscopy_](https://doi.org/10.1016/j.ultramic.2025.114306) 2025
+- L. Zhang et al. **_Mg doping point defects in Al<sub>0.5</sub>Ga<sub>0.5</sub>N by density functional theory_** [_Vacuum_](https://doi.org/10.1016/j.vacuum.2025.114610) 2025
+- L. Zhang et al. **_Impurity point defects in Mg doping Al<sub>0.5</sub>Ga<sub>0.5</sub>N: A first principles study_** [_Computational Materials Science_](https://doi.org/10.1016/j.commatsci.2025.113925) 2025
+- L. Zhang et al. **_Study of native point defects in Al<sub>0.5</sub>Ga<sub>0.5</sub>N by first principles calculations_** [_Computational Materials Science_](https://doi.org/10.1016/j.commatsci.2024.113312) 2024
+- H. Maleki-Ghaleh et al. **_Visible Light-Sensitive Sustainable Quantum Dot Crystals of Co/Mg Doped Natural Hydroxyapatite Possessing Antimicrobial Activity and Biocompatibility_** [_Small_](https://doi.org/10.1002/smll.202405708) 2024
+- K. Eggestad, B. A. D. Williamson, D. Meier and S. M. Selbach **_Mobile Intrinsic Point Defects for Conductive Neutral Domain Walls in LiNbO<sub>3</sub>_** [_Journal of Materials Chemistry C_](https://doi.org/10.1039/D4TC02856B) 2024
+- Dargahi et al. **_Synthesis and characterization of zinc-doped hematite nanoparticles for photocatalytic applications and their electronic structure studies by density functional theory_** [_Optical Materials_](https://doi.org/10.1016/j.optmat.2024.116234) 2024
+- S. M. Liga & S. R. Kavanagh, A. Walsh, D. O. Scanlon and G. Konstantatos **_Mixed-Cation Vacancy-Ordered Perovskites (Cs<sub>2</sub>Ti<sub>1–x</sub>Sn<sub>x</sub>X<sub>6</sub>; X = I or Br): Low-Temperature Miscibility, Additivity, and Tunable Stability_** [_Journal of Physical Chemistry C_](https://doi.org/10.1021/acs.jpcc.3c05204) 2023
+- Y. T. Huang & S. R. Kavanagh et al. **_Strong absorption and ultrafast localisation in NaBiS<sub>2</sub> nanocrystals with slow charge-carrier recombination_** [_Nature Communications_](https://www.nature.com/articles/s41467-022-32669-3) 2022
+- A. T. J. Nicolson et al. **_Interplay of Static and Dynamic Disorder in the Mixed-Metal Chalcohalide Sn<sub>2</sub>SbS<sub>2</sub>I<sub>3</sub>_** [_Journal of the Americal Chemical Society_](https://doi.org/10.1021/jacs.2c13336) 2023
+- Y. Wang & S. R. Kavanagh et al. **_Cation disorder engineering yields AgBiS<sub>2</sub> nanocrystals with enhanced optical absorption for efficient ultrathin solar cells_** [_Nature Photonics_](https://www.nature.com/articles/s41566-021-00950-4) 2022 (early version)
+
+## DFT code support
+
+At the moment, easyunfold supports [VASP](https://www.vasp.at) and [CASTEP](http://www.castep.org), but most of the routines are abstracted from the code specific details.
+In principle, support for other plane wave DFT code can be added by:
+
+- Implementing a subclass of `WaveFunction` that handles reading the wave function output.
+- Implementing functions for reading/writing _k_-points.
+- Adding branches for dispatching based on the `dft_code` attribute of the `UnfoldKSet` object in 
+  various places within the code.
+
+The Atomic Simulation Environment ([ASE](https://wiki.fysik.dtu.dk/ase/)) is used by `easyunfold` for 
+reading in structures, so structure file IO is natively supported for essentially all public DFT codes.
+
+In fact, ASE can already run band structure calculations using many plane-wave DFT codes.
+However, reading the plane wave coefficients from calculation outputs is not widely supported yet, which are needed here for band unfolding.
+Nevertheless, using ASE's existing IO framework to widen the code support can be a fruitful direction for further development. 
+
+### Code Compatibility Notes
+- Atom-projected band structures are currently only supported for `VASP` calculation outputs.
+- Gamma-only and non-collinear spin calculations are not supported for `CASTEP`. 
+
+## Contributors
+- [Bonan Zhu](https://github.com/zhubonan)  
+- [Seán Kavanagh](https://github.com/kavanase)  
+- [Adair Nicolson](https://github.com/adair-nicolson)  
+
+And those who helped in the development:
+- [Joe Willis](https://github.com/joebesity)  
+- [David O. Scanlon](http://davidscanlon.com/?page_id=5)  
+
+
+## Bugs reports and feature requests
+Bug reports and feature requests are well come.
+If you found any bug or missing features please report it on the 
+[Issue Tracker](https://github.com/SMTG-Bham/easyunfold/issues).
+
+## Seeking support 
+
+If you need support about using the software, please open a ticket with the *help wanted* label on the [Issue Tracker](https://github.com/SMTG-Bham/easyunfold/issues).
+
+## Contributing
+
+### Code contributions
+We welcome your help in improving and extending the package with your
+own contributions. This is managed through GitHub pull requests;
+for external contributions, we prefer the
+[fork and pull](https://guides.github.com/activities/forking/)
+workflow while core developers use branches in the main repository:
+
+1. First open an [Issue](https://github.com/SMTG-Bham/easyunfold/issues) to discuss the proposed 
+   contribution. This discussion might include how the changes fit `easyunfold`'s scope and a
+  general technical approach.
+2. Make your own project fork and implement the changes
+  there. Please keep your code style compliant and use the `pre-commit` hooks.
+3. Open a pull request to merge the changes into the main
+  project. A more detailed discussion can take place there before
+  the changes are accepted.
+
+### Development 
+
+To develope the package, please clone it on GitHub and install it with the `doc` and `test` extras so all dependencies needed for development are installed:
+
+```bash
+git clone https://github.com/SMTG-Bham/easyunfold
+pip install -e "./easyunfold[doc,test]"
+```
+
+To run the tests, simply run the `pytest` command  while in the top-level code repository.
+
+To build the documentation, run the `make html` command while in the `docs` directory.
+
+If you want to add new features, please also include a test case to check that they work as expected.
+For more information please consult [pytest's documentation](https://docs.pytest.org).
+
+Please note that we use pre-commit hooks for code formatting and linting. 
+Please install them using `pre-commit install` so these hooks can run before committing code updates.
+
+
+```{toctree}
+  :hidden:
+  :maxdepth: 2
+
+installation.md
+tutorial.md
+examples.md
+theory.md
+references.md
+publications.md
+cli.rst
+apidocs/index
+```

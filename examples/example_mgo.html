@@ -1,0 +1,746 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>MgO with atomic projections, effective masses &amp; defects &#8212; easyunfold</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'examples/example_mgo';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Disordered NaBiS2 with atomic/orbital projections &amp; DOS plotting" href="example_nabis2.html" />
+    <link rel="prev" title="Silicon with a displaced atom" href="example_si222.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.svg" class="logo__image only-light" alt="easyunfold - Home"/>
+    <script>document.write(`<img src="../_static/logo.svg" class="logo__image only-dark" alt="easyunfold - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/SMTG-Bham/easyunfold" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/easyunfold/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><img src="https://img.shields.io/pypi/v/easyunfold" class="icon-link-image" alt="PyPI"/></a>
+        </li>
+</ul></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../index.html">
+                    easyunfold Documentation
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../examples.html">Examples</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="example_si222.html">Silicon with a displaced atom</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">MgO with atomic projections, effective masses &amp; defects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_nabis2.html">Disordered NaBiS<sub>2</sub> with atomic/orbital projections &amp; DOS plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_si211_castep.html">Si supercell using CASTEP</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../theory.html">Band Unfolding Theory</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../publications.html">Publications</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">CLI Reference</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../apidocs/index.html">API Reference</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold</span></code></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.plotting.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.plotting</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.unfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.unfold</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.utils</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.wavecar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavecar</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.wavefun.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavefun</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.effective_mass.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.effective_mass</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.vasp_constant.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.vasp_constant</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.procar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.procar</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.cli.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.cli</span></code></a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/SMTG-Bham/easyunfold" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/examples/example_mgo.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>MgO with atomic projections, effective masses & defects</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#displaced-mg-supercell-band-unfolding">Displaced Mg Supercell Band Unfolding</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#carrier-effective-masses">Carrier Effective Masses</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defects">Defects</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-defect-supercell-generation">Step 1. Defect Supercell Generation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-band-structure-k-point-generation">Step 2. Band Structure <em>k</em>-point Generation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-band-structure-parsing">Step 3. Band Structure Parsing</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="mgo-with-atomic-projections-effective-masses-defects">
+<h1>MgO with atomic projections, effective masses &amp; defects<a class="headerlink" href="#mgo-with-atomic-projections-effective-masses-defects" title="Permalink to this heading">#</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The files needed for this example are provided in the
+<a class="reference external" href="https://github.com/SMTG-Bham/easyunfold/tree/main/examples/MgO">examples/MgO</a> folder.</p>
+</div>
+<p>Often it is useful to know the various contributions of atoms in the structure to the electronic bands
+in the band structure, to analyse the chemistry and orbital interactions at play in the system. This
+can be computed for unfolded bands as well.</p>
+<p>For a normal band structure calculation, the contributions can be inferred by colouring the band
+according to the elemental contributions, which can be done using <a class="reference external" href="https://github.com/SMTG-Bham/sumo">sumo</a>.</p>
+<figure class="align-default" id="id1">
+<a class="reference internal image-reference" href="../_images/band.png"><img alt="Band structure of MgO primitive cell." src="../_images/band.png" style="width: 400px;" /></a>
+<figcaption>
+<p><span class="caption-text">Band structure of MgO with atomic contribution </figcaption></span><a class="headerlink" href="#id1" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Similar plots can be generated for unfolded band structures. However, because the unfolded spectral
+function itself contains both the <em>location</em> of the band and its <em>intensity</em>, adding a third
+dimension of information (atomic projection) can be tricky to visualise.</p>
+<section id="displaced-mg-supercell-band-unfolding">
+<h2>Displaced Mg Supercell Band Unfolding<a class="headerlink" href="#displaced-mg-supercell-band-unfolding" title="Permalink to this heading">#</a></h2>
+<p>In this example, we unfold the bands from a MgO 2x1x2 supercell with a Mg atom displaced to break
+symmetry. The procedure is essentially the same as described in the
+<a class="reference external" href="https://smtg-Bham.github.io/easyunfold/examples/example_si222.html">Si supercell example</a>.</p>
+<p>The only difference here is that we turn on the calculation of orbital projections in <code class="docutils literal notranslate"><span class="pre">VASP</span></code> with
+<code class="docutils literal notranslate"><span class="pre">LORBIT</span> <span class="pre">=</span> <span class="pre">11</span></code> (<code class="docutils literal notranslate"><span class="pre">12</span></code>, <code class="docutils literal notranslate"><span class="pre">13</span></code> and <code class="docutils literal notranslate"><span class="pre">14</span></code> will also work) in the <code class="docutils literal notranslate"><span class="pre">INCAR</span></code> file, and then use the <code class="docutils literal notranslate"><span class="pre">plot-projections</span></code> subcommand
+when plotting the unfolded band structure:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot-projections<span class="w"> </span>--procar<span class="w"> </span>MgO_super/PROCAR.gz<span class="w"> </span>--atoms<span class="o">=</span><span class="s2">&quot;Mg,O&quot;</span><span class="w"> </span>--combined<span class="w"> </span>--emin<span class="o">=</span>-6<span class="w"> </span><span class="se">\</span>
+--emax<span class="o">=</span><span class="m">20</span><span class="w"> </span>--intensity<span class="w"> </span><span class="m">6</span>.5<span class="w"> </span>--poscar<span class="w"> </span>MgO_super/POSCAR
+</pre></div>
+</div>
+<p>Note that the path of the <code class="docutils literal notranslate"><span class="pre">PROCAR(.gz)</span></code> is passed along with the desired atom projections (<code class="docutils literal notranslate"><span class="pre">Mg</span></code> and <code class="docutils literal notranslate"><span class="pre">O</span></code> here).</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If the <em>k</em>-points have been split into multiple calculations (e.g. hybrid DFT band structures), the <code class="docutils literal notranslate"><span class="pre">--procar</span></code> option
+should be passed multiple times to specify the path to each split <code class="docutils literal notranslate"><span class="pre">PROCAR(.gz)</span></code> file (i.e.
+<code class="docutils literal notranslate"><span class="pre">--procar</span> <span class="pre">calc1/PROCAR</span> <span class="pre">--procar</span> <span class="pre">calc2/PROCAR</span> <span class="pre">...</span></code>).</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The atomic projections are not stored in the <code class="docutils literal notranslate"><span class="pre">easyunfold.json</span></code> data file, so the <code class="docutils literal notranslate"><span class="pre">PROCAR(.gz)</span></code> file(s)
+should be kept for replotting in the future.</p>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">--combined</span></code> option creates a combined plot with different colour maps for each atomic grouping.
+The spectral intensity is used to define the transparency (<code class="docutils literal notranslate"><span class="pre">alpha</span></code>) allowing the fusion of multiple
+projections into a single plot.</p>
+<figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="../_images/unfold_project.png"><img alt="MgO unfolded band structure with atomic projections" src="../_images/unfold_project.png" style="width: 600px;" /></a>
+<figcaption>
+<p><span class="caption-text">Unfolded MgO band structure with atomic projections.</span><a class="headerlink" href="#id2" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The default colour map for atom projections is red, green, blue and purple for the 1st, 2nd, 3rd and 4th atomic species
+specified. This can be changed with the <code class="docutils literal notranslate"><span class="pre">--colours</span></code> option, as well as several other plotting/visualisation settings –
+see the output of <code class="docutils literal notranslate"><span class="pre">easyunfold</span> <span class="pre">unfold</span> <span class="pre">plot-projections</span> <span class="pre">--help</span></code> for more details. If we wanted to plot the atomic
+projections with the same colouring scheme as the <code class="docutils literal notranslate"><span class="pre">sumo</span></code> plot above (i.e. red for Mg and blue for O), we can use:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot-projections<span class="w"> </span>--procar<span class="w"> </span>MgO_super/PROCAR<span class="w"> </span>--atoms<span class="o">=</span><span class="s2">&quot;Mg,O&quot;</span><span class="w"> </span>--combined<span class="w"> </span>--emin<span class="o">=</span>-6<span class="w"> </span><span class="se">\</span>
+--emax<span class="o">=</span><span class="m">20</span><span class="w"> </span>--intensity<span class="w"> </span><span class="m">6</span>.5<span class="w"> </span>--colours<span class="w"> </span><span class="s2">&quot;r,b&quot;</span>
+</pre></div>
+</div>
+<figure class="align-center" id="id3">
+<a class="reference internal image-reference" href="../_images/unfold_project_rb.png"><img alt="MgO unfolded band structure with specified colours" src="../_images/unfold_project_rb.png" style="width: 600px;" /></a>
+<figcaption>
+<p><span class="caption-text">Unfolded MgO band structure with atomic projections; red for Mg and blue for O atoms.</span><a class="headerlink" href="#id3" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In order to specify the atomic projections with <code class="docutils literal notranslate"><span class="pre">--atoms</span></code>, the <code class="docutils literal notranslate"><span class="pre">POSCAR</span></code> or <code class="docutils literal notranslate"><span class="pre">CONTCAR</span></code> file for the supercell must be
+present. If this is not the case, or we want to use projections from only specific atom subsets in the supercell, we can
+alternatively use the <code class="docutils literal notranslate"><span class="pre">--atoms-idx</span></code> tag. This takes a string of the form <code class="docutils literal notranslate"><span class="pre">a-b|c-d|e-f</span></code> where <code class="docutils literal notranslate"><span class="pre">a</span></code>, <code class="docutils literal notranslate"><span class="pre">b</span></code>, <code class="docutils literal notranslate"><span class="pre">c</span></code>, <code class="docutils literal notranslate"><span class="pre">d</span></code>, <code class="docutils literal notranslate"><span class="pre">e</span></code> and
+<code class="docutils literal notranslate"><span class="pre">f</span></code> are integers corresponding to the atom indices in the VASP structure file (i.e. <code class="docutils literal notranslate"><span class="pre">POSCAR</span></code>/<code class="docutils literal notranslate"><span class="pre">CONTCAR</span></code>, corresponding
+to the <code class="docutils literal notranslate"><span class="pre">PROCAR(.gz)</span></code> being used to obtain the projections). Different groups are separated by <code class="docutils literal notranslate"><span class="pre">|</span></code>, and <code class="docutils literal notranslate"><span class="pre">-</span></code>
+can be used to define the range for each projected atom type. A comma-separated list can also be used instead of ranges
+with hyphens. Note that 1-based indexing is used for atoms, matching the convention in VASP, which is then converted to
+zero-based indexing internally in python. In this example, we could set <code class="docutils literal notranslate"><span class="pre">--atoms-idx=&quot;1-4|5-8&quot;</span></code> to get the same result
+as <code class="docutils literal notranslate"><span class="pre">--atoms=&quot;Mg,O&quot;</span></code> (but without the figure legend).</p>
+</div>
+<p>In some cases, especially if there are many projection to be plotted at the same time, it can be clearer to create
+separated plots for each. This is the default behaviour for <code class="docutils literal notranslate"><span class="pre">plot-projections</span></code>, when <code class="docutils literal notranslate"><span class="pre">--combined</span></code> is not specified.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot-projections<span class="w"> </span>--procar<span class="w"> </span>MgO_super/PROCAR<span class="w"> </span>--atoms<span class="o">=</span><span class="s2">&quot;Mg,O&quot;</span><span class="w"> </span>--emin<span class="o">=</span>-6<span class="w"> </span><span class="se">\</span>
+--emax<span class="o">=</span><span class="m">20</span><span class="w"> </span>--intensity<span class="w"> </span><span class="m">6</span>.5
+</pre></div>
+</div>
+<figure class="align-default" id="id4">
+<a class="reference internal image-reference" href="../_images/unfold_project_sep.png"><img alt="Projected MgO band structure" src="../_images/unfold_project_sep.png" style="width: 800px;" /></a>
+<figcaption>
+<p><span class="caption-text">Unfolded MgO band structure with atomic projections plotted separately.</span><a class="headerlink" href="#id4" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>There are <em>many</em> customisation options available for the plotting functions in <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code>. See <code class="docutils literal notranslate"><span class="pre">easyunfold</span> <span class="pre">plot</span> <span class="pre">-h</span></code> or
+<code class="docutils literal notranslate"><span class="pre">easyunfold</span> <span class="pre">unfold</span> <span class="pre">plot-projections</span> <span class="pre">-h</span></code> for more details!</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If your <code class="docutils literal notranslate"><span class="pre">PROCAR(.gz)</span></code> file(s) are corrupted or incomplete, the <code class="docutils literal notranslate"><span class="pre">plot-projections</span></code> command will fail with an error message like <code class="docutils literal notranslate"><span class="pre">ValueError:</span> <span class="pre">cannot</span> <span class="pre">reshape</span> <span class="pre">array</span> <span class="pre">of</span> <span class="pre">size</span> <span class="pre">73542192</span> <span class="pre">into</span> <span class="pre">shape</span> <span class="pre">(2,74,348,90,16)</span></code>. In cases where the start/end of the <code class="docutils literal notranslate"><span class="pre">PROCAR</span></code> file looks fine, this can sometimes be checked with <code class="docutils literal notranslate"><span class="pre">grep</span> <span class="pre">-E</span> <span class="pre">'[^[:print:]]'</span> <span class="pre">--color=never</span> <span class="pre">PROCAR</span></code> which will only show an output if some lines in the file are corrupted. Typically this requires re-running the VASP calculation to give an uncorrupted file.</p>
+</div>
+<section id="carrier-effective-masses">
+<h3>Carrier Effective Masses<a class="headerlink" href="#carrier-effective-masses" title="Permalink to this heading">#</a></h3>
+<p>The command <code class="docutils literal notranslate"><span class="pre">easyunfold</span> <span class="pre">unfold</span> <span class="pre">effective-mass</span></code> can be used to find the effective masses of the unfolded band structure.</p>
+<p>The example output is shown below:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Loaded</span> <span class="n">data</span> <span class="kn">from</span><span class="w"> </span><span class="nn">easyunfold.json</span>
+<span class="n">Band</span> <span class="n">extrema</span> <span class="n">data</span><span class="p">:</span>
+  <span class="n">Kpoint</span> <span class="n">index</span>  <span class="n">Kind</span>      <span class="n">Sub</span><span class="o">-</span><span class="n">kpoint</span> <span class="n">index</span>    <span class="n">Band</span> <span class="n">indices</span>
+<span class="o">--------------</span>  <span class="o">------</span>  <span class="o">------------------</span>  <span class="o">--------------</span>
+             <span class="mi">0</span>  <span class="n">cbm</span>                      <span class="mi">0</span>              <span class="mi">16</span>
+            <span class="mi">47</span>  <span class="n">cbm</span>                      <span class="mi">0</span>              <span class="mi">16</span>
+             <span class="mi">0</span>  <span class="n">vbm</span>                      <span class="mi">0</span>              <span class="mi">15</span>
+            <span class="mi">47</span>  <span class="n">vbm</span>                      <span class="mi">0</span>              <span class="mi">15</span>
+
+<span class="n">Electron</span> <span class="n">effective</span> <span class="n">masses</span><span class="p">:</span>
+  <span class="n">index</span>  <span class="n">Kind</span>      <span class="n">Effective</span> <span class="n">mass</span>    <span class="n">Band</span> <span class="n">index</span>  <span class="kn">from</span><span class="w">                      </span><span class="nn">to</span>
+<span class="o">-------</span>  <span class="o">------</span>  <span class="o">----------------</span>  <span class="o">------------</span>  <span class="o">------------------------</span>  <span class="o">-------------------</span>
+      <span class="mi">0</span>  <span class="n">m_e</span>             <span class="mf">0.373553</span>            <span class="mi">16</span>  <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span> <span class="p">(</span>\<span class="n">Gamma</span><span class="p">)</span>  <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]</span> <span class="p">(</span><span class="n">L</span><span class="p">)</span>
+      <span class="mi">1</span>  <span class="n">m_e</span>             <span class="mf">0.367203</span>            <span class="mi">16</span>  <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span> <span class="p">(</span>\<span class="n">Gamma</span><span class="p">)</span>  <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]</span> <span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="n">Hole</span> <span class="n">effective</span> <span class="n">masses</span><span class="p">:</span>
+  <span class="n">index</span>  <span class="n">Kind</span>      <span class="n">Effective</span> <span class="n">mass</span>    <span class="n">Band</span> <span class="n">index</span>  <span class="kn">from</span><span class="w">                      </span><span class="nn">to</span>
+<span class="o">-------</span>  <span class="o">------</span>  <span class="o">----------------</span>  <span class="o">------------</span>  <span class="o">------------------------</span>  <span class="o">-------------------</span>
+      <span class="mi">0</span>  <span class="n">m_h</span>             <span class="o">-</span><span class="mf">3.44604</span>            <span class="mi">15</span>  <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span> <span class="p">(</span>\<span class="n">Gamma</span><span class="p">)</span>  <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]</span> <span class="p">(</span><span class="n">L</span><span class="p">)</span>
+      <span class="mi">1</span>  <span class="n">m_h</span>             <span class="o">-</span><span class="mf">2.13525</span>            <span class="mi">15</span>  <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span> <span class="p">(</span>\<span class="n">Gamma</span><span class="p">)</span>  <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]</span> <span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">Unfolded</span> <span class="n">band</span> <span class="n">structure</span> <span class="n">can</span> <span class="n">be</span> <span class="n">ambiguous</span><span class="p">,</span> <span class="n">please</span> <span class="n">cross</span><span class="o">-</span><span class="n">check</span> <span class="k">with</span> <span class="n">the</span> <span class="n">spectral</span> <span class="n">function</span> <span class="n">plot</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>If detected band extrema are not consistent with the band structure, or some band edges are not detected, one should adjust the <code class="docutils literal notranslate"><span class="pre">--intensity-threshold</span></code> and <code class="docutils literal notranslate"><span class="pre">--extrema-detect-tol</span></code>.
+Increasing the value of <code class="docutils literal notranslate"><span class="pre">--intensity-threshold</span></code> will filter away bands with very small spectral weights.
+On the other hand, increasing <code class="docutils literal notranslate"><span class="pre">--extrema-detect-tol</span></code> will increase the energy window with respect
+to the VBM or CBM to assign extrema points.
+One can also inspect if the detected bands makes sense by using the <code class="docutils literal notranslate"><span class="pre">--plot</span></code> or <code class="docutils literal notranslate"><span class="pre">--plot-fit</span></code> options, in which case it can be useful to increase <code class="docutils literal notranslate"><span class="pre">--npoints</span></code> to extend the plotted range.
+A Jupyter Notebook example can be found <a class="reference download internal" download="" href="../_downloads/a05e9d5ab343c0e9346bd299b6257a5e/effective-mass.ipynb"><span class="xref download myst">here</span></a>.</p>
+<figure class="align-default" id="id5">
+<a class="reference internal image-reference" href="../_images/unfold-effective-mass.png"><img alt="Effective bands extracted" src="../_images/unfold-effective-mass.png" style="width: 800px;" /></a>
+<figcaption>
+<p><span class="caption-text">Extracted bands at CBM and VBM for an unfolded MgO band structure.</span><a class="headerlink" href="#id5" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Make sure the band extrema data tabulated is correct and consistent before using any of the reported values.
+The results can unreliable for systems with little or no band gaps and those with complex unfolded band structures.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>For complex systems where the detection is difficult, one can manually pass the kpoint and the band indices using the <code class="docutils literal notranslate"><span class="pre">--manual-extrema</span></code> option, or can pass the eigenvalue of the band edge of interest using the <code class="docutils literal notranslate"><span class="pre">--extremum-eigenvalue</span></code> option. See <code class="docutils literal notranslate"><span class="pre">easyunfold</span> <span class="pre">unfold</span> <span class="pre">effective-mass</span> <span class="pre">-h</span></code> for more details.</p>
+</div>
+</section>
+</section>
+<section id="defects">
+<h2>Defects<a class="headerlink" href="#defects" title="Permalink to this heading">#</a></h2>
+<p>As shown in the <a class="reference external" href="https://youtu.be/9zeABbd1r1U?si=Oix3Bamiw8DZaMO4"><code class="docutils literal notranslate"><span class="pre">easyunfold</span></code> YouTube tutorial</a>, band structure unfolding can often be useful for analysing the impact of defects and dopants on the electronic structure of materials – particularly under high concentrations.</p>
+<p>As a brief example, here we show base steps in calculating the unfolded band structure of a defective supercell with <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code>, following the procedure shown in the <a class="reference external" href="https://youtu.be/9zeABbd1r1U?si=Oix3Bamiw8DZaMO4">YouTube tutorial</a>.</p>
+<section id="step-1-defect-supercell-generation">
+<h3>Step 1. Defect Supercell Generation<a class="headerlink" href="#step-1-defect-supercell-generation" title="Permalink to this heading">#</a></h3>
+<p>For this, we can use the <a class="reference external" href="https://doped.readthedocs.io/en/latest"><code class="docutils literal notranslate"><span class="pre">doped</span></code></a> defect package as shown in the tutorial:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pymatgen.core.structure</span><span class="w"> </span><span class="kn">import</span> <span class="n">Structure</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">doped.generation</span><span class="w"> </span><span class="kn">import</span> <span class="n">DefectsGenerator</span>
+
+<span class="n">mgo_prim</span> <span class="o">=</span> <span class="n">Structure</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="s1">&#39;MgO_prim_POSCAR&#39;</span><span class="p">)</span>
+<span class="n">defect_gen</span> <span class="o">=</span> <span class="n">DefectsGenerator</span><span class="p">(</span><span class="n">mgo_prim</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Generating DefectEntry objects: 100.0%|██████████| [00:23,   4.26it/s]                             
+Vacancies    Guessed Charges    Conv. Cell Coords    Wyckoff
+-----------  -----------------  -------------------  ---------
+v_Mg         [+1,0,-1,-2]       [0.000,0.000,0.000]  4a
+v_O          [+2,+1,0,-1]       [0.500,0.500,0.500]  4b
+
+Substitutions    Guessed Charges    Conv. Cell Coords    Wyckoff
+---------------  -----------------  -------------------  ---------
+Mg_O             [+4,+3,+2,+1,0]    [0.500,0.500,0.500]  4b
+O_Mg             [0,-1,-2,-3,-4]    [0.000,0.000,0.000]  4a
+
+Interstitials    Guessed Charges    Conv. Cell Coords    Wyckoff
+---------------  -----------------  -------------------  ---------
+Mg_i_Td          [+2,+1,0]          [0.250,0.250,0.250]  8c
+O_i_Td           [0,-1,-2]          [0.250,0.250,0.250]  8c
+
+The number in the Wyckoff label is the site multiplicity/degeneracy of that defect in the conventional (&#39;conv.&#39;) unit cell, which comprises 4 formula unit(s) of MgO.
+Note that Wyckoff letters can depend on the ordering of elements in the conventional standard structure, for which doped uses the spglib convention.
+</pre></div>
+</div>
+<p>and then write the VASP output files for the supercell relaxations:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">doped.vasp</span><span class="w"> </span><span class="kn">import</span> <span class="n">DefectsSet</span>
+
+<span class="n">ds</span> <span class="o">=</span> <span class="n">DefectsSet</span><span class="p">(</span><span class="n">defect_gen</span><span class="p">)</span>
+<span class="n">ds</span><span class="o">.</span><span class="n">write_files</span><span class="p">(</span><span class="n">unperturbed_poscar</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># skipping structure-searching for this example</span>
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>See the <a class="reference external" href="https://doped.readthedocs.io"><code class="docutils literal notranslate"><span class="pre">doped</span></code></a> tutorials <a class="reference external" href="https://doped.readthedocs.io/en/latest/Tutorials.html">here</a> if you’re interested in using it for defect calculations.</p>
+</div>
+</section>
+<section id="step-2-band-structure-k-point-generation">
+<h3>Step 2. Band Structure <em>k</em>-point Generation<a class="headerlink" href="#step-2-band-structure-k-point-generation" title="Permalink to this heading">#</a></h3>
+<p>When our defect supercell relaxations have completed, we can then generate our k-point paths for the supercell band structure calculation, as usual with <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>generate<span class="w"> </span>MgO_prim_POSCAR<span class="w"> </span>supercell_POSCAR<span class="w"> </span>MgO_prim_KPOINTS_band<span class="w"> </span>--scf-kpoints<span class="w"> </span>supercell_IBZKPT
+</pre></div>
+</div>
+<p>where <code class="docutils literal notranslate"><span class="pre">MgO_prim_KPOINTS_band</span></code> contains the <em>k</em>-point path for the primitive cell band structure (e.g. generated by <code class="docutils literal notranslate"><span class="pre">sumo-kgen</span></code>) and here we are performing a hybrid DFT calculation and so we need to use the <code class="docutils literal notranslate"><span class="pre">--scf-kpoints</span></code> option. If for any reason <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code> cannot automatically guess the supercell transformation matrix, we can also access this from the <code class="docutils literal notranslate"><span class="pre">doped</span></code> <code class="docutils literal notranslate"><span class="pre">DefectsGenerator.supercell_matrix</span></code> attribute and supply this with the <code class="docutils literal notranslate"><span class="pre">--matrix</span></code> option.</p>
+</section>
+<section id="step-3-band-structure-parsing">
+<h3>Step 3. Band Structure Parsing<a class="headerlink" href="#step-3-band-structure-parsing" title="Permalink to this heading">#</a></h3>
+<p>When our supercell band structure calculation has then completed, we can parse the wavefunction output to obtain the unfolded band structure:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>calculate<span class="w"> </span>WAVECAR
+</pre></div>
+</div>
+<p>and then plot the unfolded band structure with atomic projections:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot-projections<span class="w"> </span>--intensity<span class="w"> </span><span class="m">60</span><span class="w"> </span>--dos<span class="w"> </span>vasprun.xml.gz<span class="w"> </span>--gaussian<span class="w"> </span><span class="m">0</span>.03<span class="w"> </span>--atoms<span class="o">=</span><span class="s2">&quot;Mg,O&quot;</span><span class="w"> </span>--combined<span class="w"> </span>--scale<span class="w"> </span><span class="m">40</span><span class="w"> </span>--no-total
+</pre></div>
+</div>
+<figure class="align-default" id="id6">
+<a class="reference internal image-reference" href="../_images/unfold.png"><img alt="Neutral oxygen vacancy in MgO" src="../_images/unfold.png" style="width: 800px;" /></a>
+<figcaption>
+<p><span class="caption-text">Atom-projected unfolded band structure for a neutral oxygen vacancy in MgO, showing that the single-particle state introduced by the vacancy is the band gap is comprised of both Mg and O contributions.</span><a class="headerlink" href="#id6" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The example files for this unfolded band structure calculation of the neutral oxygen vacancy supercell are provided in the <a class="reference external" href="https://github.com/SMTG-Bham/easyunfold/tree/main/examples/MgO/v_O_0_YT_tutorial">examples/MgO/v_O_0_YT_tutorial</a> folder.</p>
+</div>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="example_si222.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Silicon with a displaced atom</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="example_nabis2.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Disordered NaBiS<sub>2</sub> with atomic/orbital projections &amp; DOS plotting</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#displaced-mg-supercell-band-unfolding">Displaced Mg Supercell Band Unfolding</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#carrier-effective-masses">Carrier Effective Masses</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#defects">Defects</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-defect-supercell-generation">Step 1. Defect Supercell Generation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-band-structure-k-point-generation">Step 2. Band Structure <em>k</em>-point Generation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-band-structure-parsing">Step 3. Band Structure Parsing</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Bonan Zhu, Seán Kavanagh
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023, Bonan Zhu.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
