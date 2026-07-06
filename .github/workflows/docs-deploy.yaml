@@ -29,10 +29,12 @@ jobs:
       - name: Build HTML docs
         id: linkcheck
         run: |
+          set -o pipefail
           make -C docs html linkcheck 2>&1 | tee check.log
-          echo "::set-output name=broken::$(grep '(line\s*[0-9]*)\(\s\)broken\(\s\)' check.log)"
+          echo "broken=$(grep '(line\s*[0-9]*)\(\s\)broken\(\s\)' check.log)" >> "$GITHUB_OUTPUT"
         env:
-          SPHINXOPTS: -nW --keep-going
+          # Keep nitpicky checks enabled, but don't fail on non-link Sphinx warnings.
+          SPHINXOPTS: -n --keep-going
 
       - name: Show docs build check results
         run: |

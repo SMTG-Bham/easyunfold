@@ -26,9 +26,9 @@ easyunfold = "easyunfold.cli:easyunfold"
 
 [project.optional-dependencies]
 doc = [
-    "sphinx-click>=4,<5", "sphinx-autodoc2>=0.4,<0.5", "sphinx-book-theme>=1,<2",
-    "sphinx-copybutton>=0.3,<0.4", "myst-parser[linkify]", "sphinx>=6,<7", "astroid<3"
-    # astroid needs to be <3 due to: https://github.com/sphinx-extensions2/sphinx-autodoc2/issues/31
+    "sphinx-click>=4,<5", "sphinx-autodoc2>=0.5,<0.6", "sphinx-book-theme>=1,<2",
+    "sphinx-copybutton>=0.3,<0.4", "myst-parser[linkify]", "sphinx>=6,<7", "astroid<4"
+    # Keep astroid constrained below v4 for compatibility with sphinx-autodoc2 0.5.x.
 ]
 test = ["pytest", "pytest-cov", "coverage", "sumo"]
 dos = ["sumo"]

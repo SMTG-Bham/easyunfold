@@ -208,7 +208,7 @@ easyunfold unfold --mpl-style-file <path-to-mpl-style-sheet> plot
 ```
 
 which can be used to change the font, font sizes, ticks styles etc.
-Read more on [the matplotlib tutorial page](https://matplotlib.org/stable/tutorials/introductory/customizing.html#using-style-sheets).
+Read more on [the matplotlib tutorial page](https://matplotlib.org/stable/users/explain/customizing.html).
 :::
 
 :::{tip}

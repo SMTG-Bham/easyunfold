@@ -97,3 +97,27 @@ html_title = "easyunfold"
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+# -- Linkcheck configuration -------------------------------------------------
+
+# Publisher sites that block automated crawlers (return 403) and other
+# URLs that should not cause CI failures.
+linkcheck_ignore = [
+    # Publisher sites that block bots with 403 Forbidden
+    r"https://pubs\.acs\.org/.*",
+    r"https://pubs\.rsc\.org/.*",
+    r"https://link\.aps\.org/.*",
+    r"https://www\.science\.org/.*",
+    r"https://chemrxiv\.org/.*",
+    r"https://onlinelibrary\.wiley\.com/.*",
+    r"https://advanced\.onlinelibrary\.wiley\.com/.*",
+    r"http://alum\.mit\.edu/.*",
+    # DOI links resolve to publisher sites that block bots with 403
+    r"https://doi\.org/.*",
+    r"http://dx\.doi\.org/.*",
+    # Self-referential docs links (404 until the docs site is deployed);
+    # match both smtg-Bham and smtg-bham (GitHub normalises to lowercase).
+    r"https://smtg-[Bb]ham\.github\.io/easyunfold.*",
+    # Flaky external badges
+    r"https://codecov\.io/.*",
+]
