@@ -109,8 +109,15 @@ linkcheck_ignore = [
     r"https://link\.aps\.org/.*",
     r"https://www\.science\.org/.*",
     r"https://chemrxiv\.org/.*",
-    # Self-referential docs links (404 until the docs site is deployed)
-    r"https://smtg-bham\.github\.io/easyunfold/.*",
+    r"https://onlinelibrary\.wiley\.com/.*",
+    r"https://advanced\.onlinelibrary\.wiley\.com/.*",
+    r"http://alum\.mit\.edu/.*",
+    # DOI links resolve to publisher sites that block bots with 403
+    r"https://doi\.org/.*",
+    r"http://dx\.doi\.org/.*",
+    # Self-referential docs links (404 until the docs site is deployed);
+    # match both smtg-Bham and smtg-bham (GitHub normalises to lowercase).
+    r"https://smtg-[Bb]ham\.github\.io/easyunfold.*",
     # Flaky external badges
     r"https://codecov\.io/.*",
 ]
