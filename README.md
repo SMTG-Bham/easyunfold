@@ -101,6 +101,7 @@ If you use `easyunfold` in your work, please cite:
 ## Studies using `easyunfold`
 We'll add papers that use `easyunfold` to this list as they come out!
 
+- J. M. Domínguez-Vázquez et al. **_Off-stoichiometric variable doping for exceptional power factors in L2<sub>1</sub> Fe<sub>2</sub>VAlM<sub>x</sub> (M = Ti, W) epitaxial thin films_** [_arXiv_](https://arxiv.org/abs/2608.24236) 2026
 - D. Mekan et al. **_Solution-Synthesis and Optical and Magnetic Properties of MnX<sub>2</sub>Se<sub>4</sub> (X = Bi, Sb, In) Nanomaterials_** [_Chemistry of Materials_](https://doi.org/10.1021/acs.chemmater.6c01100) 2026
 - V. Posligua et al. **_Deep Learning Framework for Accurate Prediction and  High-Throughput Search of the Thermoelectric Figure  of Merit in Skutterudites_** [_Journal of Materials Chemistry A_](https://doi.org/10.1039/D5TA08841K) 2026
 - K. Li et al. **_Resonant Doping in Binary Sb(V)-oxide Sb<sub>2</sub>O<sub>5</sub> for High-Mobility Transparent Conductors_** [_ChemRxiv_](https://doi.org/10.26434/chemrxiv.15001890/v1) 2026
