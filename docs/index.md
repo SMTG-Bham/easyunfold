@@ -62,13 +62,13 @@ If you use `easyunfold` in your work, please cite:
 ## Studies using `easyunfold`
 We'll add papers that use `easyunfold` to this list as they come out!
 
+- Ø. Finnseth et al. **_Electronic Structure and Resonant Circular Dichroism of La<sub>0.7</sub>Sr<sub>0.3</sub>MnO<sub>3</sub> from Soft X-ray Angle-Resolved Photoemission_** [_Physical Review B_](https://doi.org/10.1103/59pf-43kx) 2026
 - K. Li et al. **_Resonant Doping in Binary Sb(V)-oxide Sb<sub>2</sub>O<sub>5</sub> for High-Mobility Transparent Conductors_** [_Chemistry of Materials_](https://doi.org/10.1021/acs.chemmater.6c01056) 2026
 - A. Tewary et al. **_Tailoring n-type conduction in chemically tuned BiCu<sub>1−x</sub>Ni<sub>x</sub>TeO thermoelectric material_** [_Journal of Physics: Energy_](https://doi.org/10.1088/2515-7655/aea8e0) 2026
 - J. M. Domínguez-Vázquez et al. **_Off-stoichiometric variable doping for exceptional power factors in L2<sub>1</sub> Fe<sub>2</sub>VAlM<sub>x</sub> (M = Ti, W) epitaxial thin films_** [_arXiv_](https://arxiv.org/abs/2608.24236) 2026
 - D. Mekan et al. **_Solution-Synthesis and Optical and Magnetic Properties of MnX<sub>2</sub>Se<sub>4</sub> (X = Bi, Sb, In) Nanomaterials_** [_Chemistry of Materials_](https://doi.org/10.1021/acs.chemmater.6c01100) 2026
 - V. Posligua et al. **_Deep Learning Framework for Accurate Prediction and  High-Throughput Search of the Thermoelectric Figure  of Merit in Skutterudites_** [_Journal of Materials Chemistry A_](https://doi.org/10.1039/D5TA08841K) 2026
 - H.-Y. Chen et al. **_Electrostatically tunable moiré-mediated Wigner states via interfacial potential engineering in 2D van der Waals heterostructures_** [_Nature Communications_](https://doi.org/10.1038/s41467-026-70614-w) 2026
-- Ø. Finnseth et al. **_Electronic Structure and Resonant Circular Dichroism of La<sub>0.7</sub>Sr<sub>0.3</sub>MnO<sub>3</sub> from Soft X-ray Angle-Resolved Photoemission_** [_arXiv_](https://arxiv.org/abs/2603.10794) 2026
 - R. Claes et al. **_Screening ASb<sub>2</sub>O<sub>6</sub> (A = Mg, Ca, Sr, Ba, Cd) for High Performance Transparent Conducting Oxides_** [_ChemRxiv_](https://doi.org/10.26434/chemrxiv-2025-39bbf) 2025
 - I. Caro-Campos et al. **_Phonon Scattering by Local Off‐Centering in Diamond‐Like Cu<sub>2−X</sub>Ag<sub>x</sub>In<sub>2</sub>Se<sub>4</sub> Chalcopyrites: High Carrier Mobility and Ultralow Thermal Conductivity_** [_Small Structures_](https://doi.org/10.1002/sstr.202500800) 2026
 - J. M. Domínguez-Vázquez et al. **_Enhanced thermoelectric performance in Fe<sub>2</sub>V<sub>0.8</sub>W<sub>0.2</sub>Al thin films: synergistic effects of chemical ordering and tungsten substitution_** [_Journal of Materials Chemistry A_](https://doi.org/10.1039/D5TA09938B) 2026
