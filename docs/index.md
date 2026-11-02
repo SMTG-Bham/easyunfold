@@ -62,6 +62,7 @@ If you use `easyunfold` in your work, please cite:
 ## Studies using `easyunfold`
 We'll add papers that use `easyunfold` to this list as they come out!
 
+- J. Dutta et al. **_Phase-Controlled Synthesis and Low Thermal Conductivity in Cu<sub>4</sub>TiTe<sub>4</sub>_** [_ChemRxiv_](https://doi.org/10.26434/chemrxiv.15011168/v1) 2026
 - Ø. Finnseth et al. **_Electronic Structure and Resonant Circular Dichroism of La<sub>0.7</sub>Sr<sub>0.3</sub>MnO<sub>3</sub> from Soft X-ray Angle-Resolved Photoemission_** [_Physical Review B_](https://doi.org/10.1103/59pf-43kx) 2026
 - K. Li et al. **_Resonant Doping in Binary Sb(V)-oxide Sb<sub>2</sub>O<sub>5</sub> for High-Mobility Transparent Conductors_** [_Chemistry of Materials_](https://doi.org/10.1021/acs.chemmater.6c01056) 2026
 - A. Tewary et al. **_Tailoring n-type conduction in chemically tuned BiCu<sub>1−x</sub>Ni<sub>x</sub>TeO thermoelectric material_** [_Journal of Physics: Energy_](https://doi.org/10.1088/2515-7655/aea8e0) 2026
