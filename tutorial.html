@@ -210,15 +210,15 @@
 <li class="toctree-l1"><a class="reference internal" href="cli.html">CLI Reference</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="apidocs/index.html">API Reference</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="apidocs/easyunfold/easyunfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold</span></code></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.plotting.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.plotting</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.unfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.unfold</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.utils</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.effective_mass.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.effective_mass</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.cli.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.cli</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.unfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.unfold</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.plotting.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.plotting</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.vasp_constant.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.vasp_constant</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.wavecar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavecar</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.wavefun.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavefun</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.effective_mass.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.effective_mass</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.vasp_constant.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.vasp_constant</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.procar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.procar</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="apidocs/easyunfold/easyunfold.cli.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.cli</span></code></a></li>
 </ul>
 </details></li>
 </ul>
@@ -470,7 +470,7 @@ generation).</p>
 <p>At this point, you should have your relaxed supercell structure (which likely has a lower symmetry than
 the pristine primitive unit cell).
 For LDA/GGA DFT calculations, the set of <em>k</em>-points for the supercell band structure can be generated with:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">easyunfold</span> <span class="n">generate</span> <span class="n">primitive</span><span class="o">/</span><span class="n">POSCAR</span> <span class="n">supercell</span><span class="o">/</span><span class="n">POSCAR</span> <span class="n">primitive</span><span class="o">/</span><span class="n">KPOINTS_band</span> <span class="o">--</span><span class="n">matrix</span> <span class="s2">&quot;2 2 2&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">easyunfold</span> <span class="n">generate</span> <span class="n">primitive</span><span class="o">/</span><span class="n">POSCAR</span> <span class="n">supercell</span><span class="o">/</span><span class="n">POSCAR</span> <span class="n">primitive</span><span class="o">/</span><span class="n">KPOINTS_band</span> <span class="o">--</span><span class="n">matrix</span> <span class="s2">"2 2 2"</span>
 </pre></div>
 </div>
 <p>For hybrid DFT band structure calculations, the electronic minimisation must be conducted self-consistently
@@ -481,7 +481,7 @@ we need to provide an <code class="docutils literal notranslate"><span class="pr
 <em>k</em>-points included by <code class="docutils literal notranslate"><span class="pre">easyunfold</span></code> will then be added as zero-weighted <em>k</em>-points. For hybrid DFT calculations, it can
 also be useful to split the <em>k</em>-points into multiple calculations to reduce the computational overhead and/or memory
 consumption, and this can be done with the <code class="docutils literal notranslate"><span class="pre">--nk-per-split</span></code> option, e.g.:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">easyunfold</span> <span class="n">generate</span> <span class="n">primitive</span><span class="o">/</span><span class="n">POSCAR</span> <span class="n">supercell</span><span class="o">/</span><span class="n">POSCAR</span> <span class="n">primitive</span><span class="o">/</span><span class="n">KPOINTS_band</span> <span class="o">--</span><span class="n">matrix</span> <span class="s2">&quot;2 2 2&quot;</span> <span class="o">--</span><span class="n">nk</span><span class="o">-</span><span class="n">per</span><span class="o">-</span><span class="n">split</span> <span class="mi">60</span> <span class="o">--</span><span class="n">scf</span><span class="o">-</span><span class="n">kpoints</span> <span class="n">supercell</span><span class="o">/</span><span class="n">IBZKPT</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">easyunfold</span> <span class="n">generate</span> <span class="n">primitive</span><span class="o">/</span><span class="n">POSCAR</span> <span class="n">supercell</span><span class="o">/</span><span class="n">POSCAR</span> <span class="n">primitive</span><span class="o">/</span><span class="n">KPOINTS_band</span> <span class="o">--</span><span class="n">matrix</span> <span class="s2">"2 2 2"</span> <span class="o">--</span><span class="n">nk</span><span class="o">-</span><span class="n">per</span><span class="o">-</span><span class="n">split</span> <span class="mi">60</span> <span class="o">--</span><span class="n">scf</span><span class="o">-</span><span class="n">kpoints</span> <span class="n">supercell</span><span class="o">/</span><span class="n">IBZKPT</span>
 </pre></div>
 </div>
 <p>This will generate files named as <code class="docutils literal notranslate"><span class="pre">KPOINTS_easyunfold_001</span></code>, <code class="docutils literal notranslate"><span class="pre">KPOINTS_easyunfold_002</span></code>, each containing
@@ -529,7 +529,7 @@ You can load the <code class="docutils literal notranslate"><span class="pre">ea
 command line interface to generate a plot.</p>
 <p>If the <em>k</em>-points have been split into multiple calculations (for example, for those involving hybrid
 functionals), all wave function files (e.g. <code class="docutils literal notranslate"><span class="pre">WAVECAR</span></code> for VASP) need to be passed:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">easyunfold</span> <span class="n">unfold</span> <span class="n">calculate</span> <span class="n">calc1</span><span class="o">/</span><span class="n">WAVECAR</span> <span class="n">calc2</span><span class="o">/</span><span class="n">WAVECAR</span>  <span class="c1"># or &#39;calc*/WAVECAR&#39; </span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">easyunfold</span> <span class="n">unfold</span> <span class="n">calculate</span> <span class="n">calc1</span><span class="o">/</span><span class="n">WAVECAR</span> <span class="n">calc2</span><span class="o">/</span><span class="n">WAVECAR</span>  <span class="c1"># or 'calc*/WAVECAR' </span>
 </pre></div>
 </div>
 <p>For large <code class="docutils literal notranslate"><span class="pre">WAVECAR</span></code>s, it may take some time to parse and compute the weights. Note you should use the <code class="docutils literal notranslate"><span class="pre">--gamma</span></code> and/or

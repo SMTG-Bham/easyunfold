@@ -210,15 +210,15 @@
 <li class="toctree-l1"><a class="reference internal" href="../cli.html">CLI Reference</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../apidocs/index.html">API Reference</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold</span></code></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.plotting.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.plotting</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.unfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.unfold</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.utils</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.effective_mass.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.effective_mass</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.cli.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.cli</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.unfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.unfold</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.plotting.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.plotting</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.vasp_constant.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.vasp_constant</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.wavecar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavecar</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.wavefun.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavefun</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.effective_mass.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.effective_mass</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.vasp_constant.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.vasp_constant</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.procar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.procar</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.cli.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.cli</span></code></a></li>
 </ul>
 </details></li>
 </ul>
@@ -469,13 +469,13 @@ along the defined band structure path.</p>
 file for this single point calculation:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>Si_supercell_deformed
 cp<span class="w"> </span>KPOINTS_scf<span class="w"> </span>KPOINTS<span class="w">  </span><span class="c1"># SCF kpoint mesh</span>
-sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">&#39;s/^ICHARG = 11/!ICHARG = 11/g&#39;</span><span class="w"> </span>INCAR<span class="w">  </span><span class="c1"># comment out ICHARG = 11</span>
+sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">'s/^ICHARG = 11/!ICHARG = 11/g'</span><span class="w"> </span>INCAR<span class="w">  </span><span class="c1"># comment out ICHARG = 11</span>
 mpirun<span class="w"> </span>-np<span class="w"> </span><span class="m">4</span><span class="w"> </span>vasp_std<span class="w">  </span><span class="c1"># run the calculation</span>
 </pre></div>
 </div>
 <p>Now, with our converged SCF charge density, we run the GGA band structure calculation with <code class="docutils literal notranslate"><span class="pre">ICHARG</span> <span class="pre">=</span> <span class="pre">11</span></code>,
 and the <em>k</em>-points mapped to the supercell from the primitive cell path:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">&#39;s/.*ICHARG = 11/ICHARG = 11/g&#39;</span><span class="w"> </span>INCAR<span class="w">  </span><span class="c1"># set ICARG = 11</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">'s/.*ICHARG = 11/ICHARG = 11/g'</span><span class="w"> </span>INCAR<span class="w">  </span><span class="c1"># set ICARG = 11</span>
 cp<span class="w"> </span>KPOINTS_easyunfold<span class="w"> </span>KPOINTS<span class="w">  </span><span class="c1"># supercell band structure kpoint path</span>
 mpirun<span class="w"> </span>-np<span class="w"> </span><span class="m">4</span><span class="w"> </span>vasp_std<span class="w">  </span><span class="c1"># run the calculation</span>
 </pre></div>
@@ -502,7 +502,7 @@ git<span class="w"> </span>lfs<span class="w"> </span>install
 </div>
 <p>(or <code class="docutils literal notranslate"><span class="pre">brew</span> <span class="pre">install</span> <span class="pre">git-lfs</span></code> on macOS; see <a class="reference external" href="https://docs.github.com/en/repositories/working-with-files/managing-large-files/installing-git-large-file-storage">here</a> for full instructions).</p>
 <p>Then download the files:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>lfs<span class="w"> </span>pull<span class="w"> </span>-I<span class="w"> </span>examples/Si222/Si_super_deformed/WAVECAR,examples/Si222/Si_super_deformed/vasprun.xml<span class="w"> </span>--exclude<span class="o">=</span><span class="s2">&quot;&quot;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>lfs<span class="w"> </span>pull<span class="w"> </span>-I<span class="w"> </span>examples/Si222/Si_super_deformed/WAVECAR,examples/Si222/Si_super_deformed/vasprun.xml<span class="w"> </span>--exclude<span class="o">=</span><span class="s2">""</span>
 </pre></div>
 </div>
 </div>

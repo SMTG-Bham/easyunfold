@@ -210,15 +210,15 @@
 <li class="toctree-l1"><a class="reference internal" href="../cli.html">CLI Reference</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../apidocs/index.html">API Reference</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold</span></code></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.plotting.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.plotting</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.unfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.unfold</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.utils</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.effective_mass.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.effective_mass</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.cli.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.cli</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.unfold.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.unfold</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.plotting.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.plotting</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.vasp_constant.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.vasp_constant</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.wavecar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavecar</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.wavefun.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.wavefun</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.effective_mass.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.effective_mass</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.vasp_constant.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.vasp_constant</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.procar.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.procar</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="../apidocs/easyunfold/easyunfold.cli.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">easyunfold.cli</span></code></a></li>
 </ul>
 </details></li>
 </ul>
@@ -445,9 +445,9 @@ Using <code class="docutils literal notranslate"><span class="pre">easyunfold</s
 <p>The band structure above is nice, but we can make the plot a little clearer by adjusting some of the parameters like
 the intensity scaling (via <code class="docutils literal notranslate"><span class="pre">--intensity</span></code>) and the colour map (via <code class="docutils literal notranslate"><span class="pre">--cmap</span></code>). Below we set <code class="docutils literal notranslate"><span class="pre">--intensity</span> <span class="pre">2.5</span></code> to
 increase the colourmap intensity, and try <code class="docutils literal notranslate"><span class="pre">BuPu</span></code>, <code class="docutils literal notranslate"><span class="pre">viridis</span></code> and <code class="docutils literal notranslate"><span class="pre">bone_r</span></code> from left to right below:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot<span class="w"> </span>--intensity<span class="w"> </span><span class="m">2</span>.5<span class="w"> </span>--cmap<span class="w"> </span><span class="s2">&quot;BuPu&quot;</span>
-easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot<span class="w"> </span>--intensity<span class="w"> </span><span class="m">2</span>.5<span class="w"> </span>--cmap<span class="w"> </span><span class="s2">&quot;viridis&quot;</span>
-easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot<span class="w"> </span>--intensity<span class="w"> </span><span class="m">2</span>.5<span class="w"> </span>--cmap<span class="w"> </span><span class="s2">&quot;bone_r&quot;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot<span class="w"> </span>--intensity<span class="w"> </span><span class="m">2</span>.5<span class="w"> </span>--cmap<span class="w"> </span><span class="s2">"BuPu"</span>
+easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot<span class="w"> </span>--intensity<span class="w"> </span><span class="m">2</span>.5<span class="w"> </span>--cmap<span class="w"> </span><span class="s2">"viridis"</span>
+easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot<span class="w"> </span>--intensity<span class="w"> </span><span class="m">2</span>.5<span class="w"> </span>--cmap<span class="w"> </span><span class="s2">"bone_r"</span>
 </pre></div>
 </div>
 <div class="pst-scrollable-table-container"><table class="table">
@@ -505,7 +505,7 @@ projection information, and so <code class="docutils literal notranslate"><span 
 calculation.</p>
 <p>When plotting the unfolded band, the <code class="docutils literal notranslate"><span class="pre">plot-projections</span></code> subcommand is used with the <code class="docutils literal notranslate"><span class="pre">--procar</span> <span class="pre">&lt;PROCAR&gt;</span></code> and
 <code class="docutils literal notranslate"><span class="pre">--atoms</span></code> options:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot-projections<span class="w"> </span>--atoms<span class="o">=</span><span class="s2">&quot;Na,Bi,S&quot;</span><span class="w"> </span>--intensity<span class="w"> </span><span class="m">3</span><span class="w"> </span>--combined
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot-projections<span class="w"> </span>--atoms<span class="o">=</span><span class="s2">"Na,Bi,S"</span><span class="w"> </span>--intensity<span class="w"> </span><span class="m">3</span><span class="w"> </span>--combined
 </pre></div>
 </div>
 <figure class="align-default" id="id10">
@@ -532,7 +532,7 @@ plot above, the high intensity of the S projections in the valence band makes th
 band more faint and less apparent.</p>
 <p>So, we can create separated plots for each atom type to make their individual contributions more clear, by omitting the
 <code class="docutils literal notranslate"><span class="pre">--combined</span></code> tag:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot-projections<span class="w"> </span>--atoms<span class="o">=</span><span class="s2">&quot;Na,Bi,S&quot;</span><span class="w"> </span>--cmap<span class="o">=</span><span class="s2">&quot;bone_r&quot;</span><span class="w"> </span>--intensity<span class="w"> </span><span class="m">2</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot-projections<span class="w"> </span>--atoms<span class="o">=</span><span class="s2">"Na,Bi,S"</span><span class="w"> </span>--cmap<span class="o">=</span><span class="s2">"bone_r"</span><span class="w"> </span>--intensity<span class="w"> </span><span class="m">2</span>
 </pre></div>
 </div>
 <figure class="align-default" id="id11">
@@ -542,7 +542,7 @@ band more faint and less apparent.</p>
 </figcaption>
 </figure>
 <p>An alternative option here is also to just plot only the contributions of <code class="docutils literal notranslate"><span class="pre">Na</span></code> and <code class="docutils literal notranslate"><span class="pre">Bi</span></code> cations, with no S projections:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot-projections<span class="w"> </span>--atoms<span class="o">=</span><span class="s2">&quot;Na,Bi&quot;</span><span class="w"> </span>--intensity<span class="w"> </span><span class="m">3</span><span class="w"> </span>--combined
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot-projections<span class="w"> </span>--atoms<span class="o">=</span><span class="s2">"Na,Bi"</span><span class="w"> </span>--intensity<span class="w"> </span><span class="m">3</span><span class="w"> </span>--combined
 </pre></div>
 </div>
 <figure class="align-default" id="id12">
@@ -557,8 +557,8 @@ band more faint and less apparent.</p>
 <section id="atom-projected-unfolded-band-structure-with-dos">
 <h3>Atom-projected Unfolded Band Structure with DOS<a class="headerlink" href="#atom-projected-unfolded-band-structure-with-dos" title="Permalink to this heading">#</a></h3>
 <p>We can also combine the atom projections with the DOS plotting, using the <code class="docutils literal notranslate"><span class="pre">--dos</span></code> option as before:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot-projections<span class="w"> </span>--atoms<span class="w"> </span><span class="s2">&quot;Na,Bi,S&quot;</span><span class="w"> </span>--intensity<span class="w"> </span><span class="m">3</span><span class="w"> </span>--combined<span class="w"> </span>--dos<span class="w"> </span>vasprun.xml.gz<span class="w"> </span>--zero-line<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--dos-label<span class="w"> </span><span class="s2">&quot;DOS&quot;</span><span class="w"> </span>--gaussian<span class="w"> </span><span class="m">0</span>.1<span class="w"> </span>--no-total<span class="w"> </span>--scale<span class="w"> </span><span class="m">2</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot-projections<span class="w"> </span>--atoms<span class="w"> </span><span class="s2">"Na,Bi,S"</span><span class="w"> </span>--intensity<span class="w"> </span><span class="m">3</span><span class="w"> </span>--combined<span class="w"> </span>--dos<span class="w"> </span>vasprun.xml.gz<span class="w"> </span>--zero-line<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--dos-label<span class="w"> </span><span class="s2">"DOS"</span><span class="w"> </span>--gaussian<span class="w"> </span><span class="m">0</span>.1<span class="w"> </span>--no-total<span class="w"> </span>--scale<span class="w"> </span><span class="m">2</span>
 </pre></div>
 </div>
 <figure class="align-default" id="id13">
@@ -578,7 +578,7 @@ in the <a class="reference external" href="https://smtg-Bham.github.io/easyunfol
 than all atoms of a certain element. For example, in this example case of NaBiS<span class="math notranslate nohighlight">\(_2\)</span>, we see that a flat localised state
 is forming within the ‘bulk’ band gap. We can show that this state is contributed by only one or two atoms in the
 supercell, using the <code class="docutils literal notranslate"><span class="pre">--atoms-idx</span></code> option:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot-projections<span class="w"> </span>-unfold<span class="w"> </span>plot-projections<span class="w"> </span>--atoms-idx<span class="o">=</span><span class="s2">&quot;1-55,57-65,67-80|56,66&quot;</span><span class="w"> </span>--intensity<span class="w"> </span><span class="m">2</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot-projections<span class="w"> </span>-unfold<span class="w"> </span>plot-projections<span class="w"> </span>--atoms-idx<span class="o">=</span><span class="s2">"1-55,57-65,67-80|56,66"</span><span class="w"> </span>--intensity<span class="w"> </span><span class="m">2</span>
 </pre></div>
 </div>
 <figure class="align-default" id="id14">
@@ -606,8 +606,8 @@ option. This takes a string of the form <code class="docutils literal notranslat
 to project onto the unfolded band structure.</p>
 <p>For example, if we want to see the contributions of the Bi <span class="math notranslate nohighlight">\(s\)</span>, <span class="math notranslate nohighlight">\(p\)</span> and S <span class="math notranslate nohighlight">\(s\)</span> orbitals to the unfolded band structure,
 we can use the following command:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot-projections<span class="w"> </span>--atoms<span class="w"> </span><span class="s2">&quot;Bi,Bi,S&quot;</span><span class="w"> </span>--orbitals<span class="o">=</span><span class="s2">&quot;s|p|s&quot;</span><span class="w">  </span>--intensity<span class="w"> </span><span class="m">3</span><span class="w">  </span>--combined<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--dos<span class="w"> </span>vasprun.xml.gz<span class="w"> </span>--zero-line<span class="w"> </span>--dos-label<span class="w"> </span><span class="s2">&quot;DOS&quot;</span><span class="w"> </span>--gaussian<span class="w"> </span><span class="m">0</span>.1<span class="w"> </span>--no-total<span class="w"> </span>--scale<span class="w"> </span><span class="m">5</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot-projections<span class="w"> </span>--atoms<span class="w"> </span><span class="s2">"Bi,Bi,S"</span><span class="w"> </span>--orbitals<span class="o">=</span><span class="s2">"s|p|s"</span><span class="w">  </span>--intensity<span class="w"> </span><span class="m">3</span><span class="w">  </span>--combined<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--dos<span class="w"> </span>vasprun.xml.gz<span class="w"> </span>--zero-line<span class="w"> </span>--dos-label<span class="w"> </span><span class="s2">"DOS"</span><span class="w"> </span>--gaussian<span class="w"> </span><span class="m">0</span>.1<span class="w"> </span>--no-total<span class="w"> </span>--scale<span class="w"> </span><span class="m">5</span>
 </pre></div>
 </div>
 <figure class="align-default" id="id15">
@@ -626,8 +626,8 @@ can see have minimal contributions to the electronic structure near the band gap
 <code class="docutils literal notranslate"><span class="pre">--dos-orbitals</span></code> option to split the DOS plot into <span class="math notranslate nohighlight">\(lm\)</span>-decomposed orbital contributions. For example, if we want to
 see the contributions of the Bi and S <span class="math notranslate nohighlight">\(p_x\)</span>, <span class="math notranslate nohighlight">\(p_y\)</span> and <span class="math notranslate nohighlight">\(p_z\)</span> orbitals to the unfolded band structure, we can use the
 following command:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot-projections<span class="w"> </span>--atoms<span class="w"> </span><span class="s2">&quot;Na,Bi,S&quot;</span><span class="w"> </span>--orbitals<span class="o">=</span><span class="s2">&quot;all|px,py,pz|px,py,pz&quot;</span><span class="w"> </span>--intensity<span class="w"> </span><span class="m">3</span><span class="w"> </span>--combined<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--dos<span class="w"> </span>vasprun.xml.gz<span class="w"> </span>--zero-line<span class="w"> </span>--dos-label<span class="w"> </span><span class="s2">&quot;DOS&quot;</span><span class="w"> </span>--gaussian<span class="w"> </span><span class="m">0</span>.1<span class="w"> </span>--no-total<span class="w"> </span>--scale<span class="w"> </span><span class="m">6</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>easyunfold<span class="w"> </span>unfold<span class="w"> </span>plot-projections<span class="w"> </span>--atoms<span class="w"> </span><span class="s2">"Na,Bi,S"</span><span class="w"> </span>--orbitals<span class="o">=</span><span class="s2">"all|px,py,pz|px,py,pz"</span><span class="w"> </span>--intensity<span class="w"> </span><span class="m">3</span><span class="w"> </span>--combined<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--dos<span class="w"> </span>vasprun.xml.gz<span class="w"> </span>--zero-line<span class="w"> </span>--dos-label<span class="w"> </span><span class="s2">"DOS"</span><span class="w"> </span>--gaussian<span class="w"> </span><span class="m">0</span>.1<span class="w"> </span>--no-total<span class="w"> </span>--scale<span class="w"> </span><span class="m">6</span>
 </pre></div>
 </div>
 <figure class="align-default" id="id16">
