@@ -42,7 +42,13 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -e ".[test]"
+        printf 'scikit-build-core<0.10\n' > "$RUNNER_TEMP/build-constraints.txt"
+        : > "$RUNNER_TEMP/constraints.txt"
+        if [ "${{ matrix.python-version }}" = "3.9" ]; then
+          printf 'phonopy<2.38\n' >> "$RUNNER_TEMP/constraints.txt"
+        fi
+        pip install --constraint "$RUNNER_TEMP/constraints.txt" \
+          --build-constraint "$RUNNER_TEMP/build-constraints.txt" -e ".[test]"
     - name: Test with pytest
       run: |
         pytest tests/
